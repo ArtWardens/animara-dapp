@@ -95,13 +95,13 @@ const Login = () => {
               ✓
             </label>
           </div>
-          <input
+          {/* <input
             className="mr-3 rounded-lg"
             type="checkbox"
             name="rememberme"
             id=""
-          />
-          <span className="font-outfit block ml-5">&nbsp; Remember me</span>
+          /> */}
+          <span className="font-outfit block ml-5">&nbsp;Remember me</span>
         </div>
         <button
           id="login-form-btn"

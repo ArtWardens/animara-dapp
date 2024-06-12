@@ -13,7 +13,9 @@
     "react-router-dom": "^6.23.1",
     "react-scripts": "5.0.1",
     "react-toastify": "^10.0.5",
+    "tailwindcss-animate": "^1.0.7",
     "toastify": "^2.0.1",
+    "vite": "^5.2.13",
     "web-vitals": "^2.1.4",
     "zustand": "^4.5.2"
   },
