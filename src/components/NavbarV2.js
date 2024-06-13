@@ -16,15 +16,15 @@ const NavbarV2 = () => {
         <div className="logo branding p-4 lg:w-80 w-full flex justify-center">
           <Link to="/" className="w-[50%] md:w-[40%] flex items-center gap-2">
             <video width="200" height="100%" autoPlay loop muted playsInline>
-              <source src="/logo.webm" type="video/webm" />
+              <source src="assets/images/logo.webm" type="video/webm" />
             </video>
             <video className="hidden xl:flex" width="100" height="100%" autoPlay loop muted playsInline>
-              <source src="/moveon.webm" type="video/webm" />
+              <source src="assets/images/moveon.webm" type="video/webm" />
           </video>
           </Link>
         </div>
         <video className="lg:hidden" width="100" height="100%" autoPlay loop muted playsInline>
-              <source src="/moveon.webm" type="video/webm" />
+              <source src="assets/images/moveon.webm" type="video/webm" />
         </video>
         <ul className="navlinks hidden text-lg tracking-wider lg:flex w-[70%] xl:w-full justify-center items-center">
           <Link to="/nft">
@@ -39,7 +39,7 @@ const NavbarV2 = () => {
           </Link>
           <Link to="/world">
             <li className="flex flex-col mx-5 items-center justify-center">
-              <img src="/world.svg" alt="" className="h-5 w-auto" />
+              <img src="assets/images/world.svg" alt="" className="h-5 w-auto" />
               <span className="uppercase text-lg">World</span>
             </li>
           </Link>
@@ -170,7 +170,7 @@ const NavbarV2 = () => {
                         }}
                       >
                         <img
-                          src={"/icons/logout.svg"}
+                          src={"assets/icons/logout.svg"}
                           className="rounded-full h-6 w-6"
                         />
                         Logout
@@ -253,7 +253,7 @@ const NavbarV2 = () => {
                 {user != null ? (
                   <>
                     <img
-                      src={user?.photoURL || "/lock.png"}
+                      src={user?.photoURL || "assets/images/lock.png"}
                       className="mx-3 rounded-full h-8 w-8"
                     />
                     <div className="font-acumin w-full">
@@ -268,7 +268,7 @@ const NavbarV2 = () => {
                 ) : (
                   <>
                     <img
-                      src="/lock.png"
+                      src="assets/images/lock.png"
                       className="mx-3 rounded-full h-8 w-8"
                     />
                     <div className="font-acumin w-full">
@@ -292,7 +292,7 @@ const NavbarV2 = () => {
             </div>
           </div>
           <img
-            src="/mobileNavBottom.png"
+            src="assets/images/mobileNavBottom.png"
             className="absolute bottom-0 object-cover w-full h-1/2 z-0"
             alt=""
           />
@@ -319,16 +319,16 @@ const NavbarV2 = () => {
           </Link>
           <div className="flex gap-3 p-0 md:hidden">
             <a href="https://x.com/moworldgame">
-              <img className="cursor-pointer" src="/icons/x.svg" alt="X" />
+              <img className="cursor-pointer" src="assets/icons/x.svg" alt="X" />
             </a>
             <a href="https://discord.com/invite/6CpMr7Bb">
-              <img className="cursor-pointer" src="/icons/discord.svg" alt="Discord" />
+              <img className="cursor-pointer" src="assets/icons/discord.svg" alt="Discord" />
             </a>
             <a href="https://t.me/moveonworld">
-              <img className="cursor-pointer" src="/icons/telegram.svg" alt="Telegram" />
+              <img className="cursor-pointer" src="assets/icons/telegram.svg" alt="Telegram" />
             </a>
             <a href="https://instagram.com/moworldgame/">
-              <img className="cursor-pointer" src="/icons/instagram.svg" alt="Instagram" />
+              <img className="cursor-pointer" src="assets/icons/instagram.svg" alt="Instagram" />
             </a>
           </div>
         </ul>

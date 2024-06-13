@@ -29,12 +29,12 @@ export default function TestMain() {
   return (
     <div className="w-full mx-auto bg-clicker-game bg-no-repeat bg-cover h-screen relative cursor-pointer">
              <div className="flex justify-between absolute mt-6 ml-10">
-        <img
+        {/* <img
           src={"../../assets/images/logo.png"}
           height={50}
           width={50}
           alt="logo"
-        />
+        /> */}
       </div>
       <div className=" flex justify-between absolute right-0 mt-6">
         <div className="bg-count2 h-[50px] min-w-[200px] w-full bg-no-repeat bg-contain grid items-center justify-start pl-12 text-white text-sm">

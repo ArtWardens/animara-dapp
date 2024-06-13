@@ -2,10 +2,10 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 import AppLayout from "./components/AppLayout";
 
-import Home from './pages/Home/Home';
-import Login from './pages/Login/Login';
-import Signup from './pages/Signup/Signup';
-import TestMain from './pages/test/TestMain';
+import Home from './pages/Home/index';
+import Login from './pages/Login/index';
+import Signup from './pages/Signup/index';
+import TestMain from './pages/Clicker/TestMain';
 
 import { GlobalProvider } from './context/ContextProvider';
 
