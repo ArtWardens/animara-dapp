@@ -4,6 +4,7 @@ import HomeView from "./HomeView"
 // import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { getAuth, signOut } from "firebase/auth";
+import '../../styles/globals.css';
 
 export default function TestMain() {
   const { currentUser } = useGlobalContext();

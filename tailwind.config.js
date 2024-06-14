@@ -1,6 +1,7 @@
+/** @type {import('tailwindcss').Config} */
+
 import tailwindAnimate from "tailwindcss-animate";
 
-/** @type {import('tailwindcss').Config} */
 export default {
   darkMode: ["class"],
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
@@ -11,6 +12,23 @@ export default {
       screens: {
         "2xl": "1400px",
       },
+      backgroundImage: {
+        "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
+        "clicker-game": "url('./src/assets/images/ClickerGameBg.png')",
+        "gradient": "linear-gradient(90deg, #BD7AFF 80%, #7010F1 80%, #6F3DFF 80%, #BEE8FF 100%, #BEE8FF 100%, #630086 100%)",
+        "quest-card": "url('./src/assets/images/cardBg2.png')",
+        "count1": "url('./src/assets/images/count1.png')",
+        "count2": "url('./src/assets/images/count2.png')",
+        "username": "url('./src/assets/images/username.png')",
+        "activeDog": "url('./src/assets/images/activeDog.png')",
+        "activeDogBg": "url('./src/assets/images/activeDogBg.png')",
+        "initialDogBg": "url('./src/assets/images/initialDogBg.png')",
+        "leaderboard": "url('./src/assets/images/leaderboard.png')",
+        "light": "url('./src/assets/images/Light.png')",
+        "leaderboardBg": "url('./src/assets/images/leaderboardBg.png')",
+        "gradient-conic":
+          "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
+      },
     },
     extend: {
       colors: {
@@ -19,6 +37,10 @@ export default {
         ring: "hsl(var(--ring))",
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
+        yellow: {
+          primary: "#e29227",
+          number: "#ffeea3"
+        },
         primary: {
           DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",
@@ -68,12 +90,11 @@ export default {
         "accordion-up": "accordion-up 0.2s ease-out",
       },
       fontFamily: {
-        outfit: ["Outfit", "sans-serif"],
-        degular: ["degular", "sans-serif"],
-        acumin: ["acumin-pro", "sans-serif"],
+        "LuckiestGuy": ['var(--LuckiestGuy)'],
+        "inter": ['var(--inter)']
       },
       cursor: {
-        "360deg": "url('/icons/360deg.svg'), pointer",
+        "360deg": "url('./public/assets/icons/360deg.svg'), pointer",
       },
       boxShadow: {
         inplace_fuschia_500: "0 0px 10px 5px rgba(217, 70,239, 0.5)",

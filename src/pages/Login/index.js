@@ -142,7 +142,7 @@ const Login = () => {
           Don't have an account? &nbsp;
           <Link to="/signup" class="underline underline-offset-4">Signup</Link>
         </p>
-        <div className="flex gap-8 font-outfit justify-center mt-2 mb-3">
+        <div className="flex gap-8 font-outfit text-center justify-center mt-2 mb-3">
           <Link to="/">Terms & Conditions</Link>
           <Link to="/">Support</Link>
           <Link to="/">Customer Care</Link>
