@@ -7,11 +7,11 @@ import "react-toastify/dist/ReactToastify.css";
 function AppLayout() {
   return (
     <div>
-      <NavbarV2 />
+      {/* <NavbarV2 /> */}
       <main>
         <Outlet />
       </main>
-      <FooterV2 />
+      {/* <FooterV2 /> */}
       <ToastContainer
         position="bottom-right"
         autoClose={5000}

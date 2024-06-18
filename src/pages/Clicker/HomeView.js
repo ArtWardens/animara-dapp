@@ -1,19 +1,36 @@
 import LeaderBoardModal from "../../components/LeaderBoardModal";
-import Mascots from "../../components/Mascots";
-import MascotView from "../../components/MascotView";
-import ProgressSection from "../../components/ProgressSection";
-import Quest from "../../components/Quest";
+import EarnGuide from "../../components/dogie-clicker/EarnGuide";
+import LevelProgress from "../../components/dogie-clicker/LevelProgress";
+import EnergyRegeneration from "../../components/dogie-clicker/EnergyRegeneration";
+// import Mascots from "../../components/Mascots";
+import MascotView from "../../components/dogie-clicker/MascotView";
+// import ProgressSection from "../../components/ProgressSection";
+// import Quest from "../../components/Quest";
 import { useGlobalContext } from "../../context/ContextProvider";
 import { getCollection, insertCollection } from "../../utils/firebase";
 import { getTodayDate } from "../../utils/fuctions";
 import { mascots } from "../../utils/local.db";
 import React, { useEffect, useState } from "react";
 import { calculateTimeRemaining } from '../../utils/fuctions';
-import '../../styles/globals.css';
 
 const HomeView = ({ gameData, setGameData }) => {
+  const tempData = {
+    EarnPerTap: {
+      title: 'Earn per tap',
+      count: 4,
+    },
+    CoinsToLevelUp: {
+      title: 'Coins to lvl up',
+      count: 34,
+    },
+    ProfitPerHour: {
+      title: 'Profit per hour',
+      count: 'N/A',
+    }
+  }
+
   const { currentUser } = useGlobalContext();
-  const [currentMascot, setCurrentMascot] = useState(mascots[0]);
+  const [currentMascot, setCurrentMascot] = useState(mascots[1]);
   const [leaderBoardData, setLeaderBoardData] = useState({})
   const [idle, setIdle] = useState(false);
   const [totalPoints, setTotalPoints] = useState(0);
@@ -35,7 +52,6 @@ const HomeView = ({ gameData, setGameData }) => {
     return () => clearInterval(interval);
   }, []);
 
-
   //Fetch the user data on inital load
   useEffect(() => {
     async function getPlayerData() {
@@ -56,6 +72,8 @@ const HomeView = ({ gameData, setGameData }) => {
           numberOfClicks: 0,
           point: mascot2?.point || 0,
           quest: mascot2?.quest || 0,
+          energy: 20,
+          levelProgress: 0
         },
         mascot3: {
           numberOfClicks: 0,
@@ -91,7 +109,7 @@ const HomeView = ({ gameData, setGameData }) => {
           });
 
           setTotalCount((pre) => ({
-            ...pre,
+            // ...pre,
 
             [currentMascot?.version]:
               gameData?.[currentMascot?.version]?.numberOfClicks,
@@ -107,6 +125,8 @@ const HomeView = ({ gameData, setGameData }) => {
             numberOfClicks: 0,
             point: pre?.mascot2?.point,
             quest: pre?.mascot2?.quest,
+            energy: 20,
+            levelProgress: 0
           },
           mascot3: {
             numberOfClicks: 0,
@@ -117,7 +137,7 @@ const HomeView = ({ gameData, setGameData }) => {
         }));
       }
     }
-    saveData()
+    saveData();
   }, [idle])
 
 
@@ -148,7 +168,6 @@ const HomeView = ({ gameData, setGameData }) => {
       setCountdown(30);
 
 
-
     }, 30000)
     const countdownInterval = setInterval(() => {
       setCountdown(prevCountdown => (prevCountdown > 1 ? prevCountdown - 1 : 30));
@@ -160,17 +179,33 @@ const HomeView = ({ gameData, setGameData }) => {
       clearInterval(countdownInterval);
     };
 
-
   }, []);
-
 
   return (
 
     <>
 
-      <div className="max-w-[1280px] flex justify-center items-center gap-2 relative">
+      <div className="max-w-full flex justify-center items-center gap-2 relative">
 
-        <Mascots
+        <EarnGuide
+          data={tempData}
+        />
+
+        <LevelProgress
+          gameData={gameData}
+          data={tempData}
+        />
+
+        <EnergyRegeneration
+          gameData={gameData}
+        />
+
+        {/* <ProgressSection
+          gameData={gameData}
+          currentMascot={currentMascot}
+        /> */}
+      
+        {/* <Mascots
           currentMascot={currentMascot}
           setCurrentMascot={setCurrentMascot}
           gameData={gameData}
@@ -181,7 +216,7 @@ const HomeView = ({ gameData, setGameData }) => {
           setDelay={setDelay}
           isLeaderBoardOpen={isLeaderBoardOpen}
           setIsLeaderBoardOpen={setIsLeaderBoardOpen}
-        />
+        /> */}
 
         <MascotView
           timeRemaining={timeRemaining}
@@ -195,9 +230,10 @@ const HomeView = ({ gameData, setGameData }) => {
           setDelay={setDelay}
           setTotalPoints={setTotalPoints}
           totalPoints={totalPoints}
+          data={tempData}
         />
 
-        <Quest
+        {/* <Quest
           currentMascot={currentMascot}
           gameData={gameData}
           setGameData={setGameData}
@@ -205,22 +241,18 @@ const HomeView = ({ gameData, setGameData }) => {
           totalPoints={totalPoints}
           totalCount={totalCount}
           setTotalCount={setTotalCount}
-        />
+        /> */}
 
-        {
-          isLeaderBoardOpen && <LeaderBoardModal
+        {/* {
+          isLeaderBoardOpen && 
+          <LeaderBoardModal
             timeRemaining={timeRemaining}
             countdown={countdown}
             leaderBoardData={leaderBoardData}
             isLeaderBoardOpen={isLeaderBoardOpen}
             setIsLeaderBoardOpen={setIsLeaderBoardOpen}
           />
-        }
-        <ProgressSection
-          gameData={gameData}
-          currentMascot={currentMascot}
-        />
-
+        } */}
 
       </div>
     </>
