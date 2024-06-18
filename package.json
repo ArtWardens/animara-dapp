@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@material-tailwind/react": "^2.1.9",
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^13.3.0",
     "@testing-library/user-event": "^13.5.0",
@@ -12,6 +13,7 @@
     "file": "^0.2.2",
     "file-loader": "^6.2.0",
     "firebase": "^10.12.2",
+    "flowbite": "^2.3.0",
     "loader": "^2.1.1",
     "next": "^14.2.4",
     "react": "^18.2.0",
@@ -24,6 +26,7 @@
     "react-scripts": "5.0.1",
     "react-toastify": "^10.0.5",
     "sharp": "^0.33.4",
+    "tailgrids": "^2.2.2",
     "tailwindcss-animate": "^1.0.7",
     "toastify": "^2.0.1",
     "use-sound": "^4.0.1",

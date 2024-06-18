@@ -2,6 +2,7 @@ import LeaderBoardModal from "../../components/LeaderBoardModal";
 import EarnGuide from "../../components/dogie-clicker/EarnGuide";
 import LevelProgress from "../../components/dogie-clicker/LevelProgress";
 import EnergyRegeneration from "../../components/dogie-clicker/EnergyRegeneration";
+import TasksModal from "../../components/dogie-clicker/TasksCheck";
 // import Mascots from "../../components/Mascots";
 import MascotView from "../../components/dogie-clicker/MascotView";
 // import ProgressSection from "../../components/ProgressSection";
@@ -198,6 +199,10 @@ const HomeView = ({ gameData, setGameData }) => {
 
         <EnergyRegeneration
           gameData={gameData}
+        />
+
+        <TasksModal
+          // gameData={gameData}
         />
 
         {/* <ProgressSection
