@@ -8,10 +8,10 @@ const TasksCheck = () => {
     }
 
     return (
-        <div className="absolute w-3/5 md:w-1/4 lg:w-1/5 xl:w-1/6 mx-auto bottom-5 z-10 right-4 md:right-20 lg:right-20 xl:right-40">
+        <div className="absolute mx-auto bottom-5 z-10 right-4 md:right-20 lg:right-30 xl:right-40 2xl:right-80">
 
             <div>
-                <label className='flex items-center cursor-pointer text-2xl select-none text-dark dark:text-white'>
+                <label className='flex items-center cursor-pointer text-3xl select-none text-dark dark:text-white'>
                     <div className='relative'>
                         <input
                             type='checkbox'
@@ -42,7 +42,7 @@ const TasksCheck = () => {
                 </label>
             </div>
             <div>
-                <label className='flex items-center cursor-pointer text-2xl select-none text-dark dark:text-white'>
+                <label className='flex items-center cursor-pointer text-3xl select-none text-dark dark:text-white'>
                     <div className='relative'>
                         <input
                             type='checkbox'
@@ -73,7 +73,7 @@ const TasksCheck = () => {
                 </label>
             </div>
             <div>
-                <label className='flex items-center cursor-pointer text-2xl select-none text-dark dark:text-white'>
+                <label className='flex items-center cursor-pointer text-3xl select-none text-dark dark:text-white'>
                     <div className='relative'>
                         <input
                             type='checkbox'

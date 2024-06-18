@@ -2,7 +2,7 @@ import LeaderBoardModal from "../../components/LeaderBoardModal";
 import EarnGuide from "../../components/dogie-clicker/EarnGuide";
 import LevelProgress from "../../components/dogie-clicker/LevelProgress";
 import EnergyRegeneration from "../../components/dogie-clicker/EnergyRegeneration";
-import TasksModal from "../../components/dogie-clicker/TasksCheck";
+import TasksCheck from "../../components/dogie-clicker/TasksCheck";
 // import Mascots from "../../components/Mascots";
 import MascotView from "../../components/dogie-clicker/MascotView";
 // import ProgressSection from "../../components/ProgressSection";
@@ -53,47 +53,63 @@ const HomeView = ({ gameData, setGameData }) => {
     return () => clearInterval(interval);
   }, []);
 
-  //Fetch the user data on inital load
+  // * Temporary reset data, this part should retrieve from firebase based on current user
   useEffect(() => {
-    async function getPlayerData() {
-      const [mascot1, mascot2, mascot3, totalPoints] = await Promise.all([
-        getCollection(`mascot1_${getTodayDate()}`, currentUser?.uid),
-        getCollection(`mascot2_${getTodayDate()}`, currentUser?.uid),
-        getCollection(`mascot3_${getTodayDate()}`, currentUser?.uid),
-        getCollection("totalPoints", currentUser?.uid),
-      ]);
-
+    setTimeout(() => {
       setGameData({
-        mascot1: {
-          numberOfClicks: 0,
-          point: mascot1?.point || 0,
-          quest: mascot1?.quest || 0,
-        },
         mascot2: {
           numberOfClicks: 0,
-          point: mascot2?.point || 0,
-          quest: mascot2?.quest || 0,
+          point: 0,
+          quest: 0,
           energy: 20,
           levelProgress: 0
         },
-        mascot3: {
-          numberOfClicks: 0,
-          point: mascot3?.point || 0,
-          quest: mascot3?.quest || 0,
-        },
         totalPoints: totalPoints?.points || 0
-
       });
+    }, 1000)
+  }, []);
+
+  //Fetch the user data on inital load
+  // useEffect(() => {
+  //   async function getPlayerData() {
+  //     const [mascot1, mascot2, mascot3, totalPoints] = await Promise.all([
+  //       getCollection(`mascot1_${getTodayDate()}`, currentUser?.uid),
+  //       getCollection(`mascot2_${getTodayDate()}`, currentUser?.uid),
+  //       getCollection(`mascot3_${getTodayDate()}`, currentUser?.uid),
+  //       getCollection("totalPoints", currentUser?.uid),
+  //     ]);
+
+  //     setGameData({
+  //       mascot1: {
+  //         numberOfClicks: 0,
+  //         point: mascot1?.point || 0,
+  //         quest: mascot1?.quest || 0,
+  //       },
+  //       mascot2: {
+  //         numberOfClicks: 0,
+  //         point: mascot2?.point || 0,
+  //         quest: mascot2?.quest || 0,
+  //         energy: 20,
+  //         levelProgress: 0
+  //       },
+  //       mascot3: {
+  //         numberOfClicks: 0,
+  //         point: mascot3?.point || 0,
+  //         quest: mascot3?.quest || 0,
+  //       },
+  //       totalPoints: totalPoints?.points || 0
+
+  //     });
 
 
-      setTotalCount({
-        mascot1: mascot1?.numberOfClicks || 0,
-        mascot2: mascot2?.numberOfClicks || 0,
-        mascot3: mascot3?.numberOfClicks || 0,
-      });
-    }
-    if (currentUser) getPlayerData();
-  }, [currentUser]);
+  //     setTotalCount({
+  //       mascot1: mascot1?.numberOfClicks || 0,
+  //       mascot2: mascot2?.numberOfClicks || 0,
+  //       mascot3: mascot3?.numberOfClicks || 0,
+  //     });
+  //   }
+  //   if (currentUser) getPlayerData();
+  // }, [currentUser]);
   //Reset counter and save data in data base on satate of being idle
   useEffect(() => {
     const saveData = async () => {
@@ -101,38 +117,29 @@ const HomeView = ({ gameData, setGameData }) => {
         if (
           totalCount?.[currentMascot?.version] < gameData?.[currentMascot?.version]?.numberOfClicks
         ) {
-          await insertCollection(currentMascot?.version + "_" + getTodayDate(), {
-            numberOfClicks: gameData?.[currentMascot?.version]?.numberOfClicks,
-            point: gameData?.[currentMascot?.version]?.point,
-            quest: gameData?.[currentMascot?.version]?.quest,
-            userId: currentUser?.uid,
-            username: currentUser?.displayName,
-          });
+
+          // await insertCollection(currentMascot?.version + "_" + getTodayDate(), {
+          //   numberOfClicks: gameData?.[currentMascot?.version]?.numberOfClicks,
+          //   point: gameData?.[currentMascot?.version]?.point,
+          //   quest: gameData?.[currentMascot?.version]?.quest,
+          //   userId: currentUser?.uid,
+          //   username: currentUser?.displayName,
+          // });
 
           setTotalCount((pre) => ({
             // ...pre,
-
             [currentMascot?.version]:
               gameData?.[currentMascot?.version]?.numberOfClicks,
           }));
         }
+
         setGameData((pre) => ({
-          mascot1: {
-            numberOfClicks: 0,
-            point: pre?.mascot1?.point,
-            quest: pre.mascot1?.quest,
-          },
           mascot2: {
             numberOfClicks: 0,
             point: pre?.mascot2?.point,
             quest: pre?.mascot2?.quest,
-            energy: 20,
-            levelProgress: 0
-          },
-          mascot3: {
-            numberOfClicks: 0,
-            point: pre?.mascot3?.point,
-            quest: pre?.mascot3?.quest,
+            energy: pre?.mascot2?.energy,
+            levelProgress: pre?.mascot2?.levelProgress
           },
           totalPoints: pre.totalPoints
         }));
@@ -140,7 +147,6 @@ const HomeView = ({ gameData, setGameData }) => {
     }
     saveData();
   }, [idle])
-
 
   useEffect(() => {
     const getLeaderBoard = async () => {
@@ -155,7 +161,6 @@ const HomeView = ({ gameData, setGameData }) => {
         const data = await res.json();
         setLeaderBoardData(data.data)
 
-
       } catch (error) {
         console.error('Error fetching leaderboard:', error);
       }
@@ -167,8 +172,6 @@ const HomeView = ({ gameData, setGameData }) => {
     const int = setInterval(() => {
       getLeaderBoard()
       setCountdown(30);
-
-
     }, 30000)
     const countdownInterval = setInterval(() => {
       setCountdown(prevCountdown => (prevCountdown > 1 ? prevCountdown - 1 : 30));
@@ -180,6 +183,58 @@ const HomeView = ({ gameData, setGameData }) => {
       clearInterval(countdownInterval);
     };
 
+  }, []);
+
+  const [timeLeft, setTimeLeft] = useState({
+    hours: 0,
+    minutes: 0,
+    seconds: 0,
+  });
+
+  useEffect(() => {
+    const targetDate = new Date("2024-06-30T00:00:00Z").getTime();
+
+    const updateCountdown = () => {
+      const now = new Date().getTime();
+      const distance = targetDate - now;
+
+      const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+      setTimeLeft({ hours, minutes, seconds });
+
+      if (distance < 0) {
+        clearInterval(timerInterval);
+        setTimeLeft({ hours: 0, minutes: 0, seconds: 0 });
+      }
+    };
+
+    const timerInterval = setInterval(updateCountdown, 1000);
+
+    return () => clearInterval(timerInterval);
+  }, []);
+
+  useEffect(() => {
+    const generateEnergy = () => {
+      setGameData((prev) => {
+        if (prev?.mascot2?.energy < 20) {
+          return {
+            ...prev,
+            mascot2: {
+              ...prev.mascot2,
+              energy: prev.mascot2.energy + 1
+            }
+          };
+        } else {
+          return prev;
+        }
+      });
+    };
+
+    const threeSecondInterval = setInterval(generateEnergy, 3000);
+
+    return () => clearInterval(threeSecondInterval);
   }, []);
 
   return (
@@ -199,17 +254,19 @@ const HomeView = ({ gameData, setGameData }) => {
 
         <EnergyRegeneration
           gameData={gameData}
+          setGameData={setGameData}
+          timeLeft={timeLeft}
         />
 
-        <TasksModal
-          // gameData={gameData}
+        <TasksCheck
+
         />
 
         {/* <ProgressSection
           gameData={gameData}
           currentMascot={currentMascot}
         /> */}
-      
+
         {/* <Mascots
           currentMascot={currentMascot}
           setCurrentMascot={setCurrentMascot}

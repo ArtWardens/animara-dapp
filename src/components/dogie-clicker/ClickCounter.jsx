@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 
-const ClickCounter = ({ gameData, currentMascot }) => {
+const ClickCounter = ({ gameData, currentMascot, data }) => {
   const [showClicks, setShowClicks] = useState(false);
   const [totalClicks, setTotalClicks] = useState(0);
   const numberOfClicks = gameData?.[currentMascot?.version]?.numberOfClicks;
+  const [levelUp, setLevelUp] = useState(true);
 
   useEffect(() => {
     let timer;
@@ -15,6 +17,13 @@ const ClickCounter = ({ gameData, currentMascot }) => {
       }, 3000); // Hide clicks after 2 seconds of inactivity
     }
     return () => clearTimeout(timer);
+  }, [numberOfClicks]);
+
+  useEffect(() => {
+    if (((numberOfClicks + totalClicks) >= data.CoinsToLevelUp.count) && levelUp) {
+      toast.success("Level up!!!");
+      setLevelUp(false);
+    }
   }, [numberOfClicks]);
 
   return (

@@ -5,6 +5,7 @@ import React, { useEffect, useRef, useState } from "react";
 
 import useSound from "use-sound";
 import ClickCounter from "./ClickCounter";
+import { toast } from "react-toastify";
 // import WarningModal from "./WarningModal";
 
 const MascotView = ({
@@ -84,70 +85,74 @@ const MascotView = ({
       return
     }
 
-    handleStart()
-    setShowSecondImage(true);
-    setGameData((pre) => {
-     
-      if (
-        pre[currentMascot.version]?.numberOfClicks + data.EarnPerTap.count === 10 &&
-        totalCount?.[currentMascot?.version] <= 10
-      ) {
-        setTotalCount((pre) => ({
-          // ...pre,
-          [currentMascot?.version]: 10,
-        }));
-      }
+    if (gameData?.mascot2?.energy >= 4) {
+      handleStart()
+      setShowSecondImage(true);
+      setGameData((pre) => {
 
-      if (
-        pre[currentMascot.version]?.numberOfClicks + data.EarnPerTap.count === 20 &&
-        totalCount?.[currentMascot?.version] <= 20
-      ) {
-        setTotalCount((pre) => ({
-          // ...pre,
-          [currentMascot?.version]: 20,
-        }));
-      }
+        if (
+          pre[currentMascot.version]?.numberOfClicks + data.EarnPerTap.count === 10 &&
+          totalCount?.[currentMascot?.version] <= 10
+        ) {
+          setTotalCount((pre) => ({
+            // ...pre,
+            [currentMascot?.version]: 10,
+          }));
+        }
 
-      if (
-        pre[currentMascot.version]?.numberOfClicks + data.EarnPerTap.count === 30 &&
-        totalCount?.[currentMascot?.version] <= 30
-      ) {
-        setTotalCount((pre) => ({
-          // ...pre,
-          [currentMascot?.version]: 30,
-        }));
-      }
+        if (
+          pre[currentMascot.version]?.numberOfClicks + data.EarnPerTap.count === 20 &&
+          totalCount?.[currentMascot?.version] <= 20
+        ) {
+          setTotalCount((pre) => ({
+            // ...pre,
+            [currentMascot?.version]: 20,
+          }));
+        }
 
-      if (
-        pre[currentMascot.version]?.numberOfClicks + data.EarnPerTap.count === 40 &&
-        totalCount?.[currentMascot?.version] <= 40
-      ) {
-        setTotalCount((pre) => ({
-          // ...pre,
-          [currentMascot?.version]: 40,
-        }));
-      }
+        if (
+          pre[currentMascot.version]?.numberOfClicks + data.EarnPerTap.count === 30 &&
+          totalCount?.[currentMascot?.version] <= 30
+        ) {
+          setTotalCount((pre) => ({
+            // ...pre,
+            [currentMascot?.version]: 30,
+          }));
+        }
 
-      if (
-        pre[currentMascot.version]?.numberOfClicks + data.EarnPerTap.count === 50 &&
-        totalCount?.[currentMascot?.version] <= 50
-      ) {
-        setTotalCount((pre) => ({
-          [currentMascot?.version]: 50,
-        }));
-      }
+        if (
+          pre[currentMascot.version]?.numberOfClicks + data.EarnPerTap.count === 40 &&
+          totalCount?.[currentMascot?.version] <= 40
+        ) {
+          setTotalCount((pre) => ({
+            // ...pre,
+            [currentMascot?.version]: 40,
+          }));
+        }
 
-      return {
-        [currentMascot.version]: {
-          numberOfClicks: pre[currentMascot.version]?.numberOfClicks + data.EarnPerTap.count,
-          energy: pre[currentMascot.version]?.energy - data.EarnPerTap.count,
-          levelProgress: pre[currentMascot.version]?.levelProgress + data.EarnPerTap.count,
-        },
-        // totalPoints:
-      };
-    });
+        if (
+          pre[currentMascot.version]?.numberOfClicks + data.EarnPerTap.count === 50 &&
+          totalCount?.[currentMascot?.version] <= 50
+        ) {
+          setTotalCount((pre) => ({
+            [currentMascot?.version]: 50,
+          }));
+        }
 
-    mascotSound();
+        return {
+          [currentMascot.version]: {
+            numberOfClicks: pre[currentMascot.version]?.numberOfClicks + data.EarnPerTap.count,
+            energy: pre[currentMascot.version]?.energy - data.EarnPerTap.count,
+            levelProgress: pre[currentMascot.version]?.levelProgress + data.EarnPerTap.count,
+          },
+          // totalPoints:
+        };
+      });
+
+      mascotSound();
+    } else {
+      toast.error("Run out of energy");
+    }
   };
 
   const handleMouseUp = () => {
@@ -193,7 +198,7 @@ const MascotView = ({
       className="cursor-pointer flex justify-center items-center h-screen w-[40%] select-none bottom-0"
     >
 
-      <ClickCounter gameData={gameData} currentMascot={currentMascot} />
+      <ClickCounter gameData={gameData} currentMascot={currentMascot} data={data} />
       {delay ? (
         <div role="status">
           <svg
