@@ -70,7 +70,7 @@ function EnergyRegeneration({ gameData }) {
 
             <div className="pt-1 rounded-lg shadow-lg">
                 <div className="text-md font-semibold text-center">
-                    &ensp; &ensp; 
+                    &emsp; &emsp; 
                     <span className="px-2">{String(timeLeft.hours).padStart(2, '0')} &nbsp;H</span>:
                     <span className="px-2">{String(timeLeft.minutes).padStart(2, '0')} &nbsp;M</span>:
                     <span className="px-2">{String(timeLeft.seconds).padStart(2, '0')} &nbsp;S</span>
