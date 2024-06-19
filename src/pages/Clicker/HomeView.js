@@ -18,11 +18,11 @@ const HomeView = ({ gameData, setGameData }) => {
   const tempData = {
     EarnPerTap: {
       title: 'Earn per tap',
-      count: 4,
+      count: 3,
     },
     CoinsToLevelUp: {
       title: 'Coins to lvl up',
-      count: 34,
+      count: 25,
     },
     ProfitPerHour: {
       title: 'Profit per hour',
@@ -166,8 +166,8 @@ const HomeView = ({ gameData, setGameData }) => {
       }
     };
 
-
     getLeaderBoard()
+
 
     const int = setInterval(() => {
       getLeaderBoard()
@@ -237,6 +237,33 @@ const HomeView = ({ gameData, setGameData }) => {
     return () => clearInterval(threeSecondInterval);
   }, []);
 
+  // Countdown logic based on energy regeneration
+  useEffect(() => {
+    const currentEnergy = gameData?.mascot2?.energy || 0;
+    const maxEnergy = 20;
+
+    // Calculate the total remaining time in seconds
+    const totalRemainingTime = (maxEnergy - currentEnergy) * 3;
+
+    // Function to update the countdown
+    const updateEnergyCountdown = () => {
+      setCountdown(totalRemainingTime > 0 ? totalRemainingTime : 0);
+    };
+
+    // Initial countdown update
+    updateEnergyCountdown();
+
+    // Update the countdown every second
+    const countdownInterval = setInterval(() => {
+      totalRemainingTime -= 1;
+      updateEnergyCountdown();
+    }, 1000);
+
+    // Clean up interval on component unmount
+    return () => clearInterval(countdownInterval);
+  }, [gameData?.mascot2?.energy]);
+
+
   return (
 
     <>
@@ -256,6 +283,7 @@ const HomeView = ({ gameData, setGameData }) => {
           gameData={gameData}
           setGameData={setGameData}
           timeLeft={timeLeft}
+          countdown={countdown}
         />
 
         <TasksCheck

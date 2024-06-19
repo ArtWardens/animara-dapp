@@ -1,39 +1,12 @@
 import React, { useEffect, useRef, useState } from "react";
 
-function EnergyRegeneration({ gameData, timeLeft }) {
+function EnergyRegeneration({ gameData, timeLeft, countdown  }) {
 
     const maxEnergy = 20;
     
     const currentEnergy = gameData?.mascot2?.energy || 0;
     const energyPercentage = (currentEnergy / maxEnergy) * 100;
     const progressBarWidth = Math.min(energyPercentage, 100);
-
-    //   const [timeLeft, setTimeLeft] = useState({
-    //     hours: 0,
-    //     minutes: 0,
-    //     seconds: 0,
-    //   });
-
-    //   useEffect(() => {
-    //     const targetDate = new Date("2024-06-30T00:00:00Z").getTime();
-    //     const updateCountdown = () => {
-    //       const now = new Date().getTime();
-    //       const distance = targetDate - now;
-    //       const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    //       const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-    //       const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-    //       setTimeLeft({ hours, minutes, seconds });
-
-    //       if (distance < 0) {
-    //         clearInterval(timerInterval);
-    //         setTimeLeft({ hours: 0, minutes: 0, seconds: 0 });
-    //       }
-    //     };
-
-    //     const timerInterval = setInterval(updateCountdown, 1000);
-    //     return () => clearInterval(timerInterval);
-    //   }, []);
 
     const [modalOpen, setModalOpen] = useState(false);
     const trigger = useRef(null);
@@ -94,11 +67,11 @@ function EnergyRegeneration({ gameData, timeLeft }) {
                 </div>
 
                 <div className="pt-1 rounded-lg shadow-lg">
-                    <div className={`text-md font-semibold text-center ${gameData?.mascot2?.energy >= 20 ? "hidden" : ""}`}>
-                        &emsp; &emsp;
-                        <span className="px-2">{String(timeLeft.hours).padStart(2, '0')} &nbsp;H</span>:
-                        <span className="px-2">{String(timeLeft.minutes).padStart(2, '0')} &nbsp;M</span>:
-                        <span className="px-2">{String(timeLeft.seconds).padStart(2, '0')} &nbsp;S</span>
+                <div className={`text-md font-semibold text-center ${currentEnergy >= maxEnergy ? "hidden" : ""}`}>
+                &emsp; &emsp;
+                        {/* <span className="px-2">{String(timeLeft.hours).padStart(2, '0')} &nbsp;H</span>:
+                        <span className="px-2">{String(timeLeft.minutes).padStart(2, '0')} &nbsp;M</span>: */}
+                        <span className="px-2">{countdown} &nbsp;S</span>
                     </div>
                 </div>
             </div>
