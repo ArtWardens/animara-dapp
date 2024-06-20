@@ -48,7 +48,7 @@ function EnergyRegeneration({ gameData, timeLeft, countdown  }) {
 
                 <div className="bg-gray-600 rounded-full relative">
                     <div
-                        className="mt-2 h-7 bg-gradient-to-r from-amber-500 from-20% to-purple-800 to-80% py-1 rounded-full"
+                        className="mt-2 h-12 bg-gradient-to-r from-amber-500 from-20% to-purple-800 to-80% py-1 rounded-full"
                         style={{ width: `${progressBarWidth}%` }}
                     >
                         <div className="absolute inset-0 flex items-center">

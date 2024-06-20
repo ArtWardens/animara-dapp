@@ -1,9 +1,13 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { handleSignUp, handleSignInWithGoogle } from "../../firebase/auth.ts";
+import { handleSignUp, handleSignInWithGoogle } from "../../firebase/auth.js";
 import { useUserStore } from "../../store/store.ts";
+import { toast, ToastContainer } from "react-toastify";
 
 const Signup = () => {
+  const userStore = useUserStore();
+  const navigate = useNavigate();
+
   const [showPassword, setShowPassword] = useState(false);
   const togglePassword = () => setShowPassword(!showPassword);
 
@@ -11,28 +15,24 @@ const Signup = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const userStore = useUserStore();
-
-  const navigate = useNavigate();
-
   useEffect(() => {
     if (userStore.user !== null) {
       console.log("redirect");
-      navigate("/");
+      navigate("/test");
     }
   }, [userStore.user]);
 
   return (
-    <div className="min-h-screen relative flex justify-around pt-24">
+    <div className="min-h-screen relative flex justify-around pt-0 md:pt-24">
       <video
         autoPlay
         loop
         muted
-        className="w-[100%] h-full absolute top-0 -z-40 opacity-75 object-cover"
+        className="w-[100%] h-full absolute top-0 -z-40 opacity-75 object-cover hidden md:block"
       >
         <source src="../assets/images/login-bg.mp4" type="video/mp4" />
       </video>
-      <div className="mt-20">
+      <div className="mt-20 hidden md:block">
         <h3 className="text-6xl">Already have an account?</h3>
         <p className="font-outfit mt-2">
           Aenean non vulputate quam, eu dictum est. Aliquam erat volutpat.{" "}
@@ -141,7 +141,7 @@ const Signup = () => {
               if (user) {
                 userStore.setUser(user);
                 userStore.setDisplayName(user.displayName);
-                navigate("/");
+                navigate("/test");
               }
             }}
           />

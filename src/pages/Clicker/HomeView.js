@@ -13,8 +13,10 @@ import { getTodayDate } from "../../utils/fuctions";
 import { mascots } from "../../utils/local.db";
 import React, { useEffect, useState } from "react";
 import { calculateTimeRemaining } from '../../utils/fuctions';
+import { handleGetUserData } from "../../firebase/user";
 
 const HomeView = ({ gameData, setGameData }) => {
+
   const tempData = {
     EarnPerTap: {
       title: 'Earn per tap',
@@ -28,7 +30,7 @@ const HomeView = ({ gameData, setGameData }) => {
       title: 'Profit per hour',
       count: 'N/A',
     }
-  }
+  };
 
   const { currentUser } = useGlobalContext();
   const [currentMascot, setCurrentMascot] = useState(mascots[1]);
@@ -53,63 +55,27 @@ const HomeView = ({ gameData, setGameData }) => {
     return () => clearInterval(interval);
   }, []);
 
-  // * Temporary reset data, this part should retrieve from firebase based on current user
-  useEffect(() => {
-    setTimeout(() => {
-      setGameData({
-        mascot2: {
-          numberOfClicks: 0,
-          point: 0,
-          quest: 0,
-          energy: 20,
-          levelProgress: 0
-        },
-        totalPoints: totalPoints?.points || 0
-      });
-    }, 1000)
-  }, []);
-
   //Fetch the user data on inital load
-  // useEffect(() => {
-  //   async function getPlayerData() {
-  //     const [mascot1, mascot2, mascot3, totalPoints] = await Promise.all([
-  //       getCollection(`mascot1_${getTodayDate()}`, currentUser?.uid),
-  //       getCollection(`mascot2_${getTodayDate()}`, currentUser?.uid),
-  //       getCollection(`mascot3_${getTodayDate()}`, currentUser?.uid),
-  //       getCollection("totalPoints", currentUser?.uid),
-  //     ]);
+  useEffect(() => {
+    handleGetUserData().then((res) => {
+      setTimeout(() => {
+        setGameData({
+          mascot2: {
+            numberOfClicks: 0,
+            point: 0,
+            quest: 0,
+            energy: 20,
+            levelProgress: 0
+          },
+          totalPoints: 0,
+          currentScore: res.score,
+        });
+      }, 1000)
+    })
+  },[
+    // ! Should listen to user change once setup done, current not listening to any changes
+  ])
 
-  //     setGameData({
-  //       mascot1: {
-  //         numberOfClicks: 0,
-  //         point: mascot1?.point || 0,
-  //         quest: mascot1?.quest || 0,
-  //       },
-  //       mascot2: {
-  //         numberOfClicks: 0,
-  //         point: mascot2?.point || 0,
-  //         quest: mascot2?.quest || 0,
-  //         energy: 20,
-  //         levelProgress: 0
-  //       },
-  //       mascot3: {
-  //         numberOfClicks: 0,
-  //         point: mascot3?.point || 0,
-  //         quest: mascot3?.quest || 0,
-  //       },
-  //       totalPoints: totalPoints?.points || 0
-
-  //     });
-
-
-  //     setTotalCount({
-  //       mascot1: mascot1?.numberOfClicks || 0,
-  //       mascot2: mascot2?.numberOfClicks || 0,
-  //       mascot3: mascot3?.numberOfClicks || 0,
-  //     });
-  //   }
-  //   if (currentUser) getPlayerData();
-  // }, [currentUser]);
   //Reset counter and save data in data base on satate of being idle
   useEffect(() => {
     const saveData = async () => {
@@ -146,44 +112,44 @@ const HomeView = ({ gameData, setGameData }) => {
       }
     }
     saveData();
-  }, [idle])
+  }, [idle]);
 
-  useEffect(() => {
-    const getLeaderBoard = async () => {
-      try {
-        const res = await fetch(`/api/getLeaderBoard`, {
-          method: "GET",
-          cache: 'no-store',
-          headers: {
-            "content-type": "application/json",
-          }
-        });
-        const data = await res.json();
-        setLeaderBoardData(data.data)
+  // useEffect(() => {
+  //   const getLeaderBoard = async () => {
+  //     try {
+  //       const res = await fetch(`/api/getLeaderBoard`, {
+  //         method: "GET",
+  //         cache: 'no-store',
+  //         headers: {
+  //           "content-type": "application/json",
+  //         }
+  //       });
+  //       const data = await res.json();
+  //       setLeaderBoardData(data.data)
 
-      } catch (error) {
-        console.error('Error fetching leaderboard:', error);
-      }
-    };
+  //     } catch (error) {
+  //       console.error('Error fetching leaderboard:', error);
+  //     }
+  //   };
 
-    getLeaderBoard()
+  //   getLeaderBoard()
 
 
-    const int = setInterval(() => {
-      getLeaderBoard()
-      setCountdown(30);
-    }, 30000)
-    const countdownInterval = setInterval(() => {
-      setCountdown(prevCountdown => (prevCountdown > 1 ? prevCountdown - 1 : 30));
-    }, 1000);
+  //   const int = setInterval(() => {
+  //     getLeaderBoard()
+  //     setCountdown(30);
+  //   }, 30000)
+  //   const countdownInterval = setInterval(() => {
+  //     setCountdown(prevCountdown => (prevCountdown > 1 ? prevCountdown - 1 : 30));
+  //   }, 1000);
 
-    // Clean up intervals on component unmount
-    return () => {
-      clearInterval(int)
-      clearInterval(countdownInterval);
-    };
+  //   // Clean up intervals on component unmount
+  //   return () => {
+  //     clearInterval(int)
+  //     clearInterval(countdownInterval);
+  //   };
 
-  }, []);
+  // }, []);
 
   const [timeLeft, setTimeLeft] = useState({
     hours: 0,
@@ -243,7 +209,7 @@ const HomeView = ({ gameData, setGameData }) => {
     const maxEnergy = 20;
 
     // Calculate the total remaining time in seconds
-    const totalRemainingTime = (maxEnergy - currentEnergy) * 3;
+    var totalRemainingTime = (maxEnergy - currentEnergy) * 3;
 
     // Function to update the countdown
     const updateEnergyCountdown = () => {

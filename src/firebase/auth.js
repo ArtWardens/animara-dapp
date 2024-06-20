@@ -1,4 +1,4 @@
-import { auth } from "../firebase/firebase.ts";
+import { auth } from "./firebaseConfig.js";
 import {
   createUserWithEmailAndPassword,
   GoogleAuthProvider,
@@ -6,14 +6,14 @@ import {
   signInWithPopup,
   sendPasswordResetEmail,
 } from "firebase/auth";
-import { User, sendEmailVerification } from "firebase/auth";
+import { sendEmailVerification } from "firebase/auth";
 import { toast } from "react-toastify";
 
 const handleSignUp = async (
-  email: string,
-  password: string,
-  name: string
-): Promise<User | null> => {
+  email,
+  password,
+  name,
+) => {
   try {
     const userCredential = await createUserWithEmailAndPassword(
       auth,
@@ -31,7 +31,7 @@ const handleSignUp = async (
   }
 };
 
-const handleSignInWithGoogle = async (): Promise<User | null> => {
+const handleSignInWithGoogle = async () => {
   const provider = new GoogleAuthProvider();
   try {
     const userCredential = await signInWithPopup(auth, provider);
@@ -46,9 +46,9 @@ const handleSignInWithGoogle = async (): Promise<User | null> => {
 };
 
 const handleSignIn = async (
-  email: string,
-  password: string
-): Promise<User | null> => {
+  email,
+  password
+) => {
   try {
     const userCredential = await signInWithEmailAndPassword(
       auth,
@@ -65,7 +65,7 @@ const handleSignIn = async (
   }
 };
 
-const handleLogout = async (): Promise<boolean> => {
+const handleLogout = async () => {
   try {
     await auth.signOut();
     toast.success("Logged out successfully");
@@ -76,9 +76,9 @@ const handleLogout = async (): Promise<boolean> => {
   }
 };
 
-const handleEmailVerification = async (): Promise<boolean> => {
+const handleEmailVerification = async () => {
   try {
-    await sendEmailVerification(auth.currentUser as User);
+    await sendEmailVerification(auth.currentUser);
     toast.success("Email verification sent");
     return true;
   } catch (error) {
@@ -87,7 +87,7 @@ const handleEmailVerification = async (): Promise<boolean> => {
   }
 };
 
-const handlePasswordReset = async (email: string): Promise<boolean> => {
+const handlePasswordReset = async (email) => {
   try {
     await sendPasswordResetEmail(auth, email);
     toast.success("Password reset email sent");

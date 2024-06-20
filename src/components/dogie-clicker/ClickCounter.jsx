@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import { handleUpdateScore } from "../../firebase/clicker";
 
 const ClickCounter = ({ gameData, currentMascot, data }) => {
   const [showClicks, setShowClicks] = useState(false);
-  const [totalClicks, setTotalClicks] = useState(0);
+  const [totalClicks, setTotalClicks] = useState(gameData.currentScore);
   const numberOfClicks = gameData?.[currentMascot?.version]?.numberOfClicks;
   const [levelUp, setLevelUp] = useState(true);
 
@@ -13,11 +14,24 @@ const ClickCounter = ({ gameData, currentMascot, data }) => {
       setShowClicks(true);
       timer = setTimeout(() => {
         setShowClicks(false);
-        setTotalClicks(prevTotal => prevTotal + numberOfClicks);
+        setTotalClicks(prevTotal => {
+          handleUpdateScore({
+            score: prevTotal + numberOfClicks,
+          });
+          return prevTotal + numberOfClicks;
+        });
+        
       }, 3000); // Hide clicks after 2 seconds of inactivity
     }
     return () => clearTimeout(timer);
   }, [numberOfClicks]);
+
+  useEffect(() => {
+    console.log("Run initialize score");
+    if(gameData.currentScore){
+      setTotalClicks(gameData.currentScore);
+    }
+  },[gameData.currentScore])
 
   useEffect(() => {
     if (((numberOfClicks + totalClicks) >= data.CoinsToLevelUp.count) && levelUp) {

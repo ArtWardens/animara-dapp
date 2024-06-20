@@ -62,83 +62,10 @@ const MascotView = ({
 
   const handleMouseDown = () => {
 
-    if (timeRemaining.hours == 0 && timeRemaining.minutes == 0 && timeRemaining.seconds == 0) {
-      setGameData((pv) => ({
-        mascot1: {
-          numberOfClicks: 0,
-          point: 0,
-          quest: 0,
-        },
-        mascot2: {
-          numberOfClicks: 0,
-          point: 0,
-          quest: 0,
-        },
-        mascot3: {
-          numberOfClicks: 0,
-          point: 0,
-          quest: 0,
-        },
-        totalPoints: pv.totalPoints
-      }));
-      setIsOPen(true)
-      return
-    }
-
-    if (gameData?.mascot2?.energy >= 4) {
+    if (gameData?.mascot2?.energy >= data.EarnPerTap.count) {
       handleStart()
       setShowSecondImage(true);
       setGameData((pre) => {
-
-        if (
-          pre[currentMascot.version]?.numberOfClicks + data.EarnPerTap.count === 10 &&
-          totalCount?.[currentMascot?.version] <= 10
-        ) {
-          setTotalCount((pre) => ({
-            // ...pre,
-            [currentMascot?.version]: 10,
-          }));
-        }
-
-        if (
-          pre[currentMascot.version]?.numberOfClicks + data.EarnPerTap.count === 20 &&
-          totalCount?.[currentMascot?.version] <= 20
-        ) {
-          setTotalCount((pre) => ({
-            // ...pre,
-            [currentMascot?.version]: 20,
-          }));
-        }
-
-        if (
-          pre[currentMascot.version]?.numberOfClicks + data.EarnPerTap.count === 30 &&
-          totalCount?.[currentMascot?.version] <= 30
-        ) {
-          setTotalCount((pre) => ({
-            // ...pre,
-            [currentMascot?.version]: 30,
-          }));
-        }
-
-        if (
-          pre[currentMascot.version]?.numberOfClicks + data.EarnPerTap.count === 40 &&
-          totalCount?.[currentMascot?.version] <= 40
-        ) {
-          setTotalCount((pre) => ({
-            // ...pre,
-            [currentMascot?.version]: 40,
-          }));
-        }
-
-        if (
-          pre[currentMascot.version]?.numberOfClicks + data.EarnPerTap.count === 50 &&
-          totalCount?.[currentMascot?.version] <= 50
-        ) {
-          setTotalCount((pre) => ({
-            [currentMascot?.version]: 50,
-          }));
-        }
-
         return {
           [currentMascot.version]: {
             numberOfClicks: pre[currentMascot.version]?.numberOfClicks + data.EarnPerTap.count,

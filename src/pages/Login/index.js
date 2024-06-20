@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { handleSignIn, handleSignInWithGoogle } from "../../firebase/auth.ts";
+import { handleSignIn, handleSignInWithGoogle } from "../../firebase/auth.js";
 import { useUserStore } from "../../store/store.ts";
 import { toast, ToastContainer } from "react-toastify";
 
@@ -17,7 +17,7 @@ const Login = () => {
   useEffect(() => {
     if (userStore.user !== null) {
       console.log("redirect");
-      // navigate("/");
+      navigate("/test"); 
     }
   }, [userStore.user]);
 
