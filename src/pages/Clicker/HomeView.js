@@ -1,22 +1,11 @@
-import LeaderBoardModal from "../../components/LeaderBoardModal";
-import EarnGuide from "../../components/dogie-clicker/EarnGuide";
-import LevelProgress from "../../components/dogie-clicker/LevelProgress";
-import EnergyRegeneration from "../../components/dogie-clicker/EnergyRegeneration";
-import TasksCheck from "../../components/dogie-clicker/TasksCheck";
-// import Mascots from "../../components/Mascots";
-import MascotView from "../../components/dogie-clicker/MascotView";
-// import ProgressSection from "../../components/ProgressSection";
-// import Quest from "../../components/Quest";
-import { useGlobalContext } from "../../context/ContextProvider";
-import { getCollection, insertCollection } from "../../utils/firebase";
-import { getTodayDate } from "../../utils/fuctions";
-import { mascots } from "../../utils/local.db";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react';
+import MascotView from '../../components/MascotView';
+import { useGlobalContext } from '../../context/ContextProvider';
+import '../../styles/globals.css';
 import { calculateTimeRemaining } from '../../utils/fuctions';
-import { handleGetUserData } from "../../firebase/user";
+import { mascots } from '../../utils/local.db';
 
 const HomeView = ({ gameData, setGameData }) => {
-
   const tempData = {
     EarnPerTap: {
       title: 'Earn per tap',
@@ -29,12 +18,12 @@ const HomeView = ({ gameData, setGameData }) => {
     ProfitPerHour: {
       title: 'Profit per hour',
       count: 'N/A',
-    }
+    },
   };
 
   const { currentUser } = useGlobalContext();
   const [currentMascot, setCurrentMascot] = useState(mascots[1]);
-  const [leaderBoardData, setLeaderBoardData] = useState({})
+  const [leaderBoardData, setLeaderBoardData] = useState({});
   const [idle, setIdle] = useState(false);
   const [totalPoints, setTotalPoints] = useState(0);
   const [delay, setDelay] = useState(true);
@@ -56,34 +45,34 @@ const HomeView = ({ gameData, setGameData }) => {
   }, []);
 
   //Fetch the user data on inital load
-  useEffect(() => {
-    handleGetUserData().then((res) => {
-      setTimeout(() => {
-        setGameData({
-          mascot2: {
-            numberOfClicks: 0,
-            point: 0,
-            quest: 0,
-            energy: 20,
-            levelProgress: 0
-          },
-          totalPoints: 0,
-          currentScore: res.score,
-        });
-      }, 1000)
-    })
-  },[
-    // ! Should listen to user change once setup done, current not listening to any changes
-  ])
+  useEffect(
+    () => {
+      handleGetUserData().then((res) => {
+        setTimeout(() => {
+          setGameData({
+            mascot2: {
+              numberOfClicks: 0,
+              point: 0,
+              quest: 0,
+              energy: 20,
+              levelProgress: 0,
+            },
+            totalPoints: 0,
+            currentScore: res.score,
+          });
+        }, 1000);
+      });
+    },
+    [
+      // ! Should listen to user change once setup done, current not listening to any changes
+    ],
+  );
 
   //Reset counter and save data in data base on satate of being idle
   useEffect(() => {
     const saveData = async () => {
       if (idle) {
-        if (
-          totalCount?.[currentMascot?.version] < gameData?.[currentMascot?.version]?.numberOfClicks
-        ) {
-
+        if (totalCount?.[currentMascot?.version] < gameData?.[currentMascot?.version]?.numberOfClicks) {
           // await insertCollection(currentMascot?.version + "_" + getTodayDate(), {
           //   numberOfClicks: gameData?.[currentMascot?.version]?.numberOfClicks,
           //   point: gameData?.[currentMascot?.version]?.point,
@@ -94,8 +83,7 @@ const HomeView = ({ gameData, setGameData }) => {
 
           setTotalCount((pre) => ({
             // ...pre,
-            [currentMascot?.version]:
-              gameData?.[currentMascot?.version]?.numberOfClicks,
+            [currentMascot?.version]: gameData?.[currentMascot?.version]?.numberOfClicks,
           }));
         }
 
@@ -105,12 +93,12 @@ const HomeView = ({ gameData, setGameData }) => {
             point: pre?.mascot2?.point,
             quest: pre?.mascot2?.quest,
             energy: pre?.mascot2?.energy,
-            levelProgress: pre?.mascot2?.levelProgress
+            levelProgress: pre?.mascot2?.levelProgress,
           },
-          totalPoints: pre.totalPoints
+          totalPoints: pre.totalPoints,
         }));
       }
-    }
+    };
     saveData();
   }, [idle]);
 
@@ -133,7 +121,6 @@ const HomeView = ({ gameData, setGameData }) => {
   //   };
 
   //   getLeaderBoard()
-
 
   //   const int = setInterval(() => {
   //     getLeaderBoard()
@@ -158,7 +145,7 @@ const HomeView = ({ gameData, setGameData }) => {
   });
 
   useEffect(() => {
-    const targetDate = new Date("2024-06-30T00:00:00Z").getTime();
+    const targetDate = new Date('2024-06-30T00:00:00Z').getTime();
 
     const updateCountdown = () => {
       const now = new Date().getTime();
@@ -189,8 +176,8 @@ const HomeView = ({ gameData, setGameData }) => {
             ...prev,
             mascot2: {
               ...prev.mascot2,
-              energy: prev.mascot2.energy + 1
-            }
+              energy: prev.mascot2.energy + 1,
+            },
           };
         } else {
           return prev;
@@ -229,32 +216,16 @@ const HomeView = ({ gameData, setGameData }) => {
     return () => clearInterval(countdownInterval);
   }, [gameData?.mascot2?.energy]);
 
-
   return (
-
     <>
-
       <div className="max-w-full flex justify-center items-center gap-2 relative">
+        <EarnGuide data={tempData} />
 
-        <EarnGuide
-          data={tempData}
-        />
+        <LevelProgress gameData={gameData} data={tempData} />
 
-        <LevelProgress
-          gameData={gameData}
-          data={tempData}
-        />
+        <EnergyRegeneration gameData={gameData} setGameData={setGameData} timeLeft={timeLeft} countdown={countdown} />
 
-        <EnergyRegeneration
-          gameData={gameData}
-          setGameData={setGameData}
-          timeLeft={timeLeft}
-          countdown={countdown}
-        />
-
-        <TasksCheck
-
-        />
+        <TasksCheck />
 
         {/* <ProgressSection
           gameData={gameData}
@@ -309,7 +280,6 @@ const HomeView = ({ gameData, setGameData }) => {
             setIsLeaderBoardOpen={setIsLeaderBoardOpen}
           />
         } */}
-
       </div>
     </>
   );

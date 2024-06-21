@@ -3,7 +3,7 @@
 // import tailwindAnimate from "tailwindcss-animate";
 
 
-export default {
+const tailwinConfig = {
   darkMode: ["class"],
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
@@ -107,3 +107,5 @@ export default {
     // require("tw-elements/plugin")
   ],
 };
+
+export default tailwinConfig

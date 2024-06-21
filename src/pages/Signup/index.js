@@ -1,8 +1,7 @@
-import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { handleSignUp, handleSignInWithGoogle } from "../../firebase/auth.js";
-import { useUserStore } from "../../store/store.ts";
-import { toast, ToastContainer } from "react-toastify";
+import { useEffect, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { handleSignInWithGoogle, handleSignUp } from '../../firebase/auth.js';
+import { useUserStore } from '../../store/store.ts';
 
 const Signup = () => {
   const userStore = useUserStore();
@@ -11,14 +10,14 @@ const Signup = () => {
   const [showPassword, setShowPassword] = useState(false);
   const togglePassword = () => setShowPassword(!showPassword);
 
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
   useEffect(() => {
     if (userStore.user !== null) {
-      console.log("redirect");
-      navigate("/test");
+      console.log('redirect');
+      navigate('/test');
     }
   }, [userStore.user]);
 
@@ -35,19 +34,14 @@ const Signup = () => {
       <div className="mt-20 hidden md:block">
         <h3 className="text-6xl">Already have an account?</h3>
         <p className="font-outfit mt-2">
-          Aenean non vulputate quam, eu dictum est. Aliquam erat volutpat.{" "}
-          <br />
+          Aenean non vulputate quam, eu dictum est. Aliquam erat volutpat. <br />
           Suspendisse bibendum felis ullamcorper mauris ullamcorper
         </p>
       </div>
-      <div
-        id="login-card"
-        className="relative backdrop-blur-xl p-8 pt-12 self-center rounded-[1.5rem] md:w-[25%]"
-      >
+      <div id="login-card" className="relative backdrop-blur-xl p-8 pt-12 self-center rounded-[1.5rem] md:w-[25%]">
         <div
           style={{
-            background:
-              "linear-gradient(180deg, rgba(83, 0, 97, 0.50) 0%, rgba(13, 10, 48, 0.50) 100%)",
+            background: 'linear-gradient(180deg, rgba(83, 0, 97, 0.50) 0%, rgba(13, 10, 48, 0.50) 100%)',
           }}
           className="absolute -z-10 -top-24 -left-20 w-[302px] h-[302px] rounded-[50%]"
         ></div>
@@ -71,7 +65,7 @@ const Signup = () => {
         />
         <div className="relative mt-5">
           <input
-            type={showPassword ? "text" : "password"}
+            type={showPassword ? 'text' : 'password'}
             placeholder="Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
@@ -119,7 +113,7 @@ const Signup = () => {
             if (user) {
               userStore.setUser(user);
               userStore.setDisplayName(name);
-              navigate("/");
+              navigate('/');
             }
           }}
           className="mt-3 font-outfit font-semibold w-[100%] bg-gray-700 p-4 rounded-xl"
@@ -141,7 +135,7 @@ const Signup = () => {
               if (user) {
                 userStore.setUser(user);
                 userStore.setDisplayName(user.displayName);
-                navigate("/test");
+                navigate('/test');
               }
             }}
           />
@@ -149,7 +143,7 @@ const Signup = () => {
           <img src="/socials/github.svg" alt="" />
         </div>
         <p className="font-outfit mt-20 mb-8 text-center block">
-          Already have an account?{" "} &nbsp;
+          Already have an account? &nbsp;
           <Link to="/login" className="underline underline-offset-4">
             Login
           </Link>
