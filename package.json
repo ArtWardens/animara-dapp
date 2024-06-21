@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@reduxjs/toolkit": "^2.2.5",
+    "@material-tailwind/react": "^2.1.9",
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^13.3.0",
     "@testing-library/user-event": "^13.5.0",
@@ -14,6 +15,7 @@
     "file-loader": "^6.2.0",
     "firebase": "^10.12.2",
     "i18next": "^23.7.16",
+    "flowbite": "^2.3.0",
     "loader": "^2.1.1",
     "next": "^14.2.4",
     "react": "^18.2.0",
@@ -30,6 +32,7 @@
     "redux": "^4.2.1",
     "redux-saga": "^1.2.3",
     "sharp": "^0.33.4",
+    "tailgrids": "^2.2.2",
     "tailwindcss-animate": "^1.0.7",
     "toastify": "^2.0.1",
     "use-navigator-online": "^3.2.4",

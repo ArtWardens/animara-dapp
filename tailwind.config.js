@@ -1,6 +1,7 @@
 /** @type {import('tailwindcss').Config} */
 
-import tailwindAnimate from "tailwindcss-animate";
+// import tailwindAnimate from "tailwindcss-animate";
+
 
 const tailwinConfig = {
   darkMode: ["class"],
@@ -101,7 +102,10 @@ const tailwinConfig = {
       },
     },
   },
-  plugins: [tailwindAnimate],
+  plugins: [
+    require("tailgrids/plugin"),
+    // require("tw-elements/plugin")
+  ],
 };
 
 export default tailwinConfig

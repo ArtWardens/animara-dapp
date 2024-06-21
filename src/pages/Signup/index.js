@@ -1,53 +1,47 @@
-import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { handleSignInWithGoogle, handleSignUp } from "../../firebase/auth.ts";
-import { useUserStore } from "../../store/store.ts";
+import { useEffect, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { handleSignInWithGoogle, handleSignUp } from '../../firebase/auth.js';
+import { useUserStore } from '../../store/store.ts';
 
 const Signup = () => {
+  const userStore = useUserStore();
+  const navigate = useNavigate();
+
   const [showPassword, setShowPassword] = useState(false);
   const togglePassword = () => setShowPassword(!showPassword);
 
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-
-  const userStore = useUserStore();
-
-  const navigate = useNavigate();
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
   useEffect(() => {
     if (userStore.user !== null) {
-      console.log("redirect");
-      navigate("/");
+      console.log('redirect');
+      navigate('/test');
     }
   }, [userStore.user]);
 
   return (
-    <div className="min-h-screen relative flex justify-around pt-24">
+    <div className="min-h-screen relative flex justify-around pt-0 md:pt-24">
       <video
         autoPlay
         loop
         muted
-        className="w-[100%] h-full absolute top-0 -z-40 opacity-75 object-cover"
+        className="w-[100%] h-full absolute top-0 -z-40 opacity-75 object-cover hidden md:block"
       >
         <source src="../assets/images/login-bg.mp4" type="video/mp4" />
       </video>
-      <div className="mt-20">
+      <div className="mt-20 hidden md:block">
         <h3 className="text-6xl">Already have an account?</h3>
         <p className="font-outfit mt-2">
-          Aenean non vulputate quam, eu dictum est. Aliquam erat volutpat.{" "}
-          <br />
+          Aenean non vulputate quam, eu dictum est. Aliquam erat volutpat. <br />
           Suspendisse bibendum felis ullamcorper mauris ullamcorper
         </p>
       </div>
-      <div
-        id="login-card"
-        className="relative backdrop-blur-xl p-8 pt-12 self-center rounded-[1.5rem] md:w-[25%]"
-      >
+      <div id="login-card" className="relative backdrop-blur-xl p-8 pt-12 self-center rounded-[1.5rem] md:w-[25%]">
         <div
           style={{
-            background:
-              "linear-gradient(180deg, rgba(83, 0, 97, 0.50) 0%, rgba(13, 10, 48, 0.50) 100%)",
+            background: 'linear-gradient(180deg, rgba(83, 0, 97, 0.50) 0%, rgba(13, 10, 48, 0.50) 100%)',
           }}
           className="absolute -z-10 -top-24 -left-20 w-[302px] h-[302px] rounded-[50%]"
         ></div>
@@ -71,7 +65,7 @@ const Signup = () => {
         />
         <div className="relative mt-5">
           <input
-            type={showPassword ? "text" : "password"}
+            type={showPassword ? 'text' : 'password'}
             placeholder="Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
@@ -119,7 +113,7 @@ const Signup = () => {
             if (user) {
               userStore.setUser(user);
               userStore.setDisplayName(name);
-              navigate("/");
+              navigate('/');
             }
           }}
           className="mt-3 font-outfit font-semibold w-[100%] bg-gray-700 p-4 rounded-xl"
@@ -141,7 +135,7 @@ const Signup = () => {
               if (user) {
                 userStore.setUser(user);
                 userStore.setDisplayName(user.displayName);
-                navigate("/");
+                navigate('/test');
               }
             }}
           />
@@ -149,7 +143,7 @@ const Signup = () => {
           <img src="/socials/github.svg" alt="" />
         </div>
         <p className="font-outfit mt-20 mb-8 text-center block">
-          Already have an account?{" "} &nbsp;
+          Already have an account? &nbsp;
           <Link to="/login" className="underline underline-offset-4">
             Login
           </Link>

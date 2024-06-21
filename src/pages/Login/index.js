@@ -18,7 +18,7 @@ const Login = () => {
   useEffect(() => {
     if (userStore.user !== null) {
       console.log('redirect');
-      // navigate("/");
+      navigate('/test');
     }
   }, [userStore.user]);
 
