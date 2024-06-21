@@ -3,7 +3,6 @@ import React from "react";
 import { ProgressBar } from "react-progressbar-fancy";
 
 const ProgressSection = ({ gameData, currentMascot }) => {
-  const quest = gameData?.[currentMascot?.version]?.quest;
   const numberOfClicks = gameData?.[currentMascot?.version]?.numberOfClicks;
   return (
     <div className="absolute bottom-10 w-1/2 mx-auto">
@@ -16,7 +15,7 @@ const ProgressSection = ({ gameData, currentMascot }) => {
               width={40}
               height={40}
               className="h-6 w-6"
-              alt="hamar image"
+              alt="hamar 2"
             />
             <p>
               <span className=" passed-quest1 text-2xl font-extrabold outlinefont">
@@ -32,7 +31,7 @@ const ProgressSection = ({ gameData, currentMascot }) => {
               width={40}
               height={40}
               className="h-6 w-6"
-              alt="hamar image"
+              alt="gem 2"
             />
           </div>
         </div>
@@ -55,7 +54,7 @@ const ProgressSection = ({ gameData, currentMascot }) => {
               width={40}
               height={40}
               className="h-6 w-6"
-              alt="hamar image"
+              alt="hamar 2"
             />
             <p>
               <span className=" text-yellow-400 text-2xl font-extrabold outlinefont">
@@ -71,12 +70,12 @@ const ProgressSection = ({ gameData, currentMascot }) => {
               width={40}
               height={40}
               className="h-6 w-6"
-              alt="hamar image"
+              alt="gem2"
             />
           </div>
         </div>
         <ProgressBar
-          score={numberOfClicks != 0 ? (numberOfClicks-10)*10: numberOfClicks*5}
+          score={numberOfClicks !== 0 ? (numberOfClicks-10)*10: numberOfClicks*5}
           progressColor="#7A0BA0"
           primaryColor="#ffba07"
           secondaryColor="#ffeea3"
@@ -94,7 +93,7 @@ const ProgressSection = ({ gameData, currentMascot }) => {
               width={40}
               height={40}
               className="h-6 w-6"
-              alt="hamar image"
+              alt="hamar 2"
             />
             <p>
               <span className=" text-yellow-400 text-2xl font-extrabold outlinefont">
@@ -110,12 +109,12 @@ const ProgressSection = ({ gameData, currentMascot }) => {
               width={40}
               height={40}
               className="h-6 w-6"
-              alt="hamar image"
+              alt="gem 2"
             />
           </div>
         </div>
         <ProgressBar
-          score={numberOfClicks != 0 ? (numberOfClicks-20)*10: numberOfClicks*3.33}
+          score={numberOfClicks !== 0 ? (numberOfClicks-20)*10: numberOfClicks*3.33}
           progressColor="#7A0BA0"
           primaryColor="#ffba07"
           secondaryColor="#ffeea3"
@@ -133,7 +132,7 @@ const ProgressSection = ({ gameData, currentMascot }) => {
               width={40}
               height={40}
               className="h-6 w-6"
-              alt="hamar image"
+              alt="hamar 2"
             />
             <p>
               <span className=" text-yellow-400 text-2xl font-extrabold outlinefont">
@@ -149,12 +148,12 @@ const ProgressSection = ({ gameData, currentMascot }) => {
               width={40}
               height={40}
               className="h-6 w-6"
-              alt="hamar image"
+              alt="gem 2"
             />
           </div>
         </div>
         <ProgressBar
-          score={numberOfClicks != 0 ? (numberOfClicks-30)*10: numberOfClicks*2.5}
+          score={numberOfClicks !== 0 ? (numberOfClicks-30)*10: numberOfClicks*2.5}
           progressColor="#7A0BA0"
           primaryColor="#ffba07"
           secondaryColor="#ffeea3"
@@ -172,7 +171,7 @@ const ProgressSection = ({ gameData, currentMascot }) => {
               width={40}
               height={40}
               className="h-6 w-6"
-              alt="hamar image"
+              alt="hamar2"
             />
             <p>
               <span className=" text-yellow-400 text-2xl font-extrabold outlinefont">
@@ -188,12 +187,12 @@ const ProgressSection = ({ gameData, currentMascot }) => {
               width={40}
               height={40}
               className="h-6 w-6"
-              alt="hamar image"
+              alt="gem2"
             />
           </div>
         </div>
         <ProgressBar
-          score={numberOfClicks != 0 ? (numberOfClicks-40)*10: numberOfClicks*2}
+          score={numberOfClicks !== 0 ? (numberOfClicks-40)*10: numberOfClicks*2}
           progressColor="#7A0BA0"
           primaryColor="#ffba07"
           secondaryColor="#ffeea3"

@@ -1,15 +1,14 @@
+import React, { useEffect, useState } from "react";
 import LeaderBoardModal from "../../components/LeaderBoardModal";
-import Mascots from "../../components/Mascots";
 import MascotView from "../../components/MascotView";
+import Mascots from "../../components/Mascots";
 import ProgressSection from "../../components/ProgressSection";
 import Quest from "../../components/Quest";
 import { useGlobalContext } from "../../context/ContextProvider";
-import { getCollection, insertCollection } from "../../utils/firebase";
-import { getTodayDate } from "../../utils/fuctions";
-import { mascots } from "../../utils/local.db";
-import React, { useEffect, useState } from "react";
-import { calculateTimeRemaining } from '../../utils/fuctions';
 import '../../styles/globals.css';
+import { getCollection, insertCollection } from "../../utils/firebase";
+import { calculateTimeRemaining, getTodayDate } from "../../utils/fuctions";
+import { mascots } from "../../utils/local.db";
 
 const HomeView = ({ gameData, setGameData }) => {
   const { currentUser } = useGlobalContext();
@@ -74,7 +73,7 @@ const HomeView = ({ gameData, setGameData }) => {
       });
     }
     if (currentUser) getPlayerData();
-  }, [currentUser]);
+  }, [currentUser, setGameData]);
   //Reset counter and save data in data base on satate of being idle
   useEffect(() => {
     const saveData = async () => {

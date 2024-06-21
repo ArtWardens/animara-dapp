@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { handleSignUp, handleSignInWithGoogle } from "../../firebase/auth.ts";
+import { handleSignInWithGoogle, handleSignUp } from "../../firebase/auth.ts";
 import { useUserStore } from "../../store/store.ts";
 
 const Signup = () => {

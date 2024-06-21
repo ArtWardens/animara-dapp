@@ -1,7 +1,7 @@
+import React, { useEffect, useRef, useState } from "react";
 import { useGlobalContext } from "../context/ContextProvider";
 import { insertCollection } from "../utils/firebase";
 import { getTodayDate } from "../utils/fuctions";
-import React, { useEffect, useRef, useState } from "react";
 
 import useSound from "use-sound";
 import ClickCounter from "./ClickCounter";
@@ -62,7 +62,7 @@ const MascotView = ({
 
   const handleMouseDown = () => {
       
-    if(timeRemaining.hours ==0 && timeRemaining.minutes ==0 && timeRemaining.seconds ==0){
+    if(timeRemaining.hours ===0 && timeRemaining.minutes ===0 && timeRemaining.seconds ===0){
       setGameData((pv)=>({
         mascot1: {
           numberOfClicks: 0,
@@ -346,7 +346,7 @@ const MascotView = ({
         <div role="status">
           <svg
             aria-hidden="true"
-            class="inline w-10 h-10 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"
+            className="inline w-10 h-10 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"
             viewBox="0 0 100 101"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
@@ -360,7 +360,7 @@ const MascotView = ({
               fill="currentFill"
             />
           </svg>
-          <span class="sr-only">Loading...</span>
+          <span className="sr-only">Loading...</span>
         </div>
       ) : (
       

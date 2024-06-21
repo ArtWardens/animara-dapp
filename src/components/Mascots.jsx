@@ -1,5 +1,5 @@
+import React from "react";
 import { mascots } from "../utils/local.db";
-import React, { useState } from "react";
 
 const Mascots = ({
   currentMascot,
@@ -12,10 +12,7 @@ const Mascots = ({
   // const handleOpen = () => {
   //   setIsLeaderBoardOpen(true);
   // }
-  const [isModalOpen, setIModalOpen] = useState(true);
-  const closeModal = () => {
-    setIModalOpen(false);
-  };
+
 
   return (
     <div className="flex flex-col items-center justify-center gap-10 ml-14 mt-16 w-[30%] relative z-50">

@@ -1,9 +1,8 @@
 // import { removeSession } from "../../actions/authActions";
 import { useGlobalContext } from "../../context/ContextProvider";
-import HomeView from "./HomeView"
+import HomeView from "./HomeView";
 // import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
-import { getAuth, signOut } from "firebase/auth";
+import { useState } from "react";
 import '../../styles/globals.css';
 
 export default function TestMain() {

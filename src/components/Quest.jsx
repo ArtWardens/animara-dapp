@@ -1,9 +1,8 @@
 
-import React, { useEffect, useState } from "react";
+import React from "react";
 import TASK_TEXT from "../assets/images/TASK-TEXT.png";
 
 const Quest = ({ gameData, currentMascot }) => {
-  const numberOfClicks = gameData?.[currentMascot?.version]?.numberOfClicks;
   const quest = gameData?.[currentMascot?.version]?.quest;
   return (
     <div className="w-[30%] h-screen flex justify-center items-center">
@@ -40,7 +39,7 @@ const Quest = ({ gameData, currentMascot }) => {
                   width={10}
                   height={10}
                   className="h-4 w-4 passed-quest2 absolute top-1 -left-2"
-                  alt="hamar image"
+                  alt="hamar"
                 />
                 }
                 {
@@ -49,7 +48,7 @@ const Quest = ({ gameData, currentMascot }) => {
                   width={10}
                   height={10}
                   className="h-5 w-5 passed-quest2 absolute bottom-0 left-[30%]"
-                  alt="hamar image"
+                  alt="star"
                 />
                 }
                 
@@ -65,7 +64,7 @@ const Quest = ({ gameData, currentMascot }) => {
                 src={"../assets/images/hamar2.png"}
                 width={30}
                 height={30}
-                alt="hamar image "
+                alt="hamar 2 "
                 className="w-[30px] h-[30px]"
               />
             </div>
@@ -91,21 +90,21 @@ const Quest = ({ gameData, currentMascot }) => {
                 width={40}
                 height={40}
                 className="h-7 w-7 passed-quest2"
-                alt="hamar image"
+                alt="gem"
               />
               <img
                 src={"../assets/images/star.png"}
                 width={10}
                 height={10}
                 className="h-3 w-3 passed-quest2 absolute bottom-[15%] right-[10%]"
-                alt="hamar image"
+                alt="star"
               />
                 </div>: <img
               src={"../assets/images/gem.png"}
               width={40}
               height={40}
               className="h-7 w-7 passed-quest2"
-              alt="hamar image"
+              alt="gem"
             />
               }
               
@@ -119,7 +118,7 @@ const Quest = ({ gameData, currentMascot }) => {
               width={40}
               height={260}
               className="h-[3px] w-36"
-              alt="hamar image"
+              alt="separetor"
             />
           <div className=" flex justify-between items-center gap-3">
             <div className="flex items-center justify-center gap-1">
@@ -137,7 +136,7 @@ const Quest = ({ gameData, currentMascot }) => {
                   width={10}
                   height={10}
                   className="h-4 w-4 passed-quest2 absolute top-1 -left-2"
-                  alt="hamar image"
+                  alt="star"
                 />
                 }
                 {
@@ -146,7 +145,7 @@ const Quest = ({ gameData, currentMascot }) => {
                   width={10}
                   height={10}
                   className="h-5 w-5 passed-quest2 absolute bottom-0 left-[30%]"
-                  alt="hamar image"
+                  alt="star"
                 />
                 }
               </div>
@@ -154,7 +153,7 @@ const Quest = ({ gameData, currentMascot }) => {
                 src={"../assets/images/hamar2.png"}
                 width={30}
                 height={30}
-                alt="hamar image "
+                alt="hamar 2"
                 className="w-[30px] h-[30px]"
               />
             </div>
@@ -180,21 +179,21 @@ const Quest = ({ gameData, currentMascot }) => {
                 width={40}
                 height={40}
                 className="h-7 w-7 passed-quest2"
-                alt="hamar image"
+                alt="gem3"
               />
               <img
                 src={"../assets/images/star.png"}
                 width={10}
                 height={10}
                 className="h-3 w-3 passed-quest2 absolute bottom-[15%] right-[10%]"
-                alt="hamar image"
+                alt="star"
               />
                 </div>: <img
               src={"../assets/images/gem.png"}
               width={40}
               height={40}
               className="h-7 w-7 passed-quest2"
-              alt="hamar image"
+              alt="gem"
             />
               }
               
@@ -208,7 +207,7 @@ const Quest = ({ gameData, currentMascot }) => {
               width={40}
               height={260}
               className="h-[3px] w-36"
-              alt="hamar image"
+              alt="separetor"
             />
           <div className=" flex justify-between items-center gap-3">
             <div className="flex items-center justify-center gap-1">
@@ -226,7 +225,7 @@ const Quest = ({ gameData, currentMascot }) => {
                   width={10}
                   height={10}
                   className="h-4 w-4 passed-quest2 absolute top-1 -left-2"
-                  alt="hamar image"
+                  alt="star"
                 />
                 }
                 {
@@ -235,7 +234,7 @@ const Quest = ({ gameData, currentMascot }) => {
                   width={10}
                   height={10}
                   className="h-5 w-5 passed-quest2 absolute bottom-0 left-[30%]"
-                  alt="hamar image"
+                  alt="star"
                 />
                 }
                 
@@ -251,7 +250,7 @@ const Quest = ({ gameData, currentMascot }) => {
                 src={"../assets/images/hamar2.png"}
                 width={30}
                 height={30}
-                alt="hamar image "
+                alt="hamar 2"
                 className="w-[30px] h-[30px]"
               />
             </div>
@@ -277,21 +276,21 @@ const Quest = ({ gameData, currentMascot }) => {
                 width={40}
                 height={40}
                 className="h-7 w-7 passed-quest2"
-                alt="hamar image"
+                alt="gem3"
               />
               <img
                 src={"../assets/images/star.png"}
                 width={10}
                 height={10}
                 className="h-3 w-3 passed-quest2 absolute bottom-[15%] right-[10%]"
-                alt="hamar image"
+                alt="star"
               />
                 </div>: <img
               src={"../assets/images/gem.png"}
               width={40}
               height={40}
               className="h-7 w-7 passed-quest2"
-              alt="hamar image"
+              alt="gem"
             />
               }
               
@@ -305,7 +304,7 @@ const Quest = ({ gameData, currentMascot }) => {
               width={40}
               height={260}
               className="h-[3px] w-36"
-              alt="hamar image"
+              alt="separetor"
             />
           <div className=" flex justify-between items-center gap-3">
             <div className="flex items-center justify-center gap-1">
@@ -323,7 +322,7 @@ const Quest = ({ gameData, currentMascot }) => {
                   width={10}
                   height={10}
                   className="h-4 w-4 passed-quest2 absolute top-1 -left-2"
-                  alt="hamar image"
+                  alt="star"
                 />
                 }
                 {
@@ -332,7 +331,7 @@ const Quest = ({ gameData, currentMascot }) => {
                   width={10}
                   height={10}
                   className="h-5 w-5 passed-quest2 absolute bottom-0 left-[30%]"
-                  alt="hamar image"
+                  alt="star"
                 />
                 }
                 
@@ -348,7 +347,7 @@ const Quest = ({ gameData, currentMascot }) => {
                 src={"../assets/images/hamar2.png"}
                 width={30}
                 height={30}
-                alt="hamar image "
+                alt="hamar 2 "
                 className="w-[30px] h-[30px]"
               />
             </div>
@@ -374,21 +373,21 @@ const Quest = ({ gameData, currentMascot }) => {
                 width={40}
                 height={40}
                 className="h-7 w-7 passed-quest2"
-                alt="hamar image"
+                alt="gem3"
               />
               <img
                 src={"../assets/images/star.png"}
                 width={10}
                 height={10}
                 className="h-3 w-3 passed-quest2 absolute bottom-[15%] right-[10%]"
-                alt="hamar image"
+                alt="star"
               />
                 </div>: <img
               src={"../assets/images/gem.png"}
               width={40}
               height={40}
               className="h-7 w-7 passed-quest2"
-              alt="hamar image"
+              alt="gem"
             />
               }
               
@@ -402,7 +401,7 @@ const Quest = ({ gameData, currentMascot }) => {
               width={40}
               height={260}
               className="h-[3px] w-36"
-              alt="hamar image"
+              alt="separetor"
             />
           <div className=" flex justify-between items-center gap-3">
             <div className="flex items-center justify-center gap-1">
@@ -420,7 +419,7 @@ const Quest = ({ gameData, currentMascot }) => {
                   width={10}
                   height={10}
                   className="h-4 w-4 passed-quest2 absolute top-1 -left-2"
-                  alt="hamar image"
+                  alt="star"
                 />
                 }
                 {
@@ -429,7 +428,7 @@ const Quest = ({ gameData, currentMascot }) => {
                   width={10}
                   height={10}
                   className="h-5 w-5 passed-quest2 absolute bottom-0 left-[30%]"
-                  alt="hamar image"
+                  alt="star"
                 />
                 }
                 
@@ -445,7 +444,7 @@ const Quest = ({ gameData, currentMascot }) => {
                 src={"../assets/images/hamar2.png"}
                 width={30}
                 height={30}
-                alt="hamar image "
+                alt="hamar 2 "
                 className="w-[30px] h-[30px]"
               />
             </div>
@@ -471,21 +470,21 @@ const Quest = ({ gameData, currentMascot }) => {
                 width={40}
                 height={40}
                 className="h-7 w-7 passed-quest2"
-                alt="hamar image"
+                alt="gem3"
               />
               <img
                 src={"../assets/images/star.png"}
                 width={10}
                 height={10}
                 className="h-3 w-3 passed-quest2 absolute bottom-[15%] right-[10%]"
-                alt="hamar image"
+                alt="star"
               />
                 </div>: <img
               src={"../assets/images/gem.png"}
               width={40}
               height={40}
               className="h-7 w-7 passed-quest2"
-              alt="hamar image"
+              alt="gem"
             />
               }
               
@@ -499,7 +498,7 @@ const Quest = ({ gameData, currentMascot }) => {
               width={40}
               height={260}
               className="h-[3px] w-36"
-              alt="hamar image"
+              alt="separetor"
             />
           {/* <div className=" flex justify-between items-center">
             <div className="flex items-center gap-3">

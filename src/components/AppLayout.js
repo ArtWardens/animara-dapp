@@ -1,8 +1,9 @@
-import { Outlet } from "react-router-dom";
-import NavbarV2 from "./NavbarV2";
-import FooterV2 from "./FooterV2";
-import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { Outlet } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
+import FooterV2 from './FooterV2';
+import NavbarV2 from './NavbarV2';
+
+import 'react-toastify/dist/ReactToastify.css';
 
 function AppLayout() {
   return (
