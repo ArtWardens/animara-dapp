@@ -2,12 +2,16 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useUserStore } from "../store/store.ts";
 import { handleLogout, handleEmailVerification } from "../firebase/auth.ts";
+import useAuth from "../hooks/useAuth.js";
+import { signOut } from "firebase/auth";
 
 const NavbarV2 = () => {
   const [isOthersDropdownVisible, setOthersDropdownVisible] = useState(false);
   const [isProfileDropdownVisible, setProfileDropdownVisible] = useState(false);
   const [isMobileNavVisible, setMobileNavVisible] = useState(false);
-  const { user, signOut } = useUserStore();
+  // const { user, signOut } = useUserStore();
+  const { user } = useAuth();
+  console.log("USER FROM NAVBAR2", user);
   const navigate = useNavigate();
   console.log(user);
   return (
@@ -18,13 +22,29 @@ const NavbarV2 = () => {
             <video width="200" height="100%" autoPlay loop muted playsInline>
               <source src="/logo.webm" type="video/webm" />
             </video>
-            <video className="hidden xl:flex" width="100" height="100%" autoPlay loop muted playsInline>
+            <video
+              className="hidden xl:flex"
+              width="100"
+              height="100%"
+              autoPlay
+              loop
+              muted
+              playsInline
+            >
               <source src="/moveon.webm" type="video/webm" />
-          </video>
+            </video>
           </Link>
         </div>
-        <video className="lg:hidden" width="100" height="100%" autoPlay loop muted playsInline>
-              <source src="/moveon.webm" type="video/webm" />
+        <video
+          className="lg:hidden"
+          width="100"
+          height="100%"
+          autoPlay
+          loop
+          muted
+          playsInline
+        >
+          <source src="/moveon.webm" type="video/webm" />
         </video>
         <ul className="navlinks hidden text-lg tracking-wider lg:flex w-[70%] xl:w-full justify-center items-center">
           <Link to="/nft">
@@ -74,7 +94,7 @@ const NavbarV2 = () => {
             {isOthersDropdownVisible && (
               <div
                 id="dropdown"
-                className="absolute translate-y-11 z-10  divide-y divide-gray-100 shadow w-44 bg-black bg-opacity-75"
+                className="absolute translate-y-16 z-10 divide-y divide-gray-100 shadow w-44 bg-black bg-opacity-75"
               >
                 <ul
                   className="py-2 text-lg tracking-wider dark:text-gray-200"
@@ -131,14 +151,14 @@ const NavbarV2 = () => {
 
                   <span className="text-xl text-left uppercase hover:underline underline-offset-4 whitespace-nowrap">
                     {user.displayName?.length > 10
-                      ? user.displayName?.slice(0, 10) + "..."
-                      : user.displayName}
+                      ? user.name?.slice(0, 10) + "..."
+                      : user.name}
                   </span>
                 </button>
                 {isProfileDropdownVisible && (
                   <div
                     id="dropdown"
-                    className="absolute right-0 translate-y-11 z-10  divide-y divide-gray-100 shadow w-44 bg-black bg-opacity-75"
+                    className="absolute right-0 translate-y-16 z-10  divide-y divide-gray-100 shadow w-44 bg-black bg-opacity-75"
                   >
                     <ul
                       className="py-2 text-lg tracking-wider dark:text-gray-200"
@@ -230,7 +250,9 @@ const NavbarV2 = () => {
         </div>
       </nav>
       <nav
-        className={`mobile-navbar fixed overflow-hidden ${isMobileNavVisible ? "" : "translate-x-full"} h-full w-full bg-black bg-opacity-75 backdrop-blur-sm z-50 flex justify-end transition-all`}
+        className={`mobile-navbar fixed overflow-hidden ${
+          isMobileNavVisible ? "" : "translate-x-full"
+        } h-full w-full bg-black bg-opacity-75 backdrop-blur-sm z-50 flex justify-end transition-all`}
       >
         <ul className="h-[calc(100vh-64px)] bg-[#1a1a1a] w-64 flex flex-col items-center gap-5 relative text-2xl py-5">
           <div className="h-24 w-full p-3 flex items-center">
@@ -322,13 +344,25 @@ const NavbarV2 = () => {
               <img className="cursor-pointer" src="/icons/x.svg" alt="X" />
             </a>
             <a href="https://discord.com/invite/6CpMr7Bb">
-              <img className="cursor-pointer" src="/icons/discord.svg" alt="Discord" />
+              <img
+                className="cursor-pointer"
+                src="/icons/discord.svg"
+                alt="Discord"
+              />
             </a>
             <a href="https://t.me/moveonworld">
-              <img className="cursor-pointer" src="/icons/telegram.svg" alt="Telegram" />
+              <img
+                className="cursor-pointer"
+                src="/icons/telegram.svg"
+                alt="Telegram"
+              />
             </a>
             <a href="https://instagram.com/moworldgame/">
-              <img className="cursor-pointer" src="/icons/instagram.svg" alt="Instagram" />
+              <img
+                className="cursor-pointer"
+                src="/icons/instagram.svg"
+                alt="Instagram"
+              />
             </a>
           </div>
         </ul>

@@ -1,26 +1,64 @@
 import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { handleSignUp, handleSignInWithGoogle } from "../../firebase/auth.ts";
-import { useUserStore } from "../../store/store.ts";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import TelegramLoginButton from "react-telegram-login";
+import { handleSignInWithGoogle, handleSignUp } from "../../firebase/auth.ts";
+import useAuth from "../../hooks/useAuth.js";
+import {
+  generateReferralCode,
+  signInUser,
+  storeUserInFirestore,
+  verifyTelegramHash,
+} from "../../utils/fuctions.js";
+import {
+  collection,
+  deleteDoc,
+  doc,
+  getDoc,
+  getDocs,
+  query,
+  serverTimestamp,
+  setDoc,
+  updateDoc,
+  where,
+} from "firebase/firestore";
+import { auth, db } from "../../firebase/firebase.js";
+import { signInAnonymously, signInWithCustomToken } from "firebase/auth";
 
 const Signup = () => {
+  const location = useLocation();
+
   const [showPassword, setShowPassword] = useState(false);
   const togglePassword = () => setShowPassword(!showPassword);
+
+  const queryParams = new URLSearchParams(location.search);
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [inviteCode, setInviteCode] = useState(
+    queryParams.get("invite-code") || ""
+  );
 
-  const userStore = useUserStore();
+  const { user, loading } = useAuth();
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (userStore.user !== null) {
+    if (user !== null) {
       console.log("redirect");
       navigate("/");
     }
-  }, [userStore.user]);
+  }, [user, navigate]);
+
+  const handleTelegramResponse = async (response) => {
+    const authUser = await signInUser();
+    await storeUserInFirestore(authUser.uid, response);
+    navigate("/");
+  };
+
+  if (loading) {
+    return <h1>Loading...</h1>;
+  }
 
   return (
     <div className="min-h-screen relative flex justify-around pt-24">
@@ -85,6 +123,7 @@ const Signup = () => {
             className="absolute top-1/2 right-3 -translate-y-1/2 -translate-x-3 cursor-pointer"
           />
         </div>
+
         <div className="mt-2 pl-2 flex">
           <div className="relative mt-1">
             <input
@@ -112,13 +151,20 @@ const Signup = () => {
           /> */}
           <span className="font-outfit block ml-5">&nbsp;Remember me</span>
         </div>
+        <input
+          type="text"
+          placeholder="Invite code (Optional)"
+          value={inviteCode}
+          onChange={(e) => setInviteCode(e.target.value)}
+          className="w-[100%] outline-none rounded-xl bg-transparent border border-white p-3 font-outfit mt-3 placeholder-white text-white"
+        />
         <button
           id="login-form-btn"
           onClick={async () => {
-            const user = await handleSignUp(email, password, name);
+            const user = await handleSignUp(email, password, name, inviteCode);
             if (user) {
-              userStore.setUser(user);
-              userStore.setDisplayName(name);
+              // userStore.setUser(user);
+              // userStore.setDisplayName(name);
               navigate("/");
             }
           }}
@@ -137,16 +183,27 @@ const Signup = () => {
             src="/socials/google.svg"
             alt=""
             onClick={async () => {
-              const user = await handleSignInWithGoogle();
+              const user = await handleSignInWithGoogle(inviteCode);
               if (user) {
-                userStore.setUser(user);
-                userStore.setDisplayName(user.displayName);
+                // userStore.setUser(user);
+                // userStore.setDisplayName(user.displayName);
                 navigate("/");
               }
             }}
           />
-          <img src="/socials/facebook.svg" alt="" />
-          <img src="/socials/github.svg" alt="" />
+          <img className="w-12" src="/socials/twitter.svg" alt="" />
+          <div className="flex gap-4 justify-center relative w-[3.3rem]">
+            <TelegramLoginButton
+              className="w-[3rem] rounded-full absolute overflow-hidden opacity-[0.1] z-[1]"
+              dataOnauth={handleTelegramResponse}
+              botName="Animara_dapp_bot"
+            />
+            <img
+              className="absolute w-[3.3rem] rounded-full -top-[5px] pointer-events-none -z-[1]"
+              src="/socials/telegram.svg"
+              alt=""
+            />
+          </div>
         </div>
         <p className="font-outfit mt-20 text-center block">
           Already have an account?{" "}

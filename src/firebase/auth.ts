@@ -1,29 +1,80 @@
-import { auth } from "../firebase/firebase.ts";
 import {
-  createUserWithEmailAndPassword,
   GoogleAuthProvider,
+  User,
+  createUserWithEmailAndPassword,
+  sendEmailVerification,
+  sendPasswordResetEmail,
   signInWithEmailAndPassword,
   signInWithPopup,
-  sendPasswordResetEmail,
 } from "firebase/auth";
-import { User, sendEmailVerification } from "firebase/auth";
+import {
+  doc,
+  getDoc,
+  serverTimestamp,
+  setDoc,
+  updateDoc,
+} from "firebase/firestore";
 import { toast } from "react-toastify";
+import { auth, db } from "../firebase/firebase";
+import {
+  generateReferralCode,
+  isReferralCodeValid,
+  updateCoins,
+} from "../utils/fuctions.js";
 
 const handleSignUp = async (
   email: string,
   password: string,
-  name: string
+  name: string,
+  referralCode?: string
 ): Promise<User | null> => {
   try {
+    const isReferralValid = await isReferralCodeValid(referralCode);
+    if (!isReferralValid && referralCode) {
+      toast.error("Invalid referral code");
+      return null;
+    }
+
+    if (!name || !email || !password) {
+      toast.error("Please fill in all fields");
+      return null;
+    }
+
     const userCredential = await createUserWithEmailAndPassword(
       auth,
       email,
       password
     );
-    console.log("User signed up successfully:", userCredential.user);
+    const { user } = userCredential;
+    console.log("User signed up successfully:", user);
+
+    const newReferralCode = generateReferralCode();
+
+    const userData = {
+      name: name,
+      email: user.email,
+      referralCode: newReferralCode,
+      coins: 0,
+      photoURL: user.photoURL || null,
+      referredBy: referralCode || null,
+      referredUsers: [],
+      createdAt: serverTimestamp(),
+      isKOL: false,
+    };
+
+    await setDoc(doc(db, "users", user.uid), userData);
+    console.log("User document added to Firestore");
+
+    if (referralCode) {
+      try {
+        await updateCoins(referralCode, user);
+      } catch (error) {
+        toast.error("Error using the referral code");
+      }
+    }
     toast.success("Signed up successfully");
 
-    return userCredential.user;
+    return user;
   } catch (error) {
     console.error("Error signing up:", error);
     toast.error("Error signing up");
@@ -31,10 +82,39 @@ const handleSignUp = async (
   }
 };
 
-const handleSignInWithGoogle = async (): Promise<User | null> => {
+const handleSignInWithGoogle = async (
+  referralCode?: string
+): Promise<User | null> => {
   const provider = new GoogleAuthProvider();
   try {
     const userCredential = await signInWithPopup(auth, provider);
+    const { user } = userCredential;
+
+    const userRef = doc(db, "users", user.uid);
+    const userDoc = await getDoc(userRef);
+
+    if (!userDoc.exists()) {
+      const newReferralCode = generateReferralCode();
+      const userData = {
+        name: user.displayName,
+        email: user.email,
+        referralCode: newReferralCode,
+        coins: 0,
+        photoURL: user.photoURL || null,
+        referredBy: null,
+        referredUsers: [],
+        createdAt: serverTimestamp(),
+        isKOL: false,
+      };
+      await setDoc(doc(db, "users", user.uid), userData);
+    }
+
+    const currentData = userDoc.data();
+    if (currentData?.referredBy == null && referralCode) {
+      await updateDoc(userRef, { referredBy: referralCode });
+      await updateCoins(referralCode, user);
+    }
+
     console.log("User signed in with Google:", userCredential.user);
     toast.success("Signed in with Google");
     return userCredential.user;
@@ -99,10 +179,10 @@ const handlePasswordReset = async (email: string): Promise<boolean> => {
 };
 
 export {
-  handleSignUp,
-  handleSignInWithGoogle,
-  handleSignIn,
-  handleLogout,
   handleEmailVerification,
+  handleLogout,
   handlePasswordReset,
+  handleSignIn,
+  handleSignInWithGoogle,
+  handleSignUp,
 };
