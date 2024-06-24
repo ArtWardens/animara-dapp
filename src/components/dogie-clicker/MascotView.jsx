@@ -9,6 +9,7 @@ import { toast } from "react-toastify";
 // import WarningModal from "./WarningModal";
 
 const MascotView = ({
+  userProgress,
   setGameData,
   currentMascot,
   setTotalCount,
@@ -18,7 +19,9 @@ const MascotView = ({
   setDelay,
   gameData,
   timeRemaining,
-  data
+  data,
+  totalClicks,
+  setTotalClicks
 }) => {
 
   const [isOPen, setIsOPen] = useState(false);
@@ -62,15 +65,15 @@ const MascotView = ({
 
   const handleMouseDown = () => {
 
-    if (gameData?.mascot2?.energy >= data.EarnPerTap.count) {
+    if (gameData?.mascot2?.energy >= userProgress.EarnPerTap) {
       handleStart()
       setShowSecondImage(true);
       setGameData((pre) => {
         return {
           [currentMascot.version]: {
-            numberOfClicks: pre[currentMascot.version]?.numberOfClicks + data.EarnPerTap.count,
-            energy: pre[currentMascot.version]?.energy - data.EarnPerTap.count,
-            levelProgress: pre[currentMascot.version]?.levelProgress + data.EarnPerTap.count,
+            numberOfClicks: pre[currentMascot.version]?.numberOfClicks + userProgress.EarnPerTap,
+            energy: pre[currentMascot.version]?.energy - userProgress.EarnPerTap,
+            levelProgress: pre[currentMascot.version]?.levelProgress + userProgress.EarnPerTap,
           },
           // totalPoints:
         };
@@ -124,8 +127,14 @@ const MascotView = ({
       onMouseLeave={handleMouseUp}
       className="cursor-pointer flex justify-center items-center h-screen w-[40%] select-none bottom-0"
     >
-
-      <ClickCounter gameData={gameData} currentMascot={currentMascot} data={data} />
+      <ClickCounter
+        gameData={gameData}
+        currentMascot={currentMascot}
+        data={data}
+        totalClicks={totalClicks}
+        setTotalClicks={setTotalClicks}
+        userProgress={userProgress}
+      />
       {delay ? (
         <div role="status">
           <svg

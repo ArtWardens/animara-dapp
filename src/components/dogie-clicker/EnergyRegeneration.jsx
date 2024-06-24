@@ -1,9 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
 
-function EnergyRegeneration({ gameData, timeLeft, countdown  }) {
+function EnergyRegeneration({ userProgress, gameData, timeLeft, countdown  }) {
 
-    const maxEnergy = 20;
-    
+    const maxEnergy = userProgress.Energy;
+
     const currentEnergy = gameData?.mascot2?.energy || 0;
     const energyPercentage = (currentEnergy / maxEnergy) * 100;
     const progressBarWidth = Math.min(energyPercentage, 100);
@@ -35,10 +35,7 @@ function EnergyRegeneration({ gameData, timeLeft, countdown  }) {
     return (
         <>
             <div className="absolute w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/6 mx-auto bottom-5 z-10 left-4 md:left-20 lg:left-20 xl:left-64">
-                <a
-                    ref={trigger}
-                    onClick={() => setModalOpen(true)}
-                >
+                <a ref={trigger} onClick={() => setModalOpen(true)}>
                     <img
                         src={"../assets/images/clicker-character/leaderboardbtn.png"}
                         className="h-full w-full"

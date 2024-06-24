@@ -45,17 +45,14 @@ const handleSignInWithGoogle = async () => {
   }
 };
 
-const handleSignIn = async (
-  email,
-  password
-) => {
+const handleSignIn = async (data) => {
   try {
+    const { email, password } = data;
     const userCredential = await signInWithEmailAndPassword(
       auth,
       email,
       password
     );
-    console.log("User signed in successfully:", userCredential.user);
     toast.success("Signed in");
     return userCredential.user;
   } catch (error) {

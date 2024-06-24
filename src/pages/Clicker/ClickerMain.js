@@ -1,12 +1,32 @@
 // import { removeSession } from "../../actions/authActions";
 import { useGlobalContext } from "../../context/ContextProvider";
-import HomeView from "./HomeView";
+import ClickerView from "./ClickerView";
 // import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import '../../styles/globals.css';
+import { useAppDispatch } from "../../hooks/storeHooks";
+import { getUser, useUserDetails } from "../../sagaStore/slices";
+import { useNavigate } from "react-router-dom";
 
-export default function TestMain() {
-  const { currentUser } = useGlobalContext();
+export default function ClickerMain() {
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+  const currentUser = useUserDetails();
+
+  useEffect(() => {
+    setTimeout(() => {
+      dispatch(getUser());
+    },1000);
+  },[]);
+
+  useEffect(() => {
+    setTimeout(() => {
+      if(!currentUser){
+        navigate('/login');
+      }
+    },1500)
+  }, [currentUser])
+  
   //   const router = useRouter();
   const [gameData, setGameData] = useState({});
   //   useEffect(() => {
@@ -42,12 +62,12 @@ export default function TestMain() {
         </div>
 
         <div className="bg-username h-[60px] min-w-[200px] w-full bg-no-repeat bg-contain grid items-center justify-start pl-14 text-white text-sm">
-          {currentUser?.reloadUserInfo?.displayName}
+          {currentUser?.first_name}{" "}{currentUser?.last_name}
         </div>
       </div>
       {/* <button onClick={logout} className=" absolute text-black top-2 w-[100px] right-10 z-50"> Logut</button> */}
 
-      <HomeView gameData={gameData} setGameData={setGameData} />
+      <ClickerView currentUser={currentUser} gameData={gameData} setGameData={setGameData} />
 
     </div>
   );

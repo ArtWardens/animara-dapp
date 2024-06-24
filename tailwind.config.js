@@ -2,7 +2,6 @@
 
 // import tailwindAnimate from "tailwindcss-animate";
 
-
 const tailwinConfig = {
   darkMode: ["class"],
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],

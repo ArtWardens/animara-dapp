@@ -1,6 +1,6 @@
 import { takeLatest } from 'redux-saga/effects';
 import { appInit } from '../sagaStore/slices';
-import { initData } from '../utils/localStorage';
+import { initData } from '../utils/localStorage/localStorage';
 
 function* initSaga() {
   console.log('2?');

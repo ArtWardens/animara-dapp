@@ -1,5 +1,7 @@
-function EarnGuide({ data }) {
+import { useEffect } from "react";
+import { gameConfig } from "../../data/constants";
 
+function EarnGuide({ userProgress }) {
     return (
         <div className="absolute top-5 py-2 px-2 flex justify-center mx-auto">
             <div className="grid grid-cols-3 gap-2 md:gap-4 lg:gap-6">
@@ -10,9 +12,9 @@ function EarnGuide({ data }) {
                         </svg>
                     </div>
                     <div className="mt-5 text-center">
-                        <p className="text-xl md:text-2xl lg:text-2xl xl:text-3xl font-semibold my-2">{data.EarnPerTap.title}</p>
+                        <p className="text-xl md:text-2xl lg:text-2xl xl:text-3xl font-semibold my-2">Earn per tap</p>
                         <div className="space-y-2 pb-2 text-gray-400 text-2xl md:text-3xl lg:text-3xl xl:text-3xl text-center">
-                            <p>+{data.EarnPerTap.count}</p>
+                            <p>+{userProgress?.EarnPerTap}</p>
                         </div>
                     </div>
                 </div>
@@ -23,9 +25,9 @@ function EarnGuide({ data }) {
                         </svg>
                     </div>
                     <div className="mt-5 text-center">
-                        <p className="text-xl md:text-2xl lg:text-2xl xl:text-3xl font-semibold my-2">{data.CoinsToLevelUp.title}</p>
+                        <p className="text-xl md:text-2xl lg:text-2xl xl:text-3xl font-semibold my-2">Coins to lvl up</p>
                         <div className="space-y-2 pb-2 text-gray-400 text-2xl md:text-3xl lg:text-3xl xl:text-3xl text-center">
-                            <p>{data.CoinsToLevelUp.count}</p>
+                            <p>{userProgress?.CoinsToLvlUp}</p>
                         </div>
                     </div>
                 </div>
@@ -36,9 +38,9 @@ function EarnGuide({ data }) {
                         </svg>
                     </div>
                     <div className="mt-5 text-center">
-                        <p className="text-xl md:text-2xl lg:text-2xl xl:text-3xl font-semibold my-2">{data.ProfitPerHour.title}</p>
+                        <p className="text-xl md:text-2xl lg:text-2xl xl:text-3xl font-semibold my-2">Profit per hour</p>
                         <div className="space-y-2 pb-2 text-gray-400 text-2xl md:text-3xl lg:text-3xl xl:text-3xl text-center">
-                            <p>{data.ProfitPerHour.count}</p>
+                            <p>N/A</p>
                         </div>
                     </div>
                 </div>

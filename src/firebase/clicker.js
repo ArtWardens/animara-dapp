@@ -1,6 +1,5 @@
-import { db } from "../firebase/config";
-import { toast } from "react-toastify";
-import {  updateDoc, setDoc, doc } from "firebase/firestore";
+import { db } from "../firebase/firebaseConfig";
+import {  updateDoc, doc } from "firebase/firestore";
 
 const handleUpdateScore = async (data) => {
     try {

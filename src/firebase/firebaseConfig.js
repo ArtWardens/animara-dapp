@@ -1,5 +1,4 @@
 import { initializeApp, getApps, getApp } from "firebase/app";
-// import { getAnalytics } from "firebase/analytics";
 import {getAuth} from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 
@@ -11,7 +10,7 @@ const firebaseConfig = {
     messagingSenderId: "763649762230",
     appId: "1:763649762230:web:90996f5162b56f89ce5717",
     measurementId: "G-NCBWRKPT2Y"
-};
+  };
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);

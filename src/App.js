@@ -1,13 +1,12 @@
 import './i18n';
 
-import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import useNavigatorOnline from 'use-navigator-online';
 
 import AppLayout from './components/AppLayout';
 
-import TestMain from './pages/Clicker/TestMain';
-import Home from './pages/Home/index';
-import Login from './pages/Login/index';
+import ClickerMain from './pages/Clicker/ClickerMain';
+import Login from './pages/Login/Login';
 import Signup from './pages/Signup/index';
 
 import { useEffect } from 'react';
@@ -48,12 +47,11 @@ export const App = () => {
     <BrowserRouter>
       <GlobalProvider>
         <Routes>
-          <Route path="/" element={<Navigate to="/login" />} />
           <Route element={<AppLayout />}>
-            <Route path="/home" element={<Home />} />
+            <Route path="/" element={<Login />}/>
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
-            <Route path="/test" element={<TestMain />} />
+            <Route path="/clicker" element={<ClickerMain />} />
           </Route>
         </Routes>
       </GlobalProvider>

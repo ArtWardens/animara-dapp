@@ -1,11 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit';
-
 import { useAppSelector } from '../../hooks/storeHooks';
 
 const userInitialState = {
   loading: false,
+  getUserLoading: false,
   isAuthenticated: false,
-  user: [],
+  user: null,
   error: null,
 };
 
@@ -16,16 +16,22 @@ export const userSlice = createSlice({
     login: (state, { payload }) => {
       state.loading = true;
     },
-    loginSuccess: (state) => {
+    loginSuccess: (state, { payload }) => {
       state.isAuthenticated = true;
       state.loading = false;
+      state.user = payload;
     },
     loginError: (state, { payload }) => {
       state.isAuthenticated = false;
       state.error = payload;
       state.loading = false;
     },
-    logOut: () => {},
+    logOut: () => {
+
+    },
+    logOutSuccess: (state, { payload }) => {
+      state.user = payload;
+    },
     clearLoginError: (state) => {
       state.error = null;
     },
@@ -33,14 +39,21 @@ export const userSlice = createSlice({
       state.error = payload;
       state.loading = false;
     },
-    resetUser: (state) => {
-      state.loading = false;
-      state.user = userInitialState.user;
+    getUser: (state, { payload }) => {
+      state.getUserLoading = true;
     },
+    getUserSuccess: (state, { payload }) => {
+      state.getUserLoading = false;
+      state.user = payload;
+    },
+    getUserError: (state, { payload }) => {
+      state.getUserLoading = false;
+      state.user = payload
+    }
   },
 });
 
-export const { logOut, login, loginSuccess, loginError, setError, resetUser, clearLoginError } = userSlice.actions;
+export const { logOut, logOutSuccess, login, loginSuccess, loginError, setError, clearLoginError, getUser, getUserSuccess, getUserError } = userSlice.actions;
 
 export const useLoginLoading = () => useAppSelector((state) => state.user.loading);
 export const useLoginError = () => useAppSelector((state) => state.user.error);

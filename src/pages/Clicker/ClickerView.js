@@ -1,27 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import MascotView from '../../components/MascotView';
+import MascotView from '../../components/dogie-clicker/MascotView';
+import EarnGuide from '../../components/dogie-clicker/EarnGuide';
+import EnergyRegeneration from '../../components/dogie-clicker/EnergyRegeneration';
+import LevelProgress from '../../components/dogie-clicker/LevelProgress';
+import TasksCheck from '../../components/dogie-clicker/TasksCheck';
 import { useGlobalContext } from '../../context/ContextProvider';
 import '../../styles/globals.css';
 import { calculateTimeRemaining } from '../../utils/fuctions';
 import { mascots } from '../../utils/local.db';
+import { gameConfig } from '../../data/constants';
 
-const HomeView = ({ gameData, setGameData }) => {
-  const tempData = {
-    EarnPerTap: {
-      title: 'Earn per tap',
-      count: 3,
-    },
-    CoinsToLevelUp: {
-      title: 'Coins to lvl up',
-      count: 25,
-    },
-    ProfitPerHour: {
-      title: 'Profit per hour',
-      count: 'N/A',
-    },
-  };
+const ClickerView = ({ currentUser, gameData, setGameData }) => {
 
-  const { currentUser } = useGlobalContext();
   const [currentMascot, setCurrentMascot] = useState(mascots[1]);
   const [leaderBoardData, setLeaderBoardData] = useState({});
   const [idle, setIdle] = useState(false);
@@ -35,6 +25,103 @@ const HomeView = ({ gameData, setGameData }) => {
     mascot3: 0,
   });
   const [timeRemaining, setTimeRemaining] = useState(calculateTimeRemaining());
+  const [totalClicks, setTotalClicks] = useState(gameData.currentScore);
+  const [userProgress, setUserProgress] = useState({
+    EarnPerTap: 1,
+    CoinsToLvlUp: 25,
+    Energy: 20,
+    currentLevel: 1,
+    LevelProgress: {
+      prevCTL: 25,
+    }
+  });
+
+  const calculateLevel = (clicks) => {
+    const { start, increaseAmount } = gameConfig.CoinsToLevelUp;
+    let currentAmount = start;
+    let level = 1;
+    
+    while (clicks >= currentAmount) {
+      currentAmount += Math.ceil(currentAmount * increaseAmount);
+      level += 1;
+    };
+
+    return level;
+  };
+
+  const calculateCTL = (clicks) => {
+    const { start, increaseAmount } = gameConfig.CoinsToLevelUp;
+    let currentAmount = start;
+    
+    while (clicks >= currentAmount) {
+      currentAmount += Math.ceil(currentAmount * increaseAmount);
+    };
+
+    return currentAmount;
+  };
+
+  const calculateEPC = (currentLevel) => {
+    const { start, increaseAmount, levelInterval } = gameConfig.EarnPerTap;
+    
+    const increaseSteps = Math.floor((currentLevel - 1) / levelInterval);
+    
+    let currentEPC = start + increaseSteps * increaseAmount;
+    return currentEPC;
+  };
+
+  const calculateEnergy = (currentLevel) => {
+    const { start, increaseAmount, levelInterval } = gameConfig.Energy;
+    
+    const increaseSteps = Math.floor((currentLevel - 1) / levelInterval);
+  
+    let currentEnergy = start + increaseSteps * increaseAmount;
+    return currentEnergy;
+  };
+
+  const calculatePrevCTL = (clicks) => {
+    const { start, increaseAmount } = gameConfig.CoinsToLevelUp;
+    let currentAmount = start;
+    let previousAmount = currentAmount;
+    
+    while (clicks >= currentAmount) {
+      previousAmount = currentAmount;
+      currentAmount += Math.ceil(currentAmount * increaseAmount);
+    };
+
+    return previousAmount;
+  };
+
+  // Setup current user progress based on total click and gameconfig
+  useEffect(() => {
+    setUserProgress({
+      EarnPerTap: calculateEPC(calculateLevel(totalClicks)),
+      CoinsToLvlUp: calculateCTL(totalClicks),
+      Energy: calculateEnergy(calculateLevel(totalClicks)),
+      currentLevel: calculateLevel(totalClicks),
+      LevelProgress: {
+        prevCTL: calculatePrevCTL(totalClicks)
+      }
+    });
+  },[totalClicks]);
+
+  //Fetch the user data on inital load
+  useEffect(() => {
+    if(currentUser){
+      setTimeout(() => {
+        setGameData({
+          mascot2: {
+            numberOfClicks: 0,
+            point: 0,
+            quest: 0,
+            energy: calculateEnergy(calculateLevel(totalClicks)),
+            levelProgress: 0,
+          },
+          totalPoints: 0,
+          currentScore: currentUser.score,
+        });
+      }, 1000);
+    }
+  }, [currentUser]);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -43,30 +130,6 @@ const HomeView = ({ gameData, setGameData }) => {
 
     return () => clearInterval(interval);
   }, []);
-
-  //Fetch the user data on inital load
-  useEffect(
-    () => {
-      handleGetUserData().then((res) => {
-        setTimeout(() => {
-          setGameData({
-            mascot2: {
-              numberOfClicks: 0,
-              point: 0,
-              quest: 0,
-              energy: 20,
-              levelProgress: 0,
-            },
-            totalPoints: 0,
-            currentScore: res.score,
-          });
-        }, 1000);
-      });
-    },
-    [
-      // ! Should listen to user change once setup done, current not listening to any changes
-    ],
-  );
 
   //Reset counter and save data in data base on satate of being idle
   useEffect(() => {
@@ -171,7 +234,7 @@ const HomeView = ({ gameData, setGameData }) => {
   useEffect(() => {
     const generateEnergy = () => {
       setGameData((prev) => {
-        if (prev?.mascot2?.energy < 20) {
+        if (prev?.mascot2?.energy < userProgress.Energy) {
           return {
             ...prev,
             mascot2: {
@@ -188,12 +251,12 @@ const HomeView = ({ gameData, setGameData }) => {
     const threeSecondInterval = setInterval(generateEnergy, 3000);
 
     return () => clearInterval(threeSecondInterval);
-  }, []);
+  }, [userProgress.Energy]);
 
   // Countdown logic based on energy regeneration
   useEffect(() => {
     const currentEnergy = gameData?.mascot2?.energy || 0;
-    const maxEnergy = 20;
+    const maxEnergy = calculateEnergy(calculateLevel(totalClicks));
 
     // Calculate the total remaining time in seconds
     var totalRemainingTime = (maxEnergy - currentEnergy) * 3;
@@ -219,11 +282,11 @@ const HomeView = ({ gameData, setGameData }) => {
   return (
     <>
       <div className="max-w-full flex justify-center items-center gap-2 relative">
-        <EarnGuide data={tempData} />
+        <EarnGuide userProgress={userProgress} gameData={gameData}/>
 
-        <LevelProgress gameData={gameData} data={tempData} />
+        <LevelProgress userProgress={userProgress} gameData={gameData} totalClicks={totalClicks}/>
 
-        <EnergyRegeneration gameData={gameData} setGameData={setGameData} timeLeft={timeLeft} countdown={countdown} />
+        <EnergyRegeneration userProgress={userProgress} gameData={gameData} setGameData={setGameData} timeLeft={timeLeft} countdown={countdown} />
 
         <TasksCheck />
 
@@ -246,6 +309,7 @@ const HomeView = ({ gameData, setGameData }) => {
         /> */}
 
         <MascotView
+          userProgress={userProgress}
           timeRemaining={timeRemaining}
           gameData={gameData}
           setGameData={setGameData}
@@ -257,7 +321,8 @@ const HomeView = ({ gameData, setGameData }) => {
           setDelay={setDelay}
           setTotalPoints={setTotalPoints}
           totalPoints={totalPoints}
-          data={tempData}
+          totalClicks={totalClicks}
+          setTotalClicks={setTotalClicks}
         />
 
         {/* <Quest
@@ -285,4 +350,4 @@ const HomeView = ({ gameData, setGameData }) => {
   );
 };
 
-export default HomeView;
+export default ClickerView;

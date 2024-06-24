@@ -1,11 +1,15 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, useNavigate } from 'react-router-dom';
-import { handleSignIn, handleSignInWithGoogle } from '../../firebase/auth.ts';
+import { handleSignIn, handleSignInWithGoogle } from '../../firebase/auth';
 import { useUserStore } from '../../store/store.ts';
+import { useAppDispatch } from '../../hooks/storeHooks.js';
+import { getUser, logOut, login, useUserDetails } from '../../sagaStore/slices/userSlice.js';
 
 const Login = () => {
+  const currentUser = useUserDetails();
   const { t: tLogin } = useTranslation('login');
+  const dispatch = useAppDispatch();
   const userStore = useUserStore();
   const navigate = useNavigate();
 
@@ -16,11 +20,20 @@ const Login = () => {
   const [password, setPassword] = useState('');
 
   useEffect(() => {
-    if (userStore.user !== null) {
-      console.log('redirect');
-      navigate('/test');
+    setTimeout(() => {
+      dispatch(getUser());
+    },1000)
+  },[])
+
+  useEffect(() => {
+    if(currentUser){
+      navigate('/clicker');
     }
-  }, [userStore.user]);
+  }, [currentUser])
+
+  const onHandleSignIn = async () => {
+    dispatch(login({ email, password }));
+  }
 
   return (
     <div className="min-h-screen relative flex justify-around pt-0 md:pt-24">
@@ -102,13 +115,7 @@ const Login = () => {
         <button
           id="login-form-btn"
           className="mt-3 font-outfit font-semibold w-[100%] bg-gray-700 p-4 rounded-xl"
-          onClick={async () => {
-            const user = await handleSignIn(email, password);
-            if (user) {
-              userStore.setUser(user);
-              navigate('/');
-            }
-          }}
+          onClick={onHandleSignIn}
         >
           Login
         </button>
