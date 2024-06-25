@@ -90,12 +90,27 @@ export const updateCoins = async (referralCode, user) => {
     // Update referrer's data
     await updateDoc(doc(db, "users", referrerId), {
       coins: referrerDoc.data().coins + 5000, // Reward referrer with coins
-      referredUsers: arrayUnion(user.uid),
     });
 
     await updateDoc(doc(db, "users", user.uid), {
       coins: userDoc.data().coins + 5000, // Reward new user with coins
     });
+
+    const referralDocRef = doc(db, "referrals", referrerId);
+    const referralDoc = await getDoc(referralDocRef);
+
+    if (referralDoc.exists()) {
+      // If the referral document exists, update the array of referred users
+      await updateDoc(referralDocRef, {
+        referredUserIds: arrayUnion(user.uid),
+      });
+    } else {
+      // If the referral document does not exist, create a new document with the referrerId
+      await setDoc(referralDocRef, {
+        referrerId: referrerId,
+        referredUserIds: [user.uid],
+      });
+    }
   }
 };
 
@@ -154,7 +169,6 @@ export const storeUserInFirestore = async (uid, data) => {
     coins: 0,
     photoURL: null,
     referredBy: null,
-    referredUsers: [],
     createdAt: serverTimestamp(),
     isKOL: false,
     telegram_id: data.id,

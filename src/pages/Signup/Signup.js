@@ -1,7 +1,11 @@
 import { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import TelegramLoginButton from "react-telegram-login";
-import { handleSignInWithGoogle, handleSignUp } from "../../firebase/auth.ts";
+import {
+  handleSignInWithGoogle,
+  handleSignUp,
+  handleSignInWithTwitter,
+} from "../../firebase/auth.ts";
 import useAuth from "../../hooks/useAuth.js";
 import {
   generateReferralCode,
@@ -191,7 +195,19 @@ const Signup = () => {
               }
             }}
           />
-          <img className="w-12" src="/socials/twitter.svg" alt="" />
+          <img
+            className="w-12"
+            src="/socials/twitter.svg"
+            alt=""
+            onClick={async () => {
+              const user = await handleSignInWithTwitter(inviteCode);
+              if (user) {
+                // userStore.setUser(user);
+                // userStore.setDisplayName(user.displayName);
+                navigate("/");
+              }
+            }}
+          />
           <div className="flex gap-4 justify-center relative w-[3.3rem]">
             <TelegramLoginButton
               className="w-[3rem] rounded-full absolute overflow-hidden opacity-[0.1] z-[1]"

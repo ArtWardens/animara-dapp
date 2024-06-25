@@ -6,6 +6,7 @@ import {
   sendPasswordResetEmail,
   signInWithEmailAndPassword,
   signInWithPopup,
+  TwitterAuthProvider,
 } from "firebase/auth";
 import {
   doc,
@@ -57,7 +58,6 @@ const handleSignUp = async (
       coins: 0,
       photoURL: user.photoURL || null,
       referredBy: referralCode || null,
-      referredUsers: [],
       createdAt: serverTimestamp(),
       isKOL: false,
     };
@@ -102,7 +102,6 @@ const handleSignInWithGoogle = async (
         coins: 0,
         photoURL: user.photoURL || null,
         referredBy: null,
-        referredUsers: [],
         createdAt: serverTimestamp(),
         isKOL: false,
       };
@@ -121,6 +120,49 @@ const handleSignInWithGoogle = async (
   } catch (error) {
     console.error("Error signing in with Google:", error);
     toast.error("Error signing in with Google");
+    return null;
+  }
+};
+
+const handleSignInWithTwitter = async (
+  referralCode?: string
+): Promise<User | null> => {
+  const provider = new TwitterAuthProvider();
+  try {
+    const userCredential = await signInWithPopup(auth, provider);
+    const { user } = userCredential;
+
+    const userRef = doc(db, "users", user.uid);
+    const userDoc = await getDoc(userRef);
+
+    if (!userDoc.exists()) {
+      const newReferralCode = generateReferralCode();
+      const userData = {
+        name: user.displayName,
+        email: user.email,
+        referralCode: newReferralCode,
+        coins: 0,
+        photoURL: user.photoURL || null,
+        referredBy: null,
+        referredUsers: [],
+        createdAt: serverTimestamp(),
+        isKOL: false,
+      };
+      await setDoc(doc(db, "users", user.uid), userData);
+    }
+
+    const currentData = userDoc.data();
+    if (currentData?.referredBy == null && referralCode) {
+      await updateDoc(userRef, { referredBy: referralCode });
+      await updateCoins(referralCode, user);
+    }
+
+    console.log("User signed in with Twitter:", userCredential.user);
+    toast.success("Signed in with Twitter");
+    return userCredential.user;
+  } catch (error) {
+    console.error("Error signing in with Twitter:", error);
+    toast.error("Error signing in with Twitter");
     return null;
   }
 };
@@ -183,6 +225,7 @@ export {
   handleLogout,
   handlePasswordReset,
   handleSignIn,
+  handleSignInWithTwitter,
   handleSignInWithGoogle,
   handleSignUp,
 };
