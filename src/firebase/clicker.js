@@ -4,7 +4,7 @@ import {  updateDoc, doc } from "firebase/firestore";
 const handleUpdateScore = async (data) => {
     try {
         // ! Update to data.userId
-        const docRef = doc(db, "users", "Ij0QBrTicFT9LsAeWRNMJLCu7O32");
+        const docRef = doc(db, "users", data.userId);
         
         await updateDoc(docRef, { score: data.score });
     }catch (error) {

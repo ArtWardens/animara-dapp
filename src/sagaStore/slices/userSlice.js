@@ -39,7 +39,7 @@ export const userSlice = createSlice({
       state.error = payload;
       state.loading = false;
     },
-    getUser: (state, { payload }) => {//
+    getUser: (state, { payload }) => {
       state.getUserLoading = true;
     },
     getUserSuccess: (state, { payload }) => {
@@ -57,7 +57,7 @@ export const { logOut, logOutSuccess, login, loginSuccess, loginError, setError,
 
 export const useLoginLoading = () => useAppSelector((state) => state.user.loading);
 export const useLoginError = () => useAppSelector((state) => state.user.error);
-export const useUserDetails = () => useAppSelector((state) => state.user.user);//
+export const useUserDetails = () => useAppSelector((state) => state.user.user);
 
 export const useUserAuthenticated = () => useAppSelector((state) => state.user.isAuthenticated);
 

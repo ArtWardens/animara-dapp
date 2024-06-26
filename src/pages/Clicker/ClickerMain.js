@@ -5,17 +5,17 @@ import ClickerView from "./ClickerView";
 import { useEffect, useState } from "react";
 import '../../styles/globals.css';
 import { useAppDispatch } from "../../hooks/storeHooks";
-import { getUser, useUserDetails } from "../../sagaStore/slices"; //import linking
+import { getUser, useUserDetails } from "../../sagaStore/slices";
 import { useNavigate } from "react-router-dom";
 
 export default function ClickerMain() {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const currentUser = useUserDetails(); //redux saga to get currentuser details
+  const currentUser = useUserDetails();
 
   useEffect(() => {
     setTimeout(() => {
-      dispatch(getUser()); //function get current user details
+      dispatch(getUser());
     },1000);
   },[]);
 
