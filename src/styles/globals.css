@@ -3,9 +3,62 @@
 @tailwind components;
 @tailwind utilities;
 
+<<<<<<< Updated upstream
 @font-face {
   font-family: "BigNoodleTitling";
   src: url("../../public/fonts/bignoodletitling/big_noodle_titling.ttf") format("truetype");
+=======
+.tada{
+    animation: tada 2s ease-in-out infinite;
+ }
+ 
+ @keyframes tada {
+   0% {
+     -webkit-transform: scale3d(1, 1, 1);
+     -ms-transform: scale3d(1, 1, 1);
+     transform: scale3d(1, 1, 1);
+   }
+ 
+   10%, 20% {
+     -webkit-transform: scale3d(.95, .95, .95) rotate3d(0, 0, 1, -3deg);
+     -ms-transform: scale3d(.95, .95, .95) rotate3d(0, 0, 1, -3deg);
+     transform: scale3d(.95, .95, .95) rotate3d(0, 0, 1, -3deg);
+   }
+ 
+   30%, 50%, 70%, 90% {
+     -webkit-transform: scale3d(1.05, 1.05, 1.05) rotate3d(0, 0, 1, 3deg);
+     -ms-transform: scale3d(1.05, 1.05, 1.05) rotate3d(0, 0, 1, 3deg);
+     transform: scale3d(1.05, 1.05, 1.05) rotate3d(0, 0, 1, 3deg);
+   }
+ 
+   40%, 60%, 80% {
+     -webkit-transform: scale3d(1.05, 1.05, 1.05) rotate3d(0, 0, 1, -3deg);
+     -ms-transform: scale3d(1.05, 1.05, 1.05) rotate3d(0, 0, 1, -3deg);
+     transform: scale3d(1.05, 1.05, 1.05) rotate3d(0, 0, 1, -3deg);
+   }
+ 
+   100% {
+     -webkit-transform: scale3d(1, 1, 1);
+     -ms-transform: scale3d(1, 1, 1);
+     transform: scale3d(1, 1, 1);
+   }
+ }
+
+  /* MascotView.css */
+  img {
+    transition: opacity 0.5s ease-in-out;
+  }
+
+ .clip_shape{
+  height: 150px;
+  width: 100px;
+  background-color: #570374;
+  clip-path: polygon(78% 76%, 100% 90%, 100% 99%, 0 99%, 0 74%);
+ }
+
+ .shadow-text {
+  text-shadow: 5px 4px #FFFCC1;
+>>>>>>> Stashed changes
 }
 
 @layer base {
