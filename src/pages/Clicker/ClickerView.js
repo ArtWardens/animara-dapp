@@ -9,8 +9,21 @@ import '../../styles/globals.css';
 import { calculateTimeRemaining } from '../../utils/fuctions';
 import { mascots } from '../../utils/local.db';
 import { gameConfig } from '../../data/constants';
+import { addToLocalStorage, getFromLocalStorage } from '../../utils/localStorage';
+import { handleUpdateScore } from '../../firebase/clicker';
 
 const ClickerView = ({ currentUser, gameData, setGameData }) => {
+
+  // find a way to save this data
+  const updateFirebase = () => {
+    if(currentUser){
+      const sessionPoints = getFromLocalStorage("sessionPoints");
+      return handleUpdateScore({
+        userId: currentUser.userId,
+        score: parseInt(sessionPoints),
+      });
+    }
+  };
 
   const [currentMascot, setCurrentMascot] = useState(mascots[1]);
   const [leaderBoardData, setLeaderBoardData] = useState({});
@@ -120,6 +133,7 @@ const ClickerView = ({ currentUser, gameData, setGameData }) => {
           totalPoints: 0,
           currentScore: currentUser.score,
         });
+        addToLocalStorage("currentScore", currentUser.score);
       }, 1000);
     }
   }, [currentUser]);
