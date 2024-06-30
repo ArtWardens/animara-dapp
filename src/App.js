@@ -7,7 +7,8 @@ import AppLayout from './components/AppLayout';
 
 import ClickerMain from './pages/Clicker/ClickerMain';
 import Login from './pages/Login/Login';
-import Signup from './pages/Signup/index';
+import Signup from "./pages/Signup/Signup";
+import EditProfile from "./pages/EditProfile/EditProfile";
 
 import { useEffect } from 'react';
 import { GlobalProvider } from './context/ContextProvider';
@@ -52,6 +53,7 @@ export const App = () => {
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/clicker" element={<ClickerMain />} />
+            <Route path="/edit-profile" element={<EditProfile />} />
           </Route>
         </Routes>
       </GlobalProvider>

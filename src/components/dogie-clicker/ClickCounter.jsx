@@ -1,20 +1,21 @@
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
-import { handleUpdateScore } from "../../firebase/clicker";
-import { addToLocalStorage, getFromLocalStorage } from "../../utils/localStorage";
+import { handleUpdateCoins } from "../../firebase/clicker";
 import { useUserDetails } from "../../sagaStore/slices";
+import { addToLocalStorage, getFromLocalStorage } from "../../utils/localStorage"
 
 const ClickCounter = ({ gameData, currentMascot, totalClicks, setTotalClicks, userProgress }) => {
   const numberOfClicks = gameData?.[currentMascot?.version]?.numberOfClicks;
-  const currentUser = useUserDetails();
-  // console.log(gameData);
+
   useEffect(() => {
     if (numberOfClicks > 0) {
-      const currentScore = getFromLocalStorage("currentScore");
-      const totalScore = numberOfClicks + parseInt(currentScore);
-
-      setTotalClicks(totalScore);
-      addToLocalStorage("sessionPoints", totalScore)
+      const localCoins = getFromLocalStorage("localCoins");
+      setTotalClicks(prevTotal => {
+        const totalLocalCoins = parseInt(localCoins) + numberOfClicks;
+        addToLocalStorage("localCoins", totalLocalCoins);
+        addToLocalStorage("totalLocalCoins", prevTotal + userProgress?.EarnPerTap);
+        return prevTotal + userProgress?.EarnPerTap;
+      });
     };
   }, [numberOfClicks]);
 

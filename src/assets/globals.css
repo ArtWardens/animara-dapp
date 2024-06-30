@@ -5,7 +5,8 @@
 
 @font-face {
   font-family: "BigNoodleTitling";
-  src: url("../../public/fonts/bignoodletitling/big_noodle_titling.ttf") format("truetype");
+  src: url("../../public/fonts/bignoodletitling/big_noodle_titling.ttf")
+    format("truetype");
 }
 
 @layer base {
