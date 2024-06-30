@@ -1,10 +1,15 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, useNavigate } from 'react-router-dom';
-import { handleSignIn, handleSignInWithGoogle } from '../../firebase/auth';
+import TelegramLoginButton from "react-telegram-login";
+
+import { handleSignIn, handleSignInWithGoogle, handleSignInWithTwitter} from '../../firebase/auth';
 import { useUserStore } from '../../store/store.ts';
 import { useAppDispatch } from '../../hooks/storeHooks.js';
 import { getUser, logOut, login, useUserDetails } from '../../sagaStore/slices/userSlice.js';
+
+import useAuth from "../../hooks/useAuth.js";
+import { signInUser, storeUserInFirestore } from "../../utils/fuctions.js";
 
 const Login = () => {
   const currentUser = useUserDetails();
@@ -18,6 +23,8 @@ const Login = () => {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+
+  const { user, loading } = useAuth();
 
   useEffect(() => {
     setTimeout(() => {
@@ -33,6 +40,16 @@ const Login = () => {
 
   const onHandleSignIn = async () => {
     dispatch(login({ email, password }));
+  }
+
+  const handleTelegramResponse = async (response) => {
+    const authUser = await signInUser();
+    await storeUserInFirestore(authUser.uid, response);
+    navigate("/");
+  };
+
+  if (loading) {
+    return <h1>Loading...</h1>;
   }
 
   return (
@@ -138,8 +155,29 @@ const Login = () => {
               }
             }}
           />
-          <img src="/socials/facebook.svg" alt="" />
-          <img src="/socials/github.svg" alt="" />
+          <img
+            className="w-12"
+            src="/socials/twitter.svg"
+            alt=""
+            onClick={async () => {
+              const user = await handleSignInWithTwitter();
+              if (user) {
+                navigate("/");
+              }
+            }}
+          />
+          <div className="flex gap-4 justify-center relative w-[3.3rem]">
+            <TelegramLoginButton
+              className="w-[3rem] rounded-full absolute overflow-hidden opacity-[0.1] z-[1]"
+              dataOnauth={handleTelegramResponse}
+              botName="Animara_dapp_bot"
+            />
+            <img
+              className="absolute w-[3.3rem] rounded-full -top-[5px] pointer-events-none -z-[1]"
+              src="/socials/telegram.svg"
+              alt=""
+            />
+          </div>
         </div>
         <p className="font-outfit mt-20 mb-8 text-center block">
           Don't have an account? &nbsp;

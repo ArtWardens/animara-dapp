@@ -26,7 +26,6 @@ export default function ClickerMain() {
       }
     },1500)
   }, [currentUser])
-
   
   //   const router = useRouter();
   const [gameData, setGameData] = useState({});
@@ -65,6 +64,7 @@ export default function ClickerMain() {
         <div className="bg-username h-[60px] min-w-[200px] w-full bg-no-repeat bg-contain grid items-center justify-start pl-14 text-white text-sm">
           {currentUser?.first_name}{" "}{currentUser?.last_name}
         </div>
+        <br />
       </div>
       {/* <button onClick={logout} className=" absolute text-black top-2 w-[100px] right-10 z-50"> Logut</button> */}
 
