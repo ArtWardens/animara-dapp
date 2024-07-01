@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { onAuthStateChanged } from "firebase/auth";
-import { auth, db } from "../firebase/firebase";
+import { auth, db } from "../firebase/firebaseConfig";
 import { doc, getDoc } from "firebase/firestore";
 import { useLocation } from "react-router-dom";
 
@@ -13,12 +13,12 @@ const useAuth = () => {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (authUser) => {
       if (authUser) {
-        console.log("found authUser", authUser);
+        // console.log("found authUser", authUser);
         setIsLoggedIn(true);
         setLoading(true);
 
         // Query Firestore to retrieve the user object
-        console.log(authUser);
+        // console.log(authUser);
         const userDocRef = doc(db, "users", authUser.uid);
         const userDoc = await getDoc(userDocRef);
 

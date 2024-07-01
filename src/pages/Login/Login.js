@@ -1,12 +1,13 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from 'react-router-dom';
 import TelegramLoginButton from "react-telegram-login";
-import {
-  handleSignIn,
-  handleSignInWithGoogle,
-  handleSignInWithTwitter,
-} from "../../firebase/auth.ts";
+
+import { handleSignIn, handleSignInWithGoogle, handleSignInWithTwitter} from '../../firebase/auth';
+import { useUserStore } from '../../store/store.ts';
+import { useAppDispatch } from '../../hooks/storeHooks.js';
+import { getUser, logOut, login, useUserDetails } from '../../sagaStore/slices/userSlice.js';
+
 import useAuth from "../../hooks/useAuth.js";
 import { signInUser, storeUserInFirestore } from "../../utils/fuctions.js";
 
@@ -26,11 +27,20 @@ const Login = () => {
   const { user, loading } = useAuth();
 
   useEffect(() => {
-    if (user !== null) {
-      console.log("redirect");
-      navigate("/");
+    setTimeout(() => {
+      dispatch(getUser());
+    },1000)
+  },[])
+
+  useEffect(() => {
+    if(currentUser){
+      navigate('/clicker');
     }
-  }, [user, navigate]);
+  }, [currentUser])
+
+  const onHandleSignIn = async () => {
+    dispatch(login({ email, password }));
+  }
 
   const handleTelegramResponse = async (response) => {
     const authUser = await signInUser();
@@ -122,12 +132,7 @@ const Login = () => {
         <button
           id="login-form-btn"
           className="mt-3 font-outfit font-semibold w-[100%] bg-gray-700 p-4 rounded-xl"
-          onClick={async () => {
-            const user = await handleSignIn(email, password);
-            if (user) {
-              navigate("/");
-            }
-          }}
+          onClick={onHandleSignIn}
         >
           Login
         </button>
@@ -145,7 +150,8 @@ const Login = () => {
             onClick={async () => {
               const user = await handleSignInWithGoogle();
               if (user) {
-                navigate("/");
+                userStore.setUser(user);
+                navigate('/');
               }
             }}
           />

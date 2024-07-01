@@ -1,5 +1,5 @@
 import { db } from "../firebase/firebaseConfig";
-import { doc, getDoc } from "firebase/firestore";
+import { doc, getDoc, serverTimestamp, updateDoc } from "firebase/firestore";
 
 const handleGetUserData = async (userId) => {
     try {
@@ -17,6 +17,26 @@ const handleGetUserData = async (userId) => {
     }
 };
 
+const handleUpdateUserLeaveTime = async (data) => {
+    try {
+        const docRef = doc(db, "users", data.userId);
+        await updateDoc(docRef, { userLeaveTime: serverTimestamp() });
+    }catch (error) {
+        console.log("Error setting user data: ", error)
+    }
+};
+
+const handleUpdateUserRechargableEnergy = async (data) => {
+    try {
+        const docRef = doc(db, "users", data.userId);
+        await updateDoc(docRef, { energyRechargable: data.count });
+    }catch (error) {
+        console.log("Error setting user data: ", error)
+    }
+};
+
 export {
     handleGetUserData,
+    handleUpdateUserLeaveTime,
+    handleUpdateUserRechargableEnergy
 };

@@ -1,5 +1,5 @@
-import { handlePasswordReset } from "../../firebase/auth.ts";
-import { auth, storage } from "../../firebase/firebase";
+import { handlePasswordReset } from "../../firebase/auth";
+import { auth, storage } from "../../firebase/firebaseConfig";
 import { getDownloadURL, ref, uploadString } from "firebase/storage";
 import { useUserStore } from "../../store/store.ts";
 // import {

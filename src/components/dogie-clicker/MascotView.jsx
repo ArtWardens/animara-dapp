@@ -136,7 +136,7 @@ const MascotView = ({
         <img
           src={showImage}
           alt="Game mascot"
-          className="select-none object-cover absolute bottom-0 -z-20 w-full sm:w-full md:w-full lg:w-1/2 xl:w-2/5"
+          className="select-none object-cover absolute bottom-0 -z-20 w-full sm:w-full md:w-full lg:w-2/3 xl:w-2/3"
         />
       )}
 

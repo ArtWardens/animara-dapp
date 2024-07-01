@@ -1,5 +1,5 @@
 import { updateProfile } from "firebase/auth";
-import { auth, db, storage } from "../firebase/firebase";
+import { auth, db, storage } from "../firebase/firebaseConfig";
 import { getDownloadURL, ref, uploadString } from "firebase/storage";
 import { doc, updateDoc, getDoc } from "firebase/firestore";
 import { updateCoins, isReferralCodeValid } from "../utils/fuctions";

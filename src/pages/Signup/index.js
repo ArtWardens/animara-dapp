@@ -17,7 +17,7 @@ const Signup = () => {
   useEffect(() => {
     if (userStore.user !== null) {
       console.log('redirect');
-      navigate('/test');
+      navigate('/clicker');
     }
   }, [userStore.user]);
 
@@ -135,7 +135,7 @@ const Signup = () => {
               if (user) {
                 userStore.setUser(user);
                 userStore.setDisplayName(user.displayName);
-                navigate('/test');
+                navigate('/clicker');
               }
             }}
           />

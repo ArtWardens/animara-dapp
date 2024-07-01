@@ -1,3 +1,4 @@
+import { auth } from "./firebaseConfig.js";
 import {
   GoogleAuthProvider,
   User,
@@ -8,6 +9,7 @@ import {
   signInWithPopup,
   TwitterAuthProvider,
 } from "firebase/auth";
+
 import {
   doc,
   getDoc,
@@ -15,8 +17,9 @@ import {
   setDoc,
   updateDoc,
 } from "firebase/firestore";
+
 import { toast } from "react-toastify";
-import { auth, db } from "../firebase/firebase";
+import { db } from "../firebase/firebaseConfig"; //auth
 import {
   generateReferralCode,
   isReferralCodeValid,
@@ -24,11 +27,11 @@ import {
 } from "../utils/fuctions.js";
 
 const handleSignUp = async (
-  email: string,
-  password: string,
-  name: string,
-  referralCode?: string
-): Promise<User | null> => {
+  email,
+  password,
+  name,
+  referralCode,
+) => {
   try {
     const isReferralValid = await isReferralCodeValid(referralCode);
     if (!isReferralValid && referralCode) {
@@ -82,9 +85,8 @@ const handleSignUp = async (
   }
 };
 
-const handleSignInWithGoogle = async (
-  referralCode?: string
-): Promise<User | null> => {
+const handleSignInWithGoogle = async (referralCode) => {
+
   const provider = new GoogleAuthProvider();
   try {
     const userCredential = await signInWithPopup(auth, provider);
@@ -125,8 +127,11 @@ const handleSignInWithGoogle = async (
 };
 
 const handleSignInWithTwitter = async (
-  referralCode?: string
-): Promise<User | null> => {
+
+  data,
+  referralCode,
+
+) => {
   const provider = new TwitterAuthProvider();
   try {
     const userCredential = await signInWithPopup(auth, provider);
@@ -167,10 +172,7 @@ const handleSignInWithTwitter = async (
   }
 };
 
-const handleSignIn = async (
-  email: string,
-  password: string
-): Promise<User | null> => {
+const handleSignIn = async (data) => {
   try {
     const { email, password } = data;
     const userCredential = await signInWithEmailAndPassword(

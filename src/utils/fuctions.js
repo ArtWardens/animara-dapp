@@ -13,7 +13,7 @@ import {
   serverTimestamp,
 } from "firebase/firestore";
 import { v4 as uuidv4 } from "uuid";
-import { auth, db } from "../firebase/firebase";
+import { auth, db } from "../firebase/firebaseConfig";
 import { HmacSHA256, SHA256, enc } from "crypto-js";
 import { getAuth, signInAnonymously } from "firebase/auth";
 
