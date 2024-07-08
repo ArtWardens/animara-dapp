@@ -1,110 +1,99 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useState, useEffect } from "react";
+import { ProgressBar } from "react-progressbar-fancy";
 
-function EnergyRegeneration({ userProgress, gameData, timeLeft, countdown  }) {
+function EnergyRegeneration({ currentUser, gameData }) {
 
-    const maxEnergy = userProgress.Energy;
-
-    const currentEnergy = gameData?.mascot2?.energy || 0;
-    const energyPercentage = (currentEnergy / maxEnergy) * 100;
-    const progressBarWidth = Math.min(energyPercentage, 100);
-
-    const [modalOpen, setModalOpen] = useState(false);
-    const trigger = useRef(null);
-    const modal = useRef(null);
+    const [profitPerHour, setProfitPerHour] = useState(0);
+    const [progressBarWidth, setProgressBarWidth] = useState(0);
 
     useEffect(() => {
-        const clickHandler = ({ target }) => {
-            if (!modal.current) return;
-            if (!modalOpen || modal.current.contains(target) || trigger.current.contains(target))
-                return;
-            setModalOpen(false);
-        };
-        document.addEventListener("click", clickHandler);
-        return () => document.removeEventListener("click", clickHandler);
-    });
+        setProfitPerHour(currentUser?.profitPerHour)
+    },[currentUser])
 
     useEffect(() => {
-        const keyHandler = ({ keyCode }) => {
-            if (!modalOpen || keyCode !== 27) return;
-            setModalOpen(false);
-        };
-        document.addEventListener("keydown", keyHandler);
-        return () => document.removeEventListener("keydown", keyHandler);
-    });
+        const maxEnergy = gameData?.mascot2?.energy;
+        const currentEnergy = maxEnergy - gameData?.mascot2?.clickByLevel || 0;
 
-    // Function to format countdown in h m s format
-    const formatCountdown = (seconds) => {
-        const hours = Math.floor(seconds / 3600).toString().padStart(2, '0');
-        const minutes = Math.floor((seconds % 3600) / 60).toString().padStart(2, '0');
-        const secs = (seconds % 60).toString().padStart(2, '0');
-
-        let formattedTime = '';
-        if (hours > 0) formattedTime += `${hours} h `;
-        if (minutes > 0) formattedTime += `${minutes} m `;
-        if (secs > 0) formattedTime += `${secs} s`;
+        const energyPercentage = (currentEnergy / maxEnergy) * 100;
+        setProgressBarWidth(Math.min(energyPercentage, 100));
         
-        return formattedTime.trim();
-    };
+    },[gameData]);
 
     return (
         <>
-            <div className="absolute w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/6 mx-auto bottom-5 z-10 left-4 md:left-20 lg:left-20 xl:left-64">
-                <a ref={trigger} onClick={() => setModalOpen(true)}>
-                    <img
-                        src={"../assets/images/clicker-character/leaderboardbtn.png"}
-                        className="h-full w-full"
-                        alt="leaderboard"
-                    />
-                </a>
-
-                <div className="bg-gray-600 rounded-full relative">
+            <div className="absolute grid grid-cols-3 gap-3 justify-center items-center w-full mx-auto my-4 p-10 top-28"
+                style={{ 
+                    zIndex: 99,
+                }}
+            >
+                {/* <div className="bg-gray-600 rounded-full relative">
                     <div
-                        className="mt-2 h-12 bg-gradient-to-r from-amber-500 from-20% to-purple-800 to-80% py-1 rounded-full"
-                        style={{ width: `${progressBarWidth}%` }}
+                        className="mt-2 h-4 md:h-5 bg-gradient-to-r from-yellow-400 from-20% to-fuchsia-700 to-80% py-1 rounded-full"
+                        style={{ 
+                            width: `${progressBarWidth}%`
+                        }}
                     >
                         <div className="absolute inset-0 flex items-center">
-                            <div className="relative h-12">
+                            <div className="relative h-4">
                                 <img
                                     src={"../assets/images/clicker-character/eneryIcon.png"}
-                                    className="h-full w-full"
+                                    className="pl-2 h-full w-full hidden"
                                     alt="energy icon"
                                 />
                             </div>
-                            <div className="flex-1 flex justify-center text-white text-2xl rounded-full">
+                            <div className="text-white text-3xl rounded-full">
                                 {currentEnergy}/{maxEnergy} &emsp;
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> */}
 
-                <div className="pt-1 rounded-lg shadow-lg">
-                <div className={`text-md font-semibold text-center ${currentEnergy >= maxEnergy ? "hidden" : ""}`}>
-                &emsp; &emsp;
-                        <span className="px-2">{formatCountdown(countdown)}</span>
-                    </div>
-                </div>
-            </div>
-
-            {modalOpen && (
-                <div
-                    className={`fixed left-0 top-0 flex h-full min-h-screen w-full items-center justify-center bg-dark/90 px-4 py-5 ${modalOpen ? "block" : "hidden"}`}
+                <div 
+                    className="grid grid-cols-2 gap-10 m-8 mr-8 items-center justify-center"
                     style={{
-                        zIndex: 100, // Add a high z-index here
+                        display: 'inline-flex',
+                        alignItems: 'center',
                     }}
                 >
-                    <div
-                        ref={modal}
-                        className="w-2/3 h-2/3 px-8 py-12 text-center md:px-[70px] md:py-[60px]"
+                    <div 
+                        className="flex p-3"
                         style={{
-                            backgroundImage: 'url("../assets/images/leaderboardExp.png")',
-                            backgroundSize: 'contain',
-                            backgroundPosition: 'center',
-                            backgroundRepeat: 'no-repeat',
+                            borderRadius: '30px',
+                            background: '#0764BA',
+                            backgroundBlendMode: 'multiply',
+                            boxShadow: '3px 2px 0px 0px #60ACFF inset',
                         }}
                     >
+                        <img 
+                            src={"../assets/images/clicker-character/coinTimer.png"}
+                            className="p-3"
+                            alt="coinTimer icon"
+                        />
+
+                        <div className="justify-center items-center grid grid-rows-2 -gap-4">
+                            <div className="text-3xl">{profitPerHour}</div>
+                            <div className="text-lg font-outfit">Profit per Hour (12H)</div>
+                        </div>
+
                     </div>
                 </div>
-            )}
+
+                <ProgressBar
+                    score={progressBarWidth}
+                    progressColor="#AD00FF"
+                    primaryColor="#AD00FF"
+                    secondaryColor="#FFF500"
+                    hideText={true}
+                    className="text-center"
+                />
+                
+                {/* <div className="pt-1">
+                    <div className={`text-md font-semibold text-center ${currentEnergy >= maxEnergy ? "hidden" : ""}`}>
+                        &emsp; &emsp;<span className="px-2">{formatCountdown(countdown)}</span>
+                    </div>
+                </div> */}
+
+            </div>
         </>
     );
 };

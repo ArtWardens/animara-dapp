@@ -218,3 +218,64 @@ text-shadow: 6px 5px 4px rgba(145, 69, 0, 0.4);
   text-transform: capitalize;
   -webkit-text-stroke: 2px  #8A2BE2;
   }
+
+  /* CSS for modal animations */
+.modal-hidden {
+  display: none;
+}
+
+.modal-visible {
+  display: flex;
+}
+
+.modal-transition {
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.modal-enter {
+  opacity: 0;
+  transform: scale(0.9);
+}
+
+.modal-enter-active {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.modal-exit {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.modal-exit-active {
+  opacity: 0;
+  transform: scale(0.9);
+}
+
+.overlay-hidden {
+  display: none;
+}
+
+.overlay-visible {
+  display: flex;
+}
+
+.overlay-transition {
+  transition: opacity 0.3s ease;
+}
+
+.overlay-enter {
+  opacity: 0;
+}
+
+.overlay-enter-active {
+  opacity: 1;
+}
+
+.overlay-exit {
+  opacity: 1;
+}
+
+.overlay-exit-active {
+  opacity: 0;
+}

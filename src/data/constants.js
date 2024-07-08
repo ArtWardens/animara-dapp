@@ -5,8 +5,8 @@
 const gameConfig = {
     CoinsToLevelUp: {
         start: 25,
-        increaseAmount: 0.25, // 25% Percentage
-        levelInterval: 1, // Level
+        increaseAmount: 0.5, // 25% Percentage
+        levelInterval: 3, // Level
     },
     EarnPerTap: {
         start: 1,
@@ -14,9 +14,9 @@ const gameConfig = {
         levelInterval: 3 // Level
     },
     Energy: {
-        start: 20,
-        increaseAmount: 5, // Number
-        levelInterval: 2 // Level
+        start: 100,
+        increaseAmount: 50, // Number
+        levelInterval: 1 // Level
     }
 };
 

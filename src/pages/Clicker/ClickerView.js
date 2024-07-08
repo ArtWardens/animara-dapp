@@ -10,7 +10,7 @@ import { calculateTimeRemaining } from '../../utils/fuctions';
 import { mascots } from '../../utils/local.db';
 import { gameConfig } from '../../data/constants';
 import { addToLocalStorage, getFromLocalStorage } from '../../utils/localStorage';
-import { handleUpdateCoins } from '../../firebase/clicker';
+import { handleUpdateCoins, handleUpdateClickByLevel, handleUpdateLevelUp } from '../../firebase/clicker';
 import { handleUpdateUserLeaveTime, handleUpdateUserRechargableEnergy } from '../../firebase/user';
 
 const ClickerView = ({ currentUser, gameData, setGameData }) => {
@@ -33,7 +33,7 @@ const ClickerView = ({ currentUser, gameData, setGameData }) => {
   const [userProgress, setUserProgress] = useState({
     EarnPerTap: 1,
     CoinsToLvlUp: 25,
-    Energy: 20,
+    Energy: 100,
     currentLevel: 1,
     LevelProgress: {
       prevCTL: 25,
@@ -52,12 +52,15 @@ const ClickerView = ({ currentUser, gameData, setGameData }) => {
         coins: parseInt(totalLocalCoins),
       });
     }
-  }
 
-  const updateExitTime = () => {
-    if(currentUser){
-      handleUpdateUserLeaveTime({ 
+    const LocalClickByLevel = getFromLocalStorage("LocalClickByLevel");
+    const TotalLocalClickByLevel = getFromLocalStorage("TotalLocalClickByLevel");
+    if (currentUser && parseInt(LocalClickByLevel) > 0) {
+      console.log("ClickByLevel Updated!");
+      addToLocalStorage("LocalClickByLevel", 0);
+      handleUpdateClickByLevel({
         userId: currentUser.userId,
+        clickByLevel: parseInt(TotalLocalClickByLevel),
       });
     }
   }
@@ -73,9 +76,9 @@ const ClickerView = ({ currentUser, gameData, setGameData }) => {
   useEffect(() => {
     // ! NOT WORKING
     const handleBeforeUnload = () => {
-      console.log("Run before unload")
+      console.log("Run before unload");
       updateFirebase(); // Ensure coins are updated before the tab is closed or refreshed
-      updateExitTime();
+      // updateExitTime();
     };
 
     window.addEventListener('beforeunload', handleBeforeUnload);
@@ -85,6 +88,28 @@ const ClickerView = ({ currentUser, gameData, setGameData }) => {
       window.removeEventListener('beforeunload', handleBeforeUnload);
     };
   }, [currentUser]);
+
+  useEffect(() => {
+    const handleMouseLeave = (event) => {
+      if (event.clientY <= 0) {
+        updateFirebase();
+      }
+    };
+
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'hidden') {
+        updateFirebase();
+      }
+    };
+
+    document.addEventListener('mouseleave', handleMouseLeave);
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+
+    return () => {
+      document.removeEventListener('mouseleave', handleMouseLeave);
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+    };
+  }, []);
 
   const calculateLevel = (clicks) => {
     const { start, increaseAmount } = gameConfig.CoinsToLevelUp;
@@ -141,6 +166,38 @@ const ClickerView = ({ currentUser, gameData, setGameData }) => {
     return previousAmount;
   };
 
+  // Handle update level up
+  useEffect(() => {
+    const currentMaxEnergy = gameData?.mascot2?.energy;;
+
+    if(gameData?.mascot2?.clickByLevel){
+      const totalLocalCoins = getFromLocalStorage("totalLocalCoins");
+      const TotalLocalClickByLevel = getFromLocalStorage("TotalLocalClickByLevel");
+
+      if(currentMaxEnergy === gameData?.mascot2?.clickByLevel && !currentUser?.isLevelUp){
+        addToLocalStorage("localCoins", 0);
+        addToLocalStorage("LocalClickByLevel", 0);
+        handleUpdateLevelUp({
+          userId: currentUser.userId,
+          coins: parseInt(totalLocalCoins),
+          level: currentUser?.level + 1,
+          clickToLvlUp: currentUser?.clickToLvlUp + 50,
+          clickByLevel: parseInt(TotalLocalClickByLevel) + 50,
+        });
+        setGameData((prev) => ({
+          ...prev,
+          mascot2: {
+            ...prev.mascot2, 
+            clickByLevel: parseInt(TotalLocalClickByLevel) + 50,
+            energy: currentUser?.clickToLvlUp + 50,
+            level: currentUser?.level + 1
+          },
+        }));
+      }
+    };
+
+  },[gameData?.mascot2?.clickByLevel])
+
   // Task to recharge energy
   useEffect(() => {
     if(currentUser?.energyRechargable){
@@ -157,33 +214,31 @@ const ClickerView = ({ currentUser, gameData, setGameData }) => {
         count: currentUser?.energyRechargable - 1
       });
       setEnergyRechargable(prev => prev - 1);
-
-      addToLocalStorage("lastEnergy", maxEnergy);
-      addToLocalStorage("energyGenerateTime", new Date());
-      
+      addToLocalStorage("LocalClickByLevel", 0);
+      // addToLocalStorage("lastEnergy", maxEnergy);
+      // addToLocalStorage("energyGenerateTime", new Date());
       setGameData((prev) => ({
         ...prev,
         mascot2: {
           ...prev.mascot2, 
-          energy: maxEnergy,
+          clickByLevel: 0,
         },
       }));
-
     }
   }
 
   // Setup current user progress based on total click and gameconfig
-  useEffect(() => {
-    setUserProgress({
-      EarnPerTap: calculateEPC(calculateLevel(totalClicks)),
-      CoinsToLvlUp: calculateCTL(totalClicks),
-      Energy: calculateEnergy(calculateLevel(totalClicks)),
-      currentLevel: calculateLevel(totalClicks),
-      LevelProgress: {
-        prevCTL: calculatePrevCTL(totalClicks)
-      }
-    });
-  },[totalClicks]);
+  // useEffect(() => {
+  //   setUserProgress({
+  //     EarnPerTap: calculateEPC(calculateLevel(totalClicks)),
+  //     CoinsToLvlUp: calculateCTL(totalClicks),
+  //     Energy: calculateCTL(totalClicks),
+  //     currentLevel: calculateLevel(totalClicks),
+  //     LevelProgress: {
+  //       prevCTL: calculatePrevCTL(totalClicks)
+  //     }
+  //   });
+  // },[totalClicks]);
 
   const generateEnergyOnload = (energyGenerateTime, lastEnergy) => {
     const currentTime = new Date();
@@ -211,17 +266,15 @@ const ClickerView = ({ currentUser, gameData, setGameData }) => {
   //Fetch the user data on inital load
   useEffect(() => {
     if(currentUser){
-      // Check last energy and energy generate time
-      const lastEnergy = getFromLocalStorage("lastEnergy");
-      const energyGenerateTime = getFromLocalStorage("energyGenerateTime");
-
       setTimeout(() => {
         setGameData({
           mascot2: {
             numberOfClicks: 0,
             point: 0,
             quest: 0,
-            energy: generateEnergyOnload(energyGenerateTime, lastEnergy),
+            energy: currentUser.clickToLvlUp,
+            level: currentUser.level,
+            clickByLevel: currentUser.clickByLevel,
             levelProgress: 0,
           },
           totalPoints: 0,
@@ -240,31 +293,31 @@ const ClickerView = ({ currentUser, gameData, setGameData }) => {
   }, []);
 
   //Reset counter and save data in data base on satate of being idle
-  useEffect(() => {
-    const saveData = async () => {
-      if (idle) {
-        if (totalCount?.[currentMascot?.version] < gameData?.[currentMascot?.version]?.numberOfClicks) {
+  // useEffect(() => {
+  //   const saveData = async () => {
+  //     if (idle) {
+  //       if (totalCount?.[currentMascot?.version] < gameData?.[currentMascot?.version]?.numberOfClicks) {
 
-          setTotalCount((pre) => ({
-            // ...pre,
-            [currentMascot?.version]: gameData?.[currentMascot?.version]?.numberOfClicks,
-          }));
-        }
+  //         setTotalCount((pre) => ({
+  //           // ...pre,
+  //           [currentMascot?.version]: gameData?.[currentMascot?.version]?.numberOfClicks,
+  //         }));
+  //       }
 
-        setGameData((pre) => ({
-          mascot2: {
-            numberOfClicks: 0,
-            point: pre?.mascot2?.point,
-            quest: pre?.mascot2?.quest,
-            energy: pre?.mascot2?.energy,
-            levelProgress: pre?.mascot2?.levelProgress,
-          },
-          totalPoints: pre.totalPoints,
-        }));
-      }
-    };
-    saveData();
-  }, [idle]);
+  //       setGameData((pre) => ({
+  //         mascot2: {
+  //           numberOfClicks: 0,
+  //           point: pre?.mascot2?.point,
+  //           quest: pre?.mascot2?.quest,
+  //           energy: pre?.mascot2?.energy,
+  //           levelProgress: pre?.mascot2?.levelProgress,
+  //         },
+  //         totalPoints: pre.totalPoints,
+  //       }));
+  //     }
+  //   };
+  //   saveData();
+  // }, [idle]);
 
   const [timeLeft, setTimeLeft] = useState({
     hours: 0,
@@ -272,80 +325,79 @@ const ClickerView = ({ currentUser, gameData, setGameData }) => {
     seconds: 0,
   });
 
-  useEffect(() => {
-    const targetDate = new Date('2024-06-30T00:00:00Z').getTime();
+  // useEffect(() => {
+  //   const targetDate = new Date('2024-06-30T00:00:00Z').getTime();
 
-    const updateCountdown = () => {
-      const now = new Date().getTime();
-      const distance = targetDate - now;
+  //   const updateCountdown = () => {
+  //     const now = new Date().getTime();
+  //     const distance = targetDate - now;
 
-      const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+  //     const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+  //     const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+  //     const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-      setTimeLeft({ hours, minutes, seconds });
+  //     setTimeLeft({ hours, minutes, seconds });
 
-      if (distance < 0) {
-        clearInterval(timerInterval);
-        setTimeLeft({ hours: 0, minutes: 0, seconds: 0 });
-      }
-    };
+  //     if (distance < 0) {
+  //       clearInterval(timerInterval);
+  //       setTimeLeft({ hours: 0, minutes: 0, seconds: 0 });
+  //     }
+  //   };
 
-    const timerInterval = setInterval(updateCountdown, 1000);
+  //   const timerInterval = setInterval(updateCountdown, 1000);
 
-    return () => clearInterval(timerInterval);
-  }, []);
+  //   return () => clearInterval(timerInterval);
+  // }, []);
 
-  useEffect(() => {
-    const generateEnergy = () => {
-      setGameData((prev) => {
-        if (prev?.mascot2?.energy < userProgress.Energy) {
-          addToLocalStorage("lastEnergy", prev.mascot2.energy + 1);
-          addToLocalStorage("energyGenerateTime", new Date());
-          return {
-            ...prev,
-            mascot2: {
-              ...prev.mascot2,
-              energy: prev.mascot2.energy + 1,
-            },
-          };
-        } else {
-          return prev;
-        }
-      });
-    };
+  // useEffect(() => {
+  //   const generateEnergy = () => {
+  //     setGameData((prev) => {
+  //       if (prev?.mascot2?.energy < userProgress.Energy) {
+  //         addToLocalStorage("lastEnergy", prev.mascot2.energy + 1);
+  //         addToLocalStorage("energyGenerateTime", new Date());
+  //         return {
+  //           ...prev,
+  //           mascot2: {
+  //             ...prev.mascot2,
+  //             energy: prev.mascot2.energy + 1,
+  //           },
+  //         };
+  //       } else {
+  //         return prev;
+  //       }
+  //     });
+  //   };
 
-    const threeSecondInterval = setInterval(generateEnergy, 3000);
+  //   const threeSecondInterval = setInterval(generateEnergy, 50000);
 
-    return () => clearInterval(threeSecondInterval);
-  }, [userProgress.Energy]);
+  //   return () => clearInterval(threeSecondInterval);
+  // }, [userProgress.Energy]);
 
   // Countdown logic based on energy regeneration
-  useEffect(() => {
-    const currentEnergy = gameData?.mascot2?.energy || 0;
-    const maxEnergy = calculateEnergy(calculateLevel(totalClicks));
+  // useEffect(() => {
+  //   const currentEnergy = gameData?.mascot2?.energy || 0;
+  //   const maxEnergy = calculateEnergy(calculateLevel(totalClicks));
 
-    // Calculate the total remaining time in seconds
-    var totalRemainingTime = (maxEnergy - currentEnergy) * 3;
+  //   // Calculate the total remaining time in seconds
+  //   var totalRemainingTime = (maxEnergy - currentEnergy) * 3;
 
-    // Function to update the countdown
-    const updateEnergyCountdown = () => {
-      setCountdown(totalRemainingTime > 0 ? totalRemainingTime : 0);
-    };
+  //   // Function to update the countdown
+  //   const updateEnergyCountdown = () => {
+  //     setCountdown(totalRemainingTime > 0 ? totalRemainingTime : 0);
+  //   };
 
-    // Initial countdown update
-    updateEnergyCountdown();
+  //   // Initial countdown update
+  //   updateEnergyCountdown();
 
-    // Update the countdown every second
-    const countdownInterval = setInterval(() => {
-      totalRemainingTime -= 1;
-      updateEnergyCountdown();
-    }, 1000);
+  //   // Update the countdown every second
+  //   const countdownInterval = setInterval(() => {
+  //     totalRemainingTime -= 1;
+  //     updateEnergyCountdown();
+  //   }, 1000);
 
-    // Clean up interval on component unmount
-    return () => clearInterval(countdownInterval);
-  }, [gameData?.mascot2?.energy]);
-
+  //   // Clean up interval on component unmount
+  //   return () => clearInterval(countdownInterval);
+  // }, [gameData?.mascot2?.energy]);
 
   return (
     <>
@@ -354,6 +406,9 @@ const ClickerView = ({ currentUser, gameData, setGameData }) => {
         <EarnGuide
           userProgress={userProgress}
           gameData={gameData}
+          currentUser={currentUser}
+          energyRechargable={energyRechargable} 
+          handleUpdateRechargableEnergy={handleUpdateRechargableEnergy}
         />
 
         <LevelProgress
@@ -363,6 +418,7 @@ const ClickerView = ({ currentUser, gameData, setGameData }) => {
         />
 
         <EnergyRegeneration
+          currentUser={currentUser}
           userProgress={userProgress}
           gameData={gameData}
           setGameData={setGameData}
@@ -370,9 +426,15 @@ const ClickerView = ({ currentUser, gameData, setGameData }) => {
           countdown={countdown}
         />
 
-        <TasksCheck energyRechargable={energyRechargable} handleUpdateRechargableEnergy={handleUpdateRechargableEnergy}/>
+        <TasksCheck
+          currentUser={currentUser}
+          energyRechargable={energyRechargable} 
+          handleUpdateRechargableEnergy={handleUpdateRechargableEnergy}
+          setGameData={setGameData}
+        />
 
         <MascotView
+          currentUser={currentUser}
           userProgress={userProgress}
           timeRemaining={timeRemaining}
           gameData={gameData}

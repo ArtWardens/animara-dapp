@@ -29,7 +29,7 @@ const handleUpdateUserLeaveTime = async (data) => {
 const handleUpdateUserRechargableEnergy = async (data) => {
     try {
         const docRef = doc(db, "users", data.userId);
-        await updateDoc(docRef, { energyRechargable: data.count });
+        await updateDoc(docRef, { energyRechargable: data.count, clickByLevel: 0, isLevelUp: false });
     }catch (error) {
         console.log("Error setting user data: ", error)
     }

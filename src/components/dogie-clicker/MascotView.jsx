@@ -1,13 +1,14 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useGlobalContext } from "../../context/ContextProvider";
-import { insertCollection } from "../../utils/firebase";
-// import { getTodayDate } from "../../utils/functions";
+import { getDoc, doc } from "firebase/firestore";
+import { db } from "../../firebase/firebaseConfig";
 import { getImagePath, getAllImagePaths } from "../../utils/getImagePath";
 import { preloadImages } from "../../utils/preloadImages";
 import useSound from "use-sound";
 import ClickCounter from "./ClickCounter";
-import { toast } from "react-toastify";
-// import WarningModal from "./WarningModal";
+import { addToLocalStorage, getFromLocalStorage } from "../../utils/localStorage";
+import { handleUpdateLevelUp } from "../../firebase/clicker";
+import { fetchDepletionReward } from "../../firebase/rewardRates"; // Ensure correct import path
 
 const MascotView = ({
   userProgress,
@@ -22,28 +23,28 @@ const MascotView = ({
   timeRemaining,
   data,
   totalClicks,
-  setTotalClicks
+  setTotalClicks,
+  currentUser
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [showImage, setShowImage] = useState('');
+  const [depletionReward, setDepletionReward] = useState(null);
 
-  const { currentUser } = useGlobalContext();
   const timerRef = useRef(null);
   const [mascotSound] = useSound(currentMascot?.sound);
-
-  const currentLevel = userProgress.currentLevel;
-  const numberOfClicks = gameData?.[currentMascot?.version]?.numberOfClicks || 0;
-
-  const onClose = () => { setIsOpen(false); }
+  const [level, setLevel] = useState(0);
 
   useEffect(() => {
     setTimeout(() => setDelay(false), 2000);
   }, [currentMascot?.version]);
 
   useEffect(() => {
-    // Preload images on mount
     preloadImages(getAllImagePaths(userProgress));
   }, [userProgress]);
+
+  useEffect(() => {
+    setLevel(currentUser?.level);
+  }, [currentUser]);
 
   const handleStart = () => {
     setIdle(false); // Reset idle state when the user interacts
@@ -52,7 +53,7 @@ const MascotView = ({
     }
     timerRef.current = setTimeout(() => {
       setIdle(true); // Set idle state to true after 3 seconds of inactivity
-      setShowImage(getImagePath(userProgress, gameData, currentMascot)); // Reset to initial image after idle
+      setShowImage(getImagePath(userProgress, gameData, currentMascot, currentUser)); // Reset to initial image after idle
     }, 3000);
   };
 
@@ -61,7 +62,7 @@ const MascotView = ({
       clearTimeout(timerRef.current);
       timerRef.current = setTimeout(() => {
         setIdle(true); // Set idle state to true when the user is idle for 3 seconds
-        setShowImage(getImagePath(userProgress, gameData, currentMascot)); // Reset to initial image after idle
+        setShowImage(getImagePath(userProgress, gameData, currentMascot, currentUser)); // Reset to initial image after idle
       }, 3000);
     };
     document.addEventListener("mousedown", resetTimer); // Listen for mouse button press
@@ -71,24 +72,29 @@ const MascotView = ({
   }, []);
 
   useEffect(() => {
-    // Update the displayed image based on the number of clicks
-    setShowImage(getImagePath(userProgress, gameData, currentMascot));
+    setShowImage(getImagePath(userProgress, gameData, currentMascot, currentUser));
   }, [gameData, currentMascot, userProgress]);
 
   const handleMouseDown = () => {
-    if (gameData?.mascot2?.energy >= userProgress.EarnPerTap) {
+    if (gameData?.mascot2?.energy > gameData?.mascot2?.clickByLevel) {
       handleStart();
-      setGameData((pre) => ({
-        ...pre,
-        [currentMascot.version]: {
-          numberOfClicks: (pre[currentMascot.version]?.numberOfClicks || 0) + userProgress.EarnPerTap,
-          energy: pre[currentMascot.version]?.energy - userProgress.EarnPerTap,
-          levelProgress: pre[currentMascot.version]?.levelProgress + userProgress.EarnPerTap,
+      const LocalClickByLevel = getFromLocalStorage("LocalClickByLevel");
+      setGameData((pre) => {
+        addToLocalStorage("LocalClickByLevel", parseInt(LocalClickByLevel) || 0 + pre[currentMascot.version]?.numberOfClicks);
+        addToLocalStorage("TotalLocalClickByLevel", pre[currentMascot.version]?.clickByLevel + userProgress.EarnPerTap);
+        return {
+          ...pre,
+          [currentMascot.version]: {
+            ...pre.mascot2,
+            numberOfClicks: (pre[currentMascot.version]?.numberOfClicks || 0) + userProgress.EarnPerTap,
+            clickByLevel: pre[currentMascot.version]?.clickByLevel + userProgress.EarnPerTap,
+          }
         }
-      }));
+      });
+
       mascotSound();
     } else {
-      toast.error("Run out of energy");
+      handleError(); // Open the modal instead of showing toast error
     }
   };
 
@@ -96,12 +102,37 @@ const MascotView = ({
     // Optionally, you can handle the mouse up event if needed
   };
 
+  const modal = useRef(null);
+
+  const handleOpenModal = (open) => {
+    setIsOpen(open);
+    if (open) {
+      // Create an audio object
+      // const audio = new Audio('../../../public/sounds/ka-ching.mp3'); // Replace with the path to your sound file
+      // audio.play();
+
+      fetchDepletionReward().then(reward => {
+        console.log("Fetched depletionReward:", reward); // Add logging
+        setDepletionReward(reward);
+      });
+    }
+  };
+
+  const handleError = () => {
+    handleOpenModal(true);
+  };
+
+  const closeModal = () => {
+    handleOpenModal(false);
+  };
+
+
   return (
     <div
       onMouseDown={handleMouseDown}
       onMouseUp={handleMouseUp}
       onMouseLeave={handleMouseUp}
-      className="cursor-pointer flex justify-center items-center h-screen w-[40%] select-none bottom-0"
+      className="cursor-pointer flex justify-center items-center h-screen w-[0%] select-none bottom-0"
     >
       <ClickCounter
         gameData={gameData}
@@ -133,14 +164,61 @@ const MascotView = ({
           <span className="sr-only">Loading...</span>
         </div>
       ) : (
-        <img
-          src={showImage}
-          alt="Game mascot"
-          className="select-none object-cover absolute bottom-0 -z-20 w-full sm:w-full md:w-full lg:w-2/3 xl:w-2/3"
-        />
+        <div
+          className="absolute w-5/6 h-4/6 rounded-3xl p-3"
+          style={{
+            border: '2px solid var(--Color, #F4FBFF)',
+            background: 'rgba(155, 231, 255, 0.58)',
+            boxShadow: '0px 8px 30px 0px rgba(4, 161, 183, 0.40) inset, 0px 8px 30px 0px rgba(32, 0, 99, 0.40)',
+            backdropFilter: 'blur(15px)',
+          }}
+        >
+          <div
+            className="w-full h-full rounded-2xl"
+            style={{
+              backgroundImage: 'url("../assets/images/clicker-character/mascotBg.png")',
+              backgroundSize: 'cover',
+              backgroundPosition: 'bottom',
+              backgroundRepeat: 'no-repeat',
+            }}
+          >
+            <img
+              src={showImage}
+              alt="Game mascot"
+              className="object-contain h-full w-full"
+            />
+          </div>
+        </div>
+      )}
+
+      {isOpen && (
+        <div
+          className={`fixed top-0 flex flex-col h-full min-h-screen w-full items-center justify-center bg-dark/90 ${isOpen ? "animate-modalOpen" : "animate-modalClose"}`}
+          style={{
+            zIndex: 100, // Add a high z-index here
+          }}
+        >
+
+          <a className="text-4xl mx-4" type="button" onClick={closeModal}>&times;</a>
+
+          <div className='flex flex-col justify-between items-center'>
+            <p className={`text-8xl mt-16 ${isOpen ? "animate-slideInFromBottom" : "animate-slideOutToBottom"}`}>
+              {depletionReward}
+            </p>
+            <img
+              src="../assets/images/clicker-character/openBox.png"
+              alt="Game mascot"
+              className={`object-cover h-3/4 w-3/4 ${isOpen ? "animate-slideInFromTop" : "animate-slideOutToTop"}`}
+            />
+
+          </div>
+
+
+        </div>
       )}
 
       {/* <WarningModal isOpen={isOpen} onClose={onClose} /> */}
+
     </div>
   );
 };
