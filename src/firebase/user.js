@@ -1,6 +1,8 @@
-import { db } from "../firebase/firebaseConfig";
-import { doc, getDoc, serverTimestamp, updateDoc } from "firebase/firestore";
+import { db, updateUserLastLogin } from "../firebase/firebaseConfig";
+import { doc, getDoc, updateDoc } from "firebase/firestore";
 
+
+// functions that we export for saga
 const handleGetUserData = async (userId) => {
     try {
         const docRef = doc(db, "users", userId);
@@ -17,10 +19,14 @@ const handleGetUserData = async (userId) => {
     }
 };
 
+
 const handleUpdateUserLeaveTime = async (data) => {
     try {
-        const docRef = doc(db, "users", data.userId);
-        await updateDoc(docRef, { userLeaveTime: serverTimestamp() });
+        // can do:
+        // const result = await updateUserLastLogin(...)
+        // instead if we want to have different handling based on 
+        // the results returned from backend
+        await updateUserLastLogin({userId: data.userId});
     }catch (error) {
         console.log("Error setting user data: ", error)
     }
