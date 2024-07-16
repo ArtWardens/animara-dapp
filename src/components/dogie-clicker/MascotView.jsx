@@ -1,50 +1,31 @@
 import React, { useEffect, useRef, useState } from "react";
-import { useGlobalContext } from "../../context/ContextProvider";
-import { getDoc, doc } from "firebase/firestore";
-import { db } from "../../firebase/firebaseConfig";
-import { getImagePath, getAllImagePaths } from "../../utils/getImagePath";
-import { preloadImages } from "../../utils/preloadImages";
 import useSound from "use-sound";
 import ClickCounter from "./ClickCounter";
+import { getImagePath, getAllImagePaths } from "../../utils/getImagePath";
+import { preloadImages } from "../../utils/preloadImages";
 import { addToLocalStorage, getFromLocalStorage } from "../../utils/localStorage";
-import { handleUpdateLevelUp } from "../../firebase/clicker";
-import { fetchDepletionReward } from "../../firebase/rewardRates"; // Ensure correct import path
 
 const MascotView = ({
   userProgress,
   setGameData,
   currentMascot,
-  setTotalCount,
-  totalCount,
   setIdle,
   delay,
   setDelay,
   gameData,
-  timeRemaining,
-  data,
   totalClicks,
   setTotalClicks,
-  currentUser
+  currentUser,
+  isOpenRewardModal,
+  setIsOpenRewardModal,
+  rewardRate,
+  handleOpenModal
 }) => {
-  const [isOpen, setIsOpen] = useState(false);
+
   const [showImage, setShowImage] = useState('');
-  const [depletionReward, setDepletionReward] = useState(null);
 
   const timerRef = useRef(null);
   const [mascotSound] = useSound(currentMascot?.sound);
-  const [level, setLevel] = useState(0);
-
-  useEffect(() => {
-    setTimeout(() => setDelay(false), 2000);
-  }, [currentMascot?.version]);
-
-  useEffect(() => {
-    preloadImages(getAllImagePaths(userProgress));
-  }, [userProgress]);
-
-  useEffect(() => {
-    setLevel(currentUser?.level);
-  }, [currentUser]);
 
   const handleStart = () => {
     setIdle(false); // Reset idle state when the user interacts
@@ -56,6 +37,50 @@ const MascotView = ({
       setShowImage(getImagePath(userProgress, gameData, currentMascot, currentUser)); // Reset to initial image after idle
     }, 3000);
   };
+
+  const handleMouseDown = () => {
+    if (gameData?.mascot2?.energy > gameData?.mascot2?.clickByLevel) {
+      handleStart();
+      const LocalClickByLevel = getFromLocalStorage("LocalClickByLevel");
+      setGameData((pre) => {
+        const totalClicksCount = pre[currentMascot.version]?.clickByLevel + rewardRate?.tapCount;
+
+        addToLocalStorage("LocalClickByLevel", parseInt(LocalClickByLevel) || 0 + pre[currentMascot.version]?.numberOfClicks);
+        addToLocalStorage("TotalLocalClickByLevel", totalClicksCount);
+
+        return {
+          ...pre,
+          [currentMascot.version]: {
+            ...pre.mascot2,
+            numberOfClicks: (pre[currentMascot.version]?.numberOfClicks || 0) + rewardRate?.tapCount,
+            clickByLevel: totalClicksCount,
+          }
+        }
+      });
+
+      mascotSound();
+
+    } else {
+      handleOpenModal("boosts");
+      // handleError(); // Open the modal instead of showing toast error
+    }
+  };
+
+  const handleMouseUp = () => {
+    // Optionally, you can handle the mouse up event if needed
+  };
+
+  const closeRewardModal = () => {
+    setIsOpenRewardModal(false);
+  };
+
+  useEffect(() => {
+    setTimeout(() => setDelay(false), 2000);
+  }, [currentMascot?.version]);
+
+  useEffect(() => {
+    preloadImages(getAllImagePaths(userProgress));
+  }, [userProgress]);
 
   useEffect(() => {
     const resetTimer = () => {
@@ -75,72 +100,21 @@ const MascotView = ({
     setShowImage(getImagePath(userProgress, gameData, currentMascot, currentUser));
   }, [gameData, currentMascot, userProgress]);
 
-  const handleMouseDown = () => {
-    if (gameData?.mascot2?.energy > gameData?.mascot2?.clickByLevel) {
-      handleStart();
-      const LocalClickByLevel = getFromLocalStorage("LocalClickByLevel");
-      setGameData((pre) => {
-        addToLocalStorage("LocalClickByLevel", parseInt(LocalClickByLevel) || 0 + pre[currentMascot.version]?.numberOfClicks);
-        addToLocalStorage("TotalLocalClickByLevel", pre[currentMascot.version]?.clickByLevel + userProgress.EarnPerTap);
-        return {
-          ...pre,
-          [currentMascot.version]: {
-            ...pre.mascot2,
-            numberOfClicks: (pre[currentMascot.version]?.numberOfClicks || 0) + userProgress.EarnPerTap,
-            clickByLevel: pre[currentMascot.version]?.clickByLevel + userProgress.EarnPerTap,
-          }
-        }
-      });
-
-      mascotSound();
-    } else {
-      handleError(); // Open the modal instead of showing toast error
-    }
-  };
-
-  const handleMouseUp = () => {
-    // Optionally, you can handle the mouse up event if needed
-  };
-
-  const modal = useRef(null);
-
-  const handleOpenModal = (open) => {
-    setIsOpen(open);
-    if (open) {
-      // Create an audio object
-      // const audio = new Audio('../../../public/sounds/ka-ching.mp3'); // Replace with the path to your sound file
-      // audio.play();
-
-      fetchDepletionReward().then(reward => {
-        console.log("Fetched depletionReward:", reward); // Add logging
-        setDepletionReward(reward);
-      });
-    }
-  };
-
-  const handleError = () => {
-    handleOpenModal(true);
-  };
-
-  const closeModal = () => {
-    handleOpenModal(false);
-  };
-
 
   return (
     <div
       onMouseDown={handleMouseDown}
       onMouseUp={handleMouseUp}
       onMouseLeave={handleMouseUp}
-      className="cursor-pointer flex justify-center items-center h-screen w-[0%] select-none bottom-0"
+      className="cursor-pointer flex justify-center items-end h-screen w-screen pb-16"
     >
       <ClickCounter
         gameData={gameData}
         currentMascot={currentMascot}
-        data={data}
         totalClicks={totalClicks}
         setTotalClicks={setTotalClicks}
-        userProgress={userProgress}
+        rewardRate={rewardRate}
+        setIsOpenRewardModal={setIsOpenRewardModal}
       />
 
       {delay ? (
@@ -165,7 +139,7 @@ const MascotView = ({
         </div>
       ) : (
         <div
-          className="absolute w-5/6 h-4/6 rounded-3xl p-3"
+          className="w-5/6 h-4/5 rounded-3xl p-3"
           style={{
             border: '2px solid var(--Color, #F4FBFF)',
             background: 'rgba(155, 231, 255, 0.58)',
@@ -173,51 +147,65 @@ const MascotView = ({
             backdropFilter: 'blur(15px)',
           }}
         >
+          <div className="absolute flex w-full justify-between -top-9">
+            <img
+              src={"../assets/images/clicker-character/ring01.png"}
+              alt="ring"
+              className="object-cover w-12 absolute left-2"
+            />
+            <img
+              src={"../assets/images/clicker-character/ring01.png"}
+              alt="ring"
+              className="object-cover w-12 opacity-0"
+            />
+            <img
+              src={"../assets/images/clicker-character/ring02.png"}
+              alt="ring"
+              className="object-cover w-12 absolute right-8"
+            />
+          </div>
           <div
-            className="w-full h-full rounded-2xl"
+            className="grid w-full h-full rounded-2xl"
             style={{
               backgroundImage: 'url("../assets/images/clicker-character/mascotBg.png")',
               backgroundSize: 'cover',
-              backgroundPosition: 'bottom',
+              backgroundPosition: 'center',
               backgroundRepeat: 'no-repeat',
             }}
           >
             <img
               src={showImage}
               alt="Game mascot"
-              className="object-contain h-full w-full"
+              className="absolute place-self-center object-fit w-3/4 bottom-20"
             />
           </div>
         </div>
       )}
 
-      {isOpen && (
+      {isOpenRewardModal && (
         <div
-          className={`fixed top-0 flex flex-col h-full min-h-screen w-full items-center justify-center bg-dark/90 ${isOpen ? "animate-modalOpen" : "animate-modalClose"}`}
+          className={`fixed top-0 flex flex-col h-full w-full items-center justify-center bg-dark/90 ${isOpenRewardModal ? "animate-modalOpen" : "animate-modalClose"}`}
           style={{
-            zIndex: 100, // Add a high z-index here
+            zIndex: 100,
           }}
         >
 
-          <a className="text-4xl mx-4" type="button" onClick={closeModal}>&times;</a>
+          <a className="text-4xl mx-4" type="button" onClick={closeRewardModal}>&times;</a>
 
           <div className='flex flex-col justify-between items-center'>
-            <p className={`text-8xl mt-16 ${isOpen ? "animate-slideInFromBottom" : "animate-slideOutToBottom"}`}>
-              {depletionReward}
+            <p className={`text-8xl mt-16 ${isOpenRewardModal ? "animate-slideInFromBottom" : "animate-slideOutToBottom"}`}>
+              {rewardRate?.depletionReward}
             </p>
             <img
               src="../assets/images/clicker-character/openBox.png"
               alt="Game mascot"
-              className={`object-cover h-3/4 w-3/4 ${isOpen ? "animate-slideInFromTop" : "animate-slideOutToTop"}`}
+              className={`object-cover h-3/4 w-3/4 ${isOpenRewardModal ? "animate-slideInFromTop" : "animate-slideOutToTop"}`}
             />
 
           </div>
 
-
         </div>
       )}
-
-      {/* <WarningModal isOpen={isOpen} onClose={onClose} /> */}
 
     </div>
   );

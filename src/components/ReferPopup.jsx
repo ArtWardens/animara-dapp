@@ -1,10 +1,13 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { BsCopy } from "react-icons/bs";
 import StyledQRCode from "./StyledQRCode";
 import gem from "../assets/images/gem2.png";
 import { toast } from "react-toastify";
 
-const ReferPopup = ({ inviteCode, onClose }) => {
+const ReferPopup = ({ inviteCode, onClose, rewardRate }) => {
+
+  const [countdown, setCountdown] = useState(5);
+  const [isCloseEnabled, setIsCloseEnabled] = useState(false);
   const inviteLink = `${window.location.origin}/signup?invite-code=${inviteCode}`;
 
   const handleCopyToClipboard = () => {
@@ -28,6 +31,20 @@ const ReferPopup = ({ inviteCode, onClose }) => {
     };
   }, []);
 
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCountdown((prevCountdown) => {
+        if (prevCountdown === 1) {
+          clearInterval(timer);
+          setIsCloseEnabled(true);
+        }
+        return prevCountdown - 1;
+      });
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, []);
+
   const shareInviteLink = () => {
     if (navigator.share) {
       navigator
@@ -44,18 +61,21 @@ const ReferPopup = ({ inviteCode, onClose }) => {
   };
 
   return (
-    <div className="fixed w-screen h-screen inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 font-outfit overflow-hidden">
-      <div className="relative z-60 flex flex-col items-center bg-gray-700 p-6 rounded-lg shadow-lg w-full max-w-sm">
+    <div className="fixed w-screen h-screen inset-0 z-100 flex items-center justify-center bg-black bg-opacity-50 font-outfit overflow-hidden">
+      <div className="relative z-100 flex flex-col items-center bg-gray-700 p-6 rounded-lg shadow-lg w-full max-w-sm">
         <button
-          className="absolute top-2 right-2 text-white text-3xl"
-          onClick={() => onClose(false)}
+          className="absolute top-2 right-2 text-white text-md pl-3 pr-3 pt-1 pb-1 rounded-full border-2 border-slate-500 m-2"
+          onClick={() => {
+            console.log("Close");
+            isCloseEnabled && onClose(false)
+          }}
+          disabled={!isCloseEnabled}
         >
-          &times;
+          {isCloseEnabled ? "x" : countdown}
         </button>
         <h2 className="text-2xl font-bold mb-4">Invite Friends</h2>
         <p className="mb-4">
-          <span className="text-purple-200">+5000</span> coins for you and your
-          friend
+          Get <span className="text-purple-300">{rewardRate?.inviteRefresh}</span> Energy Bar
         </p>
         <p>Your Invite Code</p>
         <div className="p-2 rounded text-center flex items-center">

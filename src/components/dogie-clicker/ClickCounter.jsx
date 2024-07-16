@@ -1,21 +1,17 @@
-import React, { useEffect, useState } from "react";
-import { toast } from "react-toastify";
-import { handleUpdateCoins } from "../../firebase/clicker";
+import React, { useEffect, useState, useRef } from "react";
 import { useUserDetails } from "../../sagaStore/slices";
 import { addToLocalStorage, getFromLocalStorage } from "../../utils/localStorage"
 import { useNavigate } from "react-router-dom";
-// import backgroundImageClicker from '../../assets/images/clicker-character/clickerBg.png';
 
-
-const ClickCounter = ({ gameData, currentMascot, totalClicks, setTotalClicks, userProgress }) => {
+const ClickCounter = ({ gameData, currentMascot, totalClicks, setTotalClicks, rewardRate, setIsOpenRewardModal }) => {
 
   const navigate = useNavigate();
   const currentUser = useUserDetails();
   const [clickCount, setClickCount] = useState(0);
-
-  const handleClick = () => {
-    setClickCount(prevCount => prevCount + 1);
-  };
+  
+  const numberOfClicks = gameData?.[currentMascot?.version]?.numberOfClicks;
+  const clickByLevel = gameData?.mascot2?.clickByLevel;
+  const maxEnergy = gameData?.mascot2?.energy;
 
   useEffect(() => {
     if (clickCount > 0) {
@@ -38,17 +34,23 @@ const ClickCounter = ({ gameData, currentMascot, totalClicks, setTotalClicks, us
     }, 1500)
   }, [currentUser])
 
-  const numberOfClicks = gameData?.[currentMascot?.version]?.numberOfClicks;
-
   useEffect(() => {
     if (numberOfClicks > 0) {
+      const shouldGainRewards = clickByLevel === maxEnergy;
+      const extraRewards = shouldGainRewards ? rewardRate?.depletionReward : 0;
+
       const localCoins = getFromLocalStorage("localCoins");
       setTotalClicks(prevTotal => {
-        const totalLocalCoins = parseInt(localCoins) || 0 + numberOfClicks;
+        const totalLocalCoins = parseInt(localCoins) || 0 + numberOfClicks + extraRewards;
         addToLocalStorage("localCoins", totalLocalCoins);
-        addToLocalStorage("totalLocalCoins", prevTotal + userProgress?.EarnPerTap);
-        return prevTotal + userProgress?.EarnPerTap;
+        addToLocalStorage("totalLocalCoins", prevTotal + rewardRate?.tapCount + extraRewards);
+        return prevTotal + rewardRate?.tapCount + extraRewards;
       });
+
+      if (shouldGainRewards) {
+        console.log("Completed! Popup reward modal")
+        setIsOpenRewardModal(true);
+      }
     };
   }, [numberOfClicks]);
 
@@ -60,37 +62,46 @@ const ClickCounter = ({ gameData, currentMascot, totalClicks, setTotalClicks, us
   }, [gameData.currentScore]);
 
   return (
-    <div 
-      className="flex flex-col gap-2 absolute top-8 z-10 left-4 md:left-20 lg:left-20 xl:left-52 2xl:left-64 bg-cyan-950 p-4 rounded-2xl"
-      // style={{ 
-      //   backgroundImage: `url(${backgroundImageClicker})`,
-      //   backgroundSize: 'cover',
-      //   backgroundRepeat: 'no-repeat',
-      //   backgroundPosition: 'center',
-      //   zIndex: 999,
-      // }}
+    <div
+      className="flex flex-row absolute top-8 z-10 p-5"
+      style={{
+        border: '2px solid #F4FBFF',
+        borderRadius: '500px 20px 20px 500px',
+        background: 'var(--0163BE, #0163BE)',
+        boxShadow: '3px 2px 0px 0px #517296 inset',
+      }}
     >
-      <div className="text-lg md:text-lg lg:text-lg xl:text-xl flex gap-5 font-outfit uppercase">
-        {currentUser?.first_name}{" "}{currentUser?.last_name}
-      </div>
-      <div
-        className="text-2xl md:text-2xl lg:text-2xl xl:text-3xl text-amber-500 flex items-center gap-2"
-        style={{
-          WebkitTextStrokeWidth: '1px',
-          WebkitTextStrokeColor: 'var(--Color-11, #FFF)',
-          fontWeight: '600',
-          lineHeight: '0.9',
-          letterSpacing: '1.2px',
-        }}
-      >
+
+      <div className="place-content-center p-2 w-20 h-20">
         <img
           src={"../assets/images/clicker-character/gem.png"}
-          width={50}
-          height={50}
-          className="h-6 w-6"
           alt="gem"
         />
-        <span>{totalClicks}</span>
+      </div>
+
+      <div className="flex flex-col gap-2">
+
+        <div className="font-outfit text-md">
+          {currentUser?.name}
+        </div>
+
+        <div
+          className="text-3xl md:text-3xl lg:text-3xl xl:text-4xl text-amber-500 flex items-center gap-2"
+          style={{
+            WebkitTextStrokeWidth: '1px',
+            WebkitTextStrokeColor: 'var(--Color-11, #FFF)',
+            fontWeight: '600',
+            lineHeight: '0.9',
+            letterSpacing: '1.2px',
+          }}
+        >
+          <img
+            src={"../assets/images/clicker-character/gem.png"}
+            alt="gem"
+          />
+          <span>{totalClicks}</span>
+        </div>
+
       </div>
     </div>
   );

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { getAuth, onAuthStateChanged } from "../../firebase/auth";
 import ReferPopup from "../../components/ReferPopup";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "../../firebase/firebase";

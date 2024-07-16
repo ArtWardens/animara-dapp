@@ -1,14 +1,26 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { ProgressBar } from "react-progressbar-fancy";
+import { calculateCountdownRemaining, getCooldownTime, getTimeRemaining } from '../../utils/getTimeRemaining';
+import LeaderBoardModal from '../LeaderBoardModal';
+import OneTimeTask from '../oneTimeTask';
 
-function EnergyRegeneration({ currentUser, gameData }) {
+function EnergyRegeneration({ 
+    currentUser, 
+    gameData, 
+    totalClicks, 
+    setTotalClicks,
+    isLeaderboardOpen,
+    setIsLeaderboardOpen,
+    isOneTimeTaskOpen,
+    setIsOneTimeTaskOpen,
+}) {
 
     const [profitPerHour, setProfitPerHour] = useState(0);
     const [progressBarWidth, setProgressBarWidth] = useState(0);
 
     useEffect(() => {
         setProfitPerHour(currentUser?.profitPerHour)
-    },[currentUser])
+    }, [currentUser])
 
     useEffect(() => {
         const maxEnergy = gameData?.mascot2?.energy;
@@ -16,46 +28,35 @@ function EnergyRegeneration({ currentUser, gameData }) {
 
         const energyPercentage = (currentEnergy / maxEnergy) * 100;
         setProgressBarWidth(Math.min(energyPercentage, 100));
-        
-    },[gameData]);
+    }, [gameData]);
+
+    const [timeRemaining, setTimeRemaining] = useState(getTimeRemaining());
+    const [countDownRemaining, setCountDownRemaining] = useState(0);
+ 
+    useEffect(() => {
+        const intervalId = setInterval(() => {
+            setTimeRemaining(getTimeRemaining());
+        }, 1000);
+
+        return () => clearInterval(intervalId); // Cleanup the interval on component unmount
+    }, []);
 
     return (
         <>
-            <div className="absolute grid grid-cols-3 gap-3 justify-center items-center w-full mx-auto my-4 p-10 top-28"
-                style={{ 
-                    zIndex: 99,
+            <div className="absolute grid grid-cols-3 gap-3 justify-center items-center w-full mx-auto my-4 p-10 top-20"
+                style={{
+                    zIndex: 80,
                 }}
             >
-                {/* <div className="bg-gray-600 rounded-full relative">
-                    <div
-                        className="mt-2 h-4 md:h-5 bg-gradient-to-r from-yellow-400 from-20% to-fuchsia-700 to-80% py-1 rounded-full"
-                        style={{ 
-                            width: `${progressBarWidth}%`
-                        }}
-                    >
-                        <div className="absolute inset-0 flex items-center">
-                            <div className="relative h-4">
-                                <img
-                                    src={"../assets/images/clicker-character/eneryIcon.png"}
-                                    className="pl-2 h-full w-full hidden"
-                                    alt="energy icon"
-                                />
-                            </div>
-                            <div className="text-white text-3xl rounded-full">
-                                {currentEnergy}/{maxEnergy} &emsp;
-                            </div>
-                        </div>
-                    </div>
-                </div> */}
 
-                <div 
+                <div
                     className="grid grid-cols-2 gap-10 m-8 mr-8 items-center justify-center"
                     style={{
                         display: 'inline-flex',
                         alignItems: 'center',
                     }}
                 >
-                    <div 
+                    <div
                         className="flex p-3"
                         style={{
                             borderRadius: '30px',
@@ -64,17 +65,15 @@ function EnergyRegeneration({ currentUser, gameData }) {
                             boxShadow: '3px 2px 0px 0px #60ACFF inset',
                         }}
                     >
-                        <img 
+                        <img
                             src={"../assets/images/clicker-character/coinTimer.png"}
                             className="p-3"
                             alt="coinTimer icon"
                         />
-
                         <div className="justify-center items-center grid grid-rows-2 -gap-4">
                             <div className="text-3xl">{profitPerHour}</div>
-                            <div className="text-lg font-outfit">Profit per Hour (12H)</div>
+                            <div className="text-md font-outfit">Profit Per 12h</div>
                         </div>
-
                     </div>
                 </div>
 
@@ -86,14 +85,39 @@ function EnergyRegeneration({ currentUser, gameData }) {
                     hideText={true}
                     className="text-center"
                 />
-                
-                {/* <div className="pt-1">
-                    <div className={`text-md font-semibold text-center ${currentEnergy >= maxEnergy ? "hidden" : ""}`}>
-                        &emsp; &emsp;<span className="px-2">{formatCountdown(countdown)}</span>
-                    </div>
-                </div> */}
 
             </div>
+
+            {isOneTimeTaskOpen && (
+                <div
+                className={`fixed left-0 top-0 flex h-full min-h-screen w-full items-center justify-center bg-dark/90 px-4 py-5 ${
+                    isOneTimeTaskOpen ? 'block' : 'hidden'
+                }`}
+                style={{
+                    zIndex: 100, // Add a high z-index here
+                }}
+                >
+                <OneTimeTask setIsOneTimeTaskOpen={setIsOneTimeTaskOpen} totalClicks={totalClicks} setTotalClicks={setTotalClicks}/>
+                </div>
+            )}
+
+            {isLeaderboardOpen && (
+                <div
+                className={`fixed left-0 top-0 flex h-full min-h-screen w-full items-center justify-center bg-dark/90 px-4 py-5 ${
+                    isLeaderboardOpen ? 'block' : 'hidden'
+                }`}
+                style={{
+                    zIndex: 100, // Add a high z-index here
+                }}
+                >
+                <LeaderBoardModal
+                    timeRemaining={timeRemaining}
+                    countdown={countDownRemaining}
+                    isLeaderBoardOpen={isLeaderboardOpen}
+                    setIsLeaderBoardOpen={setIsLeaderboardOpen}
+                />
+                </div>
+            )}
         </>
     );
 };

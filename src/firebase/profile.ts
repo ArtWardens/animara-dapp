@@ -26,11 +26,6 @@ export async function updateUserProfile(
     // Upload the photo to Firebase Storage if provided
     let photoURL;
     if (photoString) {
-      // const photoBuffer = Buffer.from(photoString, "base64");
-      // const photoFileName = `profile-images/${uid}`;
-      // const file = storage.ref().child(photoFileName);
-      // await file.put(photoBuffer);
-      // photoURL = await file.getDownloadURL();
       const pfpRef = ref(storage, `profile-images/${user?.uid}`);
       await uploadString(pfpRef, photoString, "data_url");
       photoURL = await getDownloadURL(pfpRef);

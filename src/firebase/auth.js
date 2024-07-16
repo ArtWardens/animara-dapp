@@ -1,13 +1,14 @@
 import { auth } from "./firebaseConfig.js";
 import {
   GoogleAuthProvider,
-  User,
   createUserWithEmailAndPassword,
   sendEmailVerification,
   sendPasswordResetEmail,
   signInWithEmailAndPassword,
   signInWithPopup,
   TwitterAuthProvider,
+  getAuth, // Added import for getAuth
+  onAuthStateChanged, // Added import for onAuthStateChanged
 } from "firebase/auth";
 
 import {
@@ -25,6 +26,21 @@ import {
   isReferralCodeValid,
   updateCoins,
 } from "../utils/fuctions.js";
+
+export const fetchRewardRate = async () => {
+  try {
+    const docRef = doc(db, "rewardRate", "BO6QrGeuUCpKHGWZoT9n"); // Use the actual document ID
+    const docSnap = await getDoc(docRef);
+
+    if (docSnap.exists()) {
+      return docSnap.data();
+    } else {
+      return "No document found";
+    }
+  } catch (error) {
+    return "Error fetching data";
+  }
+};
 
 const handleSignUp = async (
   email,
@@ -44,11 +60,18 @@ const handleSignUp = async (
       return null;
     }
 
+    const rewardRate = await fetchRewardRate();
+    if (typeof rewardRate === "string") {
+      toast.error(rewardRate);
+      return null;
+    }
+
     const userCredential = await createUserWithEmailAndPassword(
       auth,
       email,
       password
     );
+
     const { user } = userCredential;
     console.log("User signed up successfully:", user);
 
@@ -63,6 +86,14 @@ const handleSignUp = async (
       referredBy: referralCode || null,
       createdAt: serverTimestamp(),
       isKOL: false,
+      inviteRechargable: rewardRate.inviteRefresh,
+      energyRechargable: rewardRate.basedRefresh,
+      level: 1,
+      profitPerHour: 0,
+      clickByLevel: 0,
+      loggedInToday: false,
+      loginDays: 0,
+      userId: user.uid
     };
 
     await setDoc(doc(db, "users", user.uid), userData);
@@ -97,6 +128,12 @@ const handleSignInWithGoogle = async (referralCode) => {
 
     if (!userDoc.exists()) {
       const newReferralCode = generateReferralCode();
+      const rewardRate = await fetchRewardRate();
+      if (typeof rewardRate === "string") {
+        toast.error(rewardRate);
+        return null;
+      }
+
       const userData = {
         name: user.displayName,
         email: user.email,
@@ -106,6 +143,14 @@ const handleSignInWithGoogle = async (referralCode) => {
         referredBy: null,
         createdAt: serverTimestamp(),
         isKOL: false,
+        inviteRechargable: rewardRate.inviteRefresh,
+        energyRechargable: rewardRate.basedRefresh,
+        level: 1,
+        profitPerHour: 0,
+        clickByLevel: 0,
+        loggedInToday: false,
+        loginDays: 0,
+        userId: user.uid
       };
       await setDoc(doc(db, "users", user.uid), userData);
     }
@@ -128,7 +173,6 @@ const handleSignInWithGoogle = async (referralCode) => {
 
 const handleSignInWithTwitter = async (
 
-  data,
   referralCode,
 
 ) => {
@@ -142,6 +186,12 @@ const handleSignInWithTwitter = async (
 
     if (!userDoc.exists()) {
       const newReferralCode = generateReferralCode();
+      const rewardRate = await fetchRewardRate();
+      if (typeof rewardRate === "string") {
+        toast.error(rewardRate);
+        return null;
+      }
+
       const userData = {
         name: user.displayName,
         email: user.email,
@@ -152,6 +202,14 @@ const handleSignInWithTwitter = async (
         referredUsers: [],
         createdAt: serverTimestamp(),
         isKOL: false,
+        inviteRechargable: rewardRate.inviteRefresh,
+        energyRechargable: rewardRate.basedRefresh,
+        level: 1,
+        profitPerHour: 0,
+        clickByLevel: 0,
+        loggedInToday: false,
+        loginDays: 0,
+        userId: user.uid
       };
       await setDoc(doc(db, "users", user.uid), userData);
     }
@@ -230,4 +288,6 @@ export {
   handleSignInWithTwitter,
   handleSignInWithGoogle,
   handleSignUp,
+  getAuth, // Added export for getAuth
+  onAuthStateChanged // Added export for onAuthStateChanged
 };

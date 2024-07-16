@@ -1,14 +1,10 @@
-// import { removeSession } from "../../actions/authActions";
-import { useGlobalContext } from "../../context/ContextProvider";
 import ClickerView from "./ClickerView";
-// import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import '../../styles/globals.css';
 import { useAppDispatch } from "../../hooks/storeHooks";
 import { getUser, useUserDetails } from "../../sagaStore/slices";
 import { useNavigate } from "react-router-dom";
 import backgroundImageClicker from '../../assets/images/clicker-character/clickerBg.png';
-
 
 export default function ClickerMain() {
   const dispatch = useAppDispatch();
@@ -24,30 +20,13 @@ export default function ClickerMain() {
   useEffect(() => {
     setTimeout(() => {
       if(!currentUser){
-        navigate('/login');
+        // navigate('/login');
       }
     },1500)
   }, [currentUser])
-  
-  //   const router = useRouter();
-  const [gameData, setGameData] = useState({});
-  //   useEffect(() => {
-  //     if (typeof currentUser !== "undefined" && !currentUser) {
-  //       removeSession().then(() => router.push("/login"));
-  //     }
-  //   }, [currentUser]);
 
-  //   const logout = () => {
-  //     const auth = getAuth();
-  //     signOut(auth)
-  //       .then(() => {
-  //         removeSession().then(() => router.push("/login"));
-  //       })
-  //       .catch((error) => {
-  //         console.log(error);
-  //       });
-  //   };
-  
+  const [gameData, setGameData] = useState({});
+
   return (
     <div
       className="w-full mx-auto bg-clicker-game bg-no-repeat bg-cover h-screen relative cursor-pointer -z-99"
@@ -56,7 +35,6 @@ export default function ClickerMain() {
         backgroundSize: 'cover',
         backgroundRepeat: 'no-repeat',
         backgroundPosition: 'center',
-        // zIndex: 999,
       }}
     >
       <div className=" flex justify-between absolute right-0 mt-6">
