@@ -1,4 +1,4 @@
-import { db, updateUserLastLogin } from "../firebase/firebaseConfig";
+import { auth, db, updateUserLastLogin } from "../firebase/firebaseConfig";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 
 
@@ -20,13 +20,15 @@ const handleGetUserData = async (userId) => {
 };
 
 
-const handleUpdateUserLeaveTime = async (data) => {
+const handleUpdateUserLeaveTime = async () => {
     try {
         // can do:
         // const result = await updateUserLastLogin(...)
         // instead if we want to have different handling based on 
         // the results returned from backend
-        await updateUserLastLogin({userId: data.userId});
+        const idToken = await auth.currentUser.getIdToken(/* forceRefresh */ false);
+        console.log(`idToken ${idToken}`);
+        await updateUserLastLogin({idToken: idToken});
     }catch (error) {
         console.log("Error setting user data: ", error)
     }
