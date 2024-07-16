@@ -66,7 +66,7 @@ const ClickerView = ({ currentUser, gameData, setGameData }) => {
     const interval = setInterval(() => {
       updateFirebase();
     }, 10000); // Update Firestore every 10 seconds
-
+    updateExitTime();
     return () => clearInterval(interval);
   }, []);
 
