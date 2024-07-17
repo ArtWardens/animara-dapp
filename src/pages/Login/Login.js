@@ -1,42 +1,40 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, useNavigate } from 'react-router-dom';
 import TelegramLoginButton from "react-telegram-login";
 
-import { handleSignIn, handleSignInWithGoogle, handleSignInWithTwitter} from '../../firebase/auth';
+import { handleSignInWithGoogle, handleSignInWithTwitter} from '../../firebase/auth';
 import { useUserStore } from '../../store/store.ts';
 import { useAppDispatch } from '../../hooks/storeHooks.js';
-import { getUser, logOut, login, useUserDetails } from '../../sagaStore/slices/userSlice.js';
+import { getUser, login, useUserDetails } from '../../sagaStore/slices/userSlice.js';
 
 import useAuth from "../../hooks/useAuth.js";
 import { signInUser, storeUserInFirestore } from "../../utils/fuctions.js";
 
 const Login = () => {
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+  const { loading } = useAuth();
+  const userStore = useUserStore();
   const currentUser = useUserDetails();
   const { t: tLogin } = useTranslation('login');
-  const dispatch = useAppDispatch();
-  const userStore = useUserStore();
-  const navigate = useNavigate();
-
-  const [showPassword, setShowPassword] = useState(false);
-  const togglePassword = () => setShowPassword(!showPassword);
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-
-  const { user, loading } = useAuth();
+  const [showPassword, setShowPassword] = useState(false);
+  const togglePassword = () => setShowPassword(!showPassword);
 
   useEffect(() => {
     setTimeout(() => {
       dispatch(getUser());
     },1000)
-  },[])
+  },[dispatch])
 
   useEffect(() => {
     if(currentUser){
       navigate('/clicker');
     }
-  }, [currentUser])
+  }, [navigate, currentUser])
 
   const onHandleSignIn = async () => {
     dispatch(login({ email, password }));
@@ -180,7 +178,7 @@ const Login = () => {
           </div>
         </div>
         <p className="font-outfit mt-20 mb-8 text-center block">
-          Don't have an account? &nbsp;
+          Don&apos;t have an account? &nbsp;
           <Link to="/signup" className="underline underline-offset-4">
             Signup
           </Link>

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import TelegramLoginButton from "react-telegram-login";
 import {
@@ -8,25 +8,9 @@ import {
 } from "../../firebase/auth";
 import useAuth from "../../hooks/useAuth.js";
 import {
-  generateReferralCode,
   signInUser,
   storeUserInFirestore,
-  verifyTelegramHash,
 } from "../../utils/fuctions.js";
-import {
-  collection,
-  deleteDoc,
-  doc,
-  getDoc,
-  getDocs,
-  query,
-  serverTimestamp,
-  setDoc,
-  updateDoc,
-  where,
-} from "firebase/firestore";
-import { auth, db } from "../../firebase/firebaseConfig.js";
-import { signInAnonymously, signInWithCustomToken } from "firebase/auth";
 
 const Signup = () => {
   const location = useLocation();
@@ -94,7 +78,7 @@ const Signup = () => {
           className="absolute -z-10 -top-24 -left-20 w-[302px] h-[302px] rounded-[50%]"
         ></div>
         <h2 className="uppercase text-6xl">SignUp</h2>
-        <p className="font-outfit text-white">Glad you're back!</p>
+        <p className="font-outfit text-white">Glad you&apos;re back!</p>
         <input
           type="text"
           placeholder="Full Name"

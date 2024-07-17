@@ -1,5 +1,5 @@
 
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useAppDispatch } from "../../hooks/storeHooks";
 import { getUser, useUserDetails } from "../../sagaStore/slices";
 import ClickerView from "./ClickerView";

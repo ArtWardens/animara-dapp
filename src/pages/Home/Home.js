@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { getAuth, onAuthStateChanged } from "../../firebase/auth";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "../../firebase/firebase";
@@ -11,7 +11,6 @@ function Home() {
 
   onAuthStateChanged(auth, async (user) => {
     if (user) {
-      console.log("TESTING", user.uid);
       // get user from firestore db
       const docRef = doc(db, "users", user.uid);
       const docSnap = await getDoc(docRef);
@@ -19,7 +18,7 @@ function Home() {
       if (docSnap.exists()) {
         setInviteCode(docSnap.data().referralCode);
       } else {
-        console.log("No such document!");
+        console.log("Failed to get user");
       }
     }
   });

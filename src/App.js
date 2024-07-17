@@ -1,21 +1,19 @@
-import './i18n';
+import React, { useEffect } from 'react';
 
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import useNavigatorOnline from 'use-navigator-online';
-
-import AppLayout from './components/AppLayout';
-
 import ClickerMain from './pages/Clicker/ClickerMain';
 import Login from './pages/Login/Login';
 import Signup from "./pages/Signup/Signup";
 import EditProfile from "./pages/EditProfile/EditProfile";
-
-import { useEffect } from 'react';
+import AppLayout from './components/AppLayout';
 import { GlobalProvider } from './context/ContextProvider';
+import rootSaga from './sagas';
 import { useAppDispatch } from './hooks/storeHooks';
 import { appInit, systemUpdateNetworkConnection } from './sagaStore/slices';
 import { runSaga } from './sagaStore/store';
-import rootSaga from './sagas';
+
+import './i18n';
 
 export const App = () => {
   const dispatch = useAppDispatch();
