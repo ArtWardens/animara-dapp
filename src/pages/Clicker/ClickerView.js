@@ -269,10 +269,27 @@ const ClickerView = ({ currentUser, gameData, setGameData }) => {
     const saveData = async () => {
       if (idle) {
         if (totalCount?.[currentMascot?.version] < gameData?.[currentMascot?.version]?.numberOfClicks) {
+
+          setTotalCount((pre) => ({
+            // ...pre,
+            [currentMascot?.version]: gameData?.[currentMascot?.version]?.numberOfClicks,
+          }));
         }
+
+        setGameData((pre) => ({
+          mascot2: {
+            numberOfClicks: 0,
+            point: pre?.mascot2?.point,
+            quest: pre?.mascot2?.quest,
+            energy: pre?.mascot2?.energy,
+            levelProgress: pre?.mascot2?.levelProgress,
+          },
+          totalPoints: pre.totalPoints,
+        }));
       }
-    }
-  }, []);
+    };
+    saveData();
+  }, [idle]);
 
   const handleClose = () => {
     dispatch(closeDailyPopup());
