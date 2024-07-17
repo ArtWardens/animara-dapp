@@ -51,7 +51,11 @@
   "eslintConfig": {
     "extends": [
       "react-app",
-      "react-app/jest"
+      "react-app/jest",
+      "eslint:recommended",
+      "plugin:react/recommended",
+      "@babel/plugin-transform-private-property-in-object",
+      "next/core-web-vitals"
     ]
   },
   "browserslist": {
@@ -67,6 +71,7 @@
     ]
   },
   "devDependencies": {
+    "@babel/plugin-transform-private-property-in-object": "^7.24.7",
     "autoprefixer": "^10.4.19",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-prettier": "^5.1.3",
