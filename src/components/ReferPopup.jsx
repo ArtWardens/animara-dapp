@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { PropTypes } from "prop-types";
 import { BsCopy } from "react-icons/bs";
 import StyledQRCode from "./StyledQRCode";
 import gem from "../assets/images/gem2.png";
@@ -95,5 +96,11 @@ const ReferPopup = ({ inviteCode, onClose, rewardRate }) => {
     </div>
   );
 };
+
+ReferPopup.propTypes = {
+  inviteCode: PropTypes.string,
+  onClose: PropTypes.func,
+  rewardRate: PropTypes.number
+}
 
 export default ReferPopup;

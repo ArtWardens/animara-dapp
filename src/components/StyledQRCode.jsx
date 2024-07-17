@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from "react";
+import { PropTypes } from "prop-types";
 import QRCodeStyling from "qr-code-styling";
 
 const qrCode = new QRCodeStyling({
@@ -41,5 +42,10 @@ const StyledQRCode = ({ value, image }) => {
 
   return <div ref={qrRef} />;
 };
+
+StyledQRCode.propTypes = {
+  value: PropTypes.string,
+  image: PropTypes.object,
+}
 
 export default StyledQRCode;

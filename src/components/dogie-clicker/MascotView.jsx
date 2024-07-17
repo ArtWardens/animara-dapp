@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
+import { PropTypes } from "prop-types";
 import useSound from "use-sound";
 import ClickCounter from "./ClickCounter";
 import { getImagePath, getAllImagePaths } from "../../utils/getImagePath";
@@ -28,12 +29,10 @@ const MascotView = ({
   const [mascotSound] = useSound(currentMascot?.sound);
 
   const handleStart = () => {
-    setIdle(false); // Reset idle state when the user interacts
     if (timerRef.current) {
       clearTimeout(timerRef.current);
     }
     timerRef.current = setTimeout(() => {
-      setIdle(true); // Set idle state to true after 3 seconds of inactivity
       setShowImage(getImagePath(userProgress, gameData, currentMascot, currentUser)); // Reset to initial image after idle
     }, 3000);
   };
@@ -76,7 +75,7 @@ const MascotView = ({
 
   useEffect(() => {
     setTimeout(() => setDelay(false), 2000);
-  }, [currentMascot?.version]);
+  }, [currentMascot.version, setDelay]);
 
   useEffect(() => {
     preloadImages(getAllImagePaths(userProgress));
@@ -86,7 +85,6 @@ const MascotView = ({
     const resetTimer = () => {
       clearTimeout(timerRef.current);
       timerRef.current = setTimeout(() => {
-        setIdle(true); // Set idle state to true when the user is idle for 3 seconds
         setShowImage(getImagePath(userProgress, gameData, currentMascot, currentUser)); // Reset to initial image after idle
       }, 3000);
     };
@@ -94,11 +92,11 @@ const MascotView = ({
     return () => {
       document.removeEventListener("mousedown", resetTimer);
     };
-  }, []);
+  }, [currentMascot, currentUser, gameData, setIdle, userProgress]);
 
   useEffect(() => {
     setShowImage(getImagePath(userProgress, gameData, currentMascot, currentUser));
-  }, [gameData, currentMascot, userProgress]);
+  }, [gameData, currentMascot, userProgress, currentUser]);
 
 
   return (
@@ -189,8 +187,7 @@ const MascotView = ({
             zIndex: 100,
           }}
         >
-
-          <a className="text-4xl mx-4" type="button" onClick={closeRewardModal}>&times;</a>
+          <button className="text-4xl mx-4" onClick={closeRewardModal}>&times;</button>
 
           <div className='flex flex-col justify-between items-center'>
             <p className={`text-8xl mt-16 ${isOpenRewardModal ? "animate-slideInFromBottom" : "animate-slideOutToBottom"}`}>
@@ -210,5 +207,22 @@ const MascotView = ({
     </div>
   );
 };
+
+MascotView.propTypes = {
+  userProgress: PropTypes.number,
+  setGameData: PropTypes.func,
+  currentMascot: PropTypes.object,
+  setIdle: PropTypes.func,
+  delay: PropTypes.bool,
+  setDelay: PropTypes.func,
+  gameData: PropTypes.object,
+  totalClicks: PropTypes.number,
+  setTotalClicks: PropTypes.func,
+  currentUser: PropTypes.object,
+  isOpenRewardModal: PropTypes.bool,
+  setIsOpenRewardModal: PropTypes.func,
+  rewardRate: PropTypes.number,
+  handleOpenModal: PropTypes.func
+}
 
 export default MascotView;

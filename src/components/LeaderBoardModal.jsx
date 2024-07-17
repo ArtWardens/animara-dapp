@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { PropTypes } from "prop-types";
 import { useAppDispatch } from '../hooks/storeHooks';
 import {
   getLeaderBoard,
@@ -132,5 +133,11 @@ const LeaderBoardModal = ({ setIsLeaderBoardOpen, countdown, timeRemaining }) =>
     </div>
   );
 };
+
+LeaderBoardModal.propTypes = {
+  setIsLeaderBoardOpen: PropTypes.func,
+  countdown: PropTypes.number,
+  timeRemaining: PropTypes.number
+}
 
 export default LeaderBoardModal;

@@ -1,5 +1,6 @@
-import { Box, Modal } from '@mui/material';
 import React, { useEffect, useMemo, useState } from 'react';
+import { PropTypes } from "prop-types";
+import { Box, Modal } from '@mui/material';
 import { getOneTimeTaskList, updateCompleteOneTimeTask, useOneTimeTaskList, useOneTimeTaskListSuccess, useUserDetails } from '../sagaStore/slices';
 import { useAppDispatch } from '../hooks/storeHooks';
 
@@ -16,7 +17,7 @@ const OneTimeTask = ({ setIsOneTimeTaskOpen, totalClicks, setTotalClicks }) => {
   useEffect(() => {
     if(!getOneTimeTaskListSuccess){
       dispatch(getOneTimeTaskList());
-    };
+    }
   },[]);
 
   const handleCloseModal = () => {
@@ -83,7 +84,7 @@ const OneTimeTask = ({ setIsOneTimeTaskOpen, totalClicks, setTotalClicks }) => {
                     break;
                 }
                 setCurrentTask(item);
-              };
+              }
             }}
           >
             <div className="bg-yellow-400 size-7" />
@@ -170,5 +171,11 @@ const OneTimeTask = ({ setIsOneTimeTaskOpen, totalClicks, setTotalClicks }) => {
     </div>
   );
 };
+
+OneTimeTask.propTypes = {
+  setIsOneTimeTaskOpen: PropTypes.func,
+  totalClicks: PropTypes.number,
+  setTotalClicks: PropTypes.func,
+}
 
 export default OneTimeTask;

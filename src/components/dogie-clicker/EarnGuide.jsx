@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
+import { PropTypes } from "prop-types";
 import { getAuth, onAuthStateChanged } from "../../firebase/auth";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "../../firebase/firebaseConfig";
@@ -110,7 +111,7 @@ function EarnGuide({
                 <div className="grid grid-cols-3 gap-0 md:gap-2 lg:gap-4">
                     <div className="relative rounded-2xl w-full flex justify-center items-end">
                         <button
-                            class="transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 duration-300"
+                            className="transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 duration-300"
                             onMouseEnter={handleMouseEnterBoosts}
                             onMouseLeave={handleMouseLeaveBoosts}
                             ref={trigger}
@@ -125,7 +126,7 @@ function EarnGuide({
                     </div>
                     <div className="relative rounded-2xl w-full flex justify-center items-end">
                         <button
-                            class="transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 duration-300"
+                            className="transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 duration-300"
                             onMouseEnter={handleMouseEnterLeaderboard}
                             onMouseLeave={handleMouseLeaveLeaderboard}
                             ref={trigger}
@@ -140,7 +141,7 @@ function EarnGuide({
                     </div>
                     <div className="relative rounded-2xl w-full flex justify-center items-end">
                         <button
-                            class="transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 duration-300"
+                            className="transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 duration-300"
                             onMouseEnter={handleMouseEnterUpgrades}
                             onMouseLeave={handleMouseLeaveUpgrades}
                         // ref={trigger}
@@ -155,7 +156,7 @@ function EarnGuide({
                     </div>
                     <div className="relative rounded-2xl w-full flex justify-center items-end">
                         <button
-                            class="transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 duration-300"
+                            className="transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 duration-300"
                             onMouseEnter={handleMouseEnterTasks}
                             onMouseLeave={handleMouseLeaveTasks}
                         // ref={trigger}
@@ -202,7 +203,7 @@ function EarnGuide({
                     }}
                 >
                     <div className={`w-full max-w-[900px] rounded-[20px] bg-white px-5 py-8 text-center dark:bg-dark-2 md:px-[48px] md:py-[48px] ${modalOpen ? "animate-slideInFromBottom" : "animate-slideOutToBottom"}`}>
-                        <ul class="grid w-full gap-4 mb-8">
+                        <ul className="grid w-full gap-4 mb-8">
                             <div className='flex flex-row justify-between items-center'>
                                 <h3 className='text-3xl'>
                                     Free Daily Boosters
@@ -223,10 +224,10 @@ function EarnGuide({
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="ml-4 md:ml-6 w-10 h-10 text-fuchsia-500">
                                             <path strokeLinecap="round" strokeLinejoin="round" d="M21 10.5h.375c.621 0 1.125.504 1.125 1.125v2.25c0 .621-.504 1.125-1.125 1.125H21M4.5 10.5H18V15H4.5v-4.5ZM3.75 18h15A2.25 2.25 0 0 0 21 15.75v-6a2.25 2.25 0 0 0-2.25-2.25h-15A2.25 2.25 0 0 0 1.5 9.75v6A2.25 2.25 0 0 0 3.75 18Z" />
                                         </svg>
-                                        <div class="ml-10 w-full text-2xl text-left">
+                                        <div className="ml-10 w-full text-2xl text-left">
                                             Energy Refresh
-                                            <div class="w-full text-lg">
-                                                <span class="text-fuchsia-500 text-xl">{energyRechargable}/{rewardRate?.basedRefresh || 0} &nbsp;</span>available today
+                                            <div className="w-full text-lg">
+                                                <span className="text-fuchsia-500 text-xl">{energyRechargable}/{rewardRate?.basedRefresh || 0} &nbsp;</span>available today
                                             </div>
                                         </div>
                                     </div>
@@ -248,10 +249,10 @@ function EarnGuide({
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="ml-4 md:ml-6 w-10 h-10 text-green-500">
                                             <path strokeLinecap="round" strokeLinejoin="round" d="M7.217 10.907a2.25 2.25 0 1 0 0 2.186m0-2.186c.18.324.283.696.283 1.093s-.103.77-.283 1.093m0-2.186 9.566-5.314m-9.566 7.5 9.566 5.314m0 0a2.25 2.25 0 1 0 3.935 2.186 2.25 2.25 0 0 0-3.935-2.186Zm0-12.814a2.25 2.25 0 1 0 3.933-2.185 2.25 2.25 0 0 0-3.933 2.185Z" />
                                         </svg>
-                                        <div class="ml-10 w-full text-2xl text-left">
+                                        <div className="ml-10 w-full text-2xl text-left">
                                             Invite Friend
-                                            <div class="w-full text-lg text-">
-                                                Refer to a friend to get <span class={`text-green-500 text-xl`}>&nbsp;{rewardRate?.inviteRefresh}&nbsp;</span> energy refresh.
+                                            <div className="w-full text-lg text-">
+                                                Refer to a friend to get <span className={`text-green-500 text-xl`}>&nbsp;{rewardRate?.inviteRefresh}&nbsp;</span> energy refresh.
                                             </div>
                                         </div>
                                     </div>
@@ -270,6 +271,19 @@ function EarnGuide({
             )}
         </>
     )
-};
+}
+
+EarnGuide.propTypes = {
+    energyRechargable: PropTypes.number, 
+    handleUpdateRechargableEnergy: PropTypes.func,
+    inviteRechargable: PropTypes.number,
+    handleUpdateRechargableInvite: PropTypes.func,
+    modalOpen: PropTypes.bool,
+    handleOpenModal: PropTypes.func,
+    gameData: PropTypes.object,
+    rewardRate: PropTypes.number,
+    setIsLeaderboardOpen: PropTypes.bool,
+    setIsOneTimeTaskOpen: PropTypes.bool
+}
 
 export default EarnGuide;

@@ -1,4 +1,5 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
+import { PropTypes } from "prop-types";
 import { useUserDetails } from "../../sagaStore/slices";
 import { addToLocalStorage, getFromLocalStorage } from "../../utils/localStorage"
 import { useNavigate } from "react-router-dom";
@@ -15,9 +16,6 @@ const ClickCounter = ({ gameData, currentMascot, totalClicks, setTotalClicks, re
 
   useEffect(() => {
     if (clickCount > 0) {
-
-      // console.log(clickCount);
-
       const timer = setTimeout(() => {
         setClickCount(0);
       }, 3000);
@@ -32,7 +30,7 @@ const ClickCounter = ({ gameData, currentMascot, totalClicks, setTotalClicks, re
         navigate('/login');
       }
     }, 1500)
-  }, [currentUser])
+  }, [currentUser, navigate])
 
   useEffect(() => {
     if (numberOfClicks > 0) {
@@ -51,15 +49,15 @@ const ClickCounter = ({ gameData, currentMascot, totalClicks, setTotalClicks, re
         console.log("Completed! Popup reward modal")
         setIsOpenRewardModal(true);
       }
-    };
-  }, [numberOfClicks]);
+    }
+  }, [clickByLevel, maxEnergy, numberOfClicks, rewardRate?.depletionReward, rewardRate?.tapCount, setIsOpenRewardModal, setTotalClicks]);
 
   useEffect(() => {
     if (gameData.currentScore !== undefined && gameData.currentScore !== null) {
-      // console.log("Set current user score");
+      // Set current user score
       setTotalClicks(gameData.currentScore);
     }
-  }, [gameData.currentScore]);
+  }, [gameData.currentScore, setTotalClicks]);
 
   return (
     <div
@@ -118,5 +116,14 @@ const ClickCounter = ({ gameData, currentMascot, totalClicks, setTotalClicks, re
     </div>
   );
 };
+
+ClickCounter.propTypes = {
+  gameData: PropTypes.object,
+  currentMascot: PropTypes.object,
+  totalClicks: PropTypes.number,
+  setTotalClicks: PropTypes.func,
+  rewardRate: PropTypes.number,
+  setIsOpenRewardModal: PropTypes.func,
+}
 
 export default ClickCounter;

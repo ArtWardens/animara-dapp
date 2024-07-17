@@ -1,6 +1,7 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
+import { PropTypes } from "prop-types";
 import { ProgressBar } from "react-progressbar-fancy";
-import { calculateCountdownRemaining, getCooldownTime, getTimeRemaining } from '../../utils/getTimeRemaining';
+import { getTimeRemaining } from '../../utils/getTimeRemaining';
 import LeaderBoardModal from '../LeaderBoardModal';
 import OneTimeTask from '../oneTimeTask';
 
@@ -31,7 +32,7 @@ function EnergyRegeneration({
     }, [gameData]);
 
     const [timeRemaining, setTimeRemaining] = useState(getTimeRemaining());
-    const [countDownRemaining, setCountDownRemaining] = useState(0);
+    const [countDownRemaining] = useState(0);
  
     useEffect(() => {
         const intervalId = setInterval(() => {
@@ -133,6 +134,17 @@ function EnergyRegeneration({
             )}
         </>
     );
-};
+}
+
+EnergyRegeneration.propTypes = {
+    currentUser: PropTypes.object, 
+    gameData: PropTypes.object, 
+    totalClicks: PropTypes.number, 
+    setTotalClicks: PropTypes.func,
+    isLeaderboardOpen: PropTypes.bool,
+    setIsLeaderboardOpen: PropTypes.func,
+    isOneTimeTaskOpen: PropTypes.bool,
+    setIsOneTimeTaskOpen: PropTypes.func,
+}
 
 export default EnergyRegeneration;
