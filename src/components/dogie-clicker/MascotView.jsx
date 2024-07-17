@@ -176,7 +176,7 @@ const MascotView = ({
             <img
               src={showImage}
               alt="Game mascot"
-              className="absolute place-self-center object-fit w-3/4 bottom-20"
+              className="absolute place-self-center object-fit w-3/4 bottom-12"
             />
           </div>
         </div>
