@@ -1,5 +1,5 @@
 import { auth, db, updateUserLastLogin } from "../firebase/firebaseConfig";
-import { doc, getDoc, updateDoc } from "firebase/firestore";
+import { doc, getDoc, increment, updateDoc } from "firebase/firestore";
 
 // functions that we export for saga
 const handleGetUserData = async (userId) => {
