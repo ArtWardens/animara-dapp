@@ -43,23 +43,22 @@ function EnergyRegeneration({
 
     return (
         <>
-            <div className="absolute grid grid-cols-3 gap-3 justify-center items-center w-full mx-auto my-4 p-10 top-20"
+            <div className="absolute grid grid-cols-3 gap-3 justify-center items-center w-full mx-auto my-4 p-10 top-44"
                 style={{
                     zIndex: 80,
                 }}
             >
 
                 <div
-                    className="grid grid-cols-2 gap-10 m-8 mr-8 items-center justify-center"
+                    className="items-center justify-center"
                     style={{
                         display: 'inline-flex',
                         alignItems: 'center',
                     }}
                 >
                     <div
-                        className="flex p-3"
+                        className="flex gap-3 py-5 px-6 rounded-3xl"
                         style={{
-                            borderRadius: '30px',
                             background: '#0764BA',
                             backgroundBlendMode: 'multiply',
                             boxShadow: '3px 2px 0px 0px #60ACFF inset',
@@ -67,12 +66,26 @@ function EnergyRegeneration({
                     >
                         <img
                             src={"../assets/images/clicker-character/coinTimer.png"}
-                            className="p-3"
+                            className="object-contain w-1/3"
                             alt="coinTimer icon"
                         />
-                        <div className="justify-center items-center grid grid-rows-2 -gap-4">
-                            <div className="text-3xl">{profitPerHour}</div>
-                            <div className="text-md font-outfit">Profit Per 12h</div>
+                        <div className="justify-center flex flex-col gap-1 pt-1">
+                            <div
+                                className="text-3xl"
+                                style={{
+                                    color: 'var(--0163BE, #0163BE)',
+                                    leadingTrim: 'both',
+                                    textEdge: 'cap',
+                                    WebkitTextStrokeWidth: '1.2px',
+                                    WebkitTextStrokeColor: 'var(--Color-11, #FFF)',
+                                    lineHeight: '90%',
+                                    letterSpacing: '1.5px',
+                                    textTransform: 'uppercase'
+                                }}
+                            >
+                                +{profitPerHour}
+                            </div>
+                            <div className="text-sm font-outfit">Profit Per 12h</div>
                         </div>
                     </div>
                 </div>

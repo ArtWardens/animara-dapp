@@ -27,10 +27,6 @@ const handleGetUserData = async (userId) => {
 
 const handleUpdateUserLeaveTime = async () => {
     try {
-        // can do:
-        // const result = await updateUserLastLogin(...)
-        // instead if we want to have different handling based on 
-        // the results returned from backend
         const idToken = await auth.currentUser.getIdToken(/* forceRefresh */ false);
         console.log(`idToken ${idToken}`);
         await updateUserLastLogin({idToken: idToken});

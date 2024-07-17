@@ -63,43 +63,55 @@ const ClickCounter = ({ gameData, currentMascot, totalClicks, setTotalClicks, re
 
   return (
     <div
-      className="flex flex-row absolute top-8 z-10 p-5"
+      className="flex flex-row absolute top-8 z-10 p-2 pr-8 gap-2 left-24"
       style={{
-        border: '2px solid #F4FBFF',
-        borderRadius: '500px 20px 20px 500px',
+        border: '3px solid #F4FBFF',
+        borderRadius: '500px 200px 200px 500px',
         background: 'var(--0163BE, #0163BE)',
         boxShadow: '3px 2px 0px 0px #517296 inset',
       }}
     >
 
-      <div className="place-content-center p-2 w-20 h-20">
+      <div className="place-content-center p-1 w-20 h-20">
         <img
-          src={"../assets/images/clicker-character/gem.png"}
+          src={"../assets/images/clicker-character/2-initial.png"}
           alt="gem"
+          className="justify-self-center rounded-full w-24"
+          style={{
+            border: '4px solid var(--80E8FF, #80E8FF)',
+            background: 'lightgray 50%',
+            backgroundSize: 'cover',
+            backgroundRepeat: 'no-repeat',
+          }}
         />
       </div>
 
-      <div className="flex flex-col gap-2">
+      <div className="flex flex-col place-content-center">
 
         <div className="font-outfit text-md">
           {currentUser?.name}
         </div>
 
         <div
-          className="text-3xl md:text-3xl lg:text-3xl xl:text-4xl text-amber-500 flex items-center gap-2"
-          style={{
-            WebkitTextStrokeWidth: '1px',
-            WebkitTextStrokeColor: 'var(--Color-11, #FFF)',
-            fontWeight: '600',
-            lineHeight: '0.9',
-            letterSpacing: '1.2px',
-          }}
+          className="gap-2 flex"
         >
           <img
+            className="w-8"
             src={"../assets/images/clicker-character/gem.png"}
             alt="gem"
           />
-          <span>{totalClicks}</span>
+          <div className="relative flex items-center justify-center">
+            <span
+              className="absolute text-4xl text-white tracking-tighter"
+            >
+              {totalClicks}
+            </span>
+            <span
+              className="relative text-3xl text-amber-500 tracking-wider"
+            >
+              {totalClicks}
+            </span>
+          </div>
         </div>
 
       </div>

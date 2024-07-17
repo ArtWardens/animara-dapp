@@ -345,7 +345,7 @@ const ClickerView = ({ currentUser, gameData, setGameData }) => {
 
   return (
     <>
-      <div className="max-w-full flex justify-center items-center gap-2 relative">
+      <div className="max-w-full flex justify-center items-center relative">
 
         {/* <LevelProgress
           userProgress={userProgress}
