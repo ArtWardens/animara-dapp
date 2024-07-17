@@ -7,15 +7,13 @@ import {
   query,
   updateDoc,
   where,
-  FieldPath,
   setDoc,
   deleteDoc,
   serverTimestamp,
 } from "firebase/firestore";
 import { v4 as uuidv4 } from "uuid";
 import { auth, db } from "../firebase/firebaseConfig";
-import { HmacSHA256, SHA256, enc } from "crypto-js";
-import { getAuth, signInAnonymously } from "firebase/auth";
+import { signInAnonymously } from "firebase/auth";
 
 export const getTodayDate = () => {
   const date = new Date();

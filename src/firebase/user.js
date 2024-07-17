@@ -11,14 +11,14 @@ const handleGetUserData = async (userId) => {
         const completedTaskSnap = await getDoc(completedTaskRef);
 
         if (docSnap.exists()) {
-        return {
-            ...docSnap.data(),
-            completedTask: completedTaskSnap.exists() ? completedTaskSnap.data().completedTask : [],
-        };
-    } else {
-        // docSnap.data() will be undefined in this case
-        console.log('No such document!');
-    }
+            return {
+                ...docSnap.data(),
+                completedTask: completedTaskSnap.exists() ? completedTaskSnap.data().completedTask : [],
+            };
+        } else {
+            // docSnap.data() will be undefined in this case
+            console.log('No such document!');
+        }
     } catch (error) {
         console.log('Error getting user data: ', error);
     }
