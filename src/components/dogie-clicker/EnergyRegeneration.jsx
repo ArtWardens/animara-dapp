@@ -1,108 +1,121 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
+import { ProgressBar } from "react-progressbar-fancy";
+import { calculateCountdownRemaining, getCooldownTime, getTimeRemaining } from '../../utils/getTimeRemaining';
+import LeaderBoardModal from '../LeaderBoardModal';
+import OneTimeTask from '../oneTimeTask';
 
-function EnergyRegeneration({ userProgress, gameData, timeLeft, countdown  }) {
+function EnergyRegeneration({ 
+    currentUser, 
+    gameData, 
+    totalClicks, 
+    setTotalClicks,
+    isLeaderboardOpen,
+    setIsLeaderboardOpen,
+    isOneTimeTaskOpen,
+    setIsOneTimeTaskOpen,
+}) {
 
-    const maxEnergy = userProgress.Energy;
-
-    const currentEnergy = gameData?.mascot2?.energy || 0;
-    const energyPercentage = (currentEnergy / maxEnergy) * 100;
-    const progressBarWidth = Math.min(energyPercentage, 100);
-
-    const [modalOpen, setModalOpen] = useState(false);
-    const trigger = useRef(null);
-    const modal = useRef(null);
-
-    useEffect(() => {
-        const clickHandler = ({ target }) => {
-            if (!modal.current) return;
-            if (!modalOpen || modal.current.contains(target) || trigger.current.contains(target))
-                return;
-            setModalOpen(false);
-        };
-        document.addEventListener("click", clickHandler);
-        return () => document.removeEventListener("click", clickHandler);
-    });
+    const [profitPerHour, setProfitPerHour] = useState(0);
+    const [progressBarWidth, setProgressBarWidth] = useState(0);
 
     useEffect(() => {
-        const keyHandler = ({ keyCode }) => {
-            if (!modalOpen || keyCode !== 27) return;
-            setModalOpen(false);
-        };
-        document.addEventListener("keydown", keyHandler);
-        return () => document.removeEventListener("keydown", keyHandler);
-    });
+        setProfitPerHour(currentUser?.profitPerHour)
+    }, [currentUser])
 
-    // Function to format countdown in h m s format
-    const formatCountdown = (seconds) => {
-        const hours = Math.floor(seconds / 3600).toString().padStart(2, '0');
-        const minutes = Math.floor((seconds % 3600) / 60).toString().padStart(2, '0');
-        const secs = (seconds % 60).toString().padStart(2, '0');
+    useEffect(() => {
+        const maxEnergy = gameData?.mascot2?.energy;
+        const currentEnergy = maxEnergy - gameData?.mascot2?.clickByLevel || 0;
 
-        let formattedTime = '';
-        if (hours > 0) formattedTime += `${hours} h `;
-        if (minutes > 0) formattedTime += `${minutes} m `;
-        if (secs > 0) formattedTime += `${secs} s`;
-        
-        return formattedTime.trim();
-    };
+        const energyPercentage = (currentEnergy / maxEnergy) * 100;
+        setProgressBarWidth(Math.min(energyPercentage, 100));
+    }, [gameData]);
+
+    const [timeRemaining, setTimeRemaining] = useState(getTimeRemaining());
+    const [countDownRemaining, setCountDownRemaining] = useState(0);
+ 
+    useEffect(() => {
+        const intervalId = setInterval(() => {
+            setTimeRemaining(getTimeRemaining());
+        }, 1000);
+
+        return () => clearInterval(intervalId); // Cleanup the interval on component unmount
+    }, []);
 
     return (
         <>
-            <div className="absolute w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/6 mx-auto bottom-5 z-10 left-4 md:left-20 lg:left-20 xl:left-64">
-                <a ref={trigger} onClick={() => setModalOpen(true)}>
-                    <img
-                        src={"../assets/images/clicker-character/leaderboardbtn.png"}
-                        className="h-full w-full"
-                        alt="leaderboard"
-                    />
-                </a>
+            <div className="absolute grid grid-cols-3 gap-3 justify-center items-center w-full mx-auto my-4 p-10 top-20"
+                style={{
+                    zIndex: 80,
+                }}
+            >
 
-                <div className="bg-gray-600 rounded-full relative">
+                <div
+                    className="grid grid-cols-2 gap-10 m-8 mr-8 items-center justify-center"
+                    style={{
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                    }}
+                >
                     <div
-                        className="mt-2 h-12 bg-gradient-to-r from-amber-500 from-20% to-purple-800 to-80% py-1 rounded-full"
-                        style={{ width: `${progressBarWidth}%` }}
+                        className="flex p-3"
+                        style={{
+                            borderRadius: '30px',
+                            background: '#0764BA',
+                            backgroundBlendMode: 'multiply',
+                            boxShadow: '3px 2px 0px 0px #60ACFF inset',
+                        }}
                     >
-                        <div className="absolute inset-0 flex items-center">
-                            <div className="relative h-12">
-                                <img
-                                    src={"../assets/images/clicker-character/eneryIcon.png"}
-                                    className="h-full w-full"
-                                    alt="energy icon"
-                                />
-                            </div>
-                            <div className="flex-1 flex justify-center text-white text-2xl rounded-full">
-                                {currentEnergy}/{maxEnergy} &emsp;
-                            </div>
+                        <img
+                            src={"../assets/images/clicker-character/coinTimer.png"}
+                            className="p-3"
+                            alt="coinTimer icon"
+                        />
+                        <div className="justify-center items-center grid grid-rows-2 -gap-4">
+                            <div className="text-3xl">{profitPerHour}</div>
+                            <div className="text-md font-outfit">Profit Per 12h</div>
                         </div>
                     </div>
                 </div>
 
-                <div className="pt-1 rounded-lg shadow-lg">
-                <div className={`text-md font-semibold text-center ${currentEnergy >= maxEnergy ? "hidden" : ""}`}>
-                &emsp; &emsp;
-                        <span className="px-2">{formatCountdown(countdown)}</span>
-                    </div>
-                </div>
+                <ProgressBar
+                    score={progressBarWidth}
+                    progressColor="#AD00FF"
+                    primaryColor="#AD00FF"
+                    secondaryColor="#FFF500"
+                    hideText={true}
+                    className="text-center"
+                />
+
             </div>
 
-            {modalOpen && (
+            {isOneTimeTaskOpen && (
                 <div
-                    className={`fixed left-0 top-0 flex h-full min-h-screen w-full items-center justify-center bg-dark/90 px-4 py-5 ${modalOpen ? "block" : "hidden"}`}
-                    style={{
-                        zIndex: 100, // Add a high z-index here
-                    }}
+                className={`fixed left-0 top-0 flex h-full min-h-screen w-full items-center justify-center bg-dark/90 px-4 py-5 ${
+                    isOneTimeTaskOpen ? 'block' : 'hidden'
+                }`}
+                style={{
+                    zIndex: 100, // Add a high z-index here
+                }}
                 >
-                    <div
-                        ref={modal}
-                        className="w-2/3 h-2/3 px-8 py-12 text-center md:px-[70px] md:py-[60px]"
-                        style={{
-                            backgroundImage: 'url("../assets/images/leaderboardExp.png")',
-                            backgroundSize: 'contain',
-                            backgroundPosition: 'center',
-                            backgroundRepeat: 'no-repeat',
-                        }}
-                    >
-                    </div>
+                <OneTimeTask setIsOneTimeTaskOpen={setIsOneTimeTaskOpen} totalClicks={totalClicks} setTotalClicks={setTotalClicks}/>
+                </div>
+            )}
+
+            {isLeaderboardOpen && (
+                <div
+                className={`fixed left-0 top-0 flex h-full min-h-screen w-full items-center justify-center bg-dark/90 px-4 py-5 ${
+                    isLeaderboardOpen ? 'block' : 'hidden'
+                }`}
+                style={{
+                    zIndex: 100, // Add a high z-index here
+                }}
+                >
+                <LeaderBoardModal
+                    timeRemaining={timeRemaining}
+                    countdown={countDownRemaining}
+                    isLeaderBoardOpen={isLeaderboardOpen}
+                    setIsLeaderBoardOpen={setIsLeaderboardOpen}
+                />
                 </div>
             )}
         </>

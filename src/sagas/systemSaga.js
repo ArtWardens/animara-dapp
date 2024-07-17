@@ -6,7 +6,7 @@ import { systemAddError, systemUpdateNetworkConnection, systemUpdatePageFocus } 
 
 export function* updateNetworkConnectionSaga() {
   const isBackOnline = yield select((state) => state.system.networkConnection.backOnline);
-  console.log('why two times');
+  // console.log('why two times');
   try {
     yield put(
       isBackOnline ? toast.success(i18n.t('common:connectionRestored')) : toast.error(i18n.t('common:noConnection')),

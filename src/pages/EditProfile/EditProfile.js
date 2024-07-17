@@ -1,27 +1,16 @@
-import { handlePasswordReset } from "../../firebase/auth";
-import { auth, storage } from "../../firebase/firebaseConfig";
-import { getDownloadURL, ref, uploadString } from "firebase/storage";
-import { useUserStore } from "../../store/store.ts";
-// import {
-//   User,
-//   updateProfile,
-//   updateEmail,
-//   updatePhoneNumber,
-//   PhoneAuthCredential,
-// } from "firebase/auth";
-import { updateUserProfile } from "../../firebase/profile.ts";
-import { useEffect, useState, useRef } from "react";
+
+import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { handlePasswordReset } from "../../firebase/auth";
+import { updateUserProfile } from "../../firebase/profile.ts";
 import useAuth from "../../hooks/useAuth";
+
 const EditProfile = () => {
   const navigate = useNavigate();
   const { isLoggedIn, loading, user } = useAuth();
-  console.log("BELOW IS MY USER");
-  console.log(user);
 
   useEffect(() => {
-    console.log(isLoggedIn, loading);
     if (!isLoggedIn && !loading) {
       navigate("/login");
       toast.error("You need to be logged in to access this page");
@@ -29,11 +18,11 @@ const EditProfile = () => {
   }, [isLoggedIn, navigate, loading]);
 
   const [isSaving, setIsSaving] = useState(false);
-  const [firstname, setFirstname] = useState();
-  const [lastname, setLastname] = useState();
-  const [email, setEmail] = useState();
-  const [phone, setPhone] = useState();
-  const [inviteCode, setInviteCode] = useState();
+  const [firstname, setFirstname] = useState("");
+  const [lastname, setLastname] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [inviteCode, setInviteCode] = useState("");
   const [imageData, setImageData] = useState(null);
 
   const inputFile = useRef(null);
@@ -61,40 +50,10 @@ const EditProfile = () => {
     } finally {
       setIsSaving(false);
     }
-
-    // try {
-    //   if (imageData) {
-    //     // Upload the image data as a string to Firebase Storage
-    //     await uploadString(pfpRef, imageData.toString(), "data_url");
-
-    //     // Get the download URL for the uploaded image
-    //     const downloadURL = await getDownloadURL(pfpRef);
-
-    //     // if (phone !== userStore.user?.phoneNumber) {
-    //     //   await updatePhoneNumber(currentUser, phone);
-    //     // }
-
-    //     // Update the user's profile with the new image URL
-    //     await updateProfile(currentUser, {
-    //       displayName: `${firstname} ${lastname}`,
-    //       photoURL: downloadURL,
-    //     });
-    //   } else {
-    //     // If imageData is null, update the profile without changing the photoURL
-    //     await updateProfile(currentUser, {
-    //       displayName: `${firstname} ${lastname}`,
-    //     });
-    //   }
-
-    //   userStore.setUser(currentUser);
-    //   toast.success("Profile updated successfully");
-    // } catch (error) {
-    //   toast.error(error.message);
-    // }
   };
 
   return (
-    <div className="min-h-[calc(100vh-64px)] px-20 py-10 bg-[#1e1e1e]">
+    <div className="justify-center items-center place-content-center p-40 bg-[#1e1e1e]">
       <div className="w-full h-full border border-gray-100 p-10 rounded-xl shadow-lg backdrop-blur-sm z-10 relative">
         <div className="header flex justify-between items-center">
           <span className="flex gap-2">
@@ -119,12 +78,12 @@ const EditProfile = () => {
             }}
           >
             <img
-              src={imageData?.toString() || user?.photoURL || "/lock.png" || ""}
+              src={imageData?.toString() || user?.photoURL || "../../assets/images/lock.png" || ""}
               alt="pfp"
               className="group-hover:brightness-75 h-24 w-24"
             />
             <img
-              src="/icons/edit.png"
+              src="./../assets/icons/edit.png"
               alt="edit"
               className="invisible group-hover:visible absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 text-white fill-white"
             />
@@ -151,10 +110,7 @@ const EditProfile = () => {
         <form className="form font-degular mt-5" onSubmit={handleSubmit}>
           <div className="flex flex-col md:flex-row gap-5 md:gap-10 mt-3 w-full">
             <div className="flex flex-col gap-2 w-full">
-              <label
-                htmlFor="firstname"
-                className="font-acumin text-sm font-semibold"
-              >
+              <label htmlFor="firstname" className="font-acumin text-sm font-semibold">
                 First Name <span className="text-red-500">*</span>
               </label>
               <input
@@ -168,10 +124,7 @@ const EditProfile = () => {
               />
             </div>
             <div className="flex flex-col gap-2 w-full">
-              <label
-                htmlFor="lastname"
-                className="font-acumin text-sm font-semibold"
-              >
+              <label htmlFor="lastname" className="font-acumin text-sm font-semibold">
                 Last Name <span className="text-red-500">*</span>
               </label>
               <input
@@ -187,10 +140,7 @@ const EditProfile = () => {
           </div>
           <div className="flex gap-10 mt-3 w-full">
             <div className="flex flex-col gap-2 w-full">
-              <label
-                htmlFor="email"
-                className="font-acumin text-sm font-semibold"
-              >
+              <label htmlFor="email" className="font-acumin text-sm font-semibold">
                 Email Address
               </label>
               <input
@@ -206,10 +156,7 @@ const EditProfile = () => {
           </div>
           <div className="flex gap-10 mt-3 w-full">
             <div className="flex flex-col gap-2 w-full">
-              <label
-                htmlFor="phone"
-                className="font-acumin text-sm font-semibold"
-              >
+              <label htmlFor="phone" className="font-acumin text-sm font-semibold">
                 Phone
               </label>
               <input
@@ -218,17 +165,14 @@ const EditProfile = () => {
                 readOnly
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
-                className="p-3 w-full  bg-inherit border-foreground border rounded-lg disabled:opacity-50"
+                className="p-3 w-full bg-inherit border-foreground border rounded-lg disabled:opacity-50"
                 placeholder="+6011 1234 5678"
               />
             </div>
           </div>
           <div className="flex gap-10 mt-3 w-full">
             <div className="flex flex-col gap-2">
-              <label
-                htmlFor="email"
-                className="font-acumin text-sm font-semibold"
-              >
+              <label htmlFor="email" className="font-acumin text-sm font-semibold">
                 Invite Code
               </label>
               <input
@@ -265,11 +209,12 @@ const EditProfile = () => {
           </div>
         </form>
       </div>
-      <img src="/Ellipse3.png" className="absolute bottom-0 left-0 h-60 z-0" />
-      <img src="/Ellipse1.png" className="absolute top-0 left-1/2 h-60 z-0" />
-      <img src="/Ellipse1.png" className="absolute bottom-0 right-0 h-60 z-0" />
+      <img src="../../assets/images/Ellipse3.png" className="absolute bottom-0 left-0 h-60 z-0" />
+      <img src="../../assets/images/Ellipse1.png" className="absolute top-0 left-1/2 h-60 z-0" />
+      <img src="../../assets/images/Ellipse1.png" className="absolute bottom-0 right-0 h-60 z-0" />
     </div>
   );
 };
 
 export default EditProfile;
+

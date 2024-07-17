@@ -1,49 +1,31 @@
 import React, { useEffect, useRef, useState } from "react";
-import { useGlobalContext } from "../../context/ContextProvider";
-import { insertCollection } from "../../utils/firebase";
-// import { getTodayDate } from "../../utils/functions";
-import { getImagePath, getAllImagePaths } from "../../utils/getImagePath";
-import { preloadImages } from "../../utils/preloadImages";
 import useSound from "use-sound";
 import ClickCounter from "./ClickCounter";
-import { toast } from "react-toastify";
-// import WarningModal from "./WarningModal";
+import { getImagePath, getAllImagePaths } from "../../utils/getImagePath";
+import { preloadImages } from "../../utils/preloadImages";
+import { addToLocalStorage, getFromLocalStorage } from "../../utils/localStorage";
 
 const MascotView = ({
   userProgress,
   setGameData,
   currentMascot,
-  setTotalCount,
-  totalCount,
   setIdle,
   delay,
   setDelay,
   gameData,
-  timeRemaining,
-  data,
   totalClicks,
-  setTotalClicks
+  setTotalClicks,
+  currentUser,
+  isOpenRewardModal,
+  setIsOpenRewardModal,
+  rewardRate,
+  handleOpenModal
 }) => {
-  const [isOpen, setIsOpen] = useState(false);
+
   const [showImage, setShowImage] = useState('');
 
-  const { currentUser } = useGlobalContext();
   const timerRef = useRef(null);
   const [mascotSound] = useSound(currentMascot?.sound);
-
-  const currentLevel = userProgress.currentLevel;
-  const numberOfClicks = gameData?.[currentMascot?.version]?.numberOfClicks || 0;
-
-  const onClose = () => { setIsOpen(false); }
-
-  useEffect(() => {
-    setTimeout(() => setDelay(false), 2000);
-  }, [currentMascot?.version]);
-
-  useEffect(() => {
-    // Preload images on mount
-    preloadImages(getAllImagePaths(userProgress));
-  }, [userProgress]);
 
   const handleStart = () => {
     setIdle(false); // Reset idle state when the user interacts
@@ -52,16 +34,60 @@ const MascotView = ({
     }
     timerRef.current = setTimeout(() => {
       setIdle(true); // Set idle state to true after 3 seconds of inactivity
-      setShowImage(getImagePath(userProgress, gameData, currentMascot)); // Reset to initial image after idle
+      setShowImage(getImagePath(userProgress, gameData, currentMascot, currentUser)); // Reset to initial image after idle
     }, 3000);
   };
+
+  const handleMouseDown = () => {
+    if (gameData?.mascot2?.energy > gameData?.mascot2?.clickByLevel) {
+      handleStart();
+      const LocalClickByLevel = getFromLocalStorage("LocalClickByLevel");
+      setGameData((pre) => {
+        const totalClicksCount = pre[currentMascot.version]?.clickByLevel + rewardRate?.tapCount;
+
+        addToLocalStorage("LocalClickByLevel", parseInt(LocalClickByLevel) || 0 + pre[currentMascot.version]?.numberOfClicks);
+        addToLocalStorage("TotalLocalClickByLevel", totalClicksCount);
+
+        return {
+          ...pre,
+          [currentMascot.version]: {
+            ...pre.mascot2,
+            numberOfClicks: (pre[currentMascot.version]?.numberOfClicks || 0) + rewardRate?.tapCount,
+            clickByLevel: totalClicksCount,
+          }
+        }
+      });
+
+      mascotSound();
+
+    } else {
+      handleOpenModal("boosts");
+      // handleError(); // Open the modal instead of showing toast error
+    }
+  };
+
+  const handleMouseUp = () => {
+    // Optionally, you can handle the mouse up event if needed
+  };
+
+  const closeRewardModal = () => {
+    setIsOpenRewardModal(false);
+  };
+
+  useEffect(() => {
+    setTimeout(() => setDelay(false), 2000);
+  }, [currentMascot?.version]);
+
+  useEffect(() => {
+    preloadImages(getAllImagePaths(userProgress));
+  }, [userProgress]);
 
   useEffect(() => {
     const resetTimer = () => {
       clearTimeout(timerRef.current);
       timerRef.current = setTimeout(() => {
         setIdle(true); // Set idle state to true when the user is idle for 3 seconds
-        setShowImage(getImagePath(userProgress, gameData, currentMascot)); // Reset to initial image after idle
+        setShowImage(getImagePath(userProgress, gameData, currentMascot, currentUser)); // Reset to initial image after idle
       }, 3000);
     };
     document.addEventListener("mousedown", resetTimer); // Listen for mouse button press
@@ -71,45 +97,24 @@ const MascotView = ({
   }, []);
 
   useEffect(() => {
-    // Update the displayed image based on the number of clicks
-    setShowImage(getImagePath(userProgress, gameData, currentMascot));
+    setShowImage(getImagePath(userProgress, gameData, currentMascot, currentUser));
   }, [gameData, currentMascot, userProgress]);
 
-  const handleMouseDown = () => {
-    if (gameData?.mascot2?.energy >= userProgress.EarnPerTap) {
-      handleStart();
-      setGameData((pre) => ({
-        ...pre,
-        [currentMascot.version]: {
-          numberOfClicks: (pre[currentMascot.version]?.numberOfClicks || 0) + userProgress.EarnPerTap,
-          energy: pre[currentMascot.version]?.energy - userProgress.EarnPerTap,
-          levelProgress: pre[currentMascot.version]?.levelProgress + userProgress.EarnPerTap,
-        }
-      }));
-      mascotSound();
-    } else {
-      toast.error("Run out of energy");
-    }
-  };
-
-  const handleMouseUp = () => {
-    // Optionally, you can handle the mouse up event if needed
-  };
 
   return (
     <div
       onMouseDown={handleMouseDown}
       onMouseUp={handleMouseUp}
       onMouseLeave={handleMouseUp}
-      className="cursor-pointer flex justify-center items-center h-screen w-[40%] select-none bottom-0"
+      className="cursor-pointer flex justify-center items-end h-screen w-screen pb-16"
     >
       <ClickCounter
         gameData={gameData}
         currentMascot={currentMascot}
-        data={data}
         totalClicks={totalClicks}
         setTotalClicks={setTotalClicks}
-        userProgress={userProgress}
+        rewardRate={rewardRate}
+        setIsOpenRewardModal={setIsOpenRewardModal}
       />
 
       {delay ? (
@@ -133,14 +138,75 @@ const MascotView = ({
           <span className="sr-only">Loading...</span>
         </div>
       ) : (
-        <img
-          src={showImage}
-          alt="Game mascot"
-          className="select-none object-cover absolute bottom-0 -z-20 w-full sm:w-full md:w-full lg:w-2/3 xl:w-2/3"
-        />
+        <div
+          className="w-5/6 h-4/5 rounded-3xl p-3"
+          style={{
+            border: '2px solid var(--Color, #F4FBFF)',
+            background: 'rgba(155, 231, 255, 0.58)',
+            boxShadow: '0px 8px 30px 0px rgba(4, 161, 183, 0.40) inset, 0px 8px 30px 0px rgba(32, 0, 99, 0.40)',
+            backdropFilter: 'blur(15px)',
+          }}
+        >
+          <div className="absolute flex w-full justify-between -top-9">
+            <img
+              src={"../assets/images/clicker-character/ring01.png"}
+              alt="ring"
+              className="object-cover w-12 absolute left-2"
+            />
+            <img
+              src={"../assets/images/clicker-character/ring01.png"}
+              alt="ring"
+              className="object-cover w-12 opacity-0"
+            />
+            <img
+              src={"../assets/images/clicker-character/ring02.png"}
+              alt="ring"
+              className="object-cover w-12 absolute right-8"
+            />
+          </div>
+          <div
+            className="grid w-full h-full rounded-2xl"
+            style={{
+              backgroundImage: 'url("../assets/images/clicker-character/mascotBg.png")',
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+              backgroundRepeat: 'no-repeat',
+            }}
+          >
+            <img
+              src={showImage}
+              alt="Game mascot"
+              className="absolute place-self-center object-fit w-3/4 bottom-20"
+            />
+          </div>
+        </div>
       )}
 
-      {/* <WarningModal isOpen={isOpen} onClose={onClose} /> */}
+      {isOpenRewardModal && (
+        <div
+          className={`fixed top-0 flex flex-col h-full w-full items-center justify-center bg-dark/90 ${isOpenRewardModal ? "animate-modalOpen" : "animate-modalClose"}`}
+          style={{
+            zIndex: 100,
+          }}
+        >
+
+          <a className="text-4xl mx-4" type="button" onClick={closeRewardModal}>&times;</a>
+
+          <div className='flex flex-col justify-between items-center'>
+            <p className={`text-8xl mt-16 ${isOpenRewardModal ? "animate-slideInFromBottom" : "animate-slideOutToBottom"}`}>
+              {rewardRate?.depletionReward}
+            </p>
+            <img
+              src="../assets/images/clicker-character/openBox.png"
+              alt="Game mascot"
+              className={`object-cover h-3/4 w-3/4 ${isOpenRewardModal ? "animate-slideInFromTop" : "animate-slideOutToTop"}`}
+            />
+
+          </div>
+
+        </div>
+      )}
+
     </div>
   );
 };

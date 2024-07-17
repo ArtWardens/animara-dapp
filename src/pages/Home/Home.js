@@ -1,8 +1,8 @@
 import { useState } from "react";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
-import ReferPopup from "../../components/ReferPopup";
+import { getAuth, onAuthStateChanged } from "../../firebase/auth";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "../../firebase/firebase";
+import ReferPopup from "../../components/ReferPopup";
 
 function Home() {
   const [showPopup, setShowPopup] = useState(false);

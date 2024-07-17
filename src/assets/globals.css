@@ -4,8 +4,8 @@
 @tailwind utilities;
 
 @font-face {
-  font-family: "BigNoodleTitling";
-  src: url("../../public/fonts/bignoodletitling/big_noodle_titling.ttf")
+  font-family: "LuckiestGuy";
+  src: url("../../public/fonts/luckiestguy/LuckiestGuy-Regular.ttf")
     format("truetype");
 }
 
@@ -105,7 +105,7 @@
 }
 
 body {
-  font-family: "BigNoodleTitling", sans-serif;
+  font-family: "LuckiestGuy", sans-serif;
   font-weight: 300;
 }
 
@@ -274,3 +274,65 @@ body {
   -webkit-text-stroke: 2px #9dee1f;
   -webkit-text-fill-color: transparent;
 }
+
+/* CSS for modal animations */
+.modal-hidden {
+  display: none;
+}
+
+.modal-visible {
+  display: flex;
+}
+
+.modal-transition {
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.modal-enter {
+  opacity: 0;
+  transform: scale(0.9);
+}
+
+.modal-enter-active {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.modal-exit {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.modal-exit-active {
+  opacity: 0;
+  transform: scale(0.9);
+}
+
+.overlay-hidden {
+  display: none;
+}
+
+.overlay-visible {
+  display: flex;
+}
+
+.overlay-transition {
+  transition: opacity 0.3s ease;
+}
+
+.overlay-enter {
+  opacity: 0;
+}
+
+.overlay-enter-active {
+  opacity: 1;
+}
+
+.overlay-exit {
+  opacity: 1;
+}
+
+.overlay-exit-active {
+  opacity: 0;
+}
+
