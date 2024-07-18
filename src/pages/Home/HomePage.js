@@ -4,7 +4,7 @@ import { doc, getDoc } from "firebase/firestore";
 import { db } from "../../firebase/firebase";
 import ReferPopup from "../../components/ReferPopup";
 
-function Home() {
+function HomePage() {
   const [showPopup, setShowPopup] = useState(false);
   const [inviteCode, setInviteCode] = useState("");
   const auth = getAuth();
@@ -38,4 +38,4 @@ function Home() {
   );
 }
 
-export default Home;
+export default HomePage;

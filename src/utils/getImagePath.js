@@ -6,7 +6,7 @@ export const getImagePath = (userProgress, gameData, currentMascot, currentUser)
     const hitsCount = numberOfClicks / userProgress.EarnPerTap;
 
     // console.log(currentLevel);
-    console.log(hitsCount);
+    // console.log(hitsCount);
   
     let basePath = '../../assets/images/clicker-character/';
     if (hitsCount === 0) {

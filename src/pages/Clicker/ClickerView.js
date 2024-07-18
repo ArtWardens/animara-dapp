@@ -1,8 +1,8 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { PropTypes } from "prop-types";
-import MascotView from '../../components/dogie-clicker/MascotView';
-import EarnGuide from '../../components/dogie-clicker/EarnGuide';
-import EnergyRegeneration from '../../components/dogie-clicker/EnergyRegeneration';
+import MascotView from '../../components/MascotView';
+import EarnGuide from '../../components/EarnGuide';
+import EnergyRegeneration from '../../components/EnergyRegeneration';
 import '../../styles/globals.css';
 import { mascots } from '../../utils/local.db';
 import { addToLocalStorage, getFromLocalStorage } from '../../utils/localStorage';
@@ -16,16 +16,16 @@ import { closeDailyPopup, updateDailyLogin, useIsOpenDailyPopup } from '../../sa
 import { dailyLogin } from '../../data/constants';
 
 const ClickerView = ({ currentUser, gameData, setGameData }) => {
-
   const dispatch = useAppDispatch();
   const isOpenDailyPopup = useIsOpenDailyPopup();
   const [isOpenRewardModal, setIsOpenRewardModal] = useState(false);
   const [modalOpen, handleOpenModal] = useState(false);
+  const [loading, setLoading] = useState(true);  // Add loading state
 
   const [currentMascot] = useState(mascots[1]);
   const [delay, setDelay] = useState(true);
   const [countdown] = useState(30);
-  
+
   const [totalClicks, setTotalClicks] = useState(gameData.currentScore);
   const [userProgress] = useState({
     EarnPerTap: 1,
@@ -36,35 +36,12 @@ const ClickerView = ({ currentUser, gameData, setGameData }) => {
       prevCTL: 25,
     }
   });
+
   const [energyRechargable, setEnergyRechargable] = useState(0);
-
   const [inviteRechargable, setInviteRechargable] = useState(0);
-
   const [rewardRate, setRewardRate] = useState(null);
 
-  // Daily Reward Popup
-  useEffect(() => {
-    if(currentUser && !currentUser?.loggedInToday){
-      const currentLoginDay = currentUser?.loginDays;
-      const loginRewardCoins = dailyLogin[currentLoginDay].coins;
-      dispatch(updateDailyLogin({
-        data: {
-          userId: currentUser?.userId, 
-          coins: loginRewardCoins
-        } 
-      }));
-      setTotalClicks(prev => prev + loginRewardCoins);
-    }
-  },[currentUser, dispatch]);
-
-  useEffect(() => {
-    fetchRewardRate().then(results => {
-      setRewardRate(results)
-    });
-  },[])
-
   const updateFirebase = useCallback(() => {
-  
     const localCoins = getFromLocalStorage("localCoins");
     const totalLocalCoins = getFromLocalStorage("totalLocalCoins");
 
@@ -91,14 +68,56 @@ const ClickerView = ({ currentUser, gameData, setGameData }) => {
   }, [currentUser]);
 
   useEffect(() => {
+    const fetchData = async () => {
+      if (currentUser && !currentUser?.loggedInToday) {
+        const currentLoginDay = currentUser?.loginDays;
+        const loginRewardCoins = dailyLogin[currentLoginDay].coins;
+        dispatch(updateDailyLogin({
+          data: {
+            userId: currentUser?.userId,
+            coins: loginRewardCoins
+          }
+        }));
+        setTotalClicks(prev => prev + loginRewardCoins);
+      }
+
+      const rewardRate = await fetchRewardRate();
+      setRewardRate(rewardRate);
+
+      if (currentUser && rewardRate) {
+        setTimeout(() => {
+          setGameData({
+            mascot2: {
+              numberOfClicks: 0,
+              point: 0,
+              quest: 0,
+              energy: rewardRate.stamina,
+              level: currentUser.level,
+              clickByLevel: currentUser.clickByLevel,
+              levelProgress: 0,
+            },
+            totalPoints: 0,
+            currentScore: currentUser.coins,
+          });
+          setLoading(false);
+        }, 1500);
+      }
+
+      if (currentUser?.energyRechargable) {
+        setEnergyRechargable(currentUser.energyRechargable);
+      }
+
+      if (currentUser?.inviteRechargable) {
+        setInviteRechargable(currentUser.inviteRechargable);
+      }
+    };
+
+    fetchData();
+
     const interval = setInterval(() => {
       updateFirebase();
-    }, 10000); // Update Firestore every 10 seconds
+    }, 10000);
 
-    return () => clearInterval(interval);
-  }, [updateFirebase]);
-
-  useEffect(() => {
     const handleMouseLeave = (event) => {
       if (event.clientY <= 0) {
         updateFirebase();
@@ -115,124 +134,47 @@ const ClickerView = ({ currentUser, gameData, setGameData }) => {
     document.addEventListener('visibilitychange', handleVisibilityChange);
 
     return () => {
+      clearInterval(interval);
       document.removeEventListener('mouseleave', handleMouseLeave);
       document.removeEventListener('visibilitychange', handleVisibilityChange);
     };
-  }, [updateFirebase]);
-
-  // Task to recharge energy
-  useEffect(() => {
-    if(currentUser?.energyRechargable){
-        setEnergyRechargable(currentUser?.energyRechargable)
-    }
-  },[currentUser?.energyRechargable]);
-
-  useEffect(() => {
-    if(currentUser?.inviteRechargable){
-        setInviteRechargable(currentUser?.inviteRechargable)
-    }
-  },[currentUser?.inviteRechargable]);
+  }, [currentUser, dispatch, updateFirebase]);
 
   const handleUpdateRechargableEnergy = () => {
-    if(currentUser){
+    if (currentUser) {
       handleUpdateUserRechargableEnergy({
         userId: currentUser.userId,
-        count: currentUser?.energyRechargable - 1
+        count: currentUser.energyRechargable - 1
       });
       setEnergyRechargable(prev => prev - 1);
       addToLocalStorage("LocalClickByLevel", 0);
       setGameData((prev) => ({
         ...prev,
         mascot2: {
-          ...prev.mascot2, 
+          ...prev.mascot2,
           clickByLevel: 0,
         },
       }));
     }
-  }
+  };
 
   const handleUpdateRechargableInvite = () => {
-    if(currentUser){
+    if (currentUser) {
       handleUpdateUserRechargableInvite({
         userId: currentUser.userId,
-        count: currentUser?.inviteRechargable - 1
+        count: currentUser.inviteRechargable - 1
       });
       setInviteRechargable(prev => prev - 1);
       addToLocalStorage("LocalClickByLevel", 0);
       setGameData((prev) => ({
         ...prev,
         mascot2: {
-          ...prev.mascot2, 
+          ...prev.mascot2,
           clickByLevel: 0,
         },
       }));
     }
-  }
-
-  // Setup current user progress based on total click and gameconfig
-  // useEffect(() => {
-  //   setUserProgress({
-  //     EarnPerTap: calculateEPC(calculateLevel(totalClicks)),
-  //     CoinsToLvlUp: calculateCTL(totalClicks),
-  //     Energy: calculateCTL(totalClicks),
-  //     currentLevel: calculateLevel(totalClicks),
-  //     LevelProgress: {
-  //       prevCTL: calculatePrevCTL(totalClicks)
-  //     }
-  //   });
-  // },[totalClicks]);
-
-  // const generateEnergyOnload = (energyGenerateTime, lastEnergy) => {
-  //   const currentTime = new Date();
-  //   const maxEnergy = calculateEnergy(calculateLevel(totalClicks));
-  //   const energyPerSecond = 1 / 3;
-
-  //   if(energyGenerateTime && lastEnergy){
-  //     // Calculate the difference in milliseconds
-  //     const diffInMs = currentTime - new Date(energyGenerateTime);
-  
-  //     // Convert the difference in milliseconds to seconds
-  //     const diffInSeconds = Math.floor(diffInMs / 1000);
-  
-  //     // Calculate the energy gained based on the time difference
-  //     const gainedEnergy = Math.floor(diffInSeconds * energyPerSecond);
-  //     // Calculate the new energy, ensuring it doesn't exceed maxEnergy
-  //     const newEnergy = Math.min(maxEnergy, parseInt(lastEnergy) + gainedEnergy);
-      
-  //     return newEnergy;
-  //   }else{
-  //     return maxEnergy;
-  //   }
-  // };
-
-  //Fetch the user data on inital load
-  useEffect(() => {
-    if(currentUser && rewardRate){
-      setTimeout(() => {
-        setGameData({
-          mascot2: {
-            numberOfClicks: 0,
-            point: 0,
-            quest: 0,
-            energy: rewardRate.stamina,
-            level: currentUser.level,
-            clickByLevel: currentUser.clickByLevel,
-            levelProgress: 0,
-          },
-          totalPoints: 0,
-          currentScore: currentUser.coins,
-        });
-      }, 1000);
-    }
-  }, [currentUser, rewardRate, setGameData]);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      // setTimeRemaining(calculateTimeRemaining());
-    }, 1000);
-
-    return () => clearInterval(interval);
-  }, []);
+  };
 
   const handleClose = () => {
     dispatch(closeDailyPopup());
@@ -240,6 +182,32 @@ const ClickerView = ({ currentUser, gameData, setGameData }) => {
 
   const [isLeaderboardOpen, setIsLeaderboardOpen] = useState(false);
   const [isOneTimeTaskOpen, setIsOneTimeTaskOpen] = useState(false);
+
+  if (loading) {
+    return (
+      <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-75 flex items-center justify-center z-50">
+        <div className="text-center">
+          <svg
+            aria-hidden="true"
+            className="w-10 h-10 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600 mx-auto"
+            viewBox="0 0 100 101"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+              fill="currentColor"
+            />
+            <path
+              d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+              fill="currentFill"
+            />
+          </svg>
+          <span className="text-white text-xl">Loading...</span>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <>
@@ -262,7 +230,6 @@ const ClickerView = ({ currentUser, gameData, setGameData }) => {
           userProgress={userProgress}
           setGameData={setGameData}
           currentMascot={currentMascot}
-          // setIdle={setIdle}
           delay={delay}
           setDelay={setDelay}
           gameData={gameData}
@@ -276,7 +243,7 @@ const ClickerView = ({ currentUser, gameData, setGameData }) => {
         />
 
         <EarnGuide
-          energyRechargable={energyRechargable} 
+          energyRechargable={energyRechargable}
           handleUpdateRechargableEnergy={handleUpdateRechargableEnergy}
           inviteRechargable={inviteRechargable}
           handleUpdateRechargableInvite={handleUpdateRechargableInvite}
@@ -302,7 +269,7 @@ const ClickerView = ({ currentUser, gameData, setGameData }) => {
               >
                 <img className="w-3 h-3" src="assets/icons/x.svg" alt="Close" />
               </button>
-              <div className="flex flex-col items-center p-6 sm:p-8 ">
+              <div className="flex flex-col items-center p-6 sm:p-8">
                 <Box className="pb-5">
                   <img className="w-20 h-20" src="assets/images/activeDog.png" alt="Active Dog" />
                 </Box>
@@ -338,10 +305,10 @@ const ClickerView = ({ currentUser, gameData, setGameData }) => {
   );
 };
 
-ClickerView.propTypes ={
+ClickerView.propTypes = {
   currentUser: PropTypes.object,
   gameData: PropTypes.object,
   setGameData: PropTypes.func
-}
+};
 
 export default ClickerView;

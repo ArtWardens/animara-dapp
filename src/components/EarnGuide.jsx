@@ -1,12 +1,12 @@
 import React, { useEffect, useRef, useState } from "react";
 import { PropTypes } from "prop-types";
-import { getAuth, onAuthStateChanged } from "../../firebase/auth";
+import { getAuth, onAuthStateChanged } from "../firebase/auth";
 import { doc, getDoc } from "firebase/firestore";
-import { db } from "../../firebase/firebaseConfig";
-import ReferPopup from "../ReferPopup";
+import { db } from "../firebase/firebaseConfig";
+import ReferPopup from "./ReferPopup";
 
-function EarnGuide({ 
-    energyRechargable, 
+function EarnGuide({
+    energyRechargable,
     handleUpdateRechargableEnergy,
     inviteRechargable,
     handleUpdateRechargableInvite,
@@ -38,7 +38,7 @@ function EarnGuide({
     const handleMouseLeaveTasks = () => setImageSrcTasks("../assets/images/clicker-character/tasksBtn.png");
 
     const closeModal = () => {
-        handleOpenModal(false);
+        handleOpenModal("");
     };
 
     const handleChargeEnergy = () => {
@@ -65,21 +65,23 @@ function EarnGuide({
     useEffect(() => {
         const clickHandler = ({ target }) => {
             if (!modal.current) return;
-            if (!modalOpen || modal.current.contains(target) || trigger.current.contains(target)) return;
-            handleOpenModal(false);
+            if (modalOpen === "" || modal.current.contains(target) || trigger.current.contains(target)) return;
+            handleOpenModal("");
         };
-        document.addEventListener("click", clickHandler);
-        return () => document.removeEventListener("click", clickHandler);
-    });
-
-    useEffect(() => {
+        
         const keyHandler = ({ keyCode }) => {
-            if (!modalOpen || keyCode !== 27) return;
-            handleOpenModal(false);
+            if (modalOpen === "" || keyCode !== 27) return;
+            handleOpenModal("");
         };
+        
+        document.addEventListener("click", clickHandler);
         document.addEventListener("keydown", keyHandler);
-        return () => document.removeEventListener("keydown", keyHandler);
-    });
+        
+        return () => {
+            document.removeEventListener("click", clickHandler);
+            document.removeEventListener("keydown", keyHandler);
+        };
+    }, [modalOpen, modal, trigger, handleOpenModal]);
 
     useEffect(() => {
         if (gameData?.mascot2?.energy === gameData?.mascot2?.clickByLevel && gameData?.mascot2?.clickByLevel !== 0) {
@@ -107,7 +109,6 @@ function EarnGuide({
     return (
         <>
             <div className="absolute bottom-12 w-full flex justify-center items-center rounded-lg">
-
                 <div className="grid grid-cols-3 gap-0 md:gap-2 lg:gap-4">
                     <div className="relative rounded-2xl w-full flex justify-center items-end">
                         <button
@@ -144,8 +145,7 @@ function EarnGuide({
                             className="transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 duration-300"
                             onMouseEnter={handleMouseEnterUpgrades}
                             onMouseLeave={handleMouseLeaveUpgrades}
-                        // ref={trigger}
-                        // onClick={() => handleOpenModal('upgrades')}
+                            onClick={() => handleOpenModal('upgrades')}
                         >
                             <img
                                 src={imageSrcUpgrades}
@@ -159,7 +159,7 @@ function EarnGuide({
                             className="transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 duration-300"
                             onMouseEnter={handleMouseEnterTasks}
                             onMouseLeave={handleMouseLeaveTasks}
-                        // ref={trigger}
+                            ref={trigger}
                             onClick={() => setIsOneTimeTaskOpen(true)}
                         >
                             <img
@@ -211,18 +211,18 @@ function EarnGuide({
                                 <a className='text-4xl mx-3' type="button" onClick={closeModal}>&times;</a>
                             </div>
                             <li>
-                            <div 
-                                className={`
-                                    ${energyRechargable > 0 && enableEnergyRecharge ? "dark:hover:bg-gray-700 dark:hover:text-gray-300 hover:text-gray-600 hover:bg-gray-50 cursor-pointer" : "dark:bg-gray-700 pointer-events-none"}
-                                    inline-flex items-center justify-between w-full p-2 text-gray-500 bg-white border-2 border-gray-200 rounded-lg dark:border-gray-700 dark:text-gray-400 dark:bg-gray-800
-                                `}
-                            >
                                 <div
-                                    className='flex flex-1 items-center'
-                                    onClick={handleChargeEnergy}
+                                    className={`
+                                        ${energyRechargable > 0 && enableEnergyRecharge ? "dark:hover:bg-gray-700 dark:hover:text-gray-300 hover:text-gray-600 hover:bg-gray-50 cursor-pointer" : "dark:bg-gray-600 pointer-events-none"}
+                                        inline-flex items-center justify-between w-full p-2 text-gray-500 bg-white border-2 border-gray-200 rounded-lg dark:border-gray-700 dark:text-gray-400 dark:bg-gray-800
+                                    `}
                                 >
+                                    <div
+                                        className='flex flex-1 items-center'
+                                        onClick={handleChargeEnergy}
+                                    >
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="ml-4 md:ml-6 w-10 h-10 text-fuchsia-500">
-                                            <path strokeLinecap="round" strokeLinejoin="round" d="M21 10.5h.375c.621 0 1.125.504 1.125 1.125v2.25c0 .621-.504 1.125-1.125 1.125H21M4.5 10.5H18V15H4.5v-4.5ZM3.75 18h15A2.25 2.25 0 0 0 21 15.75v-6a2.25 2.25 0 0 0-2.25-2.25h-15A2.25 2.25 0 0 0 1.5 9.75v6A2.25 2.25 0 0 0 3.75 18Z" />
+                                            <path strokeLinecap="round" strokeLinejoin="round" d="M21 10.5h.375c.621 0 1.125.504 1.125 1.125v2.25c0 .621-.504 1.125-1.125 1.125H21M4.5 10.5H18V15H4.5v-4.5ZM3.75 18h15A2.25 2.25 0 0 0 21 15.75v-6a2.25 2.25 0 0 0-2.25-2.25h-15A2.25 2.25 0 0 0 3.75 18Z" />
                                         </svg>
                                         <div className="ml-10 w-full text-2xl text-left">
                                             Energy Refresh
@@ -234,13 +234,13 @@ function EarnGuide({
                                 </div>
                             </li>
                             <li>
-                                <div 
+                                <div
                                     className={`
-                                        ${inviteRechargable > 0 && enableInviteRecharge ? "dark:hover:bg-gray-700 dark:hover:text-gray-300 hover:text-gray-600 hover:bg-gray-50 cursor-pointer" : "dark:bg-gray-700 pointer-events-none"}
+                                        ${inviteRechargable > 0 && enableInviteRecharge ? "dark:hover:bg-gray-700 dark:hover:text-gray-300 hover:text-gray-600 hover:bg-gray-50 cursor-pointer" : "dark:bg-gray-600 pointer-events-none"}
                                         inline-flex items-center justify-between w-full p-2 text-gray-500 bg-white border-2 border-gray-200 rounded-lg dark:border-gray-700 dark:text-gray-400 dark:bg-gray-800
                                     `}
                                 >
-                                    <div className='flex flex-1 items-center' 
+                                    <div className='flex flex-1 items-center'
                                         onClick={() => {
                                             setShowPopup(true);
                                             handleChargeEnergyByInvite();
@@ -263,7 +263,7 @@ function EarnGuide({
                             <ReferPopup
                                 inviteCode={inviteCode}
                                 rewardRate={rewardRate}
-                                onClose={setShowPopup}
+                                onClose={() => setShowPopup(false)}
                             />
                         )}
                     </div>
@@ -274,11 +274,11 @@ function EarnGuide({
 }
 
 EarnGuide.propTypes = {
-    energyRechargable: PropTypes.number, 
+    energyRechargable: PropTypes.number,
     handleUpdateRechargableEnergy: PropTypes.func,
     inviteRechargable: PropTypes.number,
     handleUpdateRechargableInvite: PropTypes.func,
-    modalOpen: PropTypes.bool,
+    modalOpen: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]),  // Update prop type to handle both bool and string
     handleOpenModal: PropTypes.func,
     gameData: PropTypes.object,
     rewardRate: PropTypes.number,
@@ -287,3 +287,4 @@ EarnGuide.propTypes = {
 }
 
 export default EarnGuide;
+

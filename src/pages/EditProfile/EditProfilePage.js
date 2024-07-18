@@ -2,11 +2,11 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { handlePasswordReset } from "../../firebase/auth";
+import { handlePasswordReset } from "../../firebase/auth.js";
 import { updateUserProfile } from "../../firebase/profile.ts";
-import useAuth from "../../hooks/useAuth";
+import useAuth from "../../hooks/useAuth.js";
 
-const EditProfile = () => {
+const EditProfilePage = () => {
   const navigate = useNavigate();
   const { isLoggedIn, loading, user } = useAuth();
 
@@ -216,5 +216,5 @@ const EditProfile = () => {
   );
 };
 
-export default EditProfile;
+export default EditProfilePage;
 

@@ -1,52 +1,55 @@
-
 import React, { useEffect, useState } from "react";
 import { useAppDispatch } from "../../hooks/storeHooks";
 import { getUser, useUserDetails } from "../../sagaStore/slices";
+import { useNavigate } from "react-router-dom";
 import ClickerView from "./ClickerView";
 import backgroundImageClicker from '../../assets/images/clicker-character/clickerBg.png';
 import '../../styles/globals.css';
 
-export default function ClickerMain() {
+export default function ClickerPage() {
+
+  const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const currentUser = useUserDetails();
-
-  useEffect(() => {
-    setTimeout(() => {
-      dispatch(getUser());
-    },1000);
-  },[]);
-
-  useEffect(() => {
-    setTimeout(() => {
-      if(!currentUser){
-        // navigate('/login');
-      }
-    },1500)
-  }, [currentUser])
   const [gameData, setGameData] = useState({});
+
+  useEffect(() => {
+
+    const userTimeout = setTimeout(() => {
+      dispatch(getUser());
+    }, 1000);
+
+    const navigateTimeout = setTimeout(() => {
+      if (!currentUser) {
+        navigate('/login');
+      }
+    }, 1500);
+
+    return () => {
+      clearTimeout(userTimeout);
+      clearTimeout(navigateTimeout);
+    };
+  }, [dispatch, currentUser, navigate]);
 
   return (
     <div
       className="w-full mx-auto bg-clicker-game bg-no-repeat bg-cover h-screen relative cursor-pointer -z-99"
-      style={{ 
+      style={{
         backgroundImage: `url(${backgroundImageClicker})`,
         backgroundSize: 'cover',
         backgroundRepeat: 'no-repeat',
         backgroundPosition: 'center',
       }}
     >
-      <div className=" flex justify-between absolute right-0 mt-6">
-        <div className="bg-count2 h-[50px] min-w-[200px] w-full bg-no-repeat bg-contain grid items-center justify-start pl-12 text-white text-sm">
-          {gameData?.totalPoints}
-        </div>
+      <div className="flex items-center justify-center h-full gap-4">
+
+        <ClickerView
+          currentUser={currentUser}
+          gameData={gameData}
+          setGameData={setGameData}
+        />
+
       </div>
-
-      <ClickerView
-        currentUser={currentUser}
-        gameData={gameData}
-        setGameData={setGameData}
-      />
-
     </div>
   );
 }

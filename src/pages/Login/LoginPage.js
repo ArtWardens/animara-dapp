@@ -2,53 +2,58 @@ import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, useNavigate } from 'react-router-dom';
 import TelegramLoginButton from "react-telegram-login";
-
-import { handleSignInWithGoogle, handleSignInWithTwitter} from '../../firebase/auth';
+import { handleSignInWithGoogle, handleSignInWithTwitter} from '../../firebase/auth.js';
 import { useUserStore } from '../../store/store.ts';
 import { useAppDispatch } from '../../hooks/storeHooks.js';
 import { getUser, login, useUserDetails } from '../../sagaStore/slices/userSlice.js';
-
-import useAuth from "../../hooks/useAuth.js";
 import { signInUser, storeUserInFirestore } from "../../utils/fuctions.js";
 
-const Login = () => {
+const LoginPage = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const { loading } = useAuth();
   const userStore = useUserStore();
   const currentUser = useUserDetails();
   const { t: tLogin } = useTranslation('login');
-
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const togglePassword = () => setShowPassword(!showPassword);
 
   useEffect(() => {
-    setTimeout(() => {
-      dispatch(getUser());
-    },1000)
-  },[dispatch])
 
-  useEffect(() => {
-    if(currentUser){
-      navigate('/clicker');
+    const userTimeout = setTimeout(() => {
+      dispatch(getUser());
+    }, 1000);
+
+    if (currentUser) {
+      navigate("/clicker");
     }
-  }, [navigate, currentUser])
+
+    const handleKeyPress = (event) => {
+      if (event.key === "Enter") {
+        document.getElementById("login-form-btn").click();
+      }
+    };
+
+    document.addEventListener("keypress", handleKeyPress);
+
+    return () => {
+      clearTimeout(userTimeout);
+      document.removeEventListener("keypress", handleKeyPress);
+    };
+  }, [dispatch, currentUser, navigate]);
 
   const onHandleSignIn = async () => {
     dispatch(login({ email, password }));
+    navigate("/clicker"); 
   }
 
   const handleTelegramResponse = async (response) => {
     const authUser = await signInUser();
     await storeUserInFirestore(authUser.uid, response);
-    navigate("/");
+    navigate("/clicker"); 
   };
 
-  if (loading) {
-    return <h1>Loading...</h1>;
-  }
 
   return (
     <div className="min-h-screen relative flex justify-around pt-0 md:pt-24">
@@ -90,8 +95,8 @@ const Login = () => {
             placeholder={tLogin('password')}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            required
             className="w-[100%] outline-none rounded-xl bg-transparent p-3 border border-white font-outfit placeholder-white text-white"
+            required
           />
           <img
             onClick={togglePassword}
@@ -129,7 +134,7 @@ const Login = () => {
         </div>
         <button
           id="login-form-btn"
-          className="mt-3 font-outfit font-semibold w-[100%] bg-gray-700 p-4 rounded-xl"
+          className="mt-3 font-outfit font-semibold w-[100%] bg-gray-700 p-4 rounded-xl hover:brightness-75"
           onClick={onHandleSignIn}
         >
           Login
@@ -144,42 +149,43 @@ const Login = () => {
         <div className="flex gap-4 justify-center mt-10">
           <img
             src="/socials/google.svg"
-            alt=""
+            alt="Google"
+            className="hover:brightness-75"
             onClick={async () => {
               const user = await handleSignInWithGoogle();
               if (user) {
                 userStore.setUser(user);
-                navigate('/');
+                navigate("/clicker"); 
               }
             }}
           />
           <img
-            className="w-12"
+            className="w-12 hover:brightness-75"
             src="/socials/twitter.svg"
-            alt=""
+            alt="Twitter"
             onClick={async () => {
               const user = await handleSignInWithTwitter();
               if (user) {
-                navigate("/");
+                navigate("/clicker"); 
               }
             }}
           />
           <div className="flex gap-4 justify-center relative w-[3.3rem]">
             <TelegramLoginButton
-              className="w-[3rem] rounded-full absolute overflow-hidden opacity-[0.1] z-[1]"
+              className="w-[3rem] rounded-full absolute overflow-hidden opacity-[0.1] hover:brightness-75"
               dataOnauth={handleTelegramResponse}
-              botName="Animara_dapp_bot"
+              // botName="Animara_dapp_bot"
             />
             <img
-              className="absolute w-[3.3rem] rounded-full -top-[5px] pointer-events-none -z-[1]"
+              className="absolute w-[3.3rem] rounded-full -top-[5px] hover:brightness-75"
               src="/socials/telegram.svg"
-              alt=""
+              alt="Telegram"
             />
           </div>
         </div>
         <p className="font-outfit mt-20 mb-8 text-center block">
-          Don&apos;t have an account? &nbsp;
-          <Link to="/signup" className="underline underline-offset-4">
+          Don't have an account? &nbsp;
+          <Link to="/signup" className="underline underline-offset-4 hover:brightness-75">
             Signup
           </Link>
         </p>
@@ -193,4 +199,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default LoginPage;

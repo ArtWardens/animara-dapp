@@ -279,3 +279,18 @@ text-shadow: 6px 5px 4px rgba(145, 69, 0, 0.4);
 .overlay-exit-active {
   opacity: 0;
 }
+
+@keyframes easeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.ease-in {
+  animation: easeIn 0.5s ease forwards;
+}

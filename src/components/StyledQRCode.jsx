@@ -9,7 +9,7 @@ const qrCode = new QRCodeStyling({
   type: "svg",
   data: "https://example.com",
   dotsOptions: {
-    color: "white",
+    color: "black",
     type: "dots",
   },
   cornersSquareOptions: {
@@ -17,7 +17,7 @@ const qrCode = new QRCodeStyling({
     type: "extra-rounded",
   },
   cornersDotOptions: {
-    color: "white",
+    color: "black",
     type: "dot",
   },
   backgroundOptions: {
