@@ -99,7 +99,7 @@ const ClickerView = ({ currentUser, gameData, setGameData }) => {
             totalPoints: 0,
             currentScore: currentUser.coins,
           });
-          setLoading(false);
+          setLoading(false);  // Update loading state once data is set
         }, 1500);
       }
 
@@ -212,7 +212,6 @@ const ClickerView = ({ currentUser, gameData, setGameData }) => {
   return (
     <>
       <div className="max-w-full flex justify-center items-center relative">
-
         <EnergyRegeneration
           currentUser={currentUser}
           gameData={gameData}

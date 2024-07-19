@@ -278,7 +278,7 @@ EarnGuide.propTypes = {
     handleUpdateRechargableEnergy: PropTypes.func,
     inviteRechargable: PropTypes.number,
     handleUpdateRechargableInvite: PropTypes.func,
-    modalOpen: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]),  // Update prop type to handle both bool and string
+    modalOpen: PropTypes.string,
     handleOpenModal: PropTypes.func,
     gameData: PropTypes.object,
     rewardRate: PropTypes.number,

@@ -14,22 +14,18 @@ export default function ClickerPage() {
   const [gameData, setGameData] = useState({});
 
   useEffect(() => {
-
-    const userTimeout = setTimeout(() => {
+    setTimeout(() => {
       dispatch(getUser());
     }, 1000);
+  }, []);
 
-    const navigateTimeout = setTimeout(() => {
+  useEffect(() => {
+    setTimeout(() => {
       if (!currentUser) {
         navigate('/login');
       }
-    }, 1500);
-
-    return () => {
-      clearTimeout(userTimeout);
-      clearTimeout(navigateTimeout);
-    };
-  }, [dispatch, currentUser, navigate]);
+    }, 1500)
+  }, [currentUser])
 
   return (
     <div
