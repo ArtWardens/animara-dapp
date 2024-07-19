@@ -39,7 +39,7 @@ function EnergyRegeneration({
             setTimeRemaining(getTimeRemaining());
         }, 1000);
 
-        return () => clearInterval(intervalId); // Cleanup the interval on component unmount
+        return () => clearInterval(intervalId);
     }, []);
 
     return (
@@ -108,7 +108,7 @@ function EnergyRegeneration({
                     isOneTimeTaskOpen ? 'block' : 'hidden'
                 }`}
                 style={{
-                    zIndex: 100, // Add a high z-index here
+                    zIndex: 100,
                 }}
                 >
                 <OneTimeTask setIsOneTimeTaskOpen={setIsOneTimeTaskOpen} totalClicks={totalClicks} setTotalClicks={setTotalClicks}/>
@@ -121,7 +121,7 @@ function EnergyRegeneration({
                     isLeaderboardOpen ? 'block' : 'hidden'
                 }`}
                 style={{
-                    zIndex: 100, // Add a high z-index here
+                    zIndex: 100,
                 }}
                 >
                 <LeaderBoardModal

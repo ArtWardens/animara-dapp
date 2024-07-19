@@ -33,7 +33,7 @@ const MascotView = ({
       clearTimeout(timerRef.current);
     }
     timerRef.current = setTimeout(() => {
-      setShowImage(getImagePath(userProgress, gameData, currentMascot, currentUser)); // Reset to initial image after idle
+      setShowImage(getImagePath(userProgress, gameData, currentMascot, currentUser));
     }, 3000);
   };
 
@@ -61,12 +61,10 @@ const MascotView = ({
 
     } else {
       handleOpenModal("boosts");
-      // handleError(); // Open the modal instead of showing toast error
     }
   };
 
   const handleMouseUp = () => {
-    // Optionally, you can handle the mouse up event if needed
   };
 
   const closeRewardModal = () => {
@@ -85,10 +83,10 @@ const MascotView = ({
     const resetTimer = () => {
       clearTimeout(timerRef.current);
       timerRef.current = setTimeout(() => {
-        setShowImage(getImagePath(userProgress, gameData, currentMascot, currentUser)); // Reset to initial image after idle
+        setShowImage(getImagePath(userProgress, gameData, currentMascot, currentUser));
       }, 3000);
     };
-    document.addEventListener("mousedown", resetTimer); // Listen for mouse button press
+    document.addEventListener("mousedown", resetTimer);
     return () => {
       document.removeEventListener("mousedown", resetTimer);
     };
