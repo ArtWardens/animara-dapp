@@ -14,18 +14,18 @@ import {
 import { v4 as uuidv4 } from "uuid";
 import { auth, db } from "../firebase/firebaseConfig";
 import { signInAnonymously } from "firebase/auth";
+import moment from 'moment';
+import 'moment-timezone';
 
 export const getTodayDate = () => {
   const date = new Date();
+  
+  const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+  const userTime = moment.tz(date, userTimeZone);
 
-  const malaysiaTimeZone = "Asia/Kuala_Lumpur";
-  const malaysiaTime = new Date(
-    date.toLocaleString("en-US", { timeZone: malaysiaTimeZone })
-  );
-
-  let day = malaysiaTime.getDate();
-  let month = malaysiaTime.getMonth() + 1;
-  let year = malaysiaTime.getFullYear();
+  let day = userTime.date();
+  let month = userTime.month() + 1;
+  let year = userTime.year();
 
   if (day.toString().length === 1) {
     day = "0" + day;
@@ -41,20 +41,19 @@ export const getTodayDate = () => {
   return currentDate;
 };
 
-export const getTodayMalaysiaDate = () => {
-  const malaysiaTimeZone = "Asia/Kuala_Lumpur";
-  const malaysiaTime = new Date().toLocaleString("en-US", {
-    timeZone: malaysiaTimeZone,
+export const getTodayUserDate = () => {
+  const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+  const userTime = new Date().toLocaleString("en-US", {
+    timeZone: userTimeZone,
   });
-  return new Date(malaysiaTime);
+  return new Date(userTime);
 };
 
 export function calculateTimeRemaining() {
-  const malaysiaTime = getTodayMalaysiaDate();
-  const endOfDay = new Date(malaysiaTime);
-  endOfDay.setHours(23, 59, 59, 999);
+  const userTime = getTodayUserDate();
+  const endOfDay = moment(userTime).endOf('day').toDate();
 
-  const timeDifference = endOfDay - malaysiaTime;
+  const timeDifference = endOfDay - userTime;
 
   const hours = Math.floor(
     (timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)

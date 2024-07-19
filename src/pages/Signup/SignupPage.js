@@ -1,25 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
 import TelegramLoginButton from "react-telegram-login";
-import {
-  handleSignInWithGoogle,
-  handleSignUp,
-  handleSignInWithTwitter,
-} from "../../firebase/auth";
-import useAuth from "../../hooks/useAuth.js";
-import {
-  signInUser,
-  storeUserInFirestore,
-} from "../../utils/fuctions.js";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { handleSignInWithGoogle, handleSignUp, handleSignInWithTwitter } from "../../firebase/auth.js";
+import { signInUser, storeUserInFirestore } from "../../utils/fuctions.js";
 
-const Signup = () => {
+const SignupPage = () => {
   const location = useLocation();
-
-  const [showPassword, setShowPassword] = useState(false);
-  const togglePassword = () => setShowPassword(!showPassword);
-
+  const navigate = useNavigate();
   const queryParams = new URLSearchParams(location.search);
-
+  const togglePassword = () => setShowPassword(!showPassword);
+  const [showPassword, setShowPassword] = useState(false);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -27,15 +17,24 @@ const Signup = () => {
     queryParams.get("invite-code") || ""
   );
 
-  const { user, loading } = useAuth();
-
-  const navigate = useNavigate();
-
   useEffect(() => {
+
     if (user !== null) {
       console.log("redirect");
       navigate("/");
     }
+
+    const handleKeyPress = (event) => {
+      if (event.key === "Enter") {
+        document.getElementById("signup-button").click();
+      }
+    };
+
+    document.addEventListener("keypress", handleKeyPress);
+
+    return () => {
+      document.removeEventListener("keypress", handleKeyPress);
+    };
   }, [user, navigate]);
 
   const handleTelegramResponse = async (response) => {
@@ -44,9 +43,6 @@ const Signup = () => {
     navigate("/");
   };
 
-  if (loading) {
-    return <h1>Loading...</h1>;
-  }
 
   return (
     <div className="min-h-screen relative flex justify-around pt-0 md-pt-24">
@@ -147,7 +143,7 @@ const Signup = () => {
           className="w-[100%] outline-none rounded-xl bg-transparent border border-white p-3 font-outfit mt-3 placeholder-white text-white"
         />
         <button
-          id="login-form-btn"
+          id="signup-button"
           onClick={async () => {
             const user = await handleSignUp(email, password, name, inviteCode);
             if (user) {
@@ -156,7 +152,7 @@ const Signup = () => {
               navigate("/");
             }
           }}
-          className="mt-3 font-outfit font-semibold w-[100%] bg-gray-700 p-4 rounded-xl"
+          className="mt-3 font-outfit font-semibold w-[100%] bg-gray-700 p-4 rounded-xl hover:brightness-75"
         >
           Sign Up
         </button>
@@ -169,7 +165,8 @@ const Signup = () => {
         <div className="flex gap-4 justify-center mt-10">
           <img
             src="/socials/google.svg"
-            alt=""
+            alt="Google"
+            className="hover:brightness-75"
             onClick={async () => {
               const user = await handleSignInWithGoogle(inviteCode);
               if (user) {
@@ -180,9 +177,9 @@ const Signup = () => {
             }}
           />
           <img
-            className="w-12"
             src="/socials/twitter.svg"
-            alt=""
+            alt="Twitter"
+            className="w-12 hover:brightness-75"
             onClick={async () => {
               const user = await handleSignInWithTwitter(inviteCode);
               if (user) {
@@ -194,20 +191,20 @@ const Signup = () => {
           />
           <div className="flex gap-4 justify-center relative w-[3.3rem]">
             <TelegramLoginButton
-              className="w-[3rem] rounded-full absolute overflow-hidden opacity-[0.1] z-[1]"
+              className="w-[3rem] rounded-full absolute overflow-hidden opacity-[0.1] hover:brightness-75"
               dataOnauth={handleTelegramResponse}
-              botName="Animara_dapp_bot"
+              // botName="Animara_dapp_bot"
             />
             <img
-              className="absolute w-[3.3rem] rounded-full -top-[5px] pointer-events-none -z-[1]"
+              className="absolute w-[3.3rem] rounded-full -top-[5px] hover:brightness-75"
               src="/socials/telegram.svg"
-              alt=""
+              alt="Telegram"
             />
           </div>
         </div>
         <p className="font-outfit mt-20 mb-8 text-center block">
           Already have an account? &nbsp;
-          <Link to="/login" className="underline underline-offset-4">
+          <Link to="/login" className="underline underline-offset-4 hover:brightness-75">
             Login
           </Link>
         </p>
@@ -221,4 +218,4 @@ const Signup = () => {
   );
 };
 
-export default Signup;
+export default SignupPage;
