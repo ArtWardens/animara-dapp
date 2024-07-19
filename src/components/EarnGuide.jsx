@@ -68,20 +68,18 @@ function EarnGuide({
             if (modalOpen === "" || modal.current.contains(target) || trigger.current.contains(target)) return;
             handleOpenModal("");
         };
-        
+        document.addEventListener("click", clickHandler);
+        return () => document.removeEventListener("click", clickHandler);
+    });
+
+    useEffect(() => {
         const keyHandler = ({ keyCode }) => {
             if (modalOpen === "" || keyCode !== 27) return;
             handleOpenModal("");
         };
-        
-        document.addEventListener("click", clickHandler);
         document.addEventListener("keydown", keyHandler);
-        
-        return () => {
-            document.removeEventListener("click", clickHandler);
-            document.removeEventListener("keydown", keyHandler);
-        };
-    }, [modalOpen, modal, trigger, handleOpenModal]);
+        return () => document.removeEventListener("keydown", keyHandler);
+    });
 
     useEffect(() => {
         if (gameData?.mascot2?.energy === gameData?.mascot2?.clickByLevel && gameData?.mascot2?.clickByLevel !== 0) {

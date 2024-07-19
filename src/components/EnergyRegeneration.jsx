@@ -5,10 +5,10 @@ import { getTimeRemaining } from '../utils/getTimeRemaining';
 import LeaderBoardModal from './LeaderBoardModal';
 import OneTimeTask from './OneTimeTask';
 
-function EnergyRegeneration({
-    currentUser,
-    gameData,
-    totalClicks,
+function EnergyRegeneration({ 
+    currentUser, 
+    gameData, 
+    totalClicks, 
     setTotalClicks,
     isLeaderboardOpen,
     setIsLeaderboardOpen,
@@ -18,29 +18,29 @@ function EnergyRegeneration({
 
     const [profitPerHour, setProfitPerHour] = useState(0);
     const [progressBarWidth, setProgressBarWidth] = useState(0);
+
+    useEffect(() => {
+        setProfitPerHour(currentUser?.profitPerHour)
+    }, [currentUser])
+
+    useEffect(() => {
+        const maxEnergy = gameData?.mascot2?.energy;
+        const currentEnergy = maxEnergy - gameData?.mascot2?.clickByLevel || 0;
+
+        const energyPercentage = (currentEnergy / maxEnergy) * 100;
+        setProgressBarWidth(Math.min(energyPercentage, 100));
+    }, [gameData]);
+
     const [timeRemaining, setTimeRemaining] = useState(getTimeRemaining());
     const [countDownRemaining] = useState(0);
-
-    useEffect(() => {
-        setProfitPerHour(currentUser?.profitPerHour);
-    }, [currentUser, setProfitPerHour]);
-
-    useEffect(() => {
-        if (gameData?.mascot2) {
-            const maxEnergy = gameData.mascot2.energy;
-            const currentEnergy = maxEnergy - (gameData.mascot2.clickByLevel || 0);
-            const energyPercentage = (currentEnergy / maxEnergy) * 100;
-            setProgressBarWidth(Math.min(energyPercentage, 100));
-        }
-    }, [gameData, setProgressBarWidth]);
-
+ 
     useEffect(() => {
         const intervalId = setInterval(() => {
             setTimeRemaining(getTimeRemaining());
         }, 1000);
 
-        return () => clearInterval(intervalId);
-    }, [setTimeRemaining, getTimeRemaining]);
+        return () => clearInterval(intervalId); // Cleanup the interval on component unmount
+    }, []);
 
     return (
         <>
@@ -104,30 +104,32 @@ function EnergyRegeneration({
 
             {isOneTimeTaskOpen && (
                 <div
-                    className={`fixed left-0 top-0 flex h-full min-h-screen w-full items-center justify-center bg-dark/90 px-4 py-5 ${isOneTimeTaskOpen ? 'block' : 'hidden'
-                        }`}
-                    style={{
-                        zIndex: 100, // Add a high z-index here
-                    }}
+                className={`fixed left-0 top-0 flex h-full min-h-screen w-full items-center justify-center bg-dark/90 px-4 py-5 ${
+                    isOneTimeTaskOpen ? 'block' : 'hidden'
+                }`}
+                style={{
+                    zIndex: 100, // Add a high z-index here
+                }}
                 >
-                    <OneTimeTask setIsOneTimeTaskOpen={setIsOneTimeTaskOpen} totalClicks={totalClicks} setTotalClicks={setTotalClicks} />
+                <OneTimeTask setIsOneTimeTaskOpen={setIsOneTimeTaskOpen} totalClicks={totalClicks} setTotalClicks={setTotalClicks}/>
                 </div>
             )}
 
             {isLeaderboardOpen && (
                 <div
-                    className={`fixed left-0 top-0 flex h-full min-h-screen w-full items-center justify-center bg-dark/90 px-4 py-5 ${isLeaderboardOpen ? 'block' : 'hidden'
-                        }`}
-                    style={{
-                        zIndex: 100, // Add a high z-index here
-                    }}
+                className={`fixed left-0 top-0 flex h-full min-h-screen w-full items-center justify-center bg-dark/90 px-4 py-5 ${
+                    isLeaderboardOpen ? 'block' : 'hidden'
+                }`}
+                style={{
+                    zIndex: 100, // Add a high z-index here
+                }}
                 >
-                    <LeaderBoardModal
-                        timeRemaining={timeRemaining}
-                        countdown={countDownRemaining}
-                        isLeaderBoardOpen={isLeaderboardOpen}
-                        setIsLeaderBoardOpen={setIsLeaderboardOpen}
-                    />
+                <LeaderBoardModal
+                    timeRemaining={timeRemaining}
+                    countdown={countDownRemaining}
+                    isLeaderBoardOpen={isLeaderboardOpen}
+                    setIsLeaderBoardOpen={setIsLeaderboardOpen}
+                />
                 </div>
             )}
         </>
@@ -135,9 +137,9 @@ function EnergyRegeneration({
 }
 
 EnergyRegeneration.propTypes = {
-    currentUser: PropTypes.object,
-    gameData: PropTypes.object,
-    totalClicks: PropTypes.number,
+    currentUser: PropTypes.object, 
+    gameData: PropTypes.object, 
+    totalClicks: PropTypes.number, 
     setTotalClicks: PropTypes.func,
     isLeaderboardOpen: PropTypes.bool,
     setIsLeaderboardOpen: PropTypes.func,
