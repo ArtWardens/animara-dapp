@@ -6,6 +6,8 @@ import LoginPage from './pages/Login/LoginPage';
 import SignupPage from "./pages/Signup/SignupPage";
 import EditProfilePage from "./pages/EditProfile/EditProfilePage";
 import ReferralPage from "./pages/Referral/ReferralPage";
+import EarlyBirdPage from "./pages/EarlyBird/EarlyBirdPage";
+import MintPage from "./pages/Mint/MintPage";
 import AppLayout from './components/AppLayout';
 import { GlobalProvider } from './context/ContextProvider';
 import rootSaga from './sagas';
@@ -14,6 +16,7 @@ import { appInit, systemUpdateNetworkConnection } from './sagaStore/slices';
 import { runSaga } from './sagaStore/store';
 
 import './i18n';
+import ClickerController from './components/ClickerController';
 
 export const App = () => {
   const dispatch = useAppDispatch();
@@ -50,9 +53,12 @@ export const App = () => {
             <Route path="/" element={<LoginPage />}/>
             <Route path="/login" element={<LoginPage />} />
             <Route path="/signup" element={<SignupPage />} />
-            <Route path="/clicker" element={<ClickerPage />} />
-            <Route path="/edit-profile" element={<EditProfilePage />} />
+            <Route path="/edit-profile" element={<ClickerController Children={EditProfilePage}/>} />
+            <Route path="/clicker" element={<ClickerController Children={ClickerPage}/>} />
             <Route path="/referral" element={<ReferralPage />} />
+            <Route path="/early-bird" element={<EarlyBirdPage />} />
+            <Route path="/mint" element={<MintPage />} />
+            
           </Route>
         </Routes>
       </GlobalProvider>

@@ -211,7 +211,7 @@ function EarnGuide({
                             <li>
                                 <div
                                     className={`
-                                        ${energyRechargable > 0 && enableEnergyRecharge ? "dark:hover:bg-gray-700 dark:hover:text-gray-300 hover:text-gray-600 hover:bg-gray-50 cursor-pointer" : "dark:bg-gray-600 pointer-events-none"}
+                                        ${energyRechargable > 0 && enableEnergyRecharge ? "dark:hover:bg-gray-700 dark:hover:text-gray-300 hover:text-gray-600 hover:bg-gray-50 cursor-pointer" : "dark:bg-gray-700 pointer-events-none"}
                                         inline-flex items-center justify-between w-full p-2 text-gray-500 bg-white border-2 border-gray-200 rounded-lg dark:border-gray-700 dark:text-gray-400 dark:bg-gray-800
                                     `}
                                 >
@@ -234,7 +234,7 @@ function EarnGuide({
                             <li>
                                 <div
                                     className={`
-                                        ${inviteRechargable > 0 && enableInviteRecharge ? "dark:hover:bg-gray-700 dark:hover:text-gray-300 hover:text-gray-600 hover:bg-gray-50 cursor-pointer" : "dark:bg-gray-600 pointer-events-none"}
+                                        ${inviteRechargable > 0 && enableInviteRecharge ? "dark:hover:bg-gray-700 dark:hover:text-gray-300 hover:text-gray-600 hover:bg-gray-50 cursor-pointer" : "dark:bg-gray-700 pointer-events-none"}
                                         inline-flex items-center justify-between w-full p-2 text-gray-500 bg-white border-2 border-gray-200 rounded-lg dark:border-gray-700 dark:text-gray-400 dark:bg-gray-800
                                     `}
                                 >
