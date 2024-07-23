@@ -13,12 +13,6 @@ const ClickerController = ({ Children }) => {
   const currentUser = useUserDetails();
   
   const [gameData, setGameData] = useState({});
-  const [isOpenRewardModal, setIsOpenRewardModal] = useState(false);
-  const [modalOpen, handleOpenModal] = useState(false);
-  const [loading, setLoading] = useState(true);
-  const [energyRechargable, setEnergyRechargable] = useState(0);
-  const [inviteRechargable, setInviteRechargable] = useState(0);
-  const [rewardRate, setRewardRate] = useState(null);
   const [totalClicks, setTotalClicks] = useState(gameData?.currentScore);
 
   useEffect(() => {

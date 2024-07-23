@@ -69,9 +69,15 @@ function Header({
                 alt="gem"
                 />
                 <div className="relative flex items-center justify-center">
-                <span className="relative text-3xl text-amber-500 tracking-normal">
-                    {totalClicks}
-                </span>
+                    <span
+                        className="relative text-3xl text-amber-500 tracking-normal"
+                        style={{
+                            WebkitTextStrokeWidth: '1.75px',
+                            WebkitTextStrokeColor: 'var(--Color-11, #FFF)'
+                          }}
+                    >
+                        {currentUser?.coins}
+                    </span>
                 </div>
             </div>
 

@@ -82,7 +82,7 @@ const ClickCounter = ({ gameData, currentMascot, totalClicks, setTotalClicks, re
   return (
     <>
       <div
-        className="flex flex-row absolute top-6 z-10 p-1 pr-8 gap-2 left-24"
+        className="flex flex-row absolute top-8 z-10 p-1 pr-8 gap-2 left-24"
         style={{
           border: '3px solid #F4FBFF',
           borderRadius: '500px 200px 200px 500px',
@@ -121,11 +121,14 @@ const ClickCounter = ({ gameData, currentMascot, totalClicks, setTotalClicks, re
               alt="gem"
             />
             <div className="relative flex items-center justify-center">
-              <span className="relative text-3xl text-amber-500 tracking-normal">
+              <span
+                className="relative text-3xl text-amber-500 tracking-normal"
+                style={{
+                  WebkitTextStrokeWidth: '1.75px',
+                  WebkitTextStrokeColor: 'var(--Color-11, #FFF)'
+                }}
+              >
                 {totalClicks}
-              </span>
-              <span className="relative text-3xl text-amber-500 tracking-normal hidden">
-                {currentUser?.coins}
               </span>
             </div>
           </div>

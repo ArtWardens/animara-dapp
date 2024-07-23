@@ -1,11 +1,10 @@
 
 import React, { useEffect, useRef, useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { handlePasswordReset } from "../../firebase/auth.js";
 import { updateUserProfile } from "../../firebase/profile.ts";
 import useAuth from "../../hooks/useAuth.js";
-import ClickCounter from "../../components/ClickCounter.jsx";
 import Header from "../../components/Header.jsx";
 
 const EditProfilePage = ({
@@ -70,7 +69,10 @@ const EditProfilePage = ({
 
   return (
     <>
-      <Header currentUser={currentUser} totalClicks={totalClicks}/>
+      <Header
+        currentUser={currentUser}
+        totalClicks={totalClicks}
+      />
 
       <div
         className="justify-center items-center place-content-center p-44"
