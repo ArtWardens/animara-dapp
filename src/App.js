@@ -5,7 +5,6 @@ import useNavigatorOnline from 'use-navigator-online';
 import ClickerMain from './pages/Clicker/ClickerMain';
 import Login from './pages/Login/Login';
 import Signup from "./pages/Signup/Signup";
-import VerifyEmailPage from "./pages/VerifyEmail/VerifyEmailPage";
 import EditProfile from "./pages/EditProfile/EditProfile";
 import AppLayout from './components/AppLayout';
 import { GlobalProvider } from './context/ContextProvider';
@@ -53,7 +52,6 @@ export const App = () => {
             <Route path="/signup" element={<Signup />} />
             <Route path="/clicker" element={<ClickerMain />} />
             <Route path="/edit-profile" element={<EditProfile />} />
-            <Route path="/verifyEmail" element={<VerifyEmailPage />} />
           </Route>
         </Routes>
       </GlobalProvider>
