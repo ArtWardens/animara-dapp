@@ -45,7 +45,7 @@ function Header({
                 <img
                 src={"../assets/images/clicker-character/2-initial.png"}
                 alt="gem"
-                className="justify-self-center rounded-full w-24"
+                className="justify-self-center rounded-full w-24 cursor-pointer"
                 style={{
                     border: '4px solid var(--80E8FF, #80E8FF)',
                     background: 'lightgray 50%',

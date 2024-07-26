@@ -1,10 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { PropTypes } from "prop-types";
-import { BsCopy } from "react-icons/bs";
 import { toast } from "react-toastify";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faShareFromSquare } from '@fortawesome/free-solid-svg-icons';
+import { FaCopy, FaShareFromSquare } from "react-icons/fa6";
 import gem from "../../assets/images/gem2.png";
 import StyledQRCode from "../../components/StyledQRCode";
 import useAuth from "../../hooks/useAuth.js";
@@ -72,15 +69,16 @@ const ReferralPage = ({ currentUser, totalClicks, inviteCode }) => {
       />
 
       <div
-        className="w-screen min-h-screen flex flex-col items-center px-40"
+        className="flex flex-col items-center px-40 pb-8 min-h-screen"
         style={{
           backgroundImage: 'url("../../assets/images/clicker-character/clickerWall.png")',
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat',
+          backgroundAttachment: 'fixed',
         }}
       >
-        <div className="w-full h-full flex flex-col items-center gap-6 pt-36">
+        <div className="w-full h-full flex flex-col items-center gap-6 pt-32">
           <div className="text-center text-white text-4xl uppercase">Refer Friends</div>
           <span
             className="text-center text-amber-500 text-6xl uppercase leading-4 tracking-normal"
@@ -141,11 +139,11 @@ const ReferralPage = ({ currentUser, totalClicks, inviteCode }) => {
           </div>
 
           <div className="flex w-full">
-            <div className="w-[63%]">
+            <div className="w-[62%]">
               <div className="flex w-full">
                 <div className="w-[65%] border-dashed border-r-4 border-transparent">
                   <div
-                    className="w-full h-full py-16 px-12 items-center"
+                    className="w-full h-full py-16 px-8 items-center"
                     style={{
                       backgroundImage: 'url("../../assets/images/clicker-character/ticketWeb02.png")',
                       backgroundSize: 'contain',
@@ -229,7 +227,7 @@ const ReferralPage = ({ currentUser, totalClicks, inviteCode }) => {
                       <div className="flex-col justify-center items-center gap-1 flex">
                         <div className="text-center text-white text-sm font-normal leading-none tracking-wide">NFT Cashback</div>
                         <div
-                          className="text-center text-amber-500 text-4xl leading-9 tracking-wide"
+                          className="text-center text-amber-500 text-4xl leading-8 tracking-wide"
                           style={{
                             WebkitTextStrokeWidth: '2px',
                             WebkitTextStrokeColor: 'var(--Color-11, #FFF)',
@@ -240,14 +238,19 @@ const ReferralPage = ({ currentUser, totalClicks, inviteCode }) => {
                         </div>
                       </div>
                       <div className="pb-2 justify-center items-center inline-flex">
-                        <div className="h-[64px] px-12 bg-amber-300 rounded-full shadow shadow-inner border border-orange-300 justify-center items-center inline-flex">
-                          <div className="text-center text-white text-2xl font-normal">Claim</div>
+                        <div className="h-[60px] w-[160px] bg-[#FFDC62] rounded-full border border-[#E59E69] justify-center items-center inline-flex shadow-[0px_4px_4px_0px_#FFFBEF_inset,0px_-4px_4px_0px_rgba(255,249,228,0.48),0px_5px_4px_0px_rgba(232,140,72,0.48)] hover:bg-[#FFB23F] hover:pl-[24px] hover:pr-[20px] hover:border-1 hover:border-[#E59E69] hover:shadow-[0px_4px_4px_0px_rgba(255,210,143,0.61)_inset,0px_4px_4px_0px_rgba(136,136,136,0.48)] cursor-pointer">
+                          <div
+                            className="text-center text-white text-2xl font-normal"
+                            style={{ textShadow: '0px 2px 0.6px rgba(240, 139, 0, 0.66)'}}
+                          >
+                            <span className="hover:text-shadow-none">Claim</span>
+                          </div>
                         </div>
                       </div>
                       <div className="justify-start items-center gap-1 inline-flex">
-                        <span className="w-[135px] text-white text-xs font-medium font-outfit leading-none">Get an additional<span className="text-white font-LuckiestGuy text-xs tracking-wider">&nbsp;250 SOL </span>, if you own an NFT!</span>
-                        <div className="bg-amber-300 rounded-md justify-center items-center flex p-2">
-                          <div className="text-orange-50 text-xs font-normal">Own Now</div>
+                        <span className="w-[132px] text-white text-xs font-outfit leading-none">Get an additional<span className="text-white font-LuckiestGuy text-xs tracking-wide">&nbsp;250 SOL</span>, if you own an NFT!</span>
+                        <div className="flex justify-center items-center p-2 rounded-lg bg-[#FFC85A] shadow-[0px_1px_2px_0px_rgba(198,115,1,0.66)] hover:bg-[#FFAA00] hover:shadow-[0px_4px_4px_0px_rgba(255,210,143,0.61)_inset,0px_4px_4px_0px_rgba(232,140,72,0.48)] cursor-pointer">
+                          <div className="text-orange-50 text-xs">Own Now</div>
                         </div>
                       </div>
                     </div>
@@ -255,7 +258,7 @@ const ReferralPage = ({ currentUser, totalClicks, inviteCode }) => {
                 </div>
               </div>
             </div>
-            <div className="w-[37%]">
+            <div className="w-[38%]">
               <div
                 className="w-full h-full place-content-center px-6"
                 style={{
@@ -267,7 +270,7 @@ const ReferralPage = ({ currentUser, totalClicks, inviteCode }) => {
               >
 
                 <div className="flex w-full gap-4 p-3">
-                  <div className="w-1/3 bg-white rounded-lg">
+                  <div className="w-auto bg-white rounded-lg">
                     <StyledQRCode
                       value={inviteLink}
                       image={gem}
@@ -284,20 +287,20 @@ const ReferralPage = ({ currentUser, totalClicks, inviteCode }) => {
                         value={inviteCodeState}
                         readOnly={user?.referredBy ? true : false}
                         onChange={(e) => setInviteCodeState(e.target.value)}
-                        className="w-full bg-[#003358] border-[1px] border-[#245F89] rounded-xl p-3 text-sm font-medium font-outfit tracking-wide"
+                        className="w-full bg-[#003358] border-[1px] border-[#245F89] rounded-lg p-3 text-sm font-medium font-outfit tracking-wide"
                       />
                       <button
                         type="button"
                         onClick={copyInviteCode}
-                        className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-[#FA0] border-[1px] border-[#FFAA00] rounded-lg flex items-center justify-center w-[70px] h-[32px] shadow-inner text-xs tracking-wide px-2"
+                        className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-[#FA0] shadow-[0px_4px_4px_0px_rgba(255,210,143,0.61)_inset] border-[1px] border-[#FFAA00] rounded-lg flex items-center justify-center w-[64x] h-[30px] text-xs tracking-wide px-2 hover:bg-[#FFC85A] hover:shadow-[0px_1px_2px_0px_rgba(198,115,1,0.66)] hover:border-[#FFC85A] cursor-pointer"
                         style={{
                           boxShadow: '0px 4px 4px 0px rgba(255, 210, 143, 0.61) inset',
                         }}
                       >
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-4">
-                          <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 7.5V6.108c0-1.135.845-2.098 1.976-2.192.373-.03.748-.057 1.123-.08M15.75 18H18a2.25 2.25 0 0 0 2.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 0 0-1.123-.08M15.75 18.75v-1.875a3.375 3.375 0 0 0-3.375-3.375h-1.5a1.125 1.125 0 0 1-1.125-1.125v-1.5A3.375 3.375 0 0 0 6.375 7.5H5.25m11.9-3.664A2.251 2.251 0 0 0 15 2.25h-1.5a2.251 2.251 0 0 0-2.15 1.586m5.8 0c.065.21.1.433.1.664v.75h-6V4.5c0-.231.035-.454.1-.664M6.75 7.5H4.875c-.621 0-1.125.504-1.125 1.125v12c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V16.5a9 9 0 0 0-9-9Z" />
-                        </svg>
-                        &nbsp; Copy
+                        <FaCopy />
+                        <span className="hover:text-shadow-[0px_2px_0.6px_rgba(240,139,0,0.66)]">
+                          &nbsp;Copy
+                        </span>
                       </button>
                     </div>
                     <div className="text-neutral-700 text-xs font-medium font-outfit">
@@ -307,10 +310,10 @@ const ReferralPage = ({ currentUser, totalClicks, inviteCode }) => {
                 </div>
 
                 <div
-                  className="h-8 mx-4 mt-1 mb-5 text-sm bg-amber-400 rounded-full border-orange-300 justify-center items-center gap-1 flex"
+                  className="h-8 mx-4 mt-1 mb-5 text-sm bg-amber-400 shadow-[0px_4px_4px_0px_rgba(255,210,143,0.61)_inset] rounded-full border-orange-300 justify-center items-center gap-1 flex hover:bg-[#FFC85A] hover:shadow-[0px_1px_2px_0px_rgba(198,115,1,0.66)] hover:border-[#FFC85A] cursor-pointer"
                   onClick={shareInviteLink}
                 >
-                  <FontAwesomeIcon icon={faShareFromSquare} className="w-4 h-4 mr-2" />
+                  <FaShareFromSquare className="w-4 h-4 mr-2" />
                   Share to Social Networks Now!
                 </div>
 

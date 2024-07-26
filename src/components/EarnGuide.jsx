@@ -211,7 +211,7 @@ function EarnGuide({
                             <li>
                                 <div
                                     className={`
-                                        ${energyRechargable > 0 && enableEnergyRecharge ? "dark:hover:bg-gray-700 dark:hover:text-gray-300 hover:text-gray-600 hover:bg-gray-50 cursor-pointer" : "dark:bg-gray-700 pointer-events-none"}
+                                        ${energyRechargable > 0 && enableEnergyRecharge ? "dark:hover:bg-gray-700 dark:hover:text-gray-300 hover:text-gray-600 hover:bg-gray-50 cursor-pointer" : "dark:bg-gray-600 pointer-events-none"}
                                         inline-flex items-center justify-between w-full p-2 text-gray-500 bg-white border-2 border-gray-200 rounded-lg dark:border-gray-700 dark:text-gray-400 dark:bg-gray-800
                                     `}
                                 >
@@ -220,7 +220,7 @@ function EarnGuide({
                                         onClick={handleChargeEnergy}
                                     >
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="ml-4 md:ml-6 w-10 h-10 text-fuchsia-500">
-                                            <path strokeLinecap="round" strokeLinejoin="round" d="M21 10.5h.375c.621 0 1.125.504 1.125 1.125v2.25c0 .621-.504 1.125-1.125 1.125H21M4.5 10.5H18V15H4.5v-4.5ZM3.75 18h15A2.25 2.25 0 0 0 21 15.75v-6a2.25 2.25 0 0 0-2.25-2.25h-15A2.25 2.25 0 0 0 3.75 18Z" />
+                                            <path strokeLinecap="round" strokeLinejoin="round" d="M21 10.5h.375c.621 0 1.125.504 1.125 1.125v2.25c0 .621-.504 1.125-1.125 1.125H21M4.5 10.5H18V15H4.5v-4.5ZM3.75 18h15A2.25 2.25 0 0 0 21 15.75v-6a2.25 2.25 0 0 0-2.25-2.25h-15A2.25 2.25 0 0 0 1.5 9.75v6A2.25 2.25 0 0 0 3.75 18Z" />
                                         </svg>
                                         <div className="ml-10 w-full text-2xl text-left">
                                             Energy Refresh
@@ -234,7 +234,7 @@ function EarnGuide({
                             <li>
                                 <div
                                     className={`
-                                        ${inviteRechargable > 0 && enableInviteRecharge ? "dark:hover:bg-gray-700 dark:hover:text-gray-300 hover:text-gray-600 hover:bg-gray-50 cursor-pointer" : "dark:bg-gray-700 pointer-events-none"}
+                                        ${inviteRechargable > 0 && enableInviteRecharge ? "dark:hover:bg-gray-700 dark:hover:text-gray-300 hover:text-gray-600 hover:bg-gray-50 cursor-pointer" : "dark:bg-gray-600 pointer-events-none"}
                                         inline-flex items-center justify-between w-full p-2 text-gray-500 bg-white border-2 border-gray-200 rounded-lg dark:border-gray-700 dark:text-gray-400 dark:bg-gray-800
                                     `}
                                 >

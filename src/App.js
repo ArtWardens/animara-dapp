@@ -56,7 +56,7 @@ export const App = () => {
             <Route path="/edit-profile" element={<ClickerController Children={EditProfilePage}/>} />
             <Route path="/clicker" element={<ClickerController Children={ClickerPage}/>} />
             <Route path="/referral" element={<ClickerController Children={ReferralPage} />} />
-            <Route path="/early-bird" element={<EarlyBirdPage />} />
+            <Route path="/early-bird" element={<ClickerController Children={EarlyBirdPage} />} />
             <Route path="/mint" element={<MintPage />} />
             
           </Route>
