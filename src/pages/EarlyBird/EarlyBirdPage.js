@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { PropTypes } from "prop-types";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import useAuth from "../../hooks/useAuth.js";
@@ -13,9 +14,9 @@ const tasks = [
     { actionType: FaTwitter, title: 'Follow Y on Twitter', index: 1 },
 ];
 
-const EarlyBirdPage = ({ currentUser, totalClicks }) => {
+function EarlyBirdPage ({ currentUser, totalClicks }) {
     const navigate = useNavigate();
-    const { isLoggedIn, loading, user } = useAuth();
+    const { isLoggedIn, loading } = useAuth();
     const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
 
     useEffect(() => {
@@ -256,6 +257,11 @@ const EarlyBirdPage = ({ currentUser, totalClicks }) => {
 
         </>
     );
+}
+
+EarlyBirdPage.propTypes = {
+    currentUser: PropTypes.object,
+    totalClicks: PropTypes.number,
 };
 
 export default EarlyBirdPage;

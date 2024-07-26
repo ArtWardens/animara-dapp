@@ -1,4 +1,5 @@
 import React from "react";
+import { PropTypes } from "prop-types";
 import { useLocation, useNavigate } from "react-router-dom/dist";
 
 function Header({ 
@@ -103,5 +104,10 @@ function Header({
         </>
     );
 }
+
+Header.propTypes = {
+    currentUser: PropTypes.object, 
+    totalClicks: PropTypes.number
+  }
 
 export default Header;

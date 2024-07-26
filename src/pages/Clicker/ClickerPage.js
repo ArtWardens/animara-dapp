@@ -1,12 +1,10 @@
-import React, { useEffect, useState } from "react";
-import { useAppDispatch } from "../../hooks/storeHooks";
-import { getUser, useUserDetails } from "../../sagaStore/slices";
-import { useNavigate } from "react-router-dom";
+import React from "react";
+import { PropTypes } from "prop-types";
 import ClickerView from "./ClickerView";
 import backgroundImageClicker from '../../assets/images/clicker-character/clickerBg.png';
 import '../../styles/globals.css';
 
-export default function ClickerPage({
+function ClickerPage({
   currentUser,
   gameData,
   setGameData,
@@ -37,3 +35,13 @@ export default function ClickerPage({
     </div>
   );
 }
+
+ClickerPage.propTypes = {
+  currentUser: PropTypes.object,
+  gameData: PropTypes.object,
+  setGameData: PropTypes.func,
+  totalClicks: PropTypes.number,
+  setTotalClicks: PropTypes.func
+}
+
+export default ClickerPage;

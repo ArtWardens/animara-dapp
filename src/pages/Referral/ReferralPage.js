@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { PropTypes } from "prop-types";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { FaCopy, FaShareFromSquare } from "react-icons/fa6";
@@ -7,9 +8,7 @@ import StyledQRCode from "../../components/StyledQRCode";
 import useAuth from "../../hooks/useAuth.js";
 import Header from "../../components/Header.jsx";
 
-const ReferralPage = ({ currentUser, totalClicks, inviteCode }) => {
-  const [countdown, setCountdown] = useState(5);
-  const [isCloseEnabled, setIsCloseEnabled] = useState(false);
+function ReferralPage ({ currentUser, totalClicks, inviteCode }){
   const [inviteCodeState, setInviteCodeState] = useState(inviteCode);
   const inviteLink = `${window.location.origin}/signup?invite-code=${inviteCodeState}`;
 
@@ -26,20 +25,6 @@ const ReferralPage = ({ currentUser, totalClicks, inviteCode }) => {
       toast.error("You need to be logged in to access this page");
     }
   }, [isLoggedIn, navigate, loading]);
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCountdown((prevCountdown) => {
-        if (prevCountdown === 1) {
-          clearInterval(timer);
-          setIsCloseEnabled(true);
-        }
-        return prevCountdown - 1;
-      });
-    }, 1000);
-
-    return () => clearInterval(timer);
-  }, []);
 
   const shareInviteLink = () => {
     if (navigator.share) {
@@ -324,6 +309,12 @@ const ReferralPage = ({ currentUser, totalClicks, inviteCode }) => {
       </div >
     </>
 );
+}
+
+ReferralPage.propTypes = {
+  currentUser: PropTypes.object,
+  totalClicks: PropTypes.number,
+  inviteCode: PropTypes.string
 };
 
 export default ReferralPage;
