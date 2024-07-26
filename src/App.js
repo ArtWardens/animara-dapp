@@ -26,7 +26,7 @@ export const App = () => {
   useEffect(() => {
     runSaga(rootSaga);
     dispatch(appInit());
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     if (backOnline || backOffline) {
@@ -43,7 +43,7 @@ export const App = () => {
         },
       });
     }
-  }, [backOnline, backOffline]);
+  }, [backOnline, backOffline, dispatch, isOnline, isOffline]);
 
   return (
     <BrowserRouter>
