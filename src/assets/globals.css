@@ -230,6 +230,17 @@ body {
   );
 }
 
+#login-form-btn:disabled {
+  background: linear-gradient(
+    91deg,
+    #628eff 9.91%,
+    #8740cd 53.29%,
+    #580475 91.56%
+  );
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
 #rememberme:checked + label {
   background: linear-gradient(to bottom, #7cc1f3, #d27eef);
   border: none;

@@ -2,30 +2,31 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { handlePasswordReset } from "../../firebase/auth";
-import { updateUserProfile } from "../../firebase/profile.ts";
-import useAuth from "../../hooks/useAuth";
+import { useAppDispatch } from '../../hooks/storeHooks.js';
+import { useUserDetails, useUserAuthenticated, useAuthLoading, resetPassword, useResetPasswordLoading, updateProfile, useUpdateProfileLoading } from '../../sagaStore/slices/userSlice.js';
 
 const EditProfile = () => {
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const { isLoggedIn, loading, user } = useAuth();
-
-  useEffect(() => {
-    if (!isLoggedIn && !loading) {
-      navigate("/login");
-      toast.error("You need to be logged in to access this page");
-    }
-  }, [isLoggedIn, navigate, loading]);
-
-  const [isSaving, setIsSaving] = useState(false);
+  const isAuthenticated = useUserAuthenticated();
+  const isAuthLoading = useAuthLoading();
+  const resetPasswordLoading = useResetPasswordLoading();
+  const updateProfileLoading = useUpdateProfileLoading();
+  const user = useUserDetails();
   const [firstname, setFirstname] = useState("");
   const [lastname, setLastname] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [inviteCode, setInviteCode] = useState("");
   const [imageData, setImageData] = useState(null);
-
   const inputFile = useRef(null);
+
+  useEffect(() => {
+    if (!isAuthenticated && !isAuthLoading) {
+      navigate("/login");
+      toast.error("You need to be logged in to access this page");
+    }
+  }, [navigate, isAuthenticated, isAuthLoading]);
 
   useEffect(() => {
     setFirstname(user?.name?.split(" ").slice(0, -1).join(" ") || "");
@@ -35,27 +36,26 @@ const EditProfile = () => {
     setInviteCode(user?.referredBy || "");
   }, [user]);
 
-  const handleSubmit = async (e) => {
+  const handleResetPassword = ()=>{
+    dispatch(resetPassword());
+  }
+
+  const handleUpdateProfile = (e) => {
     e.preventDefault();
-    try {
-      setIsSaving(true);
-      await updateUserProfile(
-        firstname + " " + lastname,
-        inviteCode || null,
-        imageData ? imageData.toString() : null
-      );
-      toast.success("Profile updated successfully");
-    } catch (error) {
-      toast.error(error.message);
-    } finally {
-      setIsSaving(false);
-    }
+    dispatch(updateProfile({
+      fullName: firstname + " " + lastname,
+      inviteCode: inviteCode || null,
+      profilePicture: imageData ? imageData.toString() : null
+    }));
   };
 
   return (
     <div className="justify-center items-center place-content-center p-40 bg-[#1e1e1e]">
+      {/* update profile card */}
       <div className="w-full h-full border border-gray-100 p-10 rounded-xl shadow-lg backdrop-blur-sm z-10 relative">
+        {/* content */}
         <div className="header flex justify-between items-center">
+          {/* Header */}
           <span className="flex gap-2">
             <span>
               <span className="flex gap-2">
@@ -71,23 +71,30 @@ const EditProfile = () => {
               <p className="font-acumin text-xs">Settings&#9656;Edit Profile</p>
             </span>
           </span>
+
+          {/* Profile picture */}
           <span
             className="rounded-full border border-foreground overflow-hidden relative group"
             onClick={() => {
               inputFile.current?.click();
             }}
           >
+            {/* profile picture */}
             <img
               src={imageData?.toString() || user?.photoURL || "../../assets/images/lock.png" || ""}
               alt="pfp"
               className="group-hover:brightness-75 h-24 w-24"
             />
+
+            {/*  edit overlay */}
             <img
               src="./../assets/icons/edit.png"
               alt="edit"
               className="invisible group-hover:visible absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 text-white fill-white"
             />
           </span>
+
+          {/* profile picture input */}
           <input
             type="file"
             id="pfp"
@@ -107,7 +114,10 @@ const EditProfile = () => {
             }}
           />
         </div>
-        <form className="form font-degular mt-5" onSubmit={handleSubmit}>
+
+        {/* use profile */}
+        <form className="form font-degular mt-5" onSubmit={handleUpdateProfile}>
+          {/* Full Name */}
           <div className="flex flex-col md:flex-row gap-5 md:gap-10 mt-3 w-full">
             <div className="flex flex-col gap-2 w-full">
               <label htmlFor="firstname" className="font-acumin text-sm font-semibold">
@@ -138,6 +148,7 @@ const EditProfile = () => {
               />
             </div>
           </div>
+          {/* Email */}
           <div className="flex gap-10 mt-3 w-full">
             <div className="flex flex-col gap-2 w-full">
               <label htmlFor="email" className="font-acumin text-sm font-semibold">
@@ -154,6 +165,7 @@ const EditProfile = () => {
               />
             </div>
           </div>
+          {/* Phone Number */}
           <div className="flex gap-10 mt-3 w-full">
             <div className="flex flex-col gap-2 w-full">
               <label htmlFor="phone" className="font-acumin text-sm font-semibold">
@@ -170,10 +182,11 @@ const EditProfile = () => {
               />
             </div>
           </div>
+          {/* Invite Code */}
           <div className="flex gap-10 mt-3 w-full">
             <div className="flex flex-col gap-2">
               <label htmlFor="email" className="font-acumin text-sm font-semibold">
-                Invite Code
+                Invited by
               </label>
               <input
                 type="text"
@@ -185,30 +198,34 @@ const EditProfile = () => {
               />
             </div>
           </div>
+          {/* Actions */}
           <div className="flex gap-10 mt-10 w-full">
             <div className="flex flex-col md:flex-row justify-end gap-5 w-full">
+              {/* Reset password Button */}
               <span className="bg-gradient-to-r p-[2px] from-blue-500 to-fuchsia-600 rounded-lg w-54 md:w-96">
                 <button
+                  disabled={resetPasswordLoading}
                   className="p-2 w-full bg-[#1e1e1e] rounded-lg text-white font-semibold"
                   type="button"
-                  onClick={() => {
-                    handlePasswordReset(email);
-                  }}
+                  onClick={handleResetPassword}
                 >
-                  Reset Password
+                  {resetPasswordLoading ? "Resetting Password.." : "Reset Password"}
                 </button>
               </span>
+              {/* Save changes button */}
               <button
-                disabled={isSaving}
+                disabled={updateProfileLoading}
                 type="submit"
                 className="p-2 w-54 md:w-96 bg-inherit rounded-lg text-white font-semibold bg-gradient-to-r from-blue-500 to-fuchsia-600"
               >
-                {isSaving ? "Saving changes.." : "Save Changes"}
+                {updateProfileLoading ? "Saving changes.." : "Save Changes"}
               </button>
             </div>
           </div>
         </form>
       </div>
+
+      {/* styling */}
       <img src="../../assets/images/Ellipse3.png" className="absolute bottom-0 left-0 h-60 z-0" />
       <img src="../../assets/images/Ellipse1.png" className="absolute top-0 left-1/2 h-60 z-0" />
       <img src="../../assets/images/Ellipse1.png" className="absolute bottom-0 right-0 h-60 z-0" />

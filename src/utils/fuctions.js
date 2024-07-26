@@ -69,6 +69,21 @@ export const generateReferralCode = () => {
   return uuidv4().slice(0, 8);
 };
 
+export const fetchRewardRate = async () => {
+  try {
+    const docRef = doc(db, "rewardRate", "BO6QrGeuUCpKHGWZoT9n"); // Use the actual document ID
+    const docSnap = await getDoc(docRef);
+
+    if (docSnap.exists()) {
+      return docSnap.data();
+    } else {
+      return "No document found";
+    }
+  } catch (error) {
+    return "Error fetching data";
+  }
+};
+
 export const updateCoins = async (referralCode, user) => {
   const referrerQuery = query(
     collection(db, "users"),
@@ -79,6 +94,7 @@ export const updateCoins = async (referralCode, user) => {
   const userQuery = doc(db, "users", user.uid);
   const userDoc = await getDoc(userQuery);
 
+  // TODO TO FIX
   if (!referrerSnapshot.empty) {
     console.log("Referrer found:", referrerSnapshot.docs[0].data());
 
@@ -113,6 +129,9 @@ export const updateCoins = async (referralCode, user) => {
 };
 
 export const isReferralCodeValid = async (referralCode) => {
+  if (referralCode === ''){
+    return true;
+  }
   const querySnapshot = await getDocs(
     query(collection(db, "users"), where("referralCode", "==", referralCode))
   );

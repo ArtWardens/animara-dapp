@@ -1,29 +1,33 @@
 
 import React, { useEffect, useState } from "react";
 import { useAppDispatch } from "../../hooks/storeHooks";
-import { getUser, useUserDetails } from "../../sagaStore/slices";
+import { getUser, useUserDetails, logOut } from "../../sagaStore/slices";
 import ClickerView from "./ClickerView";
 import backgroundImageClicker from '../../assets/images/clicker-character/clickerBg.png';
 import '../../styles/globals.css';
+import { useNavigate } from "react-router-dom";
 
 export default function ClickerMain() {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const currentUser = useUserDetails();
+  const [gameData, setGameData] = useState({});
 
   useEffect(() => {
     setTimeout(() => {
       dispatch(getUser());
     },1000);
-  },[]);
+  },[dispatch]);
 
   useEffect(() => {
-    setTimeout(() => {
-      if(!currentUser){
-        // navigate('/login');
-      }
-    },1500)
-  }, [currentUser])
-  const [gameData, setGameData] = useState({});
+    if(!currentUser){
+      navigate('/login');
+    }
+  }, [currentUser, navigate])
+
+  const handleSignout = () =>{
+    dispatch(logOut());
+  }
 
   return (
     <div
@@ -40,6 +44,8 @@ export default function ClickerMain() {
           {gameData?.totalPoints}
         </div>
       </div>
+
+      <button className=" flex justify-between absolute right-0 mr-6 hover:pb-2" onClick={handleSignout}>sign out</button>
 
       <ClickerView
         currentUser={currentUser}
