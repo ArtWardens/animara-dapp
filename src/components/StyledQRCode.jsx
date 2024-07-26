@@ -3,29 +3,27 @@ import { PropTypes } from "prop-types";
 import QRCodeStyling from "qr-code-styling";
 
 const qrCode = new QRCodeStyling({
-  width: 300,
-  height: 300,
-  margin: 10,
+  width: 110,
+  height: 110,
+  margin: 5,
   type: "svg",
-  data: "https://example.com",
+  // data: "https://example.com",
   dotsOptions: {
     color: "black",
-    type: "dots",
   },
   cornersSquareOptions: {
-    color: "#a63dff",
+    color: "#FFB23E",
     type: "extra-rounded",
   },
   cornersDotOptions: {
     color: "black",
-    type: "dot",
   },
   backgroundOptions: {
     color: "transparent",
   },
   imageOptions: {
     crossOrigin: "anonymous",
-    margin: 10,
+    // margin: 0,
   },
 });
 

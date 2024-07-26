@@ -1,11 +1,14 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useUserDetails } from "../sagaStore/slices";
 import { addToLocalStorage, getFromLocalStorage } from "../utils/localStorage"
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 const ClickCounter = ({ gameData, currentMascot, totalClicks, setTotalClicks, rewardRate, setIsOpenRewardModal }) => {
 
   const navigate = useNavigate();
+  const location = useLocation();
+  const currentPath = location.pathname;
+
   const currentUser = useUserDetails();
   const [clickCount, setClickCount] = useState(0);
 
@@ -79,7 +82,7 @@ const ClickCounter = ({ gameData, currentMascot, totalClicks, setTotalClicks, re
   return (
     <>
       <div
-        className="flex flex-row absolute top-6 z-10 p-1 pr-8 gap-2 left-24"
+        className="flex flex-row absolute top-8 z-10 p-1 pr-8 gap-2 left-24"
         style={{
           border: '3px solid #F4FBFF',
           borderRadius: '500px 200px 200px 500px',
@@ -118,7 +121,13 @@ const ClickCounter = ({ gameData, currentMascot, totalClicks, setTotalClicks, re
               alt="gem"
             />
             <div className="relative flex items-center justify-center">
-              <span className="relative text-3xl text-amber-500 tracking-normal">
+              <span
+                className="relative text-3xl text-amber-500 tracking-normal"
+                style={{
+                  WebkitTextStrokeWidth: '1.75px',
+                  WebkitTextStrokeColor: 'var(--Color-11, #FFF)'
+                }}
+              >
                 {totalClicks}
               </span>
             </div>
@@ -137,12 +146,12 @@ const ClickCounter = ({ gameData, currentMascot, totalClicks, setTotalClicks, re
           <button
             key={name}
             onClick={() => handleButtonClick(link)}
-            className={`flex w-[140px] h-[60px] p-5 justify-center items-center gap-1.5 rounded-[10px] border border-[#E59E69] shadow-[0px_4px_4px_0px_rgba(255,210,143,0.61)_inset,0px_4px_4px_0px_rgba(136,136,136,0.48)] 
-              ${link ? 'bg-[#FFB23F] transform rotate-6 hover:bg-[#FFDC62] hover:pl-[24px] hover:pr-[20px] hover:border-1 hover:border-[#E59E69] hover:shadow-[0px_4px_4px_0px_#FFFBEF_inset,0px_-4px_4px_0px_rgba(255,249,228,0.48),0px_5px_4px_0px_rgba(232,140,72,0.48)]' : 'bg-[#FFB23F] hover:bg-[#FFDC62] hover:pl-[24px] hover:pr-[20px] hover:border-1 hover:border-[#E59E69] hover:shadow-[0px_4px_4px_0px_#FFFBEF_inset,0px_-4px_4px_0px_rgba(255,249,228,0.48),0px_5px_4px_0px_rgba(232,140,72,0.48)]'}`}
+            className={`flex w-[140px] h-[60px] p-5 justify-center items-center gap-1.5 rounded-[10px] border border-[#E59E69] shadow-[0px_4px_4px_0px_rgba(255,210,143,0.61)_inset,0px_4px_4px_0px_rgba(136,136,136,0.48)] bg-[#FFB23F] hover:bg-[#FFDC62] hover:pl-[24px] hover:pr-[20px] hover:border-1 hover:border-[#E59E69] hover:shadow-[0px_4px_4px_0px_#FFFBEF_inset,0px_-4px_4px_0px_rgba(255,249,228,0.48),0px_5px_4px_0px_rgba(232,140,72,0.48)] ${currentPath === link ? 'transform rotate-6 bg-[#FFDC62] hover:rotate-60' : ''}`}
           >
             <span className="text-center text-white text-xl font-normal font-['Luckiest_Guy'] capitalize leading-[18px]">{name}</span>
           </button>
         ))}
+
       </div>
 
     </>

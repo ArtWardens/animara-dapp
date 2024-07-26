@@ -15,18 +15,18 @@ import { useAppDispatch } from '../../hooks/storeHooks';
 import { closeDailyPopup, updateDailyLogin, useIsOpenDailyPopup } from '../../sagaStore/slices';
 import { dailyLogin } from '../../data/constants';
 
-const ClickerView = ({ currentUser, gameData, setGameData }) => {
+const ClickerView = ({ currentUser, gameData, setGameData, totalClicks, setTotalClicks }) => {
   const dispatch = useAppDispatch();
   const isOpenDailyPopup = useIsOpenDailyPopup();
   const [isOpenRewardModal, setIsOpenRewardModal] = useState(false);
   const [modalOpen, handleOpenModal] = useState(false);
-  const [loading, setLoading] = useState(true);  // Add loading state
+  const [loading, setLoading] = useState(true);
 
   const [currentMascot] = useState(mascots[1]);
   const [delay, setDelay] = useState(true);
   const [countdown] = useState(30);
 
-  const [totalClicks, setTotalClicks] = useState(gameData.currentScore);
+  
   const [userProgress] = useState({
     EarnPerTap: 1,
     CoinsToLvlUp: 25,
@@ -99,8 +99,8 @@ const ClickerView = ({ currentUser, gameData, setGameData }) => {
             totalPoints: 0,
             currentScore: currentUser.coins,
           });
-          setLoading(false);  // Update loading state once data is set
-        }, 1500);
+          setLoading(false);
+        }, 1000);
       }
 
       if (currentUser?.energyRechargable) {

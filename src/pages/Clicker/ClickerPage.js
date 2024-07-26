@@ -6,27 +6,13 @@ import ClickerView from "./ClickerView";
 import backgroundImageClicker from '../../assets/images/clicker-character/clickerBg.png';
 import '../../styles/globals.css';
 
-export default function ClickerPage() {
-
-  const navigate = useNavigate();
-  const dispatch = useAppDispatch();
-  const currentUser = useUserDetails();
-  const [gameData, setGameData] = useState({});
-
-  useEffect(() => {
-    setTimeout(() => {
-      dispatch(getUser());
-    }, 1000);
-  }, []);
-
-  useEffect(() => {
-    setTimeout(() => {
-      if (!currentUser) {
-        navigate('/login');
-      }
-    }, 1500)
-  }, [currentUser])
-
+export default function ClickerPage({
+  currentUser,
+  gameData,
+  setGameData,
+  totalClicks,
+  setTotalClicks
+}) {
   return (
     <div
       className="w-full mx-auto bg-clicker-game bg-no-repeat bg-cover h-screen relative cursor-pointer -z-99"
@@ -38,11 +24,13 @@ export default function ClickerPage() {
       }}
     >
       <div className="flex items-center justify-center h-full gap-4">
-
+        
         <ClickerView
           currentUser={currentUser}
           gameData={gameData}
           setGameData={setGameData}
+          totalClicks={totalClicks}
+          setTotalClicks={setTotalClicks}
         />
 
       </div>
