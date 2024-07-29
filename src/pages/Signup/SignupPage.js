@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import TelegramLoginButton from "react-telegram-login";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAppDispatch } from '../../hooks/storeHooks.js';
-import { useAuthLoading, signupWithEmail, loginWithGoogle, loginWithTwitter } from '../../sagaStore/slices/userSlice.js';
+import { useAuthLoading, useUserAuthenticated, signupWithEmail, loginWithGoogle, loginWithTwitter } from '../../sagaStore/slices/userSlice.js';
 import { signInUser, storeUserInFirestore } from "../../utils/fuctions.js";
 
 const SignupPage = () => {
@@ -10,6 +10,7 @@ const SignupPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const isAuthLoading = useAuthLoading();
+  const isAuthenticated = useUserAuthenticated();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -57,6 +58,12 @@ const SignupPage = () => {
   const handleLoginWithTwitter = async () => {
     dispatch(loginWithTwitter());
   }
+
+  useEffect(()=>{
+    if (!isAuthLoading && isAuthenticated){
+      navigate('/clicker');
+    }
+  },[isAuthLoading, isAuthenticated, navigate]);
 
   return (
     <div className="min-h-screen relative flex justify-around pt-0 md-pt-24">
@@ -176,12 +183,14 @@ const SignupPage = () => {
           <img
             src="/socials/google.svg"
             alt="Sign in with Google"
+            disabled={isAuthLoading}
             onClick={handleLoginWithGoogle}
           />
           {/* Twitter */}
           <img
             src="/socials/twitter.svg"
             alt="Sign in with Twitter"
+            disabled={isAuthLoading}
             onClick={handleLoginWithTwitter}
           />
           {/* Telegram */}
@@ -190,6 +199,7 @@ const SignupPage = () => {
               className="w-[3rem] rounded-full absolute overflow-hidden opacity-[0.1] hover:brightness-75"
               dataOnauth={handleTelegramResponse}
               botName={process.env.TELEGRAM_BOT_NAME}
+              disabled={isAuthLoading}
             />
             <img
               className="absolute w-[3.3rem] rounded-full -top-[5px] hover:brightness-75"
