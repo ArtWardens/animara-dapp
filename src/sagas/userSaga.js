@@ -60,6 +60,7 @@ export function* signupWithEmailSaga({ payload }) {
       case 1:
         yield put(signupWithEmailSuccess());
         toast.success('Signup Successful');
+        // redirect to page saying check verification email
         break;
       case -1:
         yield put(signupWithEmailError('Error signing up'));
@@ -68,6 +69,18 @@ export function* signupWithEmailSaga({ payload }) {
       case -2:
         yield put(signupWithEmailError('Error signing up'));
         toast.error('Invalid Referral Code');
+        break;
+      case -3:
+        yield put(signupWithEmailError('Error signing up'));
+        toast.error('Failed to link Referral Code');
+        break;
+      case -4:
+        yield put(signupWithEmailError('Error signing up'));
+        toast.error('Registration failed. Please try again');
+        break;
+      case -5:
+        yield put(signupWithEmailError('Error signing up'));
+        toast.error('Registration failed');
         break;
       default:
         yield put(signupWithEmailError('Error signing up'));
@@ -112,8 +125,8 @@ export function* loginWithGoogleSaga() {
       console.error('failed to sign in with Google');
     }
   } catch (error) {
-    console.error(error);
     toast.error('failed to sign in with Google');
+    console.error(error);
     yield put(loginWithGoogleError(error));
   }
 }

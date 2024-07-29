@@ -26,5 +26,6 @@ const functions = getFunctions(app);
 // define all firebase functions here
 const updateUserLastLogin = httpsCallable(functions, 'updateUserLastLogin');
 const firstLoginLinkReferral = httpsCallable(functions, 'firstLoginLinkReferral');
+const cleanupFailedRegistration = httpsCallable(functions, 'cleanupFailedRegistration');
 
-export { auth, app, db, storage, updateUserLastLogin, firstLoginLinkReferral };
+export { auth, app, db, storage, updateUserLastLogin, firstLoginLinkReferral, cleanupFailedRegistration };

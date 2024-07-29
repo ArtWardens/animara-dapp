@@ -16,7 +16,7 @@ import {
   serverTimestamp,
   setDoc,
 } from "firebase/firestore";
-import { db, auth, firstLoginLinkReferral } from "./firebaseConfig.js";
+import { db, auth, firstLoginLinkReferral, cleanupFailedRegistration } from "./firebaseConfig.js";
 import {
   generateReferralCode,
   isReferralCodeValid,
@@ -43,17 +43,31 @@ const signUpWithEmailImpl = async (
 
     // update referral code if any
     if (referralCode !== ''){
-      await firstLoginLinkReferral({ referralCode: referralCode });
+      try{
+        await firstLoginLinkReferral({ referralCode: referralCode });
+      }catch (err){
+        return -3;
+      }
     }
 
-    // send verificaiton email
-    const actionCodeSettings = {
-      url: `${window.location.origin}/login?registrationEmail=${email}`,
-      handleCodeInApp: false,
-      dynamicLinkDomain: `${process.env.PUBLIC_URL}`
-    };
-    await sendEmailVerification(result.user, actionCodeSettings);
-
+    try{
+      // send verificaiton email
+      const actionCodeSettings = {
+        url: `${process.env.PUBLIC_URL}/login?registrationEmail=${email}`,
+        handleCodeInApp: false,
+        dynamicLinkDomain: `${process.env.DOMAIN}`
+      };
+      const verifyEmailResult = await sendEmailVerification(result.user, actionCodeSettings);
+      console.log(verifyEmailResult);
+    }catch(err){
+      try{
+        await cleanupFailedRegistration();
+      }catch (err){
+        return -5;
+      }
+      return -4;
+    }
+    // cleanupFailedRegistration
     return 1;
   } catch (error) {
     console.log(error);
