@@ -1,4 +1,4 @@
-import { db } from "../firebase/firebaseConfig";
+import { db } from "./firebaseConfig";
 import { updateDoc, doc, collection, getDocs, increment } from "firebase/firestore";
 
 const handleGetOneTimeTaskList = async () => {

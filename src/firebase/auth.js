@@ -11,58 +11,58 @@ import {
   onAuthStateChanged,
 } from "firebase/auth";
 import {
-  doc,
-  getDoc,
-  serverTimestamp,
-  setDoc,
-} from "firebase/firestore";
-import { db, auth, firstLoginLinkReferral, cleanupFailedRegistration } from "./firebaseConfig.js";
+  auth,
+  firstLoginLinkReferral,
+  cleanupFailedRegistration,
+} from "./firebaseConfig.js";
 import {
-  generateReferralCode,
   isReferralCodeValid,
-  fetchRewardRate,
 } from "../utils/fuctions.js";
 
-const signUpWithEmailImpl = async (
-  email,
-  password,
-  name,
-  referralCode,
-) => {
+const signUpWithEmailImpl = async (email, password, name, referralCode) => {
   try {
     // validate input before proceeding
-    if (!name || !email || !password) { return -1; }
-    if (!await isReferralCodeValid(referralCode)) { return -2; }
+    if (!name || !email || !password) {
+      return -1;
+    }
+    if (!(await isReferralCodeValid(referralCode))) {
+      return -2;
+    }
 
     // create user
-    const result = await createUserWithEmailAndPassword(
-      auth,
-      email,
-      password
-    );
+    const result = await createUserWithEmailAndPassword(auth, email, password);
+
+    console.log(result);
 
     // update referral code if any
-    if (referralCode !== ''){
-      try{
+    if (referralCode !== "") {
+      try {
         await firstLoginLinkReferral({ referralCode: referralCode });
-      }catch (err){
+      } catch (err) {
         return -3;
       }
     }
+    console.log(process.env);
 
-    try{
+    try {
       // send verificaiton email
       const actionCodeSettings = {
-        url: `${process.env.PUBLIC_URL}/login?registrationEmail=${email}`,
+        url: `${process.env.REACT_APP_PUBLIC_URL}/login?registrationEmail=${email}`,
         handleCodeInApp: false,
-        dynamicLinkDomain: `${process.env.DOMAIN}`
+        dynamicLinkDomain: `${process.env.REACT_APP_DOMAIN}`,
       };
-      const verifyEmailResult = await sendEmailVerification(result.user, actionCodeSettings);
+      const verifyEmailResult = await sendEmailVerification(
+        result.user,
+        actionCodeSettings
+      );
       console.log(verifyEmailResult);
-    }catch(err){
-      try{
+      //redirect user to verify email page
+      window.location.href = "/verify-email";
+    } catch (err) {
+      console.log(err);
+      try {
         await cleanupFailedRegistration();
-      }catch (err){
+      } catch (err) {
         return -5;
       }
       return -4;
@@ -75,45 +75,15 @@ const signUpWithEmailImpl = async (
   }
 };
 
-const getUserData = async (user) => {
-  const userRef = doc(db, "users", user.uid);
-  const userDoc = await getDoc(userRef);
-
-  if (!userDoc.exists()) {
-    const newReferralCode = generateReferralCode();
-    const rewardRate = await fetchRewardRate();
-    if (typeof rewardRate === "string") {
-      return null;
-    }
-
-    const userData = {
-      name: user.displayName,
-      email: user.email,
-      referralCode: newReferralCode,
-      coins: 0,
-      photoURL: user.photoURL || null,
-      referredBy: null,
-      createdAt: serverTimestamp(),
-      isKOL: false,
-      inviteRechargable: rewardRate.inviteRefresh,
-      energyRechargable: rewardRate.basedRefresh,
-      level: 1,
-      profitPerHour: 0,
-      clickByLevel: 0,
-      loggedInToday: false,
-      loginDays: 0,
-      userId: user.uid
-    };
-    await setDoc(doc(db, "users", user.uid), userData);
-  }
-}
+const getIdTokenResult = async (user) => {
+  return await user?.getIdTokenResult(true);
+};
 
 const loginWithEmailImpl = async (data) => {
   try {
     const { email, password } = data;
     const result = await signInWithEmailAndPassword(auth, email, password);
     const { user } = result;
-    await getUserData(user);
     return user;
   } catch (error) {
     console.log(error);
@@ -126,7 +96,6 @@ const loginWithGoogleImpl = async () => {
   try {
     const result = await signInWithPopup(auth, provider);
     const { user } = result;
-    await getUserData(user);
     return user;
   } catch (error) {
     return null;
@@ -138,24 +107,22 @@ const loginWithTwitterImpl = async () => {
   try {
     const result = await signInWithPopup(auth, provider);
     const { user } = result;
-    await getUserData(user);
     return user;
   } catch (error) {
     return null;
   }
 };
 
-const loginWithTelegramImpl = async () =>{
+const loginWithTelegramImpl = async () => {
   try {
     const result = await signInAnonymously(auth);
     console.log("User signed in anonymously:", result.user);
     const { user } = result;
-    await getUserData(user);
-    return result.user;
+    return user;
   } catch (error) {
     console.error("Error signing in anonymously:", error);
   }
-}
+};
 
 const logoutImpl = async () => {
   try {
@@ -177,6 +144,7 @@ const resetPasswordImpl = async (email) => {
 
 export {
   signUpWithEmailImpl,
+  getIdTokenResult,
   loginWithEmailImpl,
   loginWithTwitterImpl,
   loginWithGoogleImpl,
@@ -184,5 +152,5 @@ export {
   logoutImpl,
   resetPasswordImpl,
   getAuth,
-  onAuthStateChanged
+  onAuthStateChanged,
 };

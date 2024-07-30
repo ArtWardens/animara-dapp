@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { FaCopy } from "react-icons/fa6";
 import { useAppDispatch } from '../../hooks/storeHooks.js';
-import { useUserDetails, useUserAuthenticated, useAuthLoading, resetPassword, useResetPasswordLoading, updateProfile, useUpdateProfileLoading } from '../../sagaStore/slices/userSlice.js';
+import { useUserDetails, useUserAuthenticated, useAuthLoading, resetPassword, useResetPasswordLoading, updateProfile, useUpdateProfileLoading, logOut } from '../../sagaStore/slices/userSlice.js';
 
 import Header from "../../components/Header.jsx";
 
@@ -46,6 +46,10 @@ const EditProfilePage = ({
     setPhone(user?.phoneNumber || "");
     setInviteCode(user?.referredBy || "");
   }, [user]);
+
+  const handleLogoutUser = () => {
+    dispatch(logOut());
+  }
 
   const handleResetPassword = ()=>{
     dispatch(resetPassword());
@@ -259,6 +263,18 @@ const EditProfilePage = ({
                   <div className="w-[200px] h-[60px] px-[30px] py-5 bg-amber-400 rounded-[26px] border border-orange-300 justify-between items-center flex hover:bg-amber-300">
                     <div className="text-center text-white text-xl font-bold capitalize leading-tight">
                       {updateProfileLoading ? "Saving changes.." : "Save Changes"}
+                    </div>
+                  </div>
+                </button>
+                <button
+                  className="w-[200px] h-[60px] justify-start items-center gap-[46px] inline-flex text-center"
+                  disabled={isAuthLoading}
+                  type="button"
+                  onClick={handleLogoutUser}
+                >
+                  <div className="w-[200px] h-[60px] px-[30px] py-5 bg-sky-700 rounded-[26px] border border-blue-300 justify-between items-center flex hover:bg-sky-500 hover:border-sky-500 hover:pt-[18px] hover:pb-5">
+                    <div className="text-center text-white text-xl font-normal capitalize leading-tight hover:font-bold">
+                      Logout
                     </div>
                   </div>
                 </button>

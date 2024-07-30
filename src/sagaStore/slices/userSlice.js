@@ -98,7 +98,9 @@ export const userSlice = createSlice({
       state.error = payload;
       state.loading = false;
     },
-    logOut: () => {},
+    logOut: (state) => {
+      state.user = null;
+    },
     logOutSuccess: (state, { payload }) => {
       state.user = payload;
     },
