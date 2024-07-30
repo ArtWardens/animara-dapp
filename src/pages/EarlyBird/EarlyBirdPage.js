@@ -5,6 +5,7 @@ import useAuth from "../../hooks/useAuth.js";
 import Header from "../../components/Header.jsx";
 import { FaInstagram, FaTwitter } from 'react-icons/fa';
 import { BsCopy } from 'react-icons/bs';
+import moment from 'moment';
 
 const tasks = [
     { actionType: FaInstagram, title: 'Follow X , Retweet Post Tag 3 Friend', index: 0 },
@@ -26,17 +27,17 @@ const EarlyBirdPage = ({ currentUser, totalClicks }) => {
     }, [isLoggedIn, navigate, loading]);
 
     useEffect(() => {
-        const countdownDate = new Date(new Date().getFullYear(), 6, 31).getTime(); // 31 July of current year
+        const countdownDate = moment().month(6).date(31).endOf('day');
         const timer = setInterval(() => {
-            const now = new Date().getTime();
-            const distance = countdownDate - now;
+            const now = moment();
+            const duration = moment.duration(countdownDate.diff(now));
 
-            const days = String(Math.floor(distance / (1000 * 60 * 60 * 24))).padStart(2, '0');
-            const hours = String(Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))).padStart(2, '0');
-            const minutes = String(Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60))).padStart(2, '0');
-            const seconds = String(Math.floor((distance % (1000 * 60)) / 1000)).padStart(2, '0');
+            const days = String(duration.days()).padStart(2, '0');
+            const hours = String(duration.hours()).padStart(2, '0');
+            const minutes = String(duration.minutes()).padStart(2, '0');
+            const seconds = String(duration.seconds()).padStart(2, '0');
 
-            if (distance < 0) {
+            if (duration.asMilliseconds() <= 0) {
                 clearInterval(timer);
                 setTimeLeft({ days: 0, hours: 0, minutes: 0, seconds: 0 });
             } else {
@@ -54,7 +55,7 @@ const EarlyBirdPage = ({ currentUser, totalClicks }) => {
                 totalClicks={totalClicks}
             />
 
-            <div className="flex-grow flex flex-col place-content-center items-center px-28 pb-4 min-h-screen"
+            <div className="flex-grow flex flex-col place-content-center items-center px-24 pb-4 min-h-screen"
                 style={{
                     backgroundImage: 'url("../../assets/images/clicker-character/clickerWall.png")',
                     backgroundSize: 'cover',
@@ -63,7 +64,7 @@ const EarlyBirdPage = ({ currentUser, totalClicks }) => {
                     backgroundAttachment: 'fixed',
                 }}
             >
-                <div className="w-full h-full flex gap-6 pt-32">
+                <div className="w-full h-full flex gap-6 pt-32 container">
                     <div className="w-[68%]">
                         <div
                             className="w-full rounded-3xl p-3"
@@ -93,7 +94,7 @@ const EarlyBirdPage = ({ currentUser, totalClicks }) => {
                             </div>
 
                             <div
-                                className="rounded-2xl place-content-center p-10 grid gap-4"
+                                className="rounded-2xl place-content-center p-8 grid gap-4"
                                 style={{
                                     backgroundImage: 'url("../assets/images/clicker-character/earlyBBG.png")',
                                     backgroundSize: 'cover',
@@ -102,7 +103,7 @@ const EarlyBirdPage = ({ currentUser, totalClicks }) => {
                                 }}
                             >
                                 <h1
-                                    className="text-center text-[#ffa900] text-6xl"
+                                    className="text-center text-[#ffa900] text-6xl pt-3"
                                     style={{
                                         WebkitTextStrokeWidth: '4px',
                                         WebkitTextStrokeColor: 'var(--Color-11, #FFF)',
@@ -117,38 +118,38 @@ const EarlyBirdPage = ({ currentUser, totalClicks }) => {
                                         Missions Ends In
                                     </p>
 
-                                    <div className="h-[50px] justify-start items-center inline-flex pb-2">
-                                        <div className="w-14 h-1/2 bg-[#003260] shadow-inner flex-col justify-center items-center gap-2 inline-flex">
-                                            <div className="w-10 h-8 flex-col justify-center items-center gap-4 flex">
-                                                <div className="text-center text-white text-3xl font-normal font-outfit">{timeLeft.days}</div>
+                                    <div className="h-[50px] justify-start items-center inline-flex gap-1 pb-3">
+                                        <div className="w-12 h-1/2 bg-[#003260] shadow-inner flex-col justify-center items-center gap-2 inline-flex">
+                                            <div className="w-12 h-8 flex-col justify-center items-center gap-4 flex">
+                                                <div className="text-center text-white text-3xl tracking-wide font-outfit">{timeLeft.days}</div>
                                             </div>
                                             <div className="text-center text-white text-[8px] font-outfit uppercase">Days</div>
                                         </div>
                                         <span className="text-white font-outfit font-semibold text-2xl">:</span>
-                                        <div className="w-14 h-1/2 bg-[#003260] shadow-inner flex-col justify-center items-center gap-2 inline-flex">
-                                            <div className="w-10 h-8 flex-col justify-center items-center gap-4 flex">
-                                                <div className="text-center text-white text-3xl font-normal font-outfit">{timeLeft.hours}</div>
+                                        <div className="w-12 h-1/2 bg-[#003260] shadow-inner flex-col justify-center items-center gap-2 inline-flex">
+                                            <div className="w-12 h-8 flex-col justify-center items-center gap-4 flex">
+                                                <div className="text-center text-white text-3xl tracking-wide font-outfit">{timeLeft.hours}</div>
                                             </div>
                                             <div className="text-center text-white text-[8px] font-outfit uppercase">Hours</div>
                                         </div>
                                         <span className="text-white font-outfit font-semibold text-2xl">:</span>
-                                        <div className="w-14 h-1/2 bg-[#003260] shadow-inner flex-col justify-center items-center gap-2 inline-flex">
-                                            <div className="w-10 h-8 flex-col justify-center items-center gap-4 flex">
-                                                <div className="text-center text-white text-3xl font-normal font-outfit">{timeLeft.minutes}</div>
+                                        <div className="w-12 h-1/2 bg-[#003260] shadow-inner flex-col justify-center items-center gap-2 inline-flex">
+                                            <div className="w-12 h-8 flex-col justify-center items-center gap-4 flex">
+                                                <div className="text-center text-white text-3xl tracking-wide font-outfit">{timeLeft.minutes}</div>
                                             </div>
                                             <div className="text-center text-white text-[8px] font-outfit uppercase">Minutes</div>
                                         </div>
                                         <span className="text-white font-outfit font-semibold text-2xl">:</span>
-                                        <div className="w-14 h-1/2 bg-[#003260] shadow-inner flex-col justify-center items-center gap-2 inline-flex">
-                                            <div className="w-10 h-8 flex-col justify-center items-center gap-4 flex">
-                                                <div className="text-center text-white text-3xl font-normal font-outfit">{timeLeft.seconds}</div>
+                                        <div className="w-12 h-1/2 bg-[#003260] shadow-inner flex-col justify-center items-center gap-2 inline-flex">
+                                            <div className="w-12 h-8 flex-col justify-center items-center gap-4 flex">
+                                                <div className="text-center text-white text-3xl tracking-wide font-outfit">{timeLeft.seconds}</div>
                                             </div>
                                             <div className="text-center text-white text-[8px] font-outfit uppercase">Seconds</div>
                                         </div>
                                     </div>
                                 </div>
 
-                                <p className="text-center text-white text-lg font-semibold font-outfit pb-3">
+                                <p className="text-center text-white text-lg font-semibold font-outfit pb-2">
                                     Complete the following task within the time limit to get
                                     <br />
                                     <span
@@ -184,8 +185,13 @@ const EarlyBirdPage = ({ currentUser, totalClicks }) => {
                                 ))}
 
                                 <div className="w-[240px] h-[80px] flex justify-self-center items-center mt-4">
-                                    <div className="bg-[#ffb23e] rounded-full border border-[#e59e69] flex justify-center items-center w-full h-full">
-                                        <div className="text-center text-white text-3xl">Mint Now</div>
+                                    <div className="bg-[#ffb23e] rounded-full border border-[#e59e69] flex justify-center items-center w-full h-full hover:bg-[#FFDC62] hover:shadow-[0px_4px_4px_0px_rgba(255,210,143,0.61)_inset,0px_4px_4px_0px_rgba(232,140,72,0.48)] cursor-pointer">
+                                        <div
+                                            className="text-center text-white text-3xl"
+                                            style={{ textShadow: '0px 2px 0.6px rgba(240, 139, 0, 0.66)' }}
+                                        >
+                                            Mint Now
+                                        </div>
                                     </div>
                                 </div>
 
@@ -198,13 +204,13 @@ const EarlyBirdPage = ({ currentUser, totalClicks }) => {
                             src={"../assets/images/clicker-character/noticeBoard.png"}
                             className="w-full absolute bottom-0"
                         />
-                        <div className="w-full flex flex-col absolute px-16 gap-1.5 bottom-40">
+                        <div className="w-full flex flex-col absolute px-16 gap-1.2 bottom-40">
                             <div
                                 className="text-[#0163be] tracking-wide text-right w-full"
                                 style={{
                                     WebkitTextStrokeWidth: '1.5px',
                                     WebkitTextStrokeColor: 'var(--Color-11, #FFF)',
-                                    fontSize: '28px'
+                                    fontSize: '32px'
                                 }}
                             >
                                 NFT PERKS
