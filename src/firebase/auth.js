@@ -15,9 +15,7 @@ import {
   firstLoginLinkReferral,
   cleanupFailedRegistration,
 } from "./firebaseConfig.js";
-import {
-  isReferralCodeValid,
-} from "../utils/fuctions.js";
+import { isReferralCodeValid } from "../utils/fuctions.js";
 
 const signUpWithEmailImpl = async (email, password, name, referralCode) => {
   try {
@@ -32,8 +30,6 @@ const signUpWithEmailImpl = async (email, password, name, referralCode) => {
     // create user
     const result = await createUserWithEmailAndPassword(auth, email, password);
 
-    console.log(result);
-
     // update referral code if any
     if (referralCode !== "") {
       try {
@@ -42,7 +38,6 @@ const signUpWithEmailImpl = async (email, password, name, referralCode) => {
         return -3;
       }
     }
-    console.log(process.env);
 
     try {
       // send verificaiton email
@@ -51,21 +46,25 @@ const signUpWithEmailImpl = async (email, password, name, referralCode) => {
         handleCodeInApp: false,
         dynamicLinkDomain: `${process.env.REACT_APP_DOMAIN}`,
       };
+
       const verifyEmailResult = await sendEmailVerification(
         result.user,
         actionCodeSettings
       );
+
       console.log(verifyEmailResult);
       //redirect user to verify email page
       window.location.href = "/verify-email";
     } catch (err) {
       console.log(err);
       try {
-        await cleanupFailedRegistration();
+        const idToken = await result.user.getIdToken();
+        await cleanupFailedRegistration({ idToken: idToken });
       } catch (err) {
-        return -5;
+        console.log(err);
+        return -4;
       }
-      return -4;
+      return -5;
     }
     // cleanupFailedRegistration
     return 1;

@@ -98,7 +98,7 @@ export function* signupWithEmailSaga({ payload }) {
         break;
       case -5:
         yield put(signupWithEmailError("Error signing up"));
-        toast.error("Registration failed");
+        toast.error("Failed to send verification email. Please try again.");
         break;
       default:
         yield put(signupWithEmailError("Error signing up"));
