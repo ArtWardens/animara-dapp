@@ -19,14 +19,16 @@ const LoginPage = () => {
   const [hasInput, setHasInput] = useState(false);
 
   // autofill email if there is any registration email
-  const registrationEmail = new URLSearchParams(location.search).get("registrationEmail");
-  if (registrationEmail !== null){
-    setEmail(registrationEmail);
-  }
+  useEffect(() => {
+    const registrationEmail = new URLSearchParams(location.search).get("registrationEmail");
+    if (registrationEmail !== null) {
+      setEmail(registrationEmail);
+    }
+  }, [location]);
 
-  useEffect(()=>{
+  useEffect(() => {
     setHasInput(email !== '' && password !== '');
-  },[email, password]);
+  }, [email, password]);
 
   useEffect(() => {
     const handleKeyPress = (event) => {
@@ -42,7 +44,7 @@ const LoginPage = () => {
   }, [navigate]);
 
   useEffect(() => {
-    if(currentUser){
+    if (currentUser) {
       navigate('/clicker');
     }
   }, [navigate, currentUser])
