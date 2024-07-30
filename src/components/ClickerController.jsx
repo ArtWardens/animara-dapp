@@ -2,10 +2,6 @@ import React, { useEffect, useState, useCallback } from 'react';
 import { useAppDispatch } from '../hooks/storeHooks';
 import { getUser, useUserDetails } from '../sagaStore/slices';
 import { useNavigate } from 'react-router-dom';
-import { addToLocalStorage, getFromLocalStorage } from '../utils/localStorage';
-import { handleUpdateCoins, handleUpdateClickByLevel } from '../firebase/clicker';
-import { handleUpdateUserRechargableEnergy, handleUpdateUserRechargableInvite } from '../firebase/user';
-import { fetchRewardRate } from '../firebase/rewardRates';
 
 const ClickerController = ({ Children }) => {
   const navigate = useNavigate();
