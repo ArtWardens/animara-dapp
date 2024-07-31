@@ -1,24 +1,28 @@
-import React, { useEffect, useState } from "react";
 import { PropTypes } from "prop-types";
+import React, { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import useAuth from "../../hooks/useAuth.js";
 import Header from "../../components/Header.jsx";
-import { FaInstagram, FaTwitter } from 'react-icons/fa';
-import { BsCopy } from 'react-icons/bs';
+import { FaInstagram, FaTwitter, FaTelegramPlane, FaYoutube, FaLink } from 'react-icons/fa';
 import moment from 'moment';
+import { getEarlyBirdOneTimeTaskList, useEarlyBirdOneTimeTaskList, useEarlyBirdOneTimeTaskListSuccess } from "../../sagaStore/slices/userSlice.js";
+import { useDispatch } from "react-redux";
 
-const tasks = [
-    { actionType: FaInstagram, title: 'Follow X , Retweet Post Tag 3 Friend', index: 0 },
-    { actionType: FaTwitter, title: 'Follow Y on Twitter', index: 1 },
-    { actionType: BsCopy, title: 'Copy and Share the Link', index: 2 },
-    { actionType: FaTwitter, title: 'Follow Y on Twitter', index: 1 },
-];
-
-function EarlyBirdPage ({ currentUser, totalClicks }) {
+const EarlyBirdPage = ({ currentUser, totalClicks }) => {
     const navigate = useNavigate();
+    const dispatch = useDispatch();
     const { isLoggedIn, loading } = useAuth();
     const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
+
+    const earlyBirdOneTimeTaskList = useEarlyBirdOneTimeTaskList();
+    const getEarlyBirdOneTimeTaskListSuccess = useEarlyBirdOneTimeTaskListSuccess();
+
+    useEffect(() => {
+        if(!getEarlyBirdOneTimeTaskListSuccess){
+            dispatch(getEarlyBirdOneTimeTaskList());
+        }
+    },[]);
 
     useEffect(() => {
         if (!isLoggedIn && !loading) {
@@ -49,7 +53,67 @@ function EarlyBirdPage ({ currentUser, totalClicks }) {
         return () => clearInterval(timer);
     }, []);
 
+    // const handleLinkTask = (task) => {
+    //     window.open(task.url, '_blank');
+    //     setTotalClicks(prevTotal => {
+    //       const newCompletedTaskArr = currentUser?.completedTask.concat([task.taskId])
+    //       dispatch(updateCompleteOneTimeTask({
+    //         userId: currentUser?.userId,
+    //         coins: task.coins,
+    //         completedTask: newCompletedTaskArr,
+    //       }));
+    //       return prevTotal + task.coins;
+    //     });
+    // };
+
+    const getIconComponent = (actionType) => {
+        switch (actionType) {
+            case 'youtube':
+                return FaYoutube;
+            case 'instagram':
+                return FaInstagram;
+            case 'twitter':
+                return FaTwitter;
+            case 'telegram':
+                return FaTelegramPlane;
+            default:
+                return FaLink;
+        }
+    };
+
+    const renderEarlyBirdTaskList = useMemo(() => {
+        // const completedTask = currentUser?.completedTask;
+
+        return (
+            earlyBirdOneTimeTaskList.map((task, idx) => {
+                // const isTaskCompleted = completedTask.includes(task.taskId);
+                const IconComponent = getIconComponent(task.actionType);
+
+                return (
+                    <div key={idx} className="flex w-full">
+                        <div className="w-[10%] flex justify-start items-center">
+                            <IconComponent className="w-8 h-8 text-[#ffc75a]" />
+                        </div>
+                        <div className="w-[75%] flex items-center">
+                            <div className="text-[#ffc75a] text-xl tracking-wide">
+                                {task.title}
+                            </div>
+                        </div>
+                        <div className="w-[15%] flex justify-end items-center">
+                            <img
+                                className="w-8"
+                                src="../../assets/images/clicker-character/checkedBox.png"
+                                alt="Checked Checkbox"
+                            />
+                        </div>
+                    </div>
+                )
+            })
+        )
+    }, [earlyBirdOneTimeTaskList, currentUser?.completedTask]);
+
     return (
+        
         <>
             <Header
                 currentUser={currentUser}
@@ -95,7 +159,7 @@ function EarlyBirdPage ({ currentUser, totalClicks }) {
                             </div>
 
                             <div
-                                className="rounded-2xl place-content-center p-8 grid gap-4"
+                                className="rounded-2xl place-content-center p-8 grid gap-2"
                                 style={{
                                     backgroundImage: 'url("../assets/images/clicker-character/earlyBBG.png")',
                                     backgroundSize: 'cover',
@@ -113,7 +177,7 @@ function EarlyBirdPage ({ currentUser, totalClicks }) {
                                     Early Bird Missions
                                 </h1>
 
-                                <div className="w-1/2 p-4 bg-[#003260] rounded-3xl shadow-inner border border-[#7fc1ff] flex-col justify-self-center items-center gap-3 inline-flex">
+                                <div className="w-1/2 p-4 bg-[#003260] rounded-3xl shadow-inner border border-[#7fc1ff] flex-col justify-self-center items-center gap-2 inline-flex my-4">
 
                                     <p className="text-lg">
                                         Missions Ends In
@@ -160,32 +224,14 @@ function EarlyBirdPage ({ currentUser, totalClicks }) {
                                             WebkitTextStrokeColor: 'var(--Color-11, #FFF)',
                                         }}
                                     >
-                                        25% Discount&nbsp;
+                                        25% Discount &nbsp;
                                     </span>
                                     when buying our NFTs!
                                 </p>
 
-                                {tasks.map((task, idx) => (
-                                    <div key={idx} className="flex w-full">
-                                        <div className="w-[10%] flex justify-start items-center">
-                                            <task.actionType className="w-8 h-8 text-[#ffc75a]" />
-                                        </div>
-                                        <div className="w-[75%] flex items-center">
-                                            <div className="text-[#ffc75a] text-xl tracking-wide">
-                                                {task.title}
-                                            </div>
-                                        </div>
-                                        <div className="w-[15%] flex justify-end items-center">
-                                            <img
-                                                className="w-8"
-                                                src="../../assets/images/clicker-character/checkedBox.png"
-                                                alt="Checked Checkbox"
-                                            />
-                                        </div>
-                                    </div>
-                                ))}
+                                {renderEarlyBirdTaskList}
 
-                                <div className="w-[240px] h-[80px] flex justify-self-center items-center mt-4">
+                                <div className="w-[240px] h-[80px] flex justify-self-center items-center mt-2">
                                     <div className="bg-[#ffb23e] rounded-full border border-[#e59e69] flex justify-center items-center w-full h-full hover:bg-[#FFDC62] hover:shadow-[0px_4px_4px_0px_rgba(255,210,143,0.61)_inset,0px_4px_4px_0px_rgba(232,140,72,0.48)] cursor-pointer">
                                         <div
                                             className="text-center text-white text-3xl"
@@ -205,7 +251,7 @@ function EarlyBirdPage ({ currentUser, totalClicks }) {
                             src={"../assets/images/clicker-character/noticeBoard.png"}
                             className="w-full absolute bottom-0"
                         />
-                        <div className="w-full flex flex-col absolute px-16 gap-1.2 bottom-40">
+                        <div className="w-full flex flex-col absolute px-14 gap-1.2 bottom-40">
                             <div
                                 className="text-[#0163be] tracking-wide text-right w-full"
                                 style={{
