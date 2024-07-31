@@ -59,10 +59,10 @@ export const App = () => {
             <Route path="/limited-access" element={<LimitedAccessPage />} />
             <Route path="/verify-email" element={<VerifyEmailPage />} />
             <Route path="/edit-profile" element={<ClickerController Children={EditProfilePage}/>} />
-            <Route path="/clicker" element={<ClickerController Children={ClickerPage}/>} />
+            <Route path="/amipals" element={<ClickerController Children={ClickerPage}/>} />
             <Route path="/referral" element={<ClickerController Children={ReferralPage} />} />
             <Route path="/early-bird" element={<ClickerController Children={EarlyBirdPage} />} />
-            <Route path="/amipals-lock" element={<ClickerController Children={LockPage} />} />
+            <Route path="/clicker-lock" element={<ClickerController Children={LockPage} />} />
             {/* <Route path="/mint" element={<MintPage />} /> */}
             
           </Route>

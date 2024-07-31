@@ -45,7 +45,7 @@ const LoginPage = () => {
 
   useEffect(() => {
     if (currentUser) {
-      navigate('/clicker');
+      navigate('/clicker-lock');
     }
   }, [navigate, currentUser])
 
@@ -68,7 +68,7 @@ const LoginPage = () => {
   const handleTelegramResponse = async (response) => {
     const authUser = await signInUser();
     await storeUserInFirestore(authUser.uid, response);
-    navigate("/clicker");
+    navigate("/clicker-lock");
   };
 
   return (
