@@ -1,4 +1,5 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
+import { PropTypes } from "prop-types";
 import { useUserDetails } from "../sagaStore/slices";
 import { addToLocalStorage, getFromLocalStorage } from "../utils/localStorage";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -76,7 +77,7 @@ const ClickCounter = ({ gameData, currentMascot, totalClicks, setTotalClicks, re
         setIsOpenRewardModal(true);
       }
     }
-  }, [numberOfClicks, clickByLevel, maxEnergy, rewardRate, getFromLocalStorage, addToLocalStorage, setTotalClicks, setIsOpenRewardModal]);
+  }, [numberOfClicks, clickByLevel, maxEnergy, rewardRate, setTotalClicks, setIsOpenRewardModal]);
 
   useEffect(() => {
     if (gameData.currentScore !== undefined && gameData.currentScore !== null) {
@@ -197,5 +198,14 @@ const ClickCounter = ({ gameData, currentMascot, totalClicks, setTotalClicks, re
     </>
   );
 };
+
+ClickCounter.propTypes = {
+  gameData: PropTypes.object, 
+  currentMascot: PropTypes.object, 
+  totalClicks: PropTypes.number, 
+  setTotalClicks: PropTypes.func, 
+  rewardRate: PropTypes.number,
+  setIsOpenRewardModal:  PropTypes.func
+}
 
 export default ClickCounter;

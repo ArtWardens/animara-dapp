@@ -1,42 +1,43 @@
 
 import React, { useEffect, useRef, useState } from "react";
+import { PropTypes } from "prop-types";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { handlePasswordReset } from "../../firebase/auth.js";
-import { updateUserProfile } from "../../firebase/profile.ts";
 import { FaCopy } from "react-icons/fa6";
-import useAuth from "../../hooks/useAuth.js";
+import { useAppDispatch } from '../../hooks/storeHooks.js';
+import { useUserDetails, useUserAuthenticated, useAuthLoading, resetPassword, useResetPasswordLoading, updateProfile, useUpdateProfileLoading, logOut } from '../../sagaStore/slices/userSlice.js';
+
 import Header from "../../components/Header.jsx";
 
 const EditProfilePage = ({
   currentUser,
   totalClicks
 }) => {
-
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  
-  const { isLoggedIn, loading, user } = useAuth();
-
-  const handleBackClick = () => {
-    navigate('/clicker');
-  };
-
-  useEffect(() => {
-    if (!isLoggedIn && !loading) {
-      navigate("/login");
-      toast.error("You need to be logged in to access this page");
-    }
-  }, [isLoggedIn, navigate, loading]);
-
-  const [isSaving, setIsSaving] = useState(false);
+  const isAuthenticated = useUserAuthenticated();
+  const isAuthLoading = useAuthLoading();
+  const resetPasswordLoading = useResetPasswordLoading();
+  const updateProfileLoading = useUpdateProfileLoading();
+  const user = useUserDetails();
   const [firstname, setFirstname] = useState("");
   const [lastname, setLastname] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [inviteCode, setInviteCode] = useState("");
   const [imageData, setImageData] = useState(null);
-
   const inputFile = useRef(null);
+
+  const handleBackClick = () => {
+    navigate('/clicker');
+  };
+
+  useEffect(() => {
+    if (!isAuthenticated && !isAuthLoading) {
+      navigate("/login");
+      toast.error("You need to be logged in to access this page");
+    }
+  }, [isAuthenticated, navigate, isAuthLoading]);
 
   useEffect(() => {
     setFirstname(user?.name?.split(" ").slice(0, -1).join(" ") || "");
@@ -46,21 +47,20 @@ const EditProfilePage = ({
     setInviteCode(user?.referredBy || "");
   }, [user]);
 
-  const handleSubmit = async (e) => {
+  const handleLogoutUser = () => {
+    dispatch(logOut());
+  }
+
+  const handleResetPassword = ()=>{
+    dispatch(resetPassword());
+  }
+  const handleUpdateProfile = (e) => {
     e.preventDefault();
-    try {
-      setIsSaving(true);
-      await updateUserProfile(
-        firstname + " " + lastname,
-        inviteCode || null,
-        imageData ? imageData.toString() : null
-      );
-      toast.success("Profile updated successfully");
-    } catch (error) {
-      toast.error(error.message);
-    } finally {
-      setIsSaving(false);
-    }
+    dispatch(updateProfile({
+      fullName: firstname + " " + lastname,
+      inviteCode: inviteCode || null,
+      profilePicture: imageData ? imageData.toString() : null
+    }));
   };
 
   const copyInviteCode = () => {
@@ -97,7 +97,7 @@ const EditProfilePage = ({
                 </span>
                 <span className="flex">
                   <div
-                    class="w-[339px] text-left text-amber-500 text-5xl font-normal font-['Luckiest Guy'] uppercase leading-[54px]"
+                    className="w-[339px] text-left text-amber-500 text-5xl font-normal font-['Luckiest Guy'] uppercase leading-[54px]"
                     style={{
                       WebkitTextStrokeWidth: '2px',
                       WebkitTextStrokeColor: 'var(--Color-11, #FFF)',
@@ -106,12 +106,12 @@ const EditProfilePage = ({
                     EDIT PROFILE
                   </div>
                   {user?.isKOL && (
-                    <span class="bg-sky-700 rounded-lg flex items-center m-3 px-2">
-                      <span class="text-white text-xs tracking-wider font-outfit">Certified KOL</span>
+                    <span className="bg-sky-700 rounded-lg flex items-center m-3 px-2">
+                      <span className="text-white text-xs tracking-wider font-outfit">Certified KOL</span>
                     </span>
                   )}
                 </span>
-                <div class="text-white text-sm font-outfit tracking-wide pb-8">Settings &nbsp; &gt; &nbsp; Edit Profile</div>
+                <div className="text-white text-sm font-outfit tracking-wide pb-8">Settings &nbsp; &gt; &nbsp; Edit Profile</div>
               </span>
             </span>
             <span
@@ -156,7 +156,7 @@ const EditProfilePage = ({
               }}
             />
           </div>
-          <form className="form font-degular mt-5" onSubmit={handleSubmit}>
+          <form className="form font-degular mt-5" onSubmit={handleUpdateProfile}>
             <div className="flex flex-col md:flex-row gap-5 md:gap-10 mt-3 w-full">
               <div className="flex flex-col gap-2 w-full pb-4">
                 <label htmlFor="firstname" className="text-sm font-outfit tracking-wide">
@@ -244,26 +244,37 @@ const EditProfilePage = ({
             <div className="flex gap-10 mt-10 w-full">
               <div className="flex flex-col md:flex-row justify-start gap-5 w-full">
                 <button
-                  class="w-[200px] h-[60px] justify-start items-center gap-[46px] inline-flex"
+                  className="w-[200px] h-[60px] justify-start items-center gap-[46px] inline-flex"
+                  disabled={resetPasswordLoading}
                   type="button"
-                  onClick={() => {
-                    handlePasswordReset(email);
-                  }}
+                  onClick={handleResetPassword}
                 >
-                  <div class="w-[200px] h-[60px] px-[30px] py-5 bg-sky-700 rounded-[26px] border border-blue-300 justify-between items-center flex hover:bg-sky-500 hover:border-sky-500 hover:pt-[18px] hover:pb-5">
-                    <div class="text-center text-white text-xl font-normal capitalize leading-tight hover:font-bold">
+                  <div className="w-[200px] h-[60px] px-[30px] py-5 bg-sky-700 rounded-[26px] border border-blue-300 justify-between items-center flex hover:bg-sky-500 hover:border-sky-500 hover:pt-[18px] hover:pb-5">
+                    <div className="text-center text-white text-xl font-normal capitalize leading-tight hover:font-bold">
                       Reset Password
                     </div>
                   </div>
                 </button>
                 <button
-                  class="w-[200px] h-[60px] justify-between items-center inline-flex"
-                  disabled={isSaving}
+                  className="w-[200px] h-[60px] justify-between items-center inline-flex"
+                  disabled={updateProfileLoading}
                   type="submit"
                 >
-                  <div class="w-[200px] h-[60px] px-[30px] py-5 bg-amber-400 rounded-[26px] border border-orange-300 justify-between items-center flex hover:bg-amber-300">
-                    <div class="text-center text-white text-xl font-bold capitalize leading-tight">
-                      {isSaving ? "Saving changes.." : "Save Changes"}
+                  <div className="w-[200px] h-[60px] px-[30px] py-5 bg-amber-400 rounded-[26px] border border-orange-300 justify-between items-center flex hover:bg-amber-300">
+                    <div className="text-center text-white text-xl font-bold capitalize leading-tight">
+                      {updateProfileLoading ? "Saving changes.." : "Save Changes"}
+                    </div>
+                  </div>
+                </button>
+                <button
+                  className="w-[200px] h-[60px] justify-start items-center gap-[46px] inline-flex text-center"
+                  disabled={isAuthLoading}
+                  type="button"
+                  onClick={handleLogoutUser}
+                >
+                  <div className="w-[200px] h-[60px] px-[30px] py-5 bg-sky-700 rounded-[26px] border border-blue-300 justify-between items-center flex hover:bg-sky-500 hover:border-sky-500 hover:pt-[18px] hover:pb-5">
+                    <div className="text-center text-white text-xl font-normal capitalize leading-tight hover:font-bold">
+                      Logout
                     </div>
                   </div>
                 </button>
@@ -274,6 +285,11 @@ const EditProfilePage = ({
       </div>
     </>
   );
+};
+
+EditProfilePage.propTypes = {
+  currentUser: PropTypes.object,
+  totalClicks: PropTypes.number,
 };
 
 export default EditProfilePage;

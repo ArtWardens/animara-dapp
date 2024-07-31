@@ -44,6 +44,10 @@
     transition: opacity 0.5s ease-in-out;
   }
 
+  img:disabled {
+    opacity: 70%;
+  }
+
  .clip_shape{
   height: 150px;
   width: 100px;

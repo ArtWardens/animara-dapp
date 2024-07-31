@@ -4,6 +4,8 @@
     "gladYouAreBack": "Glad You're back",
     "email": "Email Address",
     "password": "Password",
-    "rememberMe": "Remember Me"
+    "rememberMe": "Remember Me",
+    "verifyEmailTitle": "Please Verify your email",
+    "verifyEmailHint": "We've sent a verification link to your email. Click the link to complete verification and start exploring Animara."
   }
   

@@ -1,4 +1,5 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState } from 'react';
+import { PropTypes } from "prop-types";
 import { useAppDispatch } from '../hooks/storeHooks';
 import { getUser, useUserDetails } from '../sagaStore/slices';
 import { useNavigate } from 'react-router-dom';
@@ -37,5 +38,9 @@ const ClickerController = ({ Children }) => {
     </div>
   );
 };
+
+ClickerController.propTypes = {
+  Children: PropTypes.func
+}
 
 export default ClickerController;
