@@ -7,9 +7,8 @@ import SignupPage from "./pages/Signup/SignupPage";
 import EditProfilePage from "./pages/EditProfile/EditProfilePage";
 import ReferralPage from "./pages/Referral/ReferralPage";
 import EarlyBirdPage from "./pages/EarlyBird/EarlyBirdPage";
-import MintPage from "./pages/Mint/MintPage";
-import LimitedAccessPage from './pages/VerifyEmail/LimitedAccessPage';
-import VerifyEmailPage from './pages/VerifyEmail/VerifyEmailPage';
+import LockPage from "./pages/Lock/LockPage";
+// import MintPage from "./pages/Mint/MintPage";
 import AppLayout from './components/AppLayout';
 import { GlobalProvider } from './context/ContextProvider';
 import rootSaga from './sagas';
@@ -61,7 +60,8 @@ export const App = () => {
             <Route path="/clicker" element={<ClickerController Children={ClickerPage}/>} />
             <Route path="/referral" element={<ClickerController Children={ReferralPage} />} />
             <Route path="/early-bird" element={<ClickerController Children={EarlyBirdPage} />} />
-            <Route path="/mint" element={<MintPage />} />
+            <Route path="/amipals-lock" element={<ClickerController Children={LockPage} />} />
+            {/* <Route path="/mint" element={<MintPage />} /> */}
             
           </Route>
         </Routes>
