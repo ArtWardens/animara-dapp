@@ -1,62 +1,79 @@
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import TelegramLoginButton from "react-telegram-login";
-import { handleSignInWithGoogle, handleSignInWithTwitter} from '../../firebase/auth.js';
-import { useUserStore } from '../../store/store.ts';
 import { useAppDispatch } from '../../hooks/storeHooks.js';
-import { getUser, login, useUserDetails } from '../../sagaStore/slices/userSlice.js';
+import { useAuthLoading, loginWithEmail, loginWithGoogle, loginWithTwitter, useUserDetails } from '../../sagaStore/slices/userSlice.js';
 import { signInUser, storeUserInFirestore } from "../../utils/fuctions.js";
 
 const LoginPage = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const userStore = useUserStore();
-  const currentUser = useUserDetails();
+  const location = useLocation();
   const { t: tLogin } = useTranslation('login');
+  const isAuthLoading = useAuthLoading();
+  const currentUser = useUserDetails();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-  const togglePassword = () => setShowPassword(!showPassword);
+  const [hasInput, setHasInput] = useState(false);
+
+  // autofill email if there is any registration email
+  useEffect(() => {
+    const registrationEmail = new URLSearchParams(location.search).get("registrationEmail");
+    if (registrationEmail !== null) {
+      setEmail(registrationEmail);
+    }
+  }, [location]);
 
   useEffect(() => {
+    setHasInput(email !== '' && password !== '');
+  }, [email, password]);
 
-    const userTimeout = setTimeout(() => {
-      dispatch(getUser());
-    }, 1000);
-
-    if (currentUser) {
-      navigate("/clicker");
-    }
-
+  useEffect(() => {
     const handleKeyPress = (event) => {
       if (event.key === "Enter") {
-        document.getElementById("login-form-btn").click();
+        document.getElementById("login-button").click();
       }
     };
-
     document.addEventListener("keypress", handleKeyPress);
 
     return () => {
-      clearTimeout(userTimeout);
       document.removeEventListener("keypress", handleKeyPress);
     };
-  }, [dispatch, currentUser, navigate]);
+  }, [navigate]);
 
-  const onHandleSignIn = async () => {
-    dispatch(login({ email, password }));
-    navigate("/clicker"); 
+  useEffect(() => {
+    if (currentUser) {
+      navigate('/clicker');
+    }
+  }, [navigate, currentUser])
+
+  const togglePasswordVisiblity = () => {
+    setShowPassword(!showPassword);
+  }
+
+  const handleLoginWithEmail = async () => {
+    dispatch(loginWithEmail({ email, password }));
+  }
+
+  const handleLoginWithGoogle = async () => {
+    dispatch(loginWithGoogle());
+  }
+
+  const handleLoginWithTwitter = async () => {
+    dispatch(loginWithTwitter());
   }
 
   const handleTelegramResponse = async (response) => {
     const authUser = await signInUser();
     await storeUserInFirestore(authUser.uid, response);
-    navigate("/clicker"); 
+    navigate("/clicker");
   };
-
 
   return (
     <div className="min-h-screen relative flex justify-around pt-0 md:pt-24">
+      {/* Background video */}
       <video
         autoPlay
         loop
@@ -65,13 +82,17 @@ const LoginPage = () => {
       >
         <source src="../assets/images/login-bg.mp4" type="video/mp4" />
       </video>
-      <div className="mt-20 hidden md:block">
+
+      {/* Login Hint */}
+      {/* <div className="mt-20 hidden md:block">
         <h3 className="text-6xl"> {tLogin('dontHaveAnAccount')} </h3>
         <p className="font-outfit mt-2">
           Aenean non vulputate quam, eu dictum est. Aliquam erat volutpat. <br />
           Suspendisse bibendum felis ullamcorper mauris ullamcorper
         </p>
-      </div>
+      </div> */}
+
+      {/* Login Card */}
       <div id="login-card" className="relative backdrop-blur-xl p-8 pt-12 self-center rounded-[1.5rem] md:w-[25%]">
         <div
           style={{
@@ -79,8 +100,12 @@ const LoginPage = () => {
           }}
           className="absolute -z-10 -top-24 -left-20 w-[302px] h-[302px] rounded-[50%]"
         ></div>
+
+        {/* Title */}
         <h2 className="uppercase text-6xl">{tLogin('login')}</h2>
         <p className="font-outfit text-white">{tLogin('gladYouAreBack')}</p>
+
+        {/* Email */}
         <input
           type="email"
           placeholder={tLogin('email')}
@@ -89,6 +114,8 @@ const LoginPage = () => {
           onChange={(e) => setEmail(e.target.value)}
           className="w-[100%] outline-none rounded-xl bg-transparent border border-white p-3 font-outfit mt-3 placeholder-white text-white"
         />
+
+        {/* Password */}
         <div className="relative mt-5">
           <input
             type={showPassword ? 'text' : 'password'}
@@ -99,12 +126,14 @@ const LoginPage = () => {
             required
           />
           <img
-            onClick={togglePassword}
+            onClick={togglePasswordVisiblity}
             src="../assets/images/eye.svg"
             alt="show password"
             className="absolute top-1/2 right-3 -translate-y-1/2 -translate-x-3 cursor-pointer"
           />
         </div>
+
+        {/* Remember Me */}
         <div className="mt-3 pl-2 flex">
           <div className="relative mt-1">
             <input
@@ -124,20 +153,25 @@ const LoginPage = () => {
               ✓
             </label>
           </div>
-          {/* <input
-            className="mr-3 rounded-lg"
-            type="checkbox"
-            name="rememberme"
-            id=""
-          /> */}
           <span className="font-outfit block ml-5 mb-5">&nbsp;Remember Me</span>
         </div>
+
+        {/* Login Button */}
         <button
-          id="login-form-btn"
-          className="mt-3 font-outfit font-semibold w-[100%] bg-gray-700 p-4 rounded-xl hover:brightness-75"
-          onClick={onHandleSignIn}
+          id="login-button"
+          disabled={isAuthLoading || !hasInput}
+          className="mt-3 font-outfit font-semibold w-[100%] bg-gray-700 p-4 rounded-xl"
+          onClick={handleLoginWithEmail}
         >
-          Login
+          {isAuthLoading ?
+            <div className="flex items-center justify-center">
+              <svg aria-hidden="true" className="w-8 h-8 text-Fuchsia-200 animate-spin dark:text-Fuchsia-200 fill-indigo-600" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor"/>
+                <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentFill"/>
+              </svg>
+            </div> :
+            <span className="">Sign Up</span>
+          }
         </button>
 
         <div className="flex items-center mt-12">
@@ -149,32 +183,20 @@ const LoginPage = () => {
         <div className="flex gap-4 justify-center mt-10">
           <img
             src="/socials/google.svg"
-            alt="Google"
-            className="hover:brightness-75"
-            onClick={async () => {
-              const user = await handleSignInWithGoogle();
-              if (user) {
-                userStore.setUser(user);
-                navigate("/clicker"); 
-              }
-            }}
+            alt=""
+            onClick={handleLoginWithGoogle}
           />
           <img
             className="w-12 hover:brightness-75"
             src="/socials/twitter.svg"
-            alt="Twitter"
-            onClick={async () => {
-              const user = await handleSignInWithTwitter();
-              if (user) {
-                navigate("/clicker"); 
-              }
-            }}
+            alt=""
+            onClick={handleLoginWithTwitter}
           />
           <div className="flex gap-4 justify-center relative w-[3.3rem]">
             <TelegramLoginButton
               className="w-[3rem] rounded-full absolute overflow-hidden opacity-[0.1] hover:brightness-75"
               dataOnauth={handleTelegramResponse}
-              // botName="Animara_dapp_bot"
+              botName={process.env.TELEGRAM_BOT_NAME}
             />
             <img
               className="absolute w-[3.3rem] rounded-full -top-[5px] hover:brightness-75"
@@ -184,7 +206,7 @@ const LoginPage = () => {
           </div>
         </div>
         <p className="font-outfit mt-20 mb-8 text-center block">
-          Don't have an account? &nbsp;
+          Don&#39;t have an account? &nbsp;
           <Link to="/signup" className="underline underline-offset-4 hover:brightness-75">
             Signup
           </Link>

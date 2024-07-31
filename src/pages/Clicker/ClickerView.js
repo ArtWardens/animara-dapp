@@ -307,7 +307,9 @@ const ClickerView = ({ currentUser, gameData, setGameData, totalClicks, setTotal
 ClickerView.propTypes = {
   currentUser: PropTypes.object,
   gameData: PropTypes.object,
-  setGameData: PropTypes.func
+  setGameData: PropTypes.func,
+  totalClicks: PropTypes.number,
+  setTotalClicks: PropTypes.func
 };
 
 export default ClickerView;

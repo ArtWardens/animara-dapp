@@ -18,7 +18,7 @@ const OneTimeTask = ({ setIsOneTimeTaskOpen, totalClicks, setTotalClicks }) => {
     if(!getOneTimeTaskListSuccess){
       dispatch(getOneTimeTaskList());
     }
-  },[]);
+  },[dispatch, getOneTimeTaskListSuccess]);
 
   const handleCloseModal = () => {
     setIsOneTimeTaskOpen(false);

@@ -3,6 +3,8 @@ import { useAppSelector } from '../../hooks/storeHooks';
 
 const userInitialState = {
   loading: false,
+  resetPasswordLoading: false,
+  updateProfileLoading: false,
   getUserLoading: false,
   updatePopupLoading: false,
   getLeaderBoardLoading: false,
@@ -22,25 +24,110 @@ export const userSlice = createSlice({
   name: 'user',
   initialState: userInitialState,
   reducers: {
-    login: (state, { payload }) => {
+    signupWithEmail: (state, { payload }) => {
       state.loading = true;
     },
-    loginSuccess: (state, { payload }) => {
-      state.isAuthenticated = true;
+    signupWithEmailSuccess: (state, { payload }) => {
       state.loading = false;
-      state.user = payload;
     },
-    loginError: (state, { payload }) => {
+    signupWithEmailError: (state, { payload }) => {
       state.isAuthenticated = false;
       state.error = payload;
       state.loading = false;
     },
-    logOut: () => {},
+    completeSignUpWithEmail: (state, { payload }) => {
+      state.loading = true;
+    },
+    completeSignUpWithEmailSuccess: (state, { payload }) => {
+      state.loading = false;
+    },
+    completeSignUpWithEmailError: (state, { payload }) => {
+      state.isAuthenticated = false;
+      state.error = payload;
+      state.loading = false;
+    },
+    loginWithEmail: (state, { payload }) => {
+      state.loading = true;
+    },
+    loginWithEmailSuccess: (state, { payload }) => {
+      state.isAuthenticated = true;
+      state.loading = false;
+      state.user = payload;
+    },
+    loginWithEmailError: (state, { payload }) => {
+      state.isAuthenticated = false;
+      state.error = payload;
+      state.loading = false;
+    },
+    loginWithGoogle: (state, { payload }) => {
+      state.loading = true;
+    },
+    loginWithGoogleSuccess: (state, { payload }) => {
+      state.isAuthenticated = true;
+      state.loading = false;
+      state.user = payload;
+    },
+    loginWithGoogleError: (state, { payload }) => {
+      state.isAuthenticated = false;
+      state.error = payload;
+      state.loading = false;
+    },
+    loginWithTwitter: (state, { payload }) => {
+      state.loading = true;
+    },
+    loginWithTwitterSuccess: (state, { payload }) => {
+      state.isAuthenticated = true;
+      state.loading = false;
+      state.user = payload;
+    },
+    loginWithTwitterError: (state, { payload }) => {
+      state.isAuthenticated = false;
+      state.error = payload;
+      state.loading = false;
+    },
+    loginWithTelegram: (state, { payload }) => {
+      state.loading = true;
+    },
+    loginWithTelegramSuccess: (state, { payload }) => {
+      state.isAuthenticated = true;
+      state.loading = false;
+      state.user = payload;
+    },
+    loginWithTelegramError: (state, { payload }) => {
+      state.isAuthenticated = false;
+      state.error = payload;
+      state.loading = false;
+    },
+    logOut: (state) => {
+      state.user = null;
+    },
     logOutSuccess: (state, { payload }) => {
       state.user = payload;
     },
     clearLoginError: (state) => {
       state.error = null;
+    },
+    resetPassword: (state) =>{
+      state.resetPasswordLoading = true;
+    },
+    resetPasswordSuccess: (state, { payload }) => {
+      state.resetPasswordLoading = false;
+      state.user = payload;
+    },
+    resetPasswordError: (state, { payload }) => {
+      state.error = payload;
+      state.resetPasswordLoading = false;
+    },
+    updateProfile: (state) =>{
+      state.updateProfileLoading = true;
+    },
+    updateProfileSuccess: (state, { payload }) => {
+      state.updateProfileLoading = false;
+      state.user = payload;
+    },
+    updateProfileError: (state, { payload }) => {
+      state.error = payload;
+      state.updateProfileLoading = false;
     },
     setError: (state, { payload }) => {
       state.error = payload;
@@ -126,9 +213,30 @@ export const userSlice = createSlice({
 export const {
   logOut,
   logOutSuccess,
-  login,
-  loginSuccess,
-  loginError,
+  signupWithEmail,
+  signupWithEmailSuccess,
+  signupWithEmailError,
+  completeSignUpWithEmail,
+  completeSignUpWithEmailSuccess,
+  completeSignUpWithEmailError,
+  loginWithEmail,
+  loginWithEmailSuccess,
+  loginWithEmailError,
+  loginWithGoogle,
+  loginWithGoogleSuccess,
+  loginWithGoogleError,
+  loginWithTwitter,
+  loginWithTwitterSuccess,
+  loginWithTwitterError,
+  loginWithTelegram,
+  loginWithTelegramSuccess,
+  loginWithTelegramError,
+  resetPassword,
+  resetPasswordSuccess,
+  resetPasswordError,
+  updateProfile,
+  updateProfileSuccess,
+  updateProfileError,
   setError,
   clearLoginError,
   getUser,
@@ -149,8 +257,20 @@ export const {
   updateCompleteOneTimeTaskSuccess
 } = userSlice.actions;
 
-export const useLoginLoading = () => useAppSelector((state) => state.user.loading);
+export const useAuthLoading = () => useAppSelector((state) => state.user.loading);
 export const useLoginError = () => useAppSelector((state) => state.user.error);
+export const useSignupError = () => useAppSelector((state) => state.user.error);
+export const useCompleteSignupWithEmailLoading = () => useAppSelector((state) => state.user.loading);
+export const useCompleteSignupWithEmailError = () => useAppSelector((state) => state.user.error);
+export const useLoginWithGoogleLoading = () => useAppSelector((state) => state.user.loading);
+export const useLoginWithGoogleError = () => useAppSelector((state) => state.user.error);
+export const useLoginWithTwitterLoading = () => useAppSelector((state) => state.user.loading);
+export const useLoginWithTwitterError = () => useAppSelector((state) => state.user.error);
+export const useLoginWithTelegramLoading = () => useAppSelector((state) => state.user.loading);
+export const useLoginWithTelegramError = () => useAppSelector((state) => state.user.error);
+export const useResetPasswordError = () => useAppSelector((state) => state.user.error);
+export const useResetPasswordLoading = () => useAppSelector((state) => state.user.resetPasswordLoading);
+export const useUpdateProfileLoading = () => useAppSelector((state) => state.user.updateProfileLoading);
 export const useUserDetails = () => useAppSelector((state) => state.user.user);
 export const useLeaderBoardDetails = () => useAppSelector((state) => state.user.leaderBoard);
 export const useLeaderBoardLoading = () => useAppSelector((state) => state.user.getLeaderBoardLoading);

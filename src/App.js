@@ -9,6 +9,8 @@ import ReferralPage from "./pages/Referral/ReferralPage";
 import EarlyBirdPage from "./pages/EarlyBird/EarlyBirdPage";
 import LockPage from "./pages/Lock/LockPage";
 // import MintPage from "./pages/Mint/MintPage";
+import LimitedAccessPage from './pages/VerifyEmail/LimitedAccessPage';
+import VerifyEmailPage from './pages/VerifyEmail/VerifyEmailPage';
 import AppLayout from './components/AppLayout';
 import { GlobalProvider } from './context/ContextProvider';
 import rootSaga from './sagas';
@@ -27,7 +29,7 @@ export const App = () => {
   useEffect(() => {
     runSaga(rootSaga);
     dispatch(appInit());
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     if (backOnline || backOffline) {
@@ -44,7 +46,7 @@ export const App = () => {
         },
       });
     }
-  }, [backOnline, backOffline]);
+  }, [backOnline, backOffline, dispatch, isOnline, isOffline]);
 
   return (
     <BrowserRouter>
@@ -54,6 +56,8 @@ export const App = () => {
             <Route path="/" element={<LoginPage />}/>
             <Route path="/login" element={<LoginPage />} />
             <Route path="/signup" element={<SignupPage />} />
+            <Route path="/limited-access" element={<LimitedAccessPage />} />
+            <Route path="/verify-email" element={<VerifyEmailPage />} />
             <Route path="/edit-profile" element={<ClickerController Children={EditProfilePage}/>} />
             <Route path="/clicker" element={<ClickerController Children={ClickerPage}/>} />
             <Route path="/referral" element={<ClickerController Children={ReferralPage} />} />
