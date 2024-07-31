@@ -212,7 +212,9 @@ export function* getUserSaga() {
 }
 
 export function* updateDailyLoginSaga(action) {
+  console.log(action);
   const data = action.payload.data;
+  console.log(data);
   try {
     yield call(handleUpdateDailyLogin, data);
     yield put(updateDailyLoginSuccess(data));

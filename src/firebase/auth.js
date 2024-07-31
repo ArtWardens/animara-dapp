@@ -97,6 +97,7 @@ const loginWithGoogleImpl = async () => {
     const { user } = result;
     return user;
   } catch (error) {
+    console.log(error);
     return null;
   }
 };
