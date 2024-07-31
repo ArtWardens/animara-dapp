@@ -120,6 +120,7 @@ const handleUpdateUserRechargableInvite = async (data) => {
 };
 
 const handleUpdateDailyLogin = async (data) => {
+  console.log(data);
     try {
       const docRef = doc(db, 'users', data.userId);
       updateDoc(docRef, { 

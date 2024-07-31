@@ -8,6 +8,8 @@ import EditProfilePage from "./pages/EditProfile/EditProfilePage";
 import ReferralPage from "./pages/Referral/ReferralPage";
 import EarlyBirdPage from "./pages/EarlyBird/EarlyBirdPage";
 import LockPage from "./pages/Lock/LockPage";
+import VerifyEmailPage from "./pages/VerifyEmail/VerifyEmailPage";
+import LimitedAccessPage from "./pages/VerifyEmail/LimitedAccessPage";
 // import MintPage from "./pages/Mint/MintPage";
 import AppLayout from './components/AppLayout';
 import { GlobalProvider } from './context/ContextProvider';
