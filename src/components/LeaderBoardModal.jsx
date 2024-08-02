@@ -66,7 +66,7 @@ const LeaderBoardModal = ({ setIsLeaderBoardOpen, countdown, timeRemaining }) =>
                   <ul className="grid gap-2 max-h-[230px] overflow-y-auto px-8">
                     {leaderBoardData?.map((el, index) => (
                       <li
-                        key={el.userId}
+                        key={el.uid}
                         className={`flex justify-between 
                           items-center
                           text-white py-1 px-2 ${index === 0 ? 'lb' : index === 1 ? 'lb2' : index === 2 ? 'lb3' : 'lbr'}`}
