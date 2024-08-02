@@ -5,12 +5,12 @@ import { updateProfile } from "firebase/auth";
 import { isReferralCodeValid } from "../utils/fuctions";
 
 // functions that we export for saga
-const handleGetUserData = async (userId) => {
+const handleGetUserData = async (uid) => {
     try {
-        const docRef = doc(db, 'users', userId);
+        const docRef = doc(db, 'users', uid);
         const docSnap = await getDoc(docRef);
 
-        const completedTaskRef = doc(db, 'oneTimeTask', userId);
+        const completedTaskRef = doc(db, 'oneTimeTask', uid);
         const completedTaskSnap = await getDoc(completedTaskRef);
 
         if (docSnap.exists()) {
@@ -103,7 +103,7 @@ const handleUpdateUserLeaveTime = async () => {
 
 const handleUpdateUserRechargableEnergy = async (data) => {
     try {
-        const docRef = doc(db, "users", data.userId);
+        const docRef = doc(db, "users", data.uid);
         await updateDoc(docRef, { energyRechargable: data.count, clickByLevel: 0, isCompletedToday: false });
     }catch (error) {
         console.log("Error setting user data: ", error)
@@ -112,7 +112,7 @@ const handleUpdateUserRechargableEnergy = async (data) => {
 
 const handleUpdateUserRechargableInvite = async (data) => {
     try {
-        const docRef = doc(db, "users", data.userId);
+        const docRef = doc(db, "users", data.uid);
         await updateDoc(docRef, { inviteRechargable: data.count, clickByLevel: 0, isCompletedToday: false });
     }catch (error) {
         console.log("Error setting user data: ", error)
@@ -121,7 +121,7 @@ const handleUpdateUserRechargableInvite = async (data) => {
 
 const handleUpdateDailyLogin = async (data) => {
     try {
-      const docRef = doc(db, 'users', data.userId);
+      const docRef = doc(db, 'users', data.uid);
       updateDoc(docRef, { 
         loggedInToday: true, 
         coins: increment(data.coins),

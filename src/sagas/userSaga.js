@@ -120,7 +120,7 @@ export function* loginWithEmailSaga({ payload }) {
     if (user?.uid) {
       const token = yield call(getIdTokenResult, user);
       console.log(token);
-      addToLocalStorage("userId", user.uid);
+      addToLocalStorage("uid", user.uid);
       if (
         !user.emailVerified ||
         token.claims.limitedAccess === true
@@ -148,7 +148,7 @@ export function* loginWithGoogleSaga() {
   try {
     const user = yield call(loginWithGoogleImpl);
     if (user?.uid) {
-      addToLocalStorage("userId", user.uid);
+      addToLocalStorage("uid", user.uid);
       const userData = yield call(handleGetUserData, user.uid);
       yield put(loginWithGoogleSuccess(userData));
       toast.success("Signed in with Google");
@@ -167,7 +167,7 @@ export function* loginWithTwitterSaga() {
   try {
     const user = yield call(loginWithTwitterImpl);
     if (user?.uid) {
-      addToLocalStorage("userId", user.uid);
+      addToLocalStorage("uid", user.uid);
       const userData = yield call(handleGetUserData, user.uid);
       yield put(loginWithTwitterSuccess(userData));
       toast.success("Signed in with Twitter");
@@ -204,10 +204,10 @@ export function* updateUserProfileSaga({ payload }) {
 }
 
 export function* getUserSaga() {
-  const userId = getFromLocalStorage("userId");
-  if (userId) {
-    addToLocalStorage("userId", userId);
-    const userData = yield call(handleGetUserData, userId);
+  const uid = getFromLocalStorage("uid");
+  if (uid) {
+    addToLocalStorage("uid", uid);
+    const userData = yield call(handleGetUserData, uid);
     yield put(getUserSuccess(userData));
   } else {
     yield put(getUserError(null));
@@ -279,7 +279,7 @@ export function* updateCompleteOneTimeTaskSaga(action) {
 }
 
 export function* logOutSaga() {
-  removeFromLocalStorage("userId");
+  removeFromLocalStorage("uid");
   yield put(logOutSuccess(null));
 }
 

@@ -34,7 +34,7 @@ const OneTimeTask = ({ setIsOneTimeTaskOpen, totalClicks, setTotalClicks }) => {
     setTotalClicks(prevTotal => {
       const newCompletedTaskArr = currentUser?.completedTask.concat([currentTask.taskId])
       dispatch(updateCompleteOneTimeTask({
-        userId: currentUser?.userId,
+        uid: currentUser?.uid,
         coins: currentTask.coins,
         completedTask: newCompletedTaskArr,
       }));
@@ -48,7 +48,7 @@ const OneTimeTask = ({ setIsOneTimeTaskOpen, totalClicks, setTotalClicks }) => {
     setTotalClicks(prevTotal => {
       const newCompletedTaskArr = currentUser?.completedTask.concat([task.taskId])
       dispatch(updateCompleteOneTimeTask({
-        userId: currentUser?.userId,
+        uid: currentUser?.uid,
         coins: task.coins,
         completedTask: newCompletedTaskArr,
       }));
