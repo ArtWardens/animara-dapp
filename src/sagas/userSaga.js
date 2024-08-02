@@ -177,10 +177,15 @@ export function* loginWithTwitterSaga() {
     }
   } catch (error) {
     console.error(error);
-    toast.error("failed to sign in with Twitter");
+    if (error.code === 'auth/account-exists-with-different-credential') {
+      toast.error("Account linked with Google, please Login with Google instead");
+    } else {
+      toast.error("Failed to sign in with Twitter");
+    }
     yield put(loginWithTwitterError(error));
   }
 }
+
 
 export function* resetPasswordSaga() {
   try {
