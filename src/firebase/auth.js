@@ -47,7 +47,6 @@ const signUpWithEmailImpl = async (email, password, name, referralCode) => {
         dynamicLinkDomain: `${process.env.REACT_APP_DOMAIN}`,
       };
 
-      console.log(actionCodeSettings);
 
       const verifyEmailResult = await sendEmailVerification(
         result.user,
@@ -55,15 +54,14 @@ const signUpWithEmailImpl = async (email, password, name, referralCode) => {
       );
 
       console.log(verifyEmailResult);
+
       //redirect user to verify email page
       window.location.href = "/verify-email";
     } catch (err) {
-      console.log(err);
       try {
         const idToken = await result.user.getIdToken();
         await cleanupFailedRegistration({ idToken: idToken });
       } catch (err) {
-        console.log(err);
         return -4;
       }
       return -5;
@@ -71,7 +69,6 @@ const signUpWithEmailImpl = async (email, password, name, referralCode) => {
     // cleanupFailedRegistration
     return 1;
   } catch (error) {
-    console.log(error);
     return 0;
   }
 };
@@ -87,7 +84,6 @@ const loginWithEmailImpl = async (data) => {
     const { user } = result;
     return user;
   } catch (error) {
-    console.log(error);
     return null;
   }
 };
@@ -99,7 +95,6 @@ const loginWithGoogleImpl = async () => {
     const { user } = result;
     return user;
   } catch (error) {
-    console.log(error);
     return null;
   }
 };
@@ -118,11 +113,10 @@ const loginWithTwitterImpl = async () => {
 const loginWithTelegramImpl = async () => {
   try {
     const result = await signInAnonymously(auth);
-    console.log("User signed in anonymously:", result.user);
     const { user } = result;
     return user;
   } catch (error) {
-    console.error("Error signing in anonymously:", error);
+    return null;
   }
 };
 
