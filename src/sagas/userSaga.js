@@ -21,6 +21,9 @@ import {
 import {
   closeDailyPopup,
   closeDailyPopupSuccess,
+  getEarlyBirdOneTimeTaskList,
+  getEarlyBirdOneTimeTaskListError,
+  getEarlyBirdOneTimeTaskListSuccess,
   getLeaderBoard,
   getLeaderBoardError,
   getLeaderBoardSuccess,
@@ -247,10 +250,22 @@ export function* getLeaderBoardSaga(action) {
 export function* getOneTimeTaskListSaga() {
   try {
     const taskList = yield call(handleGetOneTimeTaskList, null);
-    yield put(getOneTimeTaskListSuccess(taskList));
+    const filterOneTimeTask = taskList?.filter((item) => item?.taskType === "normal")
+    yield put(getOneTimeTaskListSuccess(filterOneTimeTask));
   } catch (error) {
-    console.error("Error retrieving oneTimeTaskList: ", error);
+    console.error('Error retrieving oneTimeTaskList: ', error);
     yield put(getOneTimeTaskListError(error));
+  }
+}
+
+export function* getEarlyBirdOneTimeTaskListSaga() {
+  try {
+    const taskList = yield call(handleGetOneTimeTaskList, null);
+    const filterOneTimeTask = taskList?.filter((item) => item?.taskType === "earlybird")
+    yield put(getEarlyBirdOneTimeTaskListSuccess(filterOneTimeTask));
+  } catch (error) {
+    console.error('Error retrieving earlyBirdOneTimeTaskList: ', error);
+    yield put(getEarlyBirdOneTimeTaskListError(error));
   }
 }
 
@@ -259,7 +274,7 @@ export function* updateCompleteOneTimeTaskSaga(action) {
     yield call(handleUpdateCompletedTask, action.payload);
     yield put(updateCompleteOneTimeTaskSuccess(action.payload));
   } catch (error) {
-    console.error("Error updating oneTimeTaskList: ", error);
+    console.error('Error updating oneTimeTaskList: ', error);
   }
 }
 
@@ -285,8 +300,6 @@ export function* userSagaWatcher() {
   yield takeLatest(getLeaderBoard.type, getLeaderBoardSaga);
   yield takeLatest(closeDailyPopup.type, closeDailyPopupSaga);
   yield takeLatest(getOneTimeTaskList.type, getOneTimeTaskListSaga);
-  yield takeLatest(
-    updateCompleteOneTimeTask.type,
-    updateCompleteOneTimeTaskSaga
-  );
+  yield takeLatest(getEarlyBirdOneTimeTaskList.type, getEarlyBirdOneTimeTaskListSaga);
+  yield takeLatest(updateCompleteOneTimeTask.type, updateCompleteOneTimeTaskSaga);
 }
