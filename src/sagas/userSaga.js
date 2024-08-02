@@ -119,7 +119,6 @@ export function* loginWithEmailSaga({ payload }) {
     const user = yield call(loginWithEmailImpl, payload);
     if (user?.uid) {
       const token = yield call(getIdTokenResult, user);
-      console.log(token);
       addToLocalStorage("userId", user.uid);
       if (
         !user.emailVerified ||
@@ -158,7 +157,6 @@ export function* loginWithGoogleSaga() {
     }
   } catch (error) {
     toast.error("failed to sign in with Google");
-    console.error(error);
     yield put(loginWithGoogleError(error));
   }
 }
@@ -187,12 +185,18 @@ export function* loginWithTwitterSaga() {
 }
 
 
-export function* resetPasswordSaga() {
+export function* resetPasswordSaga(action) {
   try {
-    yield call(resetPasswordImpl);
-    yield put(resetPasswordSuccess());
+    const email = action.payload; 
+    const result = yield call(resetPasswordImpl, email);
+    if (result) {
+      yield put(resetPasswordSuccess());
+      toast.success("Password reset email sent successfully");
+    } else {
+      throw new Error("Failed to reset password");
+    }
   } catch (error) {
-    toast.error("failed to reset password");
+    toast.error("Failed to reset password");
     yield put(resetPasswordError(error));
   }
 }

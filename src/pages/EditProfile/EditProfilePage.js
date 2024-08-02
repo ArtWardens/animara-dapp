@@ -1,18 +1,22 @@
-
 import React, { useEffect, useRef, useState } from "react";
 import { PropTypes } from "prop-types";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { FaCopy } from "react-icons/fa6";
-import { useAppDispatch } from '../../hooks/storeHooks.js';
-import { useUserDetails, useUserAuthenticated, useAuthLoading, resetPassword, useResetPasswordLoading, updateProfile, useUpdateProfileLoading } from '../../sagaStore/slices/userSlice.js';
+import { useAppDispatch } from "../../hooks/storeHooks.js";
+import {
+  useUserDetails,
+  useUserAuthenticated,
+  useAuthLoading,
+  resetPassword,
+  useResetPasswordLoading,
+  updateProfile,
+  useUpdateProfileLoading,
+} from "../../sagaStore/slices/userSlice.js";
 
 import Header from "../../components/Header.jsx";
 
-const EditProfilePage = ({
-  currentUser,
-  totalClicks
-}) => {
+const EditProfilePage = ({ currentUser, totalClicks }) => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const isAuthenticated = useUserAuthenticated();
@@ -29,7 +33,7 @@ const EditProfilePage = ({
   const inputFile = useRef(null);
 
   const handleBackClick = () => {
-    navigate('/clicker');
+    navigate("/clicker");
   };
 
   useEffect(() => {
@@ -47,40 +51,40 @@ const EditProfilePage = ({
     setInviteCode(user?.referredBy || "");
   }, [user]);
 
-  const handleResetPassword = ()=>{
-    dispatch(resetPassword());
-  }
+  const handleResetPassword = () => {
+    console.log(email);
+    dispatch(resetPassword(email));
+  };
   const handleUpdateProfile = (e) => {
     e.preventDefault();
-    dispatch(updateProfile({
-      fullName: firstname + " " + lastname,
-      inviteCode: inviteCode || null,
-      profilePicture: imageData ? imageData.toString() : null
-    }));
+    dispatch(
+      updateProfile({
+        fullName: firstname + " " + lastname,
+        inviteCode: inviteCode || null,
+        profilePicture: imageData ? imageData.toString() : null,
+      })
+    );
   };
 
   const copyInviteCode = () => {
     navigator.clipboard.writeText(inviteCode);
-    alert('Invite code copied to clipboard!');
+    alert("Invite code copied to clipboard!");
   };
 
   return (
     <>
-      <Header
-        currentUser={currentUser}
-        totalClicks={totalClicks}
-      />
+      <Header currentUser={currentUser} totalClicks={totalClicks} />
 
       <div
         className="justify-center items-center place-content-center p-44"
         style={{
-          backgroundImage: 'url("../../assets/images/clicker-character/clickerWall.png")',
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          backgroundRepeat: 'no-repeat',
+          backgroundImage:
+            'url("../../assets/images/clicker-character/clickerWall.png")',
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
         }}
       >
-
         <div className="w-full h-full">
           <div className="header flex justify-between items-center">
             <span className="flex gap-2">
@@ -95,19 +99,23 @@ const EditProfilePage = ({
                   <div
                     className="w-[339px] text-left text-amber-500 text-5xl font-normal font-['Luckiest Guy'] uppercase leading-[54px]"
                     style={{
-                      WebkitTextStrokeWidth: '2px',
-                      WebkitTextStrokeColor: 'var(--Color-11, #FFF)',
+                      WebkitTextStrokeWidth: "2px",
+                      WebkitTextStrokeColor: "var(--Color-11, #FFF)",
                     }}
                   >
                     EDIT PROFILE
                   </div>
                   {user?.isKOL && (
                     <span className="bg-sky-700 rounded-lg flex items-center m-3 px-2">
-                      <span className="text-white text-xs tracking-wider font-outfit">Certified KOL</span>
+                      <span className="text-white text-xs tracking-wider font-outfit">
+                        Certified KOL
+                      </span>
                     </span>
                   )}
                 </span>
-                <div className="text-white text-sm font-outfit tracking-wide pb-8">Settings &nbsp; &gt; &nbsp; Edit Profile</div>
+                <div className="text-white text-sm font-outfit tracking-wide pb-8">
+                  Settings &nbsp; &gt; &nbsp; Edit Profile
+                </div>
               </span>
             </span>
             <span
@@ -117,13 +125,18 @@ const EditProfilePage = ({
               }}
               style={{
                 flexShrink: 0,
-                borderRadius: '500px',
-                border: '2.5px solid var(--80E8FF, #80E8FF)',
-                background: `url(${imageData?.toString() || user?.photoURL || "../../assets/images/lock.png" || ""}) lightgray 50% / cover no-repeat`
+                borderRadius: "500px",
+                border: "2.5px solid var(--80E8FF, #80E8FF)",
+                background: `url(${imageData?.toString() || user?.photoURL || "../../assets/images/lock.png" || ""}) lightgray 50% / cover no-repeat`,
               }}
             >
               <img
-                src={imageData?.toString() || user?.photoURL || "../../assets/images/lock.png" || ""}
+                src={
+                  imageData?.toString() ||
+                  user?.photoURL ||
+                  "../../assets/images/lock.png" ||
+                  ""
+                }
                 alt="pfp"
                 className="group-hover:brightness-75 h-full w-full object-cover"
               />
@@ -152,10 +165,16 @@ const EditProfilePage = ({
               }}
             />
           </div>
-          <form className="form font-degular mt-5" onSubmit={handleUpdateProfile}>
+          <form
+            className="form font-degular mt-5"
+            onSubmit={handleUpdateProfile}
+          >
             <div className="flex flex-col md:flex-row gap-5 md:gap-10 mt-3 w-full">
               <div className="flex flex-col gap-2 w-full pb-4">
-                <label htmlFor="firstname" className="text-sm font-outfit tracking-wide">
+                <label
+                  htmlFor="firstname"
+                  className="text-sm font-outfit tracking-wide"
+                >
                   First Name <span className="text-red-500">*</span>
                 </label>
                 <input
@@ -168,7 +187,10 @@ const EditProfilePage = ({
                 />
               </div>
               <div className="flex flex-col gap-2 w-full pb-4">
-                <label htmlFor="lastname" className="text-sm font-outfit tracking-wide">
+                <label
+                  htmlFor="lastname"
+                  className="text-sm font-outfit tracking-wide"
+                >
                   Last Name <span className="text-red-500">*</span>
                 </label>
                 <input
@@ -183,7 +205,10 @@ const EditProfilePage = ({
             </div>
             <div className="flex gap-10 mt-3 w-full">
               <div className="flex flex-col gap-2 w-full pb-4">
-                <label htmlFor="email" className="text-sm font-outfit tracking-wide">
+                <label
+                  htmlFor="email"
+                  className="text-sm font-outfit tracking-wide"
+                >
                   Email Address
                 </label>
                 <input
@@ -198,7 +223,10 @@ const EditProfilePage = ({
             </div>
             <div className="flex gap-10 mt-3 w-full">
               <div className="flex flex-col gap-2 w-full pb-4">
-                <label htmlFor="phone" className="text-sm font-outfit tracking-wide">
+                <label
+                  htmlFor="phone"
+                  className="text-sm font-outfit tracking-wide"
+                >
                   Phone
                 </label>
                 <input
@@ -211,7 +239,10 @@ const EditProfilePage = ({
                 />
               </div>
               <div className="flex flex-col gap-2 w-full pb-4 relative">
-                <label htmlFor="inviteCode" className="text-sm font-outfit tracking-wide">
+                <label
+                  htmlFor="inviteCode"
+                  className="text-sm font-outfit tracking-wide"
+                >
                   Invite Code
                 </label>
                 <div className="flex items-center w-full relative">
@@ -228,7 +259,8 @@ const EditProfilePage = ({
                     onClick={copyInviteCode}
                     className="absolute right-3 top-1/2 transform -translate-y-1/2 bg-[#FA0] border-[1px] border-[#FFAA00] rounded-[6px] flex items-center justify-center p-[5px] w-[70px] h-[38px] shadow-inner text-xs font-bold font-outfit px-2"
                     style={{
-                      boxShadow: '0px 4px 4px 0px rgba(255, 210, 143, 0.61) inset',
+                      boxShadow:
+                        "0px 4px 4px 0px rgba(255, 210, 143, 0.61) inset",
                     }}
                   >
                     <FaCopy />
@@ -239,18 +271,20 @@ const EditProfilePage = ({
             </div>
             <div className="flex gap-10 mt-10 w-full">
               <div className="flex flex-col md:flex-row justify-start gap-5 w-full">
-                <button
-                  className="w-[200px] h-[60px] justify-start items-center gap-[46px] inline-flex"
-                  disabled={resetPasswordLoading}
-                  type="button"
-                  onClick={handleResetPassword}
-                >
-                  <div className="w-[200px] h-[60px] px-[30px] py-5 bg-sky-700 rounded-[26px] border border-blue-300 justify-between items-center flex hover:bg-sky-500 hover:border-sky-500 hover:pt-[18px] hover:pb-5">
-                    <div className="text-center text-white text-xl font-normal capitalize leading-tight hover:font-bold">
-                      Reset Password
+                {currentUser?.canResetPassword === true && (
+                  <button
+                    className="w-[200px] h-[60px] justify-start items-center gap-[46px] inline-flex"
+                    disabled={resetPasswordLoading}
+                    type="button"
+                    onClick={handleResetPassword}
+                  >
+                    <div className="w-[200px] h-[60px] px-[30px] py-5 bg-sky-700 rounded-[26px] border border-blue-300 justify-between items-center flex hover:bg-sky-500 hover:border-sky-500 hover:pt-[18px] hover:pb-5">
+                      <div className="text-center text-white text-xl font-normal capitalize leading-tight hover:font-bold">
+                        Reset Password
+                      </div>
                     </div>
-                  </div>
-                </button>
+                  </button>
+                )}
                 <button
                   className="w-[200px] h-[60px] justify-between items-center inline-flex"
                   disabled={updateProfileLoading}
@@ -258,7 +292,9 @@ const EditProfilePage = ({
                 >
                   <div className="w-[200px] h-[60px] px-[30px] py-5 bg-amber-400 rounded-[26px] border border-orange-300 justify-between items-center flex hover:bg-amber-300">
                     <div className="text-center text-white text-xl font-bold capitalize leading-tight">
-                      {updateProfileLoading ? "Saving changes.." : "Save Changes"}
+                      {updateProfileLoading
+                        ? "Saving changes.."
+                        : "Save Changes"}
                     </div>
                   </div>
                 </button>
@@ -277,4 +313,3 @@ EditProfilePage.propTypes = {
 };
 
 export default EditProfilePage;
-
