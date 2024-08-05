@@ -19,14 +19,16 @@ const LoginPage = () => {
   const [hasInput, setHasInput] = useState(false);
 
   // autofill email if there is any registration email
-  const registrationEmail = new URLSearchParams(location.search).get("registrationEmail");
-  if (registrationEmail !== null){
-    setEmail(registrationEmail);
-  }
+  useEffect(() => {
+    const registrationEmail = new URLSearchParams(location.search).get("registrationEmail");
+    if (registrationEmail !== null) {
+      setEmail(registrationEmail);
+    }
+  }, [location]);
 
-  useEffect(()=>{
+  useEffect(() => {
     setHasInput(email !== '' && password !== '');
-  },[email, password]);
+  }, [email, password]);
 
   useEffect(() => {
     const handleKeyPress = (event) => {
@@ -42,8 +44,8 @@ const LoginPage = () => {
   }, [navigate]);
 
   useEffect(() => {
-    if(currentUser){
-      navigate('/clicker');
+    if (currentUser) {
+      navigate('/clicker-lock');
     }
   }, [navigate, currentUser])
 
@@ -66,7 +68,7 @@ const LoginPage = () => {
   const handleTelegramResponse = async (response) => {
     const authUser = await signInUser();
     await storeUserInFirestore(authUser.uid, response);
-    navigate("/clicker");
+    navigate("/clicker-lock");
   };
 
   return (

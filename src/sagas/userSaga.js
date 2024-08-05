@@ -1,18 +1,29 @@
-import { toast } from 'react-toastify';
-import { call, put, takeLatest } from 'redux-saga/effects';
+import { toast } from "react-toastify";
+import { call, put, takeLatest } from "redux-saga/effects";
 import {
   signUpWithEmailImpl,
+  getIdTokenResult,
   loginWithEmailImpl,
   loginWithGoogleImpl,
   loginWithTwitterImpl,
   resetPasswordImpl,
 } from "../firebase/auth";
-import { updateUserProfileImpl, handleGetUserData, handleUpdateDailyLogin } from '../firebase/user';
-import { handleGetLeaderboard } from '../firebase/leaderboard';
-import { handleGetOneTimeTaskList, handleUpdateCompletedTask } from '../firebase/oneTimeTask';
+import {
+  updateUserProfileImpl,
+  handleGetUserData,
+  handleUpdateDailyLogin,
+} from "../firebase/user";
+import { handleGetLeaderboard } from "../firebase/leaderboard";
+import {
+  handleGetOneTimeTaskList,
+  handleUpdateCompletedTask,
+} from "../firebase/oneTimeTask";
 import {
   closeDailyPopup,
   closeDailyPopupSuccess,
+  getEarlyBirdOneTimeTaskList,
+  getEarlyBirdOneTimeTaskListError,
+  getEarlyBirdOneTimeTaskListSuccess,
   getLeaderBoard,
   getLeaderBoardError,
   getLeaderBoardSuccess,
@@ -43,53 +54,63 @@ import {
   signupWithEmail,
   signupWithEmailSuccess,
   signupWithEmailError,
-} from '../sagaStore/slices';
+} from "../sagaStore/slices";
 import {
   calculateCountdownRemaining,
   getCooldownTime,
   setCooldownTime,
   setDashboardData,
-} from '../utils/getTimeRemaining';
-import { addToLocalStorage, getFromLocalStorage, removeFromLocalStorage } from '../utils/localStorage';
+} from "../utils/getTimeRemaining";
+import {
+  addToLocalStorage,
+  getFromLocalStorage,
+  removeFromLocalStorage,
+} from "../utils/localStorage";
 
 export function* signupWithEmailSaga({ payload }) {
   try {
     const { email, password, name, referralCode } = payload;
-    const result = yield call(signUpWithEmailImpl, email, password, name, referralCode);
-    switch (result){
+    const result = yield call(
+      signUpWithEmailImpl,
+      email,
+      password,
+      name,
+      referralCode
+    );
+    switch (result) {
       case 1:
         yield put(signupWithEmailSuccess());
-        toast.success('Signup Successful');
+        toast.success("Signup Successful");
         // redirect to page saying check verification email
         break;
       case -1:
-        yield put(signupWithEmailError('Error signing up'));
-        toast.error('Please provide your info');
+        yield put(signupWithEmailError("Error signing up"));
+        toast.error("Please provide your info");
         break;
       case -2:
-        yield put(signupWithEmailError('Error signing up'));
-        toast.error('Invalid Referral Code');
+        yield put(signupWithEmailError("Error signing up"));
+        toast.error("Invalid Referral Code");
         break;
       case -3:
-        yield put(signupWithEmailError('Error signing up'));
-        toast.error('Failed to link Referral Code');
+        yield put(signupWithEmailError("Error signing up"));
+        toast.error("Failed to link Referral Code");
         break;
       case -4:
-        yield put(signupWithEmailError('Error signing up'));
-        toast.error('Registration failed. Please try again');
+        yield put(signupWithEmailError("Error signing up"));
+        toast.error("Registration failed. Please try again");
         break;
       case -5:
-        yield put(signupWithEmailError('Error signing up'));
-        toast.error('Registration failed');
+        yield put(signupWithEmailError("Error signing up"));
+        toast.error("Failed to send verification email. Please try again.");
         break;
       default:
-        yield put(signupWithEmailError('Error signing up'));
-        toast.error('Unexpected error occured');
+        yield put(signupWithEmailError("Error signing up"));
+        toast.error("Unexpected error occured");
         break;
     }
   } catch (error) {
     yield put(signupWithEmailError(error));
-    toast.error('Unexpected error occured');
+    toast.error("Unexpected error occured");
   }
 }
 
@@ -97,17 +118,27 @@ export function* loginWithEmailSaga({ payload }) {
   try {
     const user = yield call(loginWithEmailImpl, payload);
     if (user?.uid) {
-      addToLocalStorage('userId', user.uid);
+      const token = yield call(getIdTokenResult, user);
+      addToLocalStorage("userId", user.uid);
+      if (
+        !user.emailVerified ||
+        token.claims.limitedAccess === true
+      ) {
+        //redirect user to login page
+        window.location.href = '/limited-access';  
+        return;
+      }
       const userData = yield call(handleGetUserData, user.uid);
       yield put(loginWithEmailSuccess(userData));
-      toast.success('Signed in');
+
+      toast.success("Signed in");
     } else {
-      yield put(loginWithEmailError('invalid uid'));
-      console.error('invalid uid');
+      yield put(loginWithEmailError("invalid uid"));
+      console.error("invalid uid");
     }
   } catch (error) {
     console.error(error);
-    toast.error('Error signing in');
+    toast.error("Error signing in");
     yield put(loginWithEmailError(error));
   }
 }
@@ -116,17 +147,16 @@ export function* loginWithGoogleSaga() {
   try {
     const user = yield call(loginWithGoogleImpl);
     if (user?.uid) {
-      addToLocalStorage('userId', user.uid);
+      addToLocalStorage("userId", user.uid);
       const userData = yield call(handleGetUserData, user.uid);
       yield put(loginWithGoogleSuccess(userData));
-      toast.success('Signed in with Google');
+      toast.success("Signed in with Google");
     } else {
-      yield put(loginWithGoogleError('failed to sign in with Google'));
-      console.error('failed to sign in with Google');
+      yield put(loginWithGoogleError("failed to sign in with Google"));
+      console.error("failed to sign in with Google");
     }
   } catch (error) {
-    toast.error('failed to sign in with Google');
-    console.error(error);
+    toast.error("failed to sign in with Google");
     yield put(loginWithGoogleError(error));
   }
 }
@@ -135,28 +165,38 @@ export function* loginWithTwitterSaga() {
   try {
     const user = yield call(loginWithTwitterImpl);
     if (user?.uid) {
-      addToLocalStorage('userId', user.uid);
+      addToLocalStorage("userId", user.uid);
       const userData = yield call(handleGetUserData, user.uid);
       yield put(loginWithTwitterSuccess(userData));
-      toast.success('Signed in with Twitter');
+      toast.success("Signed in with Twitter");
     } else {
-      yield put(loginWithTwitterError('failed to sign in with Twitter'));
-      console.error('failed to sign in with Twitter');
+      yield put(loginWithTwitterError("failed to sign in with Twitter"));
+      console.error("failed to sign in with Twitter");
     }
   } catch (error) {
     console.error(error);
-    toast.error('failed to sign in with Twitter');
+    if (error.code === 'auth/account-exists-with-different-credential') {
+      toast.error("Account linked with Google, please Login with Google instead");
+    } else {
+      toast.error("Failed to sign in with Twitter");
+    }
     yield put(loginWithTwitterError(error));
   }
 }
 
-export function* resetPasswordSaga() {
-  try {
-    yield call(resetPasswordImpl);
-    yield put(resetPasswordSuccess());
 
+export function* resetPasswordSaga(action) {
+  try {
+    const email = action.payload; 
+    const result = yield call(resetPasswordImpl, email);
+    if (result) {
+      yield put(resetPasswordSuccess());
+      toast.success("Password reset email sent successfully");
+    } else {
+      throw new Error("Failed to reset password");
+    }
   } catch (error) {
-    toast.error('failed to reset password');
+    toast.error("Failed to reset password");
     yield put(resetPasswordError(error));
   }
 }
@@ -167,15 +207,15 @@ export function* updateUserProfileSaga({ payload }) {
     yield call(updateUserProfileImpl, fulllName, inviteCode, photoString);
     yield put(resetPasswordSuccess());
   } catch (error) {
-    toast.error('failed to reset password');
+    toast.error("failed to reset password");
     yield put(resetPasswordError(error));
   }
 }
 
 export function* getUserSaga() {
-  const userId = getFromLocalStorage('userId');
+  const userId = getFromLocalStorage("userId");
   if (userId) {
-    addToLocalStorage('userId', userId);
+    addToLocalStorage("userId", userId);
     const userData = yield call(handleGetUserData, userId);
     yield put(getUserSuccess(userData));
   } else {
@@ -184,12 +224,14 @@ export function* getUserSaga() {
 }
 
 export function* updateDailyLoginSaga(action) {
+  console.log(action);
   const data = action.payload.data;
+  console.log(data);
   try {
     yield call(handleUpdateDailyLogin, data);
     yield put(updateDailyLoginSuccess(data));
   } catch (error) {
-    console.log('Error setting user data: ', error);
+    console.log("Error setting user data: ", error);
   }
 }
 
@@ -208,7 +250,7 @@ export function* getLeaderBoardSaga(action) {
       setDashboardData(dashboardData);
       yield put(getLeaderBoardSuccess(dashboardData));
     } catch (error) {
-      console.error('Error retrieving leaderboard: ', error);
+      console.error("Error retrieving leaderboard: ", error);
       yield put(getLeaderBoardError(error));
     }
   }
@@ -217,10 +259,22 @@ export function* getLeaderBoardSaga(action) {
 export function* getOneTimeTaskListSaga() {
   try {
     const taskList = yield call(handleGetOneTimeTaskList, null);
-    yield put(getOneTimeTaskListSuccess(taskList));
+    const filterOneTimeTask = taskList?.filter((item) => item?.taskType === "normal")
+    yield put(getOneTimeTaskListSuccess(filterOneTimeTask));
   } catch (error) {
     console.error('Error retrieving oneTimeTaskList: ', error);
     yield put(getOneTimeTaskListError(error));
+  }
+}
+
+export function* getEarlyBirdOneTimeTaskListSaga() {
+  try {
+    const taskList = yield call(handleGetOneTimeTaskList, null);
+    const filterOneTimeTask = taskList?.filter((item) => item?.taskType === "earlybird")
+    yield put(getEarlyBirdOneTimeTaskListSuccess(filterOneTimeTask));
+  } catch (error) {
+    console.error('Error retrieving earlyBirdOneTimeTaskList: ', error);
+    yield put(getEarlyBirdOneTimeTaskListError(error));
   }
 }
 
@@ -234,7 +288,7 @@ export function* updateCompleteOneTimeTaskSaga(action) {
 }
 
 export function* logOutSaga() {
-  removeFromLocalStorage('userId');
+  removeFromLocalStorage("userId");
   yield put(logOutSuccess(null));
 }
 
@@ -255,5 +309,6 @@ export function* userSagaWatcher() {
   yield takeLatest(getLeaderBoard.type, getLeaderBoardSaga);
   yield takeLatest(closeDailyPopup.type, closeDailyPopupSaga);
   yield takeLatest(getOneTimeTaskList.type, getOneTimeTaskListSaga);
+  yield takeLatest(getEarlyBirdOneTimeTaskList.type, getEarlyBirdOneTimeTaskListSaga);
   yield takeLatest(updateCompleteOneTimeTask.type, updateCompleteOneTimeTaskSaga);
 }

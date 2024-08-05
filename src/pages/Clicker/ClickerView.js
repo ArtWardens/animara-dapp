@@ -74,7 +74,7 @@ const ClickerView = ({ currentUser, gameData, setGameData, totalClicks, setTotal
         const loginRewardCoins = dailyLogin[currentLoginDay].coins;
         dispatch(updateDailyLogin({
           data: {
-            userId: currentUser?.userId,
+            userId: currentUser.uid,
             coins: loginRewardCoins
           }
         }));
