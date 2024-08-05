@@ -26,6 +26,8 @@ const ClickerController = ({ Children }) => {
     }, 1500);
   }, [currentUser, navigate]);
 
+  console.log(gameData);
+
   return (
     <div>
         <Children
