@@ -18,6 +18,9 @@ const userInitialState = {
   getOneTimeTaskListLoading: false,
   getOneTimeTaskListSuccess: false,
   oneTimeTaskList: [],
+  getEarlyBirdOneTimeTaskListLoading: false,
+  getEarlyBirdOneTimeTaskListSuccess: false,
+  earlyBirdOneTimeTask: [],
 };
 
 export const userSlice = createSlice({
@@ -98,7 +101,9 @@ export const userSlice = createSlice({
       state.error = payload;
       state.loading = false;
     },
-    logOut: () => {},
+    logOut: (state) => {
+      state.user = null;
+    },
     logOutSuccess: (state, { payload }) => {
       state.user = payload;
     },
@@ -205,6 +210,20 @@ export const userSlice = createSlice({
         completedTask: payload.completedTask
       }
     },
+    getEarlyBirdOneTimeTaskList: (state, { payload }) => {
+      state.getEarlyBirdOneTimeTaskListLoading = true;
+      state.getEarlyBirdOneTimeTaskListSuccess = false;
+    },
+    getEarlyBirdOneTimeTaskListSuccess: (state, { payload }) => {
+      state.getEarlyBirdOneTimeTaskListLoading = false;
+      state.earlyBirdOneTimeTask = payload;
+      state.getEarlyBirdOneTimeTaskListSuccess = true;
+    },
+    getEarlyBirdOneTimeTaskListError: (state, { payload }) => {
+      state.getEarlyBirdOneTimeTaskListLoading = false;
+      state.error = payload;
+      state.getEarlyBirdOneTimeTaskListSuccess = false;
+    },
   },
 });
 
@@ -251,11 +270,15 @@ export const {
   getOneTimeTaskList,
   getOneTimeTaskListSuccess,
   getOneTimeTaskListError,
+  getEarlyBirdOneTimeTaskList,
+  getEarlyBirdOneTimeTaskListSuccess,
+  getEarlyBirdOneTimeTaskListError,
   updateCompleteOneTimeTask,
   updateCompleteOneTimeTaskSuccess
 } = userSlice.actions;
 
 export const useAuthLoading = () => useAppSelector((state) => state.user.loading);
+export const useLoginLoading = () => useAppSelector((state) => state.user.loading);
 export const useLoginError = () => useAppSelector((state) => state.user.error);
 export const useSignupError = () => useAppSelector((state) => state.user.error);
 export const useCompleteSignupWithEmailLoading = () => useAppSelector((state) => state.user.loading);
@@ -276,8 +299,10 @@ export const useLeaderBoardLoadSuccess = () => useAppSelector((state) => state.u
 export const useIsOpenDailyPopup = () => useAppSelector((state) => state.user.isOpenDailyPopup);
 export const useOneTimeTaskList = () => useAppSelector((state) => state.user.oneTimeTaskList);
 export const useOneTimeTaskListSuccess = () => useAppSelector((state) => state.user.getOneTimeTaskListSuccess);
-
+export const useEarlyBirdOneTimeTaskList = () => useAppSelector((state) => state.user.earlyBirdOneTimeTask);
+export const useEarlyBirdOneTimeTaskListSuccess = () => useAppSelector((state) => state.user.getEarlyBirdOneTimeTaskListSuccess);
 export const useUserAuthenticated = () => useAppSelector((state) => state.user.isAuthenticated);
 
 const userReducer = userSlice.reducer;
+
 export default userReducer;
