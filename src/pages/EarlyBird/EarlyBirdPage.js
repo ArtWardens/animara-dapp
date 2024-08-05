@@ -1,28 +1,29 @@
-import { PropTypes } from "prop-types";
 import React, { useEffect, useMemo, useState } from "react";
+import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { useDispatch } from "react-redux";
+import moment from 'moment';
 import useAuth from "../../hooks/useAuth.js";
 import Header from "../../components/Header.jsx";
 import { FaInstagram, FaTwitter, FaTelegramPlane, FaYoutube, FaLink } from 'react-icons/fa';
-import moment from 'moment';
-import { getEarlyBirdOneTimeTaskList, useEarlyBirdOneTimeTaskList, useEarlyBirdOneTimeTaskListSuccess } from "../../sagaStore/slices/userSlice.js";
-import { useDispatch } from "react-redux";
+import { getEarlyBirdOneTimeTaskList, useEarlyBirdOneTimeTaskList, useEarlyBirdOneTimeTaskListSuccess, updateCompleteOneTimeTask } from "../../sagaStore/slices/userSlice.js";
 
-const EarlyBirdPage = ({ currentUser, totalClicks }) => {
+const EarlyBirdPage = ({ currentUser, totalClicks, setTotalClicks }) => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const { isLoggedIn, loading } = useAuth();
     const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
+    const [isContainerVisible, setIsContainerVisible] = useState(true);
 
     const earlyBirdOneTimeTaskList = useEarlyBirdOneTimeTaskList();
     const getEarlyBirdOneTimeTaskListSuccess = useEarlyBirdOneTimeTaskListSuccess();
 
     useEffect(() => {
-        if(!getEarlyBirdOneTimeTaskListSuccess){
+        if (!getEarlyBirdOneTimeTaskListSuccess) {
             dispatch(getEarlyBirdOneTimeTaskList());
         }
-    },[]);
+    }, [dispatch, getEarlyBirdOneTimeTaskListSuccess]);
 
     useEffect(() => {
         if (!isLoggedIn && !loading) {
@@ -32,7 +33,7 @@ const EarlyBirdPage = ({ currentUser, totalClicks }) => {
     }, [isLoggedIn, navigate, loading]);
 
     useEffect(() => {
-        const countdownDate = moment().month(6).date(31).endOf('day');
+        const countdownDate = moment().month(7).date(31).endOf('day');
         const timer = setInterval(() => {
             const now = moment();
             const duration = moment.duration(countdownDate.diff(now));
@@ -45,6 +46,7 @@ const EarlyBirdPage = ({ currentUser, totalClicks }) => {
             if (duration.asMilliseconds() <= 0) {
                 clearInterval(timer);
                 setTimeLeft({ days: 0, hours: 0, minutes: 0, seconds: 0 });
+                setIsContainerVisible(false);
             } else {
                 setTimeLeft({ days, hours, minutes, seconds });
             }
@@ -52,19 +54,6 @@ const EarlyBirdPage = ({ currentUser, totalClicks }) => {
 
         return () => clearInterval(timer);
     }, []);
-
-    // const handleLinkTask = (task) => {
-    //     window.open(task.url, '_blank');
-    //     setTotalClicks(prevTotal => {
-    //       const newCompletedTaskArr = currentUser?.completedTask.concat([task.taskId])
-    //       dispatch(updateCompleteOneTimeTask({
-    //         userId: currentUser?.userId,
-    //         coins: task.coins,
-    //         completedTask: newCompletedTaskArr,
-    //       }));
-    //       return prevTotal + task.coins;
-    //     });
-    // };
 
     const getIconComponent = (actionType) => {
         switch (actionType) {
@@ -81,46 +70,70 @@ const EarlyBirdPage = ({ currentUser, totalClicks }) => {
         }
     };
 
-    const renderEarlyBirdTaskList = useMemo(() => {
-        // const completedTask = currentUser?.completedTask;
+    const handleTaskClick = (task) => {
+        window.open(task.url, '_blank');
 
+        if (!(currentUser.completedTask || []).includes(task.taskId)) {
+            setTotalClicks(prevTotal => {
+                const newCompletedTaskArr = [...(currentUser.completedTask || []), task.taskId];
+
+                dispatch(updateCompleteOneTimeTask({
+                    uid: currentUser.uid,
+                    coins: task.coins,
+                    taskId: task.taskId,
+                    completedTask: newCompletedTaskArr,
+                }));
+
+                toast.success("Task completed successfully!");
+
+                // Update the current user's completed tasks locally
+                currentUser = { ...currentUser, completedTask: newCompletedTaskArr };
+
+                return prevTotal + (task.coins || 0);
+            });
+        }
+    };
+
+    const renderEarlyBirdTaskList = useMemo(() => {
         return (
             earlyBirdOneTimeTaskList.map((task, idx) => {
-                // const isTaskCompleted = completedTask.includes(task.taskId);
                 const IconComponent = getIconComponent(task.actionType);
+                const isTaskCompleted = currentUser?.completedTask.includes(task.taskId);
 
                 return (
-                    <div key={idx} className="flex w-full">
-                        <div className="w-[10%] flex justify-start items-center">
-                            <IconComponent className="w-8 h-8 text-[#ffc75a]" />
+                    <div
+                        key={idx}
+                        className={`flex w-full transition-transform duration-200 px-4 cursor-pointer ${isTaskCompleted ? '' : 'hover:scale-105'}`}
+                        onClick={() => isTaskCompleted ? null : handleTaskClick(task)}
+                        style={{ pointerEvents: isTaskCompleted ? 'none' : 'auto' }}
+                    >
+                        <div className="w-[15%] flex justify-center items-center">
+                            <IconComponent className={`w-8 h-8 ${isTaskCompleted ? 'text-[#ffc75a]' : 'text-white'}`} />
                         </div>
-                        <div className="w-[75%] flex items-center">
-                            <div className="text-[#ffc75a] text-xl tracking-wide">
+                        <div className="w-[70%] flex items-center">
+                            <div className={`text-xl tracking-wide ${isTaskCompleted ? 'text-[#ffc75a]' : 'text-white'}`}>
                                 {task.title}
                             </div>
                         </div>
-                        <div className="w-[15%] flex justify-end items-center">
+                        <div className="w-[15%] flex justify-center items-center">
                             <img
-                                className="w-8"
-                                src="../../assets/images/clicker-character/checkedBox.png"
-                                alt="Checked Checkbox"
+                                className={isTaskCompleted ? "w-10" : "w-9"}
+                                src={isTaskCompleted ? "../../assets/images/clicker-character/checkedBox.png" : "../../assets/images/clicker-character/checkBox.png"}
+                                alt={isTaskCompleted ? "Checked Checkbox" : "Unchecked Checkbox"}
                             />
                         </div>
                     </div>
                 )
             })
-        )
+        );
     }, [earlyBirdOneTimeTaskList, currentUser?.completedTask]);
 
     return (
-        
         <>
-            <Header
-                currentUser={currentUser}
-                totalClicks={totalClicks}
-            />
+            <Header currentUser={currentUser} totalClicks={totalClicks} />
 
-            <div className="flex-grow flex flex-col place-content-center items-center px-24 pb-4 min-h-screen"
+            <div
+                className="flex-grow flex flex-col place-content-center items-center px-24 pb-4 min-h-screen"
                 style={{
                     backgroundImage: 'url("../../assets/images/clicker-character/clickerWall.png")',
                     backgroundSize: 'cover',
@@ -129,7 +142,7 @@ const EarlyBirdPage = ({ currentUser, totalClicks }) => {
                     backgroundAttachment: 'fixed',
                 }}
             >
-                <div className="w-full h-full flex gap-6 pt-32 container">
+                <div className="w-full h-full flex gap-4 pt-32 container">
                     <div className="w-[68%]">
                         <div
                             className="w-full rounded-3xl p-3"
@@ -168,7 +181,7 @@ const EarlyBirdPage = ({ currentUser, totalClicks }) => {
                                 }}
                             >
                                 <h1
-                                    className="text-center text-[#ffa900] text-6xl pt-3"
+                                    className="text-center text-[#ffa900] text-6xl p-2"
                                     style={{
                                         WebkitTextStrokeWidth: '4px',
                                         WebkitTextStrokeColor: 'var(--Color-11, #FFF)',
@@ -177,44 +190,43 @@ const EarlyBirdPage = ({ currentUser, totalClicks }) => {
                                     Early Bird Missions
                                 </h1>
 
-                                <div className="w-1/2 p-4 bg-[#003260] rounded-3xl shadow-inner border border-[#7fc1ff] flex-col justify-self-center items-center gap-2 inline-flex my-4">
+                                {isContainerVisible && (
+                                    <div className="w-1/2 p-4 bg-[#003260] rounded-3xl shadow-inner border border-[#7fc1ff] flex-col justify-self-center items-center gap-2 inline-flex">
+                                        <p className="text-lg">Missions Ends In</p>
 
-                                    <p className="text-lg">
-                                        Missions Ends In
-                                    </p>
-
-                                    <div className="h-[50px] justify-start items-center inline-flex gap-1 pb-3">
-                                        <div className="w-12 h-1/2 bg-[#003260] shadow-inner flex-col justify-center items-center gap-2 inline-flex">
-                                            <div className="w-12 h-8 flex-col justify-center items-center gap-4 flex">
-                                                <div className="text-center text-white text-3xl tracking-wide font-outfit">{timeLeft.days}</div>
+                                        <div className="h-[50px] justify-start items-center inline-flex gap-1 pb-3">
+                                            <div className="w-12 h-1/2 bg-[#003260] shadow-inner flex-col justify-center items-center gap-2 inline-flex">
+                                                <div className="w-12 h-8 flex-col justify-center items-center gap-4 flex">
+                                                    <div className="text-center text-white text-3xl tracking-wide font-outfit">{timeLeft.days}</div>
+                                                </div>
+                                                <div className="text-center text-white text-[8px] font-outfit uppercase">Days</div>
                                             </div>
-                                            <div className="text-center text-white text-[8px] font-outfit uppercase">Days</div>
-                                        </div>
-                                        <span className="text-white font-outfit font-semibold text-2xl">:</span>
-                                        <div className="w-12 h-1/2 bg-[#003260] shadow-inner flex-col justify-center items-center gap-2 inline-flex">
-                                            <div className="w-12 h-8 flex-col justify-center items-center gap-4 flex">
-                                                <div className="text-center text-white text-3xl tracking-wide font-outfit">{timeLeft.hours}</div>
+                                            <span className="text-white font-outfit font-semibold text-2xl">:</span>
+                                            <div className="w-12 h-1/2 bg-[#003260] shadow-inner flex-col justify-center items-center gap-2 inline-flex">
+                                                <div className="w-12 h-8 flex-col justify-center items-center gap-4 flex">
+                                                    <div className="text-center text-white text-3xl tracking-wide font-outfit">{timeLeft.hours}</div>
+                                                </div>
+                                                <div className="text-center text-white text-[8px] font-outfit uppercase">Hours</div>
                                             </div>
-                                            <div className="text-center text-white text-[8px] font-outfit uppercase">Hours</div>
-                                        </div>
-                                        <span className="text-white font-outfit font-semibold text-2xl">:</span>
-                                        <div className="w-12 h-1/2 bg-[#003260] shadow-inner flex-col justify-center items-center gap-2 inline-flex">
-                                            <div className="w-12 h-8 flex-col justify-center items-center gap-4 flex">
-                                                <div className="text-center text-white text-3xl tracking-wide font-outfit">{timeLeft.minutes}</div>
+                                            <span className="text-white font-outfit font-semibold text-2xl">:</span>
+                                            <div className="w-12 h-1/2 bg-[#003260] shadow-inner flex-col justify-center items-center gap-2 inline-flex">
+                                                <div className="w-12 h-8 flex-col justify-center items-center gap-4 flex">
+                                                    <div className="text-center text-white text-3xl tracking-wide font-outfit">{timeLeft.minutes}</div>
+                                                </div>
+                                                <div className="text-center text-white text-[8px] font-outfit uppercase">Minutes</div>
                                             </div>
-                                            <div className="text-center text-white text-[8px] font-outfit uppercase">Minutes</div>
-                                        </div>
-                                        <span className="text-white font-outfit font-semibold text-2xl">:</span>
-                                        <div className="w-12 h-1/2 bg-[#003260] shadow-inner flex-col justify-center items-center gap-2 inline-flex">
-                                            <div className="w-12 h-8 flex-col justify-center items-center gap-4 flex">
-                                                <div className="text-center text-white text-3xl tracking-wide font-outfit">{timeLeft.seconds}</div>
+                                            <span className="text-white font-outfit font-semibold text-2xl">:</span>
+                                            <div className="w-12 h-1/2 bg-[#003260] shadow-inner flex-col justify-center items-center gap-2 inline-flex">
+                                                <div className="w-12 h-8 flex-col justify-center items-center gap-4 flex">
+                                                    <div className="text-center text-white text-3xl tracking-wide font-outfit">{timeLeft.seconds}</div>
+                                                </div>
+                                                <div className="text-center text-white text-[8px] font-outfit uppercase">Seconds</div>
                                             </div>
-                                            <div className="text-center text-white text-[8px] font-outfit uppercase">Seconds</div>
                                         </div>
                                     </div>
-                                </div>
+                                )}
 
-                                <p className="text-center text-white text-lg font-semibold font-outfit pb-2">
+                                <p className="text-center text-white text-lg font-semibold font-outfit py-2">
                                     Complete the following task within the time limit to get
                                     <br />
                                     <span
@@ -231,7 +243,10 @@ const EarlyBirdPage = ({ currentUser, totalClicks }) => {
 
                                 {renderEarlyBirdTaskList}
 
-                                <div className="w-[240px] h-[80px] flex justify-self-center items-center mt-2">
+                                <div
+                                    className="w-[240px] h-[80px] flex justify-self-center items-center mt-4 hover:scale-110 transition-transform duration-200 cursor-pointer"
+                                    onClick={() => navigate('/mint')}
+                                >
                                     <div className="bg-[#ffb23e] rounded-full border border-[#e59e69] flex justify-center items-center w-full h-full hover:bg-[#FFDC62] hover:shadow-[0px_4px_4px_0px_rgba(255,210,143,0.61)_inset,0px_4px_4px_0px_rgba(232,140,72,0.48)] cursor-pointer">
                                         <div
                                             className="text-center text-white text-3xl"
@@ -241,9 +256,7 @@ const EarlyBirdPage = ({ currentUser, totalClicks }) => {
                                         </div>
                                     </div>
                                 </div>
-
                             </div>
-
                         </div>
                     </div>
                     <div className="w-[32%] z-10 scale-150 justify-start items-center origin-bottom relative">
@@ -262,7 +275,6 @@ const EarlyBirdPage = ({ currentUser, totalClicks }) => {
                             >
                                 NFT PERKS
                             </div>
-
                             <h3 className="text-sm w-full">
                                 Exclusive Content
                                 <p
@@ -271,11 +283,10 @@ const EarlyBirdPage = ({ currentUser, totalClicks }) => {
                                         fontSize: '8px',
                                     }}
                                 >
-                                    Unlock hidden realms, mystery boxes, and more exclusive rewards!<br></br>
+                                    Unlock hidden realms, mystery boxes, and more exclusive rewards!<br />
                                     Compete for your chance to win our 1 million USDT prize!
                                 </p>
                             </h3>
-
                             <h3 className="text-sm w-full">
                                 NFT Summon
                                 <p
@@ -287,7 +298,6 @@ const EarlyBirdPage = ({ currentUser, totalClicks }) => {
                                     Each NFT has the power to mint a new one! Collect or trade them to grow the Animara universe and maintain their value.
                                 </p>
                             </h3>
-
                             <h3 className="text-sm w-full">
                                 Access to Play-to-Earn Game
                                 <p
@@ -296,17 +306,14 @@ const EarlyBirdPage = ({ currentUser, totalClicks }) => {
                                         fontSize: '8px',
                                     }}
                                 >
-                                    Our NFTs are your gateway to the Play-to-Earn ecosystem.<br></br>
+                                    Our NFTs are your gateway to the Play-to-Earn ecosystem.<br />
                                     Join the Animara community and start earning as you play!
                                 </p>
                             </h3>
-
                         </div>
                     </div>
                 </div>
-
             </div>
-
         </>
     );
 }
@@ -314,6 +321,7 @@ const EarlyBirdPage = ({ currentUser, totalClicks }) => {
 EarlyBirdPage.propTypes = {
     currentUser: PropTypes.object,
     totalClicks: PropTypes.number,
+    setTotalClicks: PropTypes.func,
 };
 
 export default EarlyBirdPage;

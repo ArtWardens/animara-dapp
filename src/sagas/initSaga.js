@@ -12,7 +12,7 @@ function* initSaga() {
       const initializeInit = {
         timeZone: detectTimeZone(),
         displayMode: 'light',
-        userId: null,
+        uid: null,
         language: 'en',
       };
       yield initData.setItem(initializeInit);

@@ -115,13 +115,13 @@ export const updateCoins = async (referralCode, user) => {
     if (referralDoc.exists()) {
       // If the referral document exists, update the array of referred users
       await updateDoc(referralDocRef, {
-        referredUserIds: arrayUnion(user.uid),
+        referreduids: arrayUnion(user.uid),
       });
     } else {
       // If the referral document does not exist, create a new document with the referrerId
       await setDoc(referralDocRef, {
         referrerId: referrerId,
-        referredUserIds: [user.uid],
+        referreduids: [user.uid],
       });
     }
   }

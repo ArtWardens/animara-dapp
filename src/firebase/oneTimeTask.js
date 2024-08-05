@@ -13,8 +13,8 @@ const handleGetOneTimeTaskList = async () => {
 
 const handleUpdateCompletedTask = async (data) => {
     try {
-        const taskRef = doc(db, "oneTimeTask", data.userId);
-        const userRef = doc(db, "users", data.userId);
+        const taskRef = doc(db, "oneTimeTask", data.uid);
+        const userRef = doc(db, "users", data.uid);
 
         await updateDoc(taskRef, { 
             completedTask: data.completedTask 
