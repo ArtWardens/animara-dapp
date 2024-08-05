@@ -54,7 +54,7 @@ function ReferralPage ({ currentUser, totalClicks, inviteCode }){
       />
 
       <div
-        className="flex flex-col items-center px-40 pb-8 min-h-screen"
+        className="flex flex-col items-center pb-4 px-16 min-h-screen"
         style={{
           backgroundImage: 'url("../../assets/images/clicker-character/clickerWall.png")',
           backgroundSize: 'cover',
@@ -63,10 +63,10 @@ function ReferralPage ({ currentUser, totalClicks, inviteCode }){
           backgroundAttachment: 'fixed',
         }}
       >
-        <div className="w-full h-full flex flex-col items-center gap-6 pt-32">
-          <div className="text-center text-white text-4xl uppercase">Refer Friends</div>
+        <div className="container flex flex-col items-center gap-6 pt-36 tracking-wider">
+          <div className="text-center text-white text-3xl uppercase">Refer Friends</div>
           <span
-            className="text-center text-amber-500 text-6xl uppercase leading-4 tracking-normal"
+            className="text-center text-amber-500 text-6xl uppercase leading-5 tracking-normal pb-2"
             style={{
               WebkitTextStrokeWidth: "3.5px",
               WebkitTextStrokeColor: "var(--Color-11, #FFF)",
@@ -75,18 +75,18 @@ function ReferralPage ({ currentUser, totalClicks, inviteCode }){
             Earn Free Plus, RP, and More!
           </span>
 
-          <div className="grid grid-cols-3 gap-32">
+          <div className="grid grid-cols-3 gap-12">
             <div className="w-full h-full flex flex-col justify-center items-center">
               <img
                 className="w-4/5 h-auto origin-top-left shadow"
-                src="../../assets/images/clicker-character/board.png"
+                src="../../assets/images/clicker-character/ref01.png"
                 alt="Invite Rewards"
               />
               <div className="flex flex-col justify-start items-center gap-2">
                 <div className="text-center text-white text-2xl uppercase leading-relaxed">
                   Invite Rewards
                 </div>
-                <div className="w-[350px] origin-top-left text-center text-stone-300 font-outfit text-sm leading-tight tracking-wide">
+                <div className="w-[350px] origin-top-left text-center text-stone-300 font-outfit text-[12px] leading-tight tracking-wide">
                   Get a boost of currencies to use in our Tap-to-Earn game when anyone signs up with your code.
                 </div>
               </div>
@@ -94,14 +94,14 @@ function ReferralPage ({ currentUser, totalClicks, inviteCode }){
             <div className="w-full h-full flex flex-col justify-center items-center">
               <img
                 className="w-full h-auto origin-top-left shadow"
-                src="../../assets/images/clicker-character/board.png"
+                src="../../assets/images/clicker-character/ref02.png"
                 alt="NFT Cashback"
               />
               <div className="flex flex-col justify-start items-center gap-2">
                 <div className="text-center text-white text-2xl uppercase leading-relaxed">
                   NFT Cashback
                 </div>
-                <div className="w-[350px] origin-top-left text-center text-stone-300 font-outfit text-sm leading-tight tracking-wide">
+                <div className="w-[350px] origin-top-left text-center text-stone-300 font-outfit text-[12px] leading-tight tracking-wide">
                   Accumulate USDT rewards when anyone you invite purchases a piece of our NFT! Maybe you can snatch one for yourself too if you invite enough people...
                 </div>
               </div>
@@ -109,14 +109,14 @@ function ReferralPage ({ currentUser, totalClicks, inviteCode }){
             <div className="w-full h-full flex flex-col justify-center items-center">
               <img
                 className="w-4/5 h-auto origin-top-left shadow"
-                src="../../assets/images/clicker-character/board.png"
+                src="../../assets/images/clicker-character/ref03.png"
                 alt="Rank Up Rewards"
               />
               <div className="flex flex-col justify-start items-center gap-2">
                 <div className="text-center text-white text-2xl uppercase leading-relaxed">
                   Rank Up Rewards
                 </div>
-                <div className="w-[350px] origin-top-left text-center text-stone-300 font-outfit text-sm leading-tight tracking-wide">
+                <div className="w-[350px] origin-top-left text-center text-stone-300 font-outfit text-[12px] leading-tight tracking-wide">
                   Earn MORE currencies in our Tap-to-Earn game when friends you invite hit certain level milestones in our Tap-to-Earn game.
                 </div>
               </div>
@@ -128,7 +128,7 @@ function ReferralPage ({ currentUser, totalClicks, inviteCode }){
               <div className="flex w-full">
                 <div className="w-[65%] border-dashed border-r-4 border-transparent">
                   <div
-                    className="w-full h-full py-16 px-8 items-center"
+                    className="w-full h-full p-12 items-center"
                     style={{
                       backgroundImage: 'url("../../assets/images/clicker-character/ticketWeb02.png")',
                       backgroundSize: 'contain',
@@ -232,10 +232,14 @@ function ReferralPage ({ currentUser, totalClicks, inviteCode }){
                           </div>
                         </div>
                       </div>
-                      <div className="justify-start items-center gap-1 inline-flex">
-                        <span className="w-[132px] text-white text-xs font-outfit leading-none">Get an additional<span className="text-white font-LuckiestGuy text-xs tracking-wide">&nbsp;250 SOL</span>, if you own an NFT!</span>
+                      <div className="justify-start items-center gap-0.5 inline-flex">
+                        <span className="w-[135px] text-white text-xs font-outfit">Get additional<span className="text-white font-LuckiestGuy text-xs tracking-wide"> 250 SOL</span>, if you own NFT!</span>
                         <div className="flex justify-center items-center p-2 rounded-lg bg-[#FFC85A] shadow-[0px_1px_2px_0px_rgba(198,115,1,0.66)] hover:bg-[#FFAA00] hover:shadow-[0px_4px_4px_0px_rgba(255,210,143,0.61)_inset,0px_4px_4px_0px_rgba(232,140,72,0.48)] cursor-pointer">
-                          <div className="text-orange-50 text-xs">Own Now</div>
+                          <div
+                            className="text-orange-50 text-xs"
+                            onClick={() => navigate('/mint')}
+                          >
+                            Own Now</div>
                         </div>
                       </div>
                     </div>
@@ -245,7 +249,7 @@ function ReferralPage ({ currentUser, totalClicks, inviteCode }){
             </div>
             <div className="w-[38%]">
               <div
-                className="w-full h-full place-content-center px-6"
+                className="w-full h-full place-content-center p-6"
                 style={{
                   backgroundImage: 'url("../../assets/images/clicker-character/QRBg.png")',
                   backgroundSize: 'contain',
@@ -254,8 +258,8 @@ function ReferralPage ({ currentUser, totalClicks, inviteCode }){
                 }}
               >
 
-                <div className="flex w-full gap-4 p-3">
-                  <div className="w-auto bg-white rounded-lg">
+                <div className="flex w-full gap-4 p-4">
+                  <div className="w-auto bg-white rounded-lg place-content-center">
                     <StyledQRCode
                       value={inviteLink}
                       image={gem}
@@ -295,7 +299,7 @@ function ReferralPage ({ currentUser, totalClicks, inviteCode }){
                 </div>
 
                 <div
-                  className="h-8 mx-4 mt-1 mb-5 text-sm bg-amber-400 shadow-[0px_4px_4px_0px_rgba(255,210,143,0.61)_inset] rounded-full border-orange-300 justify-center items-center gap-1 flex hover:bg-[#FFC85A] hover:shadow-[0px_1px_2px_0px_rgba(198,115,1,0.66)] hover:border-[#FFC85A] cursor-pointer"
+                  className="h-9 mx-4 mb-5 text-sm tracking-wider bg-amber-400 shadow-[0px_4px_4px_0px_rgba(255,210,143,0.61)_inset] rounded-full border-orange-300 justify-center items-center gap-2 flex hover:bg-[#FFC85A] hover:shadow-[0px_1px_2px_0px_rgba(198,115,1,0.66)] hover:border-[#FFC85A] cursor-pointer"
                   onClick={shareInviteLink}
                 >
                   <FaShareFromSquare className="w-4 h-4 mr-2" />
