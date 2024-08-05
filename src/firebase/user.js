@@ -1,7 +1,7 @@
 import { auth, db, storage, updateUserLastLogin } from "../firebase/firebaseConfig";
 import { doc, getDoc, increment, updateDoc } from "firebase/firestore";
 import { getDownloadURL, ref, uploadString } from "firebase/storage";
-import { updateProfile } from "firebase/auth";
+import { getIdTokenResult, updateProfile } from "firebase/auth";
 import { isReferralCodeValid } from "../utils/fuctions";
 
 // functions that we export for saga
@@ -10,13 +10,21 @@ const handleGetUserData = async (uid) => {
         const docRef = doc(db, 'users', uid);
         const docSnap = await getDoc(docRef);
 
-        const completedTaskRef = doc(db, 'oneTimeTask', uid);
+        let canResetPassword = false;
+        const token = await getIdTokenResult(auth.currentUser);
+
+        const completedTaskRef = doc(db, 'oneTimeTask', userId);
         const completedTaskSnap = await getDoc(completedTaskRef);
+
+        if (token.signInProvider !== 'google.com' && token.signInProvider !== 'twitter.com') {
+          canResetPassword = true;
+        }
 
         if (docSnap.exists()) {
             return {
                 ...docSnap.data(),
                 completedTask: completedTaskSnap.exists() ? completedTaskSnap.data().completedTask : [],
+                canResetPassword
             };
         } else {
             // docSnap.data() will be undefined in this case
@@ -120,6 +128,7 @@ const handleUpdateUserRechargableInvite = async (data) => {
 };
 
 const handleUpdateDailyLogin = async (data) => {
+  console.log(data);
     try {
       const docRef = doc(db, 'users', data.uid);
       updateDoc(docRef, { 

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { PropTypes } from "prop-types";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import useAuth from "../../hooks/useAuth.js";
@@ -130,5 +131,10 @@ const LockPage = ({ currentUser, totalClicks }) => {
         </>
     );
 };
+
+LockPage.propTypes = {
+    currentUser: PropTypes.object,
+    totalClicks: PropTypes.number,
+  };
 
 export default LockPage;
