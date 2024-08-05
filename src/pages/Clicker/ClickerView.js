@@ -49,7 +49,7 @@ const ClickerView = ({ currentUser, gameData, setGameData, totalClicks, setTotal
       console.log("Coins Updated!");
       addToLocalStorage("localCoins", 0);
       handleUpdateCoins({
-        userId: currentUser.userId,
+        uid: currentUser.uid,
         coins: parseInt(totalLocalCoins),
       });
     }
@@ -61,7 +61,7 @@ const ClickerView = ({ currentUser, gameData, setGameData, totalClicks, setTotal
       console.log("ClickByLevel Updated!");
       addToLocalStorage("LocalClickByLevel", 0);
       handleUpdateClickByLevel({
-        userId: currentUser.userId,
+        uid: currentUser.uid,
         clickByLevel: parseInt(TotalLocalClickByLevel),
       });
     }
@@ -74,7 +74,7 @@ const ClickerView = ({ currentUser, gameData, setGameData, totalClicks, setTotal
         const loginRewardCoins = dailyLogin[currentLoginDay].coins;
         dispatch(updateDailyLogin({
           data: {
-            userId: currentUser.uid,
+            uid: currentUser?.uid,
             coins: loginRewardCoins
           }
         }));
@@ -143,7 +143,7 @@ const ClickerView = ({ currentUser, gameData, setGameData, totalClicks, setTotal
   const handleUpdateRechargableEnergy = () => {
     if (currentUser) {
       handleUpdateUserRechargableEnergy({
-        userId: currentUser.userId,
+        uid: currentUser.uid,
         count: currentUser.energyRechargable - 1
       });
       setEnergyRechargable(prev => prev - 1);
@@ -161,7 +161,7 @@ const ClickerView = ({ currentUser, gameData, setGameData, totalClicks, setTotal
   const handleUpdateRechargableInvite = () => {
     if (currentUser) {
       handleUpdateUserRechargableInvite({
-        userId: currentUser.userId,
+        uid: currentUser.uid,
         count: currentUser.inviteRechargable - 1
       });
       setInviteRechargable(prev => prev - 1);
