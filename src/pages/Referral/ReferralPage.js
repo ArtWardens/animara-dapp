@@ -16,7 +16,7 @@ function ReferralPage ({ currentUser, totalClicks, inviteCode }){
   const { isLoggedIn, loading, user } = useAuth();
 
   useEffect(() => {
-    setInviteCodeState(user?.referredBy || "");
+    setInviteCodeState(user?.referralCode || "");
   }, [user]);
 
   useEffect(() => {
@@ -274,7 +274,7 @@ function ReferralPage ({ currentUser, totalClicks, inviteCode }){
                       <input
                         type="text"
                         value={inviteCodeState}
-                        readOnly={user?.referredBy ? true : false}
+                        readOnly={user?.referralCode ? true : false}
                         onChange={(e) => setInviteCodeState(e.target.value)}
                         className="w-full bg-[#003358] border-[1px] border-[#245F89] rounded-lg p-3 text-sm font-medium font-outfit tracking-wide"
                       />
