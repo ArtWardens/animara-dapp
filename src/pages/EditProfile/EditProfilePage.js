@@ -31,7 +31,7 @@ const EditProfilePage = ({ currentUser, totalClicks }) => {
   const [inviteCode, setInviteCode] = useState("");
   const [imageData, setImageData] = useState(null);
   const inputFile = useRef(null);
-
+ 
   const handleBackClick = () => {
     navigate("/clicker");
   };
@@ -76,13 +76,13 @@ const EditProfilePage = ({ currentUser, totalClicks }) => {
       <Header currentUser={currentUser} totalClicks={totalClicks} />
 
       <div
-        className="justify-center items-center place-content-center p-44"
+        className="justify-center items-center place-content-center p-44 min-h-screen"
         style={{
-          backgroundImage:
-            'url("../../assets/images/clicker-character/clickerWall.png")',
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          backgroundRepeat: "no-repeat",
+          backgroundImage: 'url("../../assets/images/clicker-character/clickerWall.png")',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
+          backgroundAttachment: 'fixed',
         }}
       >
         <div className="w-full h-full">
