@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { PropTypes } from "prop-types";
+import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import moment from 'moment';
 import useAuth from "../../hooks/useAuth.js";
 import Header from "../../components/Header.jsx";
+import { fetchDate, startCountdown } from '../../firebase/countDown';
 
 function ReferralPage({ currentUser, totalClicks }) {
     const navigate = useNavigate();
@@ -20,26 +20,15 @@ function ReferralPage({ currentUser, totalClicks }) {
     }, [isLoggedIn, navigate, loading]);
 
     useEffect(() => {
-        const countdownDate = moment().month(7).date(31).endOf('day');
-        const timer = setInterval(() => {
-            const now = moment();
-            const duration = moment.duration(countdownDate.diff(now));
-
-            const days = String(duration.days()).padStart(2, '0');
-            const hours = String(duration.hours()).padStart(2, '0');
-            const minutes = String(duration.minutes()).padStart(2, '0');
-            const seconds = String(duration.seconds()).padStart(2, '0');
-
-            if (duration.asMilliseconds() <= 0) {
-                clearInterval(timer);
-                setTimeLeft({ days: 0, hours: 0, minutes: 0, seconds: 0 });
-                setIsContainerVisible(false);
-            } else {
-                setTimeLeft({ days, hours, minutes, seconds });
+        const fetchAndStartCountdown = async () => {
+            const referralDate = await fetchDate("mint");
+            if (referralDate) {
+                const cleanup = startCountdown(referralDate, setTimeLeft, setIsContainerVisible);
+                return cleanup;
             }
-        }, 1000);
+        };
 
-        return () => clearInterval(timer);
+        fetchAndStartCountdown();
     }, []);
 
     return (

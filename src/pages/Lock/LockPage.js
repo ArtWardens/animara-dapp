@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import useAuth from "../../hooks/useAuth.js";
 import Header from "../../components/Header.jsx";
-import moment from 'moment';
+import { fetchDate, startCountdown } from '../../firebase/countDown';
 
 const LockPage = ({ currentUser, totalClicks }) => {
     const navigate = useNavigate();
@@ -13,8 +13,8 @@ const LockPage = ({ currentUser, totalClicks }) => {
     const [showRightChain, setShowRightChain] = useState(false);
     const [showLock, setShowLock] = useState(false);
     const [showCountdown, setShowCountdown] = useState(false);
-    const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
     const [reverse, setReverse] = useState(false);
+    const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
 
     useEffect(() => {
         if (!isLoggedIn && !loading) {
@@ -42,26 +42,15 @@ const LockPage = ({ currentUser, totalClicks }) => {
     }, []);
 
     useEffect(() => {
-        const countdownDate = moment().month(6).date(31).endOf('day');
-        const timer = setInterval(() => {
-            const now = moment();
-            const duration = moment.duration(countdownDate.diff(now));
-
-            const days = String(duration.days()).padStart(2, '0');
-            const hours = String(duration.hours()).padStart(2, '0');
-            const minutes = String(duration.minutes()).padStart(2, '0');
-            const seconds = String(duration.seconds()).padStart(2, '0');
-
-            if (duration.asMilliseconds() <= 0) {
-                clearInterval(timer);
-                setTimeLeft({ days: 0, hours: 0, minutes: 0, seconds: 0 });
-                setReverse(true); // Trigger reverse animation
-            } else {
-                setTimeLeft({ days, hours, minutes, seconds });
+        const fetchAndStartCountdown = async () => {
+            const lockDate = await fetchDate("lock");
+            if (lockDate) {
+                const cleanup = startCountdown(lockDate, setTimeLeft, setReverse);
+                return cleanup;
             }
-        }, 1000);
+        };
 
-        return () => clearInterval(timer);
+        fetchAndStartCountdown();
     }, []);
 
     return (
@@ -135,6 +124,6 @@ const LockPage = ({ currentUser, totalClicks }) => {
 LockPage.propTypes = {
     currentUser: PropTypes.object,
     totalClicks: PropTypes.number,
-  };
+};
 
 export default LockPage;
