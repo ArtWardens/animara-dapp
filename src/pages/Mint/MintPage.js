@@ -56,7 +56,7 @@ function ReferralPage({ currentUser, totalClicks }) {
                     backgroundAttachment: 'fixed',
                 }}
             >
-                <div className="grid grid-cols-5 w-full gap-16 container pt-40 tracking-wider items-center">
+                <div className="grid grid-cols-5 w-full gap-16 container pt-36 tracking-wider items-center">
                     <div className="col-span-2 text-amber-500 grid gap-8">
                         <div className="py-4">
                             <span
@@ -218,19 +218,19 @@ function ReferralPage({ currentUser, totalClicks }) {
                                 </div>
                             )}
 
-                            <img src="../assets/images/clicker-character/nft-treasureBox.png" alt="NFT Treasure Box" className="object-cover w-full -my-8"/>
+                            <img src="../assets/images/clicker-character/nft-treasureBox.png" alt="NFT Treasure Box" className="object-cover w-full -my-10"/>
 
                             <div className="w-full flex-col justify-center items-center inline-flex">
                                 <div className="flex-col justify-center items-center flex pb-8">
-                                    <span className="text-gray-200 text-2xl line-through">
+                                    <span className="text-gray-200 text-xl line-through">
                                         0.097 SOL
                                     </span>
-                                    <div className="text-center absolute right-40 bottom-64 text-white text-md border-4 px-3 py-1 border-white rounded-2xl bg-sky-500 rotate-[20deg]">
+                                    <div className="text-center absolute right-36 bottom-56 text-white text-sm border-4 px-3 py-1 border-white rounded-2xl bg-sky-500 rotate-[20deg]">
                                         Early Bird<br />
                                         Bonus Active!
                                     </div>
                                     <div
-                                        className="text-center text-amber-500 text-7xl z-10"
+                                        className="text-center text-amber-500 text-6xl z-10"
                                         style={{
                                             WebkitTextStrokeWidth: '4px',
                                             WebkitTextStrokeColor: 'var(--COlor-11, #FFF)',
@@ -242,8 +242,8 @@ function ReferralPage({ currentUser, totalClicks }) {
                                 </div>
                             </div>
 
-                            <div className="pb-2 justify-center items-center inline-flex">
-                                <div className="h-[120px] w-[300px] bg-[#FFDC62] rounded-full border border-[#E59E69] justify-center items-center inline-flex shadow-[0px_4px_4px_0px_#FFFBEF_inset,0px_-4px_4px_0px_rgba(255,249,228,0.48),0px_5px_4px_0px_rgba(232,140,72,0.48)] hover:bg-[#FFB23F] hover:pl-[24px] hover:pr-[20px] hover:border-1 hover:border-[#E59E69] hover:shadow-[0px_4px_4px_0px_rgba(255,210,143,0.61)_inset,0px_4px_4px_0px_rgba(136,136,136,0.48)] cursor-pointer">
+                            <div className="justify-center items-center inline-flex hover:scale-105 transition-transform duration-200">
+                                <div className="h-[100px] w-[300px] bg-[#FFDC62] rounded-full border border-[#E59E69] justify-center items-center inline-flex shadow-[0px_4px_4px_0px_#FFFBEF_inset,0px_-4px_4px_0px_rgba(255,249,228,0.48),0px_5px_4px_0px_rgba(232,140,72,0.48)] hover:bg-[#FFB23F] hover:pl-[24px] hover:pr-[20px] hover:border-1 hover:border-[#E59E69] hover:shadow-[0px_4px_4px_0px_rgba(255,210,143,0.61)_inset,0px_4px_4px_0px_rgba(136,136,136,0.48)] cursor-pointer">
                                     <div
                                         className="text-center text-white text-4xl font-normal"
                                         style={{
