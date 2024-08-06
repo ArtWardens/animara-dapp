@@ -6,14 +6,15 @@ import {
   sendPasswordResetEmail,
   signInWithEmailAndPassword,
   signInWithPopup,
-  signInAnonymously,
   getAuth,
   onAuthStateChanged,
+  signInWithCustomToken,
 } from "firebase/auth";
 import {
   auth,
   firstLoginLinkReferral,
   cleanupFailedRegistration,
+  loginWithTelegram,
 } from "./firebaseConfig.js";
 import { isReferralCodeValid } from "../utils/fuctions.js";
 
@@ -114,14 +115,16 @@ const loginWithTwitterImpl = async () => {
   }
 };
 
-
-const loginWithTelegramImpl = async () => {
+const loginWithTelegramImpl = async (telegramUser) => {
   try {
-    const result = await signInAnonymously(auth);
+    // call http req
+    const token = await loginWithTelegram(telegramUser);
+    // sign in with custom token 
+    const result = await signInWithCustomToken(auth, token.data.token);
     const { user } = result;
     return user;
   } catch (error) {
-    return null;
+    return error;
   }
 };
 

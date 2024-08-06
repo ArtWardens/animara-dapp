@@ -6,6 +6,7 @@ import {
   loginWithEmailImpl,
   loginWithGoogleImpl,
   loginWithTwitterImpl,
+  loginWithTelegramImpl,
   resetPasswordImpl,
 } from "../firebase/auth";
 import {
@@ -54,6 +55,9 @@ import {
   signupWithEmail,
   signupWithEmailSuccess,
   signupWithEmailError,
+  loginWithTelegram,
+  loginWithTelegramSuccess,
+  loginWithTelegramError,
 } from "../sagaStore/slices";
 import {
   calculateCountdownRemaining,
@@ -184,6 +188,24 @@ export function* loginWithTwitterSaga() {
   }
 }
 
+export function* loginWithTelegramSaga(telegramUser) {
+  try {
+    const user = yield call(loginWithTelegramImpl, telegramUser);
+    if (user?.uid) {
+      addToLocalStorage("uid", user.uid);
+      const userData = yield call(handleGetUserData, user.uid);
+      yield put(loginWithTelegramSuccess(userData));
+      toast.success("Signed in with Telegram");
+    } else {
+      yield put(loginWithTelegramError("failed to sign in with Telegram"));
+      console.error("failed to sign in with Telegram");
+    }
+  } catch (error) {
+    toast.error("Failed to sign in with Telegram");
+    yield put(loginWithTelegramError(error));
+  }
+}
+
 
 export function* resetPasswordSaga(action) {
   try {
@@ -301,7 +323,7 @@ export function* userSagaWatcher() {
   yield takeLatest(loginWithEmail.type, loginWithEmailSaga);
   yield takeLatest(loginWithGoogle.type, loginWithGoogleSaga);
   yield takeLatest(loginWithTwitter.type, loginWithTwitterSaga);
-  // yield takeLatest(loginWithTelegram.type, loginWithTelegramSaga);
+  yield takeLatest(loginWithTelegram.type, loginWithTelegramSaga);
   yield takeLatest(resetPassword.type, resetPasswordSaga);
   yield takeLatest(getUser.type, getUserSaga);
   yield takeLatest(logOut.type, logOutSaga);
