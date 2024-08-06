@@ -222,7 +222,7 @@ function ReferralPage ({ currentUser, totalClicks, inviteCode }){
                           500 sol
                         </div>
                       </div>
-                      <div className="pb-2 justify-center items-center inline-flex">
+                      <div className="pb-2 justify-center items-center inline-flex hover:scale-105 transition-transform duration-200">
                         <div className="h-[60px] w-[160px] bg-[#FFDC62] rounded-full border border-[#E59E69] justify-center items-center inline-flex shadow-[0px_4px_4px_0px_#FFFBEF_inset,0px_-4px_4px_0px_rgba(255,249,228,0.48),0px_5px_4px_0px_rgba(232,140,72,0.48)] hover:bg-[#FFB23F] hover:pl-[24px] hover:pr-[20px] hover:border-1 hover:border-[#E59E69] hover:shadow-[0px_4px_4px_0px_rgba(255,210,143,0.61)_inset,0px_4px_4px_0px_rgba(136,136,136,0.48)] cursor-pointer">
                           <div
                             className="text-center text-white text-2xl font-normal"
@@ -234,7 +234,7 @@ function ReferralPage ({ currentUser, totalClicks, inviteCode }){
                       </div>
                       <div className="justify-start items-center gap-0.5 inline-flex">
                         <span className="w-[135px] text-white text-xs font-outfit">Get additional<span className="text-white font-LuckiestGuy text-xs tracking-wide"> 250 SOL</span>, if you own NFT!</span>
-                        <div className="flex justify-center items-center p-2 rounded-lg bg-[#FFC85A] shadow-[0px_1px_2px_0px_rgba(198,115,1,0.66)] hover:bg-[#FFAA00] hover:shadow-[0px_4px_4px_0px_rgba(255,210,143,0.61)_inset,0px_4px_4px_0px_rgba(232,140,72,0.48)] cursor-pointer">
+                        <div className="flex justify-center items-center p-2 rounded-lg bg-[#FFC85A] shadow-[0px_1px_2px_0px_rgba(198,115,1,0.66)] hover:bg-[#FFAA00] hover:shadow-[0px_4px_4px_0px_rgba(255,210,143,0.61)_inset,0px_4px_4px_0px_rgba(232,140,72,0.48)] cursor-pointer hover:scale-105 transition-transform duration-200">
                           <div
                             className="text-orange-50 text-xs"
                             onClick={() => navigate('/mint')}
@@ -281,7 +281,7 @@ function ReferralPage ({ currentUser, totalClicks, inviteCode }){
                       <button
                         type="button"
                         onClick={copyInviteCode}
-                        className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-[#FA0] shadow-[0px_4px_4px_0px_rgba(255,210,143,0.61)_inset] border-[1px] border-[#FFAA00] rounded-lg flex items-center justify-center w-[64x] h-[30px] text-xs tracking-wide px-2 hover:bg-[#FFC85A] hover:shadow-[0px_1px_2px_0px_rgba(198,115,1,0.66)] hover:border-[#FFC85A] cursor-pointer"
+                        className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-[#FA0] shadow-[0px_4px_4px_0px_rgba(255,210,143,0.61)_inset] border-[1px] border-[#FFAA00] rounded-lg flex items-center justify-center w-[64x] h-[30px] text-xs tracking-wide px-2 hover:bg-[#FFC85A] hover:shadow-[0px_1px_2px_0px_rgba(198,115,1,0.66)] hover:border-[#FFC85A] cursor-pointer hover:scale-105 transition-transform duration-200"
                         style={{
                           boxShadow: '0px 4px 4px 0px rgba(255, 210, 143, 0.61) inset',
                         }}
@@ -299,7 +299,7 @@ function ReferralPage ({ currentUser, totalClicks, inviteCode }){
                 </div>
 
                 <div
-                  className="h-9 mx-4 mb-5 text-sm tracking-wider bg-amber-400 shadow-[0px_4px_4px_0px_rgba(255,210,143,0.61)_inset] rounded-full border-orange-300 justify-center items-center gap-2 flex hover:bg-[#FFC85A] hover:shadow-[0px_1px_2px_0px_rgba(198,115,1,0.66)] hover:border-[#FFC85A] cursor-pointer"
+                  className="h-9 mx-4 mb-5 text-sm tracking-wider bg-amber-400 shadow-[0px_4px_4px_0px_rgba(255,210,143,0.61)_inset] rounded-full border-orange-300 justify-center items-center gap-2 flex hover:bg-[#FFC85A] hover:shadow-[0px_1px_2px_0px_rgba(198,115,1,0.66)] hover:border-[#FFC85A] cursor-pointer hover:scale-105 transition-transform duration-200"
                   onClick={shareInviteLink}
                 >
                   <FaShareFromSquare className="w-4 h-4 mr-2" />
