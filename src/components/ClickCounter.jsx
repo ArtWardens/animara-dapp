@@ -27,7 +27,7 @@ const ClickCounter = ({ gameData, currentMascot, totalClicks, setTotalClicks, re
   };
 
   const buttons = [
-    { name: 'AMIPALS', link: '/clicker' },
+    { name: 'AMIPALS', link: '/amipals' },
     { name: 'EARLY BIRD', link: '/early-bird' },
     { name: 'MINT', link: '/mint' },
     { name: 'REFERRAL', link: '/referral' }
