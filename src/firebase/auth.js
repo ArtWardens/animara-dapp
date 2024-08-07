@@ -48,7 +48,6 @@ const signUpWithEmailImpl = async (email, password, name, referralCode) => {
         dynamicLinkDomain: `${process.env.REACT_APP_DOMAIN}`,
       };
 
-
       const verifyEmailResult = await sendEmailVerification(
         result.user,
         actionCodeSettings
@@ -108,7 +107,7 @@ const loginWithTwitterImpl = async () => {
     return user;
   } catch (error) {
     console.log(error);
-    if (error.code === 'auth/account-exists-with-different-credential') {
+    if (error.code === "auth/account-exists-with-different-credential") {
       throw error;
     }
     return null;
@@ -117,9 +116,9 @@ const loginWithTwitterImpl = async () => {
 
 const loginWithTelegramImpl = async (telegramUser) => {
   try {
-    // call firebase https function
+    // Firebase does not support signInWithPopup with Telegram
+    // for every user authenticated with telegram, our backend creates a corresponding firebase user. When user log in with Telegram, we stealthily login the user with corresponding Firebase user using custom token
     const token = await loginWithTelegram(telegramUser);
-    // sign in with custom token 
     const result = await signInWithCustomToken(auth, token.data.token);
     const { user } = result;
     return user;
