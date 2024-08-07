@@ -102,6 +102,7 @@ export const userSlice = createSlice({
       state.loading = false;
     },
     logOut: (state) => {
+      state.isAuthenticated = false;
       state.user = null;
     },
     logOutSuccess: (state, { payload }) => {
