@@ -117,7 +117,7 @@ const loginWithTwitterImpl = async () => {
 
 const loginWithTelegramImpl = async (telegramUser) => {
   try {
-    // call http req
+    // call firebase https function
     const token = await loginWithTelegram(telegramUser);
     // sign in with custom token 
     const result = await signInWithCustomToken(auth, token.data.token);
