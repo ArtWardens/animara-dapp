@@ -144,7 +144,7 @@ const LoginPage = () => {
         </div>
 
         {/* Remember Me */}
-        <div className="mt-3 pl-2 flex">
+        <div className="mt-3 pl-2 hidden">
           <div className="relative mt-1">
             <input
               className="appearance-none bg-transparent z-10 opacity-0 absolute w-6 h-6"
@@ -233,8 +233,7 @@ const LoginPage = () => {
         </p>
         <div className="flex gap-8 font-outfit text-center justify-center mt-2 mb-3">
           <Link to="/">Terms & Conditions</Link>
-          <Link to="/">Support</Link>
-          <Link to="/">Customer Care</Link>
+          <Link to="/">Privacy Policy</Link>
         </div>
       </div>
     </div>
