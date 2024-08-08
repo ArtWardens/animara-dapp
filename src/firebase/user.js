@@ -16,7 +16,7 @@ const handleGetUserData = async (uid) => {
         const completedTaskRef = doc(db, 'oneTimeTask', uid);
         const completedTaskSnap = await getDoc(completedTaskRef);
 
-        if (token.signInProvider !== 'google.com' && token.signInProvider !== 'twitter.com') {
+        if (token.signInProvider == 'password') {
           canResetPassword = true;
         }
 
