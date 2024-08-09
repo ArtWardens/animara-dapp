@@ -1,5 +1,5 @@
-import { auth, db, storage, updateUserLastLogin } from "../firebase/firebaseConfig";
-import { doc, getDoc, increment, updateDoc } from "firebase/firestore";
+import { auth, db, storage, updateUserLastLogin, dailyLogin } from "../firebase/firebaseConfig";
+import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { getDownloadURL, ref, uploadString } from "firebase/storage";
 import { getIdTokenResult, updateProfile } from "firebase/auth";
 import { isReferralCodeValid } from "../utils/fuctions";
@@ -16,7 +16,7 @@ const handleGetUserData = async (uid) => {
         const completedTaskRef = doc(db, 'oneTimeTask', uid);
         const completedTaskSnap = await getDoc(completedTaskRef);
 
-        if (token.signInProvider == 'password') {
+        if (token.signInProvider === 'password') {
           canResetPassword = true;
         }
 
@@ -102,7 +102,6 @@ const updateUserProfileImpl = async (name, inviteCode, photoString) => {
 const handleUpdateUserLeaveTime = async () => {
     try {
         const idToken = await auth.currentUser.getIdToken(/* forceRefresh */ false);
-        console.log(`idToken ${idToken}`);
         await updateUserLastLogin({idToken: idToken});
     }catch (error) {
         console.log("Error setting user data: ", error)
@@ -111,35 +110,31 @@ const handleUpdateUserLeaveTime = async () => {
 
 const handleUpdateUserRechargableEnergy = async (data) => {
     try {
-        const docRef = doc(db, "users", data.uid);
-        await updateDoc(docRef, { energyRechargable: data.count, clickByLevel: 0, isCompletedToday: false });
+        // const docRef = doc(db, "users", data.uid);
+        // await updateDoc(docRef, { energyRechargable: data.count, clickByLevel: 0, isCompletedToday: false });
     }catch (error) {
-        console.log("Error setting user data: ", error)
+        console.log("Error updating user rechargeable via energy: ", error)
     }
 };
 
 const handleUpdateUserRechargableInvite = async (data) => {
     try {
-        const docRef = doc(db, "users", data.uid);
-        await updateDoc(docRef, { inviteRechargable: data.count, clickByLevel: 0, isCompletedToday: false });
+        // const docRef = doc(db, "users", data.uid);
+        // await updateDoc(docRef, { inviteRechargable: data.count, clickByLevel: 0, isCompletedToday: false });
     }catch (error) {
-        console.log("Error setting user data: ", error)
+        console.log("Error updating user rehcargeable via invite: ", error)
     }
 };
 
-const handleUpdateDailyLogin = async (data) => {
-  console.log(data);
-    try {
-      const docRef = doc(db, 'users', data.uid);
-      updateDoc(docRef, { 
-        loggedInToday: true, 
-        coins: increment(data.coins),
-        loginDays: increment(1),
-      });
-    } catch (error) {
-      console.log('Error getting user data: ', error);
-    }
+const handleUpdateDailyLogin = async () => {
+  try {
+    const idToken = await auth.currentUser.getIdToken(/* forceRefresh */ false);
+    const { data } = await dailyLogin({idToken: idToken});
+    return data;
+  }catch (error) {
+      console.log("Error updating daily login: ", error)
   }
+}
 
 export {
     handleGetUserData,

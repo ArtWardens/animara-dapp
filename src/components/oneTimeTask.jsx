@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { PropTypes } from "prop-types";
 import { Box, Modal } from '@mui/material';
-import { getOneTimeTaskList, updateCompleteOneTimeTask, useOneTimeTaskList, useOneTimeTaskListSuccess, useUserDetails } from '../sagaStore/slices';
+import { getOneTimeTaskList, completeOneTimeTask, useOneTimeTaskList, useOneTimeTaskListSuccess, useUserDetails } from '../sagaStore/slices';
 import { useAppDispatch } from '../hooks/storeHooks';
 
 const OneTimeTask = ({ setIsOneTimeTaskOpen, totalClicks, setTotalClicks }) => {
@@ -31,15 +31,9 @@ const OneTimeTask = ({ setIsOneTimeTaskOpen, totalClicks, setTotalClicks }) => {
 
   const handleModalTask = () => {
     window.open(currentTask.url, '_blank');
-    setTotalClicks(prevTotal => {
-      const newCompletedTaskArr = currentUser?.completedTask.concat([currentTask.taskId])
-      dispatch(updateCompleteOneTimeTask({
-        uid: currentUser?.uid,
-        coins: currentTask.coins,
-        completedTask: newCompletedTaskArr,
-      }));
-      return prevTotal + currentTask.coins;
-    });
+    dispatch(completeOneTimeTask({
+      taskId: currentTask.taskId,
+    }));
     setIsOneTimeTaskOpen(false);
   };
   
@@ -47,7 +41,7 @@ const OneTimeTask = ({ setIsOneTimeTaskOpen, totalClicks, setTotalClicks }) => {
     window.open(task.url, '_blank');
     setTotalClicks(prevTotal => {
       const newCompletedTaskArr = currentUser?.completedTask.concat([task.taskId])
-      dispatch(updateCompleteOneTimeTask({
+      dispatch(completeOneTimeTask({
         uid: currentUser?.uid,
         coins: task.coins,
         completedTask: newCompletedTaskArr,

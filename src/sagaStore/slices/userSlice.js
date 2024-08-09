@@ -14,10 +14,12 @@ const userInitialState = {
   isAuthenticated: false,
   isOpenDailyPopup: false,
   user: null,
+  localCoins: 0,
   error: null,
   getOneTimeTaskListLoading: false,
   getOneTimeTaskListSuccess: false,
   oneTimeTaskList: [],
+  taskIdToComplete: '',
   getEarlyBirdOneTimeTaskListLoading: false,
   getEarlyBirdOneTimeTaskListSuccess: false,
   earlyBirdOneTimeTask: [],
@@ -148,17 +150,18 @@ export const userSlice = createSlice({
       state.getUserLoading = false;
       state.user = payload;
     },
-    updateDailyLogin: (state, { payload }) => {
+    updateDailyLogin: (state) => {
       state.updatePopupLoading = true;
       state.updatePopupSuccess = false;
     },
     updateDailyLoginSuccess: (state, { payload }) => {
       const currentUser = current(state.user);
+      state.localCoins = payload.updatedCoins;
       state.user = {
         ...currentUser,
-        coins: currentUser.coins + payload.coins,
+        coins:  payload.updatedCoins,
         loggedInToday: true,
-        loginDays: currentUser.loginDays + 1,
+        loginDays: payload.newLoginDay,
       }
       state.updatePopupLoading = false;
       state.updatePopupSuccess = true;
@@ -202,14 +205,22 @@ export const userSlice = createSlice({
       state.error = payload;
       state.getOneTimeTaskListSuccess = false;
     },
-    updateCompleteOneTimeTask: () => {},
-    updateCompleteOneTimeTaskSuccess: (state, { payload }) => {
+    completeOneTimeTask: (state, { payload }) => {
+      state.taskIdToComplete = payload.taskId;
+    },
+    completeOneTimeTaskSuccess: (state, { payload }) => {
       const currentUser = current(state.user);
+      let taskList = state.user.completedTask;
+      taskList.push(payload.completedTaskId);
       state.user = {
         ...currentUser,
-        coins: currentUser.coins + payload.coins,
-        completedTask: payload.completedTask
+        coins: payload.updatedCoins,
+        completedTask: taskList
       }
+      state.taskIdToComplete = '';
+    },
+    completeOneTimeTaskError: (state) => {
+      state.taskIdToComplete = '';
     },
     getEarlyBirdOneTimeTaskList: (state, { payload }) => {
       state.getEarlyBirdOneTimeTaskListLoading = true;
@@ -274,8 +285,9 @@ export const {
   getEarlyBirdOneTimeTaskList,
   getEarlyBirdOneTimeTaskListSuccess,
   getEarlyBirdOneTimeTaskListError,
-  updateCompleteOneTimeTask,
-  updateCompleteOneTimeTaskSuccess
+  completeOneTimeTask,
+  completeOneTimeTaskSuccess,
+  completeOneTimeTaskError
 } = userSlice.actions;
 
 export const useAuthLoading = () => useAppSelector((state) => state.user.loading);
@@ -299,6 +311,7 @@ export const useLeaderBoardLoading = () => useAppSelector((state) => state.user.
 export const useLeaderBoardLoadSuccess = () => useAppSelector((state) => state.user.getLeaderBoardSuccess);
 export const useIsOpenDailyPopup = () => useAppSelector((state) => state.user.isOpenDailyPopup);
 export const useOneTimeTaskList = () => useAppSelector((state) => state.user.oneTimeTaskList);
+export const useTaskIdToComplete = () => useAppSelector((state) => state.user.taskIdToComplete);
 export const useOneTimeTaskListSuccess = () => useAppSelector((state) => state.user.getOneTimeTaskListSuccess);
 export const useEarlyBirdOneTimeTaskList = () => useAppSelector((state) => state.user.earlyBirdOneTimeTask);
 export const useEarlyBirdOneTimeTaskListSuccess = () => useAppSelector((state) => state.user.getEarlyBirdOneTimeTaskListSuccess);

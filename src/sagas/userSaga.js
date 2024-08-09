@@ -17,7 +17,7 @@ import {
 import { handleGetLeaderboard } from "../firebase/leaderboard";
 import {
   handleGetOneTimeTaskList,
-  handleUpdateCompletedTask,
+  handleCompletedOneTimeTask,
 } from "../firebase/oneTimeTask";
 import {
   closeDailyPopup,
@@ -48,10 +48,12 @@ import {
   loginWithTwitter,
   loginWithTwitterSuccess,
   loginWithTwitterError,
-  updateCompleteOneTimeTask,
-  updateCompleteOneTimeTaskSuccess,
+  completeOneTimeTask,
+  completeOneTimeTaskSuccess,
+  completeOneTimeTaskError,
   updateDailyLogin,
   updateDailyLoginSuccess,
+  updateDailyLoginError,
   signupWithEmail,
   signupWithEmailSuccess,
   signupWithEmailError,
@@ -245,15 +247,13 @@ export function* getUserSaga() {
   }
 }
 
-export function* updateDailyLoginSaga(action) {
-  console.log(action);
-  const data = action.payload.data;
-  console.log(data);
+export function* updateDailyLoginSaga() {
   try {
-    yield call(handleUpdateDailyLogin, data);
-    yield put(updateDailyLoginSuccess(data));
+    const dailyLoginResult = yield call(handleUpdateDailyLogin);
+    yield put(updateDailyLoginSuccess(dailyLoginResult));
   } catch (error) {
-    console.log("Error setting user data: ", error);
+    console.log("Failed to daily login with error: ", error);
+    yield put (updateDailyLoginError(error));
   }
 }
 
@@ -291,7 +291,7 @@ export function* getOneTimeTaskListSaga() {
 
 export function* getEarlyBirdOneTimeTaskListSaga() {
   try {
-    const taskList = yield call(handleGetOneTimeTaskList, null);
+    const taskList = yield call(handleGetOneTimeTaskList);
     const filterOneTimeTask = taskList?.filter((item) => item?.taskType === "earlybird")
     yield put(getEarlyBirdOneTimeTaskListSuccess(filterOneTimeTask));
   } catch (error) {
@@ -300,12 +300,13 @@ export function* getEarlyBirdOneTimeTaskListSaga() {
   }
 }
 
-export function* updateCompleteOneTimeTaskSaga(action) {
+export function* updateOneTimeTaskSaga({ payload }) {
   try {
-    yield call(handleUpdateCompletedTask, action.payload);
-    yield put(updateCompleteOneTimeTaskSuccess(action.payload));
+    const result = yield call(handleCompletedOneTimeTask, payload.taskId);
+    yield put(completeOneTimeTaskSuccess(result));
   } catch (error) {
-    console.error('Error updating oneTimeTaskList: ', error);
+    console.error('Error completing one time task: ', error);
+    yield put(completeOneTimeTaskError(error));
   }
 }
 
@@ -332,5 +333,5 @@ export function* userSagaWatcher() {
   yield takeLatest(closeDailyPopup.type, closeDailyPopupSaga);
   yield takeLatest(getOneTimeTaskList.type, getOneTimeTaskListSaga);
   yield takeLatest(getEarlyBirdOneTimeTaskList.type, getEarlyBirdOneTimeTaskListSaga);
-  yield takeLatest(updateCompleteOneTimeTask.type, updateCompleteOneTimeTaskSaga);
+  yield takeLatest(completeOneTimeTask.type, updateOneTimeTaskSaga);
 }
