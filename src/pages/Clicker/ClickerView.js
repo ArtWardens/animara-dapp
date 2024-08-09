@@ -70,15 +70,7 @@ const ClickerView = ({ currentUser, gameData, setGameData, totalClicks, setTotal
   useEffect(() => {
     const fetchData = async () => {
       if (currentUser && !currentUser?.loggedInToday) {
-        const currentLoginDay = currentUser?.loginDays;
-        const loginRewardCoins = dailyLogin[currentLoginDay].coins;
-        dispatch(updateDailyLogin({
-          data: {
-            uid: currentUser?.uid,
-            coins: loginRewardCoins
-          }
-        }));
-        setTotalClicks(prev => prev + loginRewardCoins);
+        dispatch(updateDailyLogin());
       }
 
       const rewardRate = await fetchRewardRate();
