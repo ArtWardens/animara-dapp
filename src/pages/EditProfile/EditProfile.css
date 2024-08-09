@@ -1,0 +1,17 @@
+/* Custom styles for PhoneInput component */
+.custom-phone-input .PhoneInputInput {
+    background-color: rgba(0, 52, 89, 0.80) !important;
+    border: 1px solid #245F89;
+    color: white;
+    padding: 1rem;
+    border-radius: 0.5rem;
+  }
+  
+  .custom-phone-input .PhoneInputCountrySelect {
+    background-color: rgba(0, 52, 89, 0.80) !important;
+    border: 1px solid #245F89;
+    color: white;
+    padding: 1rem;
+    border-radius: 0.5rem;
+  }
+  
