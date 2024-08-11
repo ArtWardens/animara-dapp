@@ -110,18 +110,18 @@ const ClickCounter = ({ gameData, currentMascot, totalClicks, setTotalClicks, re
   return (
     <>
       <div
-        className="flex flex-row absolute top-8 z-10 p-1 pr-4 gap-2 left-24"
+        className="flex flex-row absolute top-12 p-1 pr-4 gap-2 left-24"
         style={{
           border: '3px solid #F4FBFF',
           borderRadius: '500px 200px 200px 500px',
           background: 'var(--0163BE, #0163BE)',
           boxShadow: '3px 2px 0px 0px #517296 inset',
-          zIndex: 91,
+          zIndex: 99,
           width: '90%',
           maxWidth: '280px',
         }}
       >
-        <div className="p-1 w-20 h-20">
+        <div className="p-1 w-20 h-20 place-content-center">
           <a onClick={handleEditProfile}>
             <img
               src={"../assets/images/clicker-character/2-initial.png"}
@@ -148,7 +148,7 @@ const ClickCounter = ({ gameData, currentMascot, totalClicks, setTotalClicks, re
               src={"../assets/images/clicker-character/gem.png"}
               alt="gem"
             />
-            <div className="relative flex items-center justify-center w-32">
+            <div className="relative flex items-center justify-center w-40">
               <span
                 ref={totalClicksRef}
                 className="relative text-3xl text-amber-500 tracking-normal w-full overflow-hidden text-left"
@@ -165,7 +165,7 @@ const ClickCounter = ({ gameData, currentMascot, totalClicks, setTotalClicks, re
       </div>
 
       <div
-        className="flex absolute top-12 gap-2 right-24 z-96 items-center"
+        className="flex absolute top-16 gap-2 right-24 z-96 items-center"
         style={{
           zIndex: 91,
         }}
