@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { PropTypes } from "prop-types";
+import PropTypes from "prop-types";
 import MascotView from '../../components/MascotView';
 import EarnGuide from '../../components/EarnGuide';
 import EnergyRegeneration from '../../components/EnergyRegeneration';
@@ -14,6 +14,7 @@ import Modal from '@mui/material/Modal';
 import { useAppDispatch } from '../../hooks/storeHooks';
 import { closeDailyPopup, updateDailyLogin, useIsOpenDailyPopup } from '../../sagaStore/slices';
 import { dailyLogin } from '../../data/constants';
+import ClickerUpgrades from './ClickerUpgrades'; 
 
 const ClickerView = ({ currentUser, gameData, setGameData, totalClicks, setTotalClicks }) => {
   const dispatch = useAppDispatch();
@@ -26,7 +27,6 @@ const ClickerView = ({ currentUser, gameData, setGameData, totalClicks, setTotal
   const [delay, setDelay] = useState(true);
   const [countdown] = useState(30);
 
-  
   const [userProgress] = useState({
     EarnPerTap: 1,
     CoinsToLvlUp: 25,
@@ -211,7 +211,7 @@ const ClickerView = ({ currentUser, gameData, setGameData, totalClicks, setTotal
 
   return (
     <>
-      <div className="max-w-full flex justify-center items-center relative">
+      <div className="max-w-full flex justify-center items-center relative z-[40]">
         <EnergyRegeneration
           currentUser={currentUser}
           gameData={gameData}
@@ -247,7 +247,7 @@ const ClickerView = ({ currentUser, gameData, setGameData, totalClicks, setTotal
           inviteRechargable={inviteRechargable}
           handleUpdateRechargableInvite={handleUpdateRechargableInvite}
           modalOpen={modalOpen}
-          handleOpenModal={handleOpenModal}
+          handleOpenModal={handleOpenModal} // Pass the state handler
           rewardRate={rewardRate}
           gameData={gameData}
           isLeaderboardOpen={isLeaderboardOpen}
@@ -299,6 +299,14 @@ const ClickerView = ({ currentUser, gameData, setGameData, totalClicks, setTotal
             </div>
           </div>
         </Modal>
+
+        {modalOpen === 'upgrades' && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+            <ClickerUpgrades
+              onClose={() => handleOpenModal(false)} // Close modal when done
+            />
+          </div>
+        )}
       </div>
     </>
   );
