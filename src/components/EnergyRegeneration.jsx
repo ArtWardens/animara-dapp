@@ -33,6 +33,24 @@ function EnergyRegeneration({
 
     const [timeRemaining, setTimeRemaining] = useState(getTimeRemaining());
     const [countDownRemaining] = useState(0);
+
+    const [showFirstDiv, setShowFirstDiv] = useState(false);
+    const [showProgressBar, setShowProgressBar] = useState(false);
+
+    useEffect(() => {
+        const firstDivTimer = setTimeout(() => {
+        setShowFirstDiv(true);
+        }, 300); 
+
+        const progressBarTimer = setTimeout(() => {
+        setShowProgressBar(true);
+        }, 500);
+
+        return () => {
+        clearTimeout(firstDivTimer);
+        clearTimeout(progressBarTimer);
+        };
+    }, []);
  
     useEffect(() => {
         const intervalId = setInterval(() => {
@@ -44,14 +62,16 @@ function EnergyRegeneration({
 
     return (
         <>
-            <div className="absolute grid grid-cols-3 gap-3 justify-center items-center w-full mx-auto my-4 p-10 top-44"
+            <div className="absolute grid grid-cols-3 gap-3 justify-center items-center w-full mx-auto my-4 p-12 top-60"
                 style={{
                     zIndex: 80,
                 }}
             >
 
                 <div
-                    className="items-center justify-center"
+                    className={`items-center justify-center transition-opacity duration-700 ${
+                        showFirstDiv ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0'
+                      }`}
                     style={{
                         display: 'inline-flex',
                         alignItems: 'center',
@@ -97,7 +117,9 @@ function EnergyRegeneration({
                     primaryColor="#AD00FF"
                     secondaryColor="#FFF500"
                     hideText={true}
-                    className="text-center"
+                    className={`text-center border-2 border-fuchsia-600 border-solid rounded-tl-3xl rounded-tr-md rounded-br-3xl rounded-bl-md pt-1 pb-2 transition-opacity duration-700 ${
+                      showProgressBar ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0'
+                    }`}
                 />
 
             </div>
