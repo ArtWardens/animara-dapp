@@ -21,9 +21,9 @@ function EarnGuide({
     const [enableEnergyRecharge, setEnableEnergyRecharge] = useState(false);
     const [enableInviteRecharge, setEnableInviteRecharge] = useState(false);
 
-    const [imageSrcLeaderboard, setImageSrcLeaderboard] = useState("../assets/images/clicker-character/leaderboardbtn.png");
-    const handleMouseEnterLeaderboard = () => setImageSrcLeaderboard("../assets/images/clicker-character/leaderboardHover.png");
-    const handleMouseLeaveLeaderboard = () => setImageSrcLeaderboard("../assets/images/clicker-character/leaderboardbtn.png");
+    // const [imageSrcLeaderboard, setImageSrcLeaderboard] = useState("../assets/images/clicker-character/leaderboardbtn.png");
+    // const handleMouseEnterLeaderboard = () => setImageSrcLeaderboard("../assets/images/clicker-character/leaderboardHover.png");
+    // const handleMouseLeaveLeaderboard = () => setImageSrcLeaderboard("../assets/images/clicker-character/leaderboardbtn.png");
 
     const [imageSrcBoosts, setImageSrcBoosts] = useState("../assets/images/clicker-character/boostsBtn.png");
     const handleMouseEnterBoosts = () => setImageSrcBoosts("../assets/images/clicker-character/boostsHover.png");
@@ -61,6 +61,37 @@ function EarnGuide({
     const [showPopup, setShowPopup] = useState(false);
     const [inviteCode, setInviteCode] = useState("");
     const auth = getAuth();
+
+    const [guideSlideUp, setguideSlideUp] = useState(false);
+    const [showBoosts, setShowBoosts] = useState(false);
+    const [showUpgrades, setShowUpgrades] = useState(false);
+    const [showTasks, setShowTasks] = useState(false);
+
+    useEffect(() => {
+        const guideSlide = setTimeout(() => {
+        setguideSlideUp(true);
+        }, 400);
+
+        const boostsTimer = setTimeout(() => {
+            setShowBoosts(true);
+          }, 700);
+      
+          const upgradesTimer = setTimeout(() => {
+            setShowUpgrades(true);
+          }, 800);
+      
+          const tasksTimer = setTimeout(() => {
+            setShowTasks(true);
+          }, 900);
+
+        return () => {
+        clearTimeout(guideSlide);
+        
+        clearTimeout(boostsTimer);
+        clearTimeout(upgradesTimer);
+        clearTimeout(tasksTimer);
+        };
+    }, []);
 
     useEffect(() => {
         const clickHandler = ({ target }) => {
@@ -106,11 +137,24 @@ function EarnGuide({
 
     return (
         <>
-            <div className="absolute bottom-12 w-full flex justify-center items-center rounded-lg">
-                <div className="grid grid-cols-3 gap-0 md:gap-2 lg:gap-4">
-                    <div className="relative rounded-2xl w-full flex justify-center items-end">
+            <div className="absolute bottom-24 flex justify-center place-content-center w-[80%] h-44 pb-8" >
+                
+                <img
+                    src={"../assets/images/clicker-character/button-footerBg.png"}
+                    alt="ring"
+                    className={`absolute inset-0 w-full h-full object-cover rounded-b-3xl transition-opacity duration-500 ${
+                        guideSlideUp ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0'
+                      }`}
+                />
+
+                <div className="grid grid-cols-3">
+                    <div 
+                        className={`relative rounded-2xl w-full flex justify-center items-end transition-transform duration-500 ease-in-out ${
+                            showBoosts ? 'translate-y-0 opacity-100' : 'translate-y-full opacity-0'
+                        }`}
+                    >
                         <button
-                            className="transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 duration-300"
+                            className="transition ease-in-out hover:-translate-y-1 hover:scale-110 duration-200"
                             onMouseEnter={handleMouseEnterBoosts}
                             onMouseLeave={handleMouseLeaveBoosts}
                             ref={trigger}
@@ -123,9 +167,10 @@ function EarnGuide({
                             />
                         </button>
                     </div>
-                    <div className="relative rounded-2xl w-full flex justify-center items-end">
+                    
+                    {/* <div className="relative rounded-2xl w-full flex justify-center items-end">
                         <button
-                            className="transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 duration-300"
+                            className="transition ease-in-out hover:-translate-y-1 hover:scale-110 duration-200"
                             onMouseEnter={handleMouseEnterLeaderboard}
                             onMouseLeave={handleMouseLeaveLeaderboard}
                             ref={trigger}
@@ -137,10 +182,15 @@ function EarnGuide({
                                 alt="leaderboard"
                             />
                         </button>
-                    </div>
-                    <div className="relative rounded-2xl w-full flex justify-center items-end">
+                    </div> */}
+
+                    <div
+                        className={`relative rounded-2xl w-full flex justify-center items-end transition-transform duration-500 ease-in-out ${
+                        showUpgrades ? 'translate-y-0 opacity-100' : 'translate-y-full opacity-0'
+                        }`}
+                    >
                         <button
-                            className="transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 duration-300"
+                            className="transition ease-in-out hover:-translate-y-1 hover:scale-110 duration-200"
                             onMouseEnter={handleMouseEnterUpgrades}
                             onMouseLeave={handleMouseLeaveUpgrades}
                             onClick={() => handleOpenModal('upgrades')}
@@ -152,9 +202,13 @@ function EarnGuide({
                             />
                         </button>
                     </div>
-                    <div className="relative rounded-2xl w-full flex justify-center items-end">
+                    <div
+                        className={`relative rounded-2xl w-full flex justify-center items-end transition-transform duration-500 ease-in-out ${
+                        showTasks ? 'translate-y-0 opacity-100' : 'translate-y-full opacity-0'
+                        }`}
+                    >
                         <button
-                            className="transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 duration-300"
+                            className="transition ease-in-out hover:-translate-y-1 hover:scale-110 duration-200"
                             onMouseEnter={handleMouseEnterTasks}
                             onMouseLeave={handleMouseLeaveTasks}
                             ref={trigger}
@@ -168,6 +222,7 @@ function EarnGuide({
                         </button>
                     </div>
                 </div>
+
             </div>
 
             {modalOpen === 'leaderboard' && (

@@ -84,12 +84,13 @@ const EditProfilePage = ({ totalClicks }) => {
       <Header currentUser={user} totalClicks={totalClicks} />
 
       <div
-        className="h-screen w-screen justify-center items-center place-content-center p-44"
+        className="justify-center items-center place-content-center p-44 min-h-screen"
         style={{
-          backgroundImage:
-            'url("../../assets/images/clicker-character/clickerWall.png")',
-          backgroundSize: "cover",
-          backgroundPosition: "center",
+          backgroundImage: 'url("../../assets/images/clicker-character/clickerWall.png")',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
+          backgroundAttachment: 'fixed',
         }}
       >
         <div className="w-full h-full">
