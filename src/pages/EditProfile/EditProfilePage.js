@@ -1,13 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
 import { PropTypes } from "prop-types";
+import PhoneInput from "react-phone-number-input";
 import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
-import { FaCopy } from "react-icons/fa6";
+import "react-phone-number-input/style.css";
 import { useAppDispatch } from "../../hooks/storeHooks.js";
 import {
   useUserDetails,
-  useUserAuthenticated,
-  useAuthLoading,
   resetPassword,
   useResetPasswordLoading,
   updateProfile,
@@ -15,37 +13,28 @@ import {
 } from "../../sagaStore/slices/userSlice.js";
 
 import Header from "../../components/Header.jsx";
+import "./EditProfile.css";
 
-const EditProfilePage = ({ currentUser, totalClicks }) => {
+const EditProfilePage = ({ totalClicks }) => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const isAuthenticated = useUserAuthenticated();
-  const isAuthLoading = useAuthLoading();
   const resetPasswordLoading = useResetPasswordLoading();
   const updateProfileLoading = useUpdateProfileLoading();
   const user = useUserDetails();
-  const [firstname, setFirstname] = useState("");
-  const [lastname, setLastname] = useState("");
+  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [inviteCode, setInviteCode] = useState("");
   const [imageData, setImageData] = useState(null);
+  const [hasChanges, setHasChanges] = useState(false);
   const inputFile = useRef(null);
  
   const handleBackClick = () => {
-    navigate("/clicker");
+    navigate(-1);
   };
 
   useEffect(() => {
-    if (!isAuthenticated && !isAuthLoading) {
-      navigate("/login");
-      toast.error("You need to be logged in to access this page");
-    }
-  }, [isAuthenticated, navigate, isAuthLoading]);
-
-  useEffect(() => {
-    setFirstname(user?.name?.split(" ").slice(0, -1).join(" ") || "");
-    setLastname(user?.name?.split(" ").slice(-1).join(" ") || "");
+    setUsername(user?.name || "");
     setEmail(user?.email || "");
     setPhone(user?.phoneNumber || "");
     setInviteCode(user?.referredBy || "");
@@ -55,25 +44,44 @@ const EditProfilePage = ({ currentUser, totalClicks }) => {
     console.log(email);
     dispatch(resetPassword(email));
   };
+
   const handleUpdateProfile = (e) => {
     e.preventDefault();
     dispatch(
       updateProfile({
-        fullName: firstname + " " + lastname,
+        fullName: username || null,
         inviteCode: inviteCode || null,
+        phoneNumber: phone || null,
         profilePicture: imageData ? imageData.toString() : null,
       })
     );
   };
 
-  const copyInviteCode = () => {
-    navigator.clipboard.writeText(inviteCode);
-    alert("Invite code copied to clipboard!");
+  const handleInputChange = (setter) => (e) => {
+    setter(e.target.value);
+    setHasChanges(true);
+  };
+
+  const handlePhoneChange = (value) => {
+    setPhone(value);
+    setHasChanges(true);
+  };
+
+  const handleFileChange = (e) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        setImageData(reader.result);
+        setHasChanges(true);
+      };
+      reader.readAsDataURL(file);
+    }
   };
 
   return (
     <>
-      <Header currentUser={currentUser} totalClicks={totalClicks} />
+      <Header currentUser={user} totalClicks={totalClicks} />
 
       <div
         className="justify-center items-center place-content-center p-44 min-h-screen"
@@ -86,7 +94,7 @@ const EditProfilePage = ({ currentUser, totalClicks }) => {
         }}
       >
         <div className="w-full h-full">
-          <div className="header flex justify-between items-center">
+          <div className="header flex justify-start items-center">
             <span className="flex gap-2">
               <span>
                 <span
@@ -127,19 +135,22 @@ const EditProfilePage = ({ currentUser, totalClicks }) => {
                 flexShrink: 0,
                 borderRadius: "500px",
                 border: "2.5px solid var(--80E8FF, #80E8FF)",
-                background: `url(${imageData?.toString() || user?.photoURL || "../../assets/images/lock.png" || ""}) lightgray 50% / cover no-repeat`,
+                background: `url(${imageData || user?.photoUrl}) lightgray 50% / cover no-repeat`,
               }}
             >
-              <img
-                src={
-                  imageData?.toString() ||
-                  user?.photoURL ||
-                  "../../assets/images/lock.png" ||
-                  ""
-                }
-                alt="pfp"
-                className="group-hover:brightness-75 h-full w-full object-cover"
-              />
+              {user?.photoUrl ? (
+                <img
+                  src={imageData || user?.photoUrl}
+                  alt="pfp"
+                  className="group-hover:brightness-75 h-full w-full object-cover"
+                />
+              ) : (
+                <img
+                  src="../../assets/images/lock.png"
+                  alt="pfp"
+                  className="group-hover:brightness-75 h-full w-full object-cover"
+                />
+              )}
               <img
                 src="./../assets/icons/edit.png"
                 alt="edit"
@@ -153,16 +164,7 @@ const EditProfilePage = ({ currentUser, totalClicks }) => {
               ref={inputFile}
               className="hidden"
               accept="image/*"
-              onChange={(e) => {
-                const file = e.target.files?.[0];
-                if (file) {
-                  const reader = new FileReader();
-                  reader.onload = () => {
-                    setImageData(reader.result);
-                  };
-                  reader.readAsDataURL(file);
-                }
-              }}
+              onChange={handleFileChange}
             />
           </div>
           <form
@@ -170,41 +172,25 @@ const EditProfilePage = ({ currentUser, totalClicks }) => {
             onSubmit={handleUpdateProfile}
           >
             <div className="flex flex-col md:flex-row gap-5 md:gap-10 mt-3 w-full">
-              <div className="flex flex-col gap-2 w-full pb-4">
+              <div className="flex flex-col gap-2 w-[50%] pb-4">
                 <label
                   htmlFor="firstname"
                   className="text-sm font-outfit tracking-wide"
                 >
-                  First Name <span className="text-red-500">*</span>
+                  Username
                 </label>
                 <input
                   type="text"
                   id="firstname"
                   required
-                  value={firstname}
-                  onChange={(e) => setFirstname(e.target.value)}
-                  className="w-full bg-[rgba(0,52,89,0.80)] border-[1px] border-[#245F89] rounded-lg flex p-4 items-center gap-2 text-sm font-semibold font-outfit tracking-wide"
-                />
-              </div>
-              <div className="flex flex-col gap-2 w-full pb-4">
-                <label
-                  htmlFor="lastname"
-                  className="text-sm font-outfit tracking-wide"
-                >
-                  Last Name <span className="text-red-500">*</span>
-                </label>
-                <input
-                  type="text"
-                  id="lastname"
-                  required
-                  value={lastname}
-                  onChange={(e) => setLastname(e.target.value)}
+                  value={username}
+                  onChange={handleInputChange(setUsername)}
                   className="w-full bg-[rgba(0,52,89,0.80)] border-[1px] border-[#245F89] rounded-lg flex p-4 items-center gap-2 text-sm font-semibold font-outfit tracking-wide"
                 />
               </div>
             </div>
             <div className="flex gap-10 mt-3 w-full">
-              <div className="flex flex-col gap-2 w-full pb-4">
+              <div className="flex flex-col gap-2 w-[50%] pb-4">
                 <label
                   htmlFor="email"
                   className="text-sm font-outfit tracking-wide"
@@ -216,62 +202,47 @@ const EditProfilePage = ({ currentUser, totalClicks }) => {
                   id="email"
                   value={email}
                   readOnly={user?.email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  onChange={handleInputChange(setEmail)}
                   className="w-full bg-[rgba(0,52,89,0.80)] border-[1px] border-[#245F89] rounded-lg flex p-4 items-center gap-2 text-sm font-semibold font-outfit tracking-wide"
                 />
               </div>
             </div>
-            <div className="flex gap-10 mt-3 w-full">
-              <div className="flex flex-col gap-2 w-full pb-4">
-                <label
-                  htmlFor="phone"
-                  className="text-sm font-outfit tracking-wide"
-                >
-                  Phone
-                </label>
+            <div className="flex flex-col gap-2 w-[50%] pb-4">
+              <label
+                htmlFor="phone"
+                className="text-sm font-outfit tracking-wide"
+              >
+                Phone
+              </label>
+              <PhoneInput
+                id="phone"
+                value={phone}
+                onChange={handlePhoneChange}
+                defaultCountry="US"
+                className="w-full custom-phone-input border-[1px] border-[#245F89] rounded-lg flex p-4 items-center gap-2 text-sm font-semibold font-outfit tracking-wide"
+              />
+            </div>
+            <div className="flex flex-col gap-2 w-[50%] pb-4 relative">
+              <label
+                htmlFor="inviteCode"
+                className="text-sm font-outfit tracking-wide"
+              >
+                Invite Code
+              </label>
+              <div className="flex items-center w-full relative">
                 <input
-                  type="number"
-                  id="phone"
-                  readOnly
-                  value={phone}
-                  onChange={(e) => setPhone(e.target.value)}
-                  className="w-full bg-[rgba(0,52,89,0.80)] border-[1px] border-[#245F89] rounded-lg flex p-4 items-center gap-2 text-sm font-semibold font-outfit tracking-wide"
+                  type="text"
+                  id="inviteCode"
+                  value={inviteCode}
+                  readOnly={user?.referredBy ? true : false}
+                  onChange={handleInputChange(setInviteCode)}
+                  className="w-full bg-[rgba(0,52,89,0.80)] border-[1px] border-[#245F89] rounded-lg p-4 pr-[90px] text-sm font-semibold font-outfit tracking-wide"
                 />
-              </div>
-              <div className="flex flex-col gap-2 w-full pb-4 relative">
-                <label
-                  htmlFor="inviteCode"
-                  className="text-sm font-outfit tracking-wide"
-                >
-                  Invite Code
-                </label>
-                <div className="flex items-center w-full relative">
-                  <input
-                    type="text"
-                    id="inviteCode"
-                    value={inviteCode}
-                    readOnly={user?.referredBy ? true : false}
-                    onChange={(e) => setInviteCode(e.target.value)}
-                    className="w-full bg-[rgba(0,52,89,0.80)] border-[1px] border-[#245F89] rounded-lg p-4 pr-[90px] text-sm font-semibold font-outfit tracking-wide"
-                  />
-                  <button
-                    type="button"
-                    onClick={copyInviteCode}
-                    className="absolute right-3 top-1/2 transform -translate-y-1/2 bg-[#FA0] border-[1px] border-[#FFAA00] rounded-[6px] flex items-center justify-center p-[5px] w-[70px] h-[38px] shadow-inner text-xs font-bold font-outfit px-2"
-                    style={{
-                      boxShadow:
-                        "0px 4px 4px 0px rgba(255, 210, 143, 0.61) inset",
-                    }}
-                  >
-                    <FaCopy />
-                    &nbsp;COPY
-                  </button>
-                </div>
               </div>
             </div>
             <div className="flex gap-10 mt-10 w-full">
               <div className="flex flex-col md:flex-row justify-start gap-5 w-full">
-                {currentUser?.canResetPassword === true && (
+                {user?.canResetPassword === true && (
                   <button
                     className="w-[200px] h-[60px] justify-start items-center gap-[46px] inline-flex"
                     disabled={resetPasswordLoading}
@@ -286,11 +257,11 @@ const EditProfilePage = ({ currentUser, totalClicks }) => {
                   </button>
                 )}
                 <button
-                  className="w-[200px] h-[60px] justify-between items-center inline-flex"
-                  disabled={updateProfileLoading}
+                  className={`w-[200px] h-[60px] rounded-[26px] justify-between items-center inline-flex ${hasChanges ? "bg-amber-400" : "bg-amber-300"}`}
+                  disabled={updateProfileLoading || !hasChanges}
                   type="submit"
                 >
-                  <div className="w-[200px] h-[60px] px-[30px] py-5 bg-amber-400 rounded-[26px] border border-orange-300 justify-between items-center flex hover:bg-amber-300">
+                  <div className="w-[200px] h-[60px] px-[30px] py-5 rounded-[26px] border border-orange-300 justify-between items-center flex hover:bg-amber-300">
                     <div className="text-center text-white text-xl font-bold capitalize leading-tight">
                       {updateProfileLoading
                         ? "Saving changes.."
@@ -308,7 +279,6 @@ const EditProfilePage = ({ currentUser, totalClicks }) => {
 };
 
 EditProfilePage.propTypes = {
-  currentUser: PropTypes.object,
   totalClicks: PropTypes.number,
 };
 

@@ -128,14 +128,23 @@ export const updateCoins = async (referralCode, user) => {
 };
 
 export const isReferralCodeValid = async (referralCode) => {
-  if (referralCode === ''){
-    return true;
+  try {
+    if (referralCode === ''){
+      return true;
+    }
+    try {
+      const querySnapshot = await getDocs(
+        query(collection(db, "users"), where("referralCode", "==", referralCode))
+      );
+    
+      return !querySnapshot.empty;
+    } catch (error) {
+      console.log(error);
+    }
+  } catch (error) {
+    console.log(error);
+    return false;
   }
-  const querySnapshot = await getDocs(
-    query(collection(db, "users"), where("referralCode", "==", referralCode))
-  );
-
-  return !querySnapshot.empty;
 };
 
 export const signInUser = async () => {
