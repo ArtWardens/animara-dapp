@@ -228,10 +228,8 @@ export function* resetPasswordSaga(action) {
 
 export function* updateUserProfileSaga({ payload }) {
   try {
-    console.log(payload);
     const { fullName, inviteCode, phoneNumber, profilePicture } = payload;
     const result = yield call(updateUserProfileImpl, fullName, inviteCode, phoneNumber, profilePicture);
-    console.log(result);
     yield put(updateProfileSuccess(result));
     toast.success("Profile updated successfully");
 
@@ -248,7 +246,6 @@ export function* getUserSaga() {
   if (uid) {
     addToLocalStorage("uid", uid);
     const userData = yield call(handleGetUserData, uid);
-    console.log(userData);
     yield put(getUserSuccess(userData));
   } else {
     yield put(getUserError(null));

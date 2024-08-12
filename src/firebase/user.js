@@ -12,7 +12,6 @@ import { isReferralCodeValid } from "../utils/fuctions";
 // functions that we export for saga
 const handleGetUserData = async (uid) => {
   try {
-    console.log("running handleGetUserData...");
     const docRef = doc(db, "users", uid);
     const docSnap = await getDoc(docRef);
 
@@ -49,11 +48,6 @@ const updateUserProfileImpl = async (
   phoneNumber,
   photoString
 ) => {
-  console.log(name);
-  console.log(inviteCode);
-  console.log(phoneNumber);
-  console.log(photoString);
-
   const isReferralValid = await isReferralCodeValid(inviteCode);
   if (!isReferralValid && inviteCode) {
     console.log(isReferralValid);
@@ -64,7 +58,6 @@ const updateUserProfileImpl = async (
   try {
     // Get the current user
     const user = auth.currentUser;
-    console.log(user);
 
     if (!user) {
       throw new Error("No authenticated user found");
@@ -106,8 +99,6 @@ const updateUserProfileImpl = async (
       // await updateCoins(inviteCode, user);
     }
 
-    console.log(updateData);
-
     // Prepare updates for Firestore and Firebase Auth
     const firestoreUpdate = updateDoc(userRef, updateData);
     const authUpdateData = { displayName: name };
@@ -118,9 +109,6 @@ const updateUserProfileImpl = async (
 
     // Execute updates concurrently
     await Promise.all([firestoreUpdate, authUpdate]);
-
-    console.log("User profile updated successfully");
-    console.log(auth.currentUser);
     return await handleGetUserData(auth.currentUser.uid);
 
   } catch (error) {
