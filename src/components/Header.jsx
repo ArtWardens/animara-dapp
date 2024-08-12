@@ -1,11 +1,11 @@
 import { PropTypes } from "prop-types";
 import React, { useEffect, useState, useRef } from "react";
 import { useDispatch } from "react-redux";
-import { useLocation, useNavigate } from "react-router-dom/dist";
+import { useLocation, useNavigate } from "react-router-dom";
+import { PropagateLoader } from "react-spinners";
 import { logOut } from "../sagaStore/slices";
 
 function Header({ currentUser }) {
-
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const location = useLocation();
@@ -43,6 +43,9 @@ function Header({ currentUser }) {
 
     const totalClicksRef = useRef(null);
 
+    // State for loading profile image
+    const [loadingImage, setLoadingImage] = useState(true);
+
     useEffect(() => {
         const adjustFontSize = () => {
           const element = totalClicksRef.current;
@@ -65,7 +68,6 @@ function Header({ currentUser }) {
         return number ? number.toLocaleString() : '0';
     };
 
-
     return (
         <>
             {/* Desktop Menu */}
@@ -78,10 +80,17 @@ function Header({ currentUser }) {
                     zIndex: 91,
                 }}
             >
-                <div className="p-1 w-20 h-20">
+                <div className="p-1 w-20 h-20 relative">
                     <a onClick={handleEditProfile}>
+                        {loadingImage && (
+                            <div className="flex justify-center items-center">
+                            <div className="flex justify-center items-center h-56">
+                              <PropagateLoader color={"#FFB23F"} />
+                            </div>
+                          </div>
+                        )}
                         <img
-                            src={"../assets/images/clicker-character/2-initial.png"}
+                            src={currentUser?.photoUrl ? currentUser.photoUrl : "../assets/images/clicker-character/2-initial.png"}
                             alt="profile"
                             className="justify-self-center rounded-full w-24 cursor-pointer"
                             style={{
@@ -89,7 +98,10 @@ function Header({ currentUser }) {
                                 background: 'lightgray 50%',
                                 backgroundSize: 'cover',
                                 backgroundRepeat: 'no-repeat',
+                                display: loadingImage ? 'none' : 'block'
                             }}
+                            onLoad={() => setLoadingImage(false)}
+                            onError={() => setLoadingImage(false)}
                         />
                     </a>
                 </div>
