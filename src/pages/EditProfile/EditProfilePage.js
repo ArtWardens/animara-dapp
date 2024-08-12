@@ -29,8 +29,6 @@ const EditProfilePage = ({ totalClicks }) => {
   const [hasChanges, setHasChanges] = useState(false);
   const inputFile = useRef(null);
 
-  console.log(user);
-
   const handleBackClick = () => {
     navigate(-1);
   };

@@ -129,7 +129,6 @@ export const userSlice = createSlice({
     },
     updateProfileSuccess: (state, { payload }) => {
       state.updateProfileLoading = false;
-      console.log(payload);
       state.user = payload;
     },
     updateProfileError: (state, { payload }) => {

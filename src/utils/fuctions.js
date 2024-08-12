@@ -129,11 +129,9 @@ export const updateCoins = async (referralCode, user) => {
 
 export const isReferralCodeValid = async (referralCode) => {
   try {
-    console.log(referralCode);
     if (referralCode === ''){
       return true;
     }
-    console.log("checking firestore...")
     try {
       const querySnapshot = await getDocs(
         query(collection(db, "users"), where("referralCode", "==", referralCode))
