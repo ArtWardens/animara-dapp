@@ -60,6 +60,9 @@ import {
   loginWithTelegram,
   loginWithTelegramSuccess,
   loginWithTelegramError,
+  updateProfile,
+  updateProfileSuccess,
+  updateProfileError,
 } from "../sagaStore/slices";
 import {
   calculateCountdownRemaining,
@@ -227,12 +230,16 @@ export function* resetPasswordSaga(action) {
 
 export function* updateUserProfileSaga({ payload }) {
   try {
-    const { fulllName, inviteCode, photoString } = payload;
-    yield call(updateUserProfileImpl, fulllName, inviteCode, photoString);
-    yield put(resetPasswordSuccess());
+    const { fullName, inviteCode, phoneNumber, profilePicture } = payload;
+    const result = yield call(updateUserProfileImpl, fullName, inviteCode, phoneNumber, profilePicture);
+    yield put(updateProfileSuccess(result));
+    toast.success("Profile updated successfully");
+
   } catch (error) {
-    toast.error("failed to reset password");
-    yield put(resetPasswordError(error));
+    // toast.error("failed to edit profile");
+    yield put(updateProfileError(error));
+    toast.error("Failed to update profile. Please try again");
+    console.log(error);
   }
 }
 
@@ -334,4 +341,5 @@ export function* userSagaWatcher() {
   yield takeLatest(getOneTimeTaskList.type, getOneTimeTaskListSaga);
   yield takeLatest(getEarlyBirdOneTimeTaskList.type, getEarlyBirdOneTimeTaskListSaga);
   yield takeLatest(completeOneTimeTask.type, updateOneTimeTaskSaga);
+  yield takeLatest(updateProfile.type, updateUserProfileSaga);
 }

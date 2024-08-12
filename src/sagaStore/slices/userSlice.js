@@ -4,6 +4,7 @@ import { useAppSelector } from '../../hooks/storeHooks';
 const userInitialState = {
   loading: false,
   resetPasswordLoading: false,
+  updateProfile: [],
   updateProfileLoading: false,
   getUserLoading: false,
   updatePopupLoading: false,
@@ -124,8 +125,9 @@ export const userSlice = createSlice({
       state.error = payload;
       state.resetPasswordLoading = false;
     },
-    updateProfile: (state) =>{
+    updateProfile: (state, { payload }) =>{
       state.updateProfileLoading = true;
+      state.updateProfile = payload;
     },
     updateProfileSuccess: (state, { payload }) => {
       state.updateProfileLoading = false;
