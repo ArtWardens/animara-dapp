@@ -24,9 +24,9 @@ function Header({ currentUser }) {
     };
 
     const buttons = [
-        { name: 'AMIPALS', link: '/clicker-lock' },
+        { name: 'AMIPALS', link: '/amipals' },
         { name: 'EARLY BIRD', link: '/early-bird' },
-        { name: 'MINT', link: '/amipals' },
+        { name: 'MINT', link: '/mint' },
         { name: 'REFERRAL', link: '/referral' },
         // { name: 'LOCK', link: '/clicker-lock' }
     ];
