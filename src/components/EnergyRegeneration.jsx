@@ -64,7 +64,7 @@ function EnergyRegeneration({
         <>
             <div className="absolute grid grid-cols-3 gap-3 justify-center items-center w-full mx-auto my-4 p-12 top-60"
                 style={{
-                    zIndex: 80,
+                    zIndex: 20,
                 }}
             >
 
