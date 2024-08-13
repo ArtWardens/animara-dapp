@@ -61,6 +61,9 @@ import {
   updateProfile,
   updateProfileSuccess,
   updateProfileError,
+  getUserLocations,
+  getUserLocationsSuccess,
+  getUserLocationsError,
 } from "../sagaStore/slices";
 import {
   calculateCountdownRemaining,
@@ -73,6 +76,7 @@ import {
   getFromLocalStorage,
   removeFromLocalStorage,
 } from "../utils/localStorage";
+import { getUserLocationImpl } from "../firebase/clicker";
 
 export function* signupWithEmailSaga({ payload }) {
   try {
@@ -307,6 +311,21 @@ export function* getEarlyBirdOneTimeTaskListSaga() {
   }
 }
 
+export function* getUserLocationsSaga() {
+  try {
+    const userLocation = yield call(getUserLocationImpl);
+    console.log(userLocation);
+    if (userLocation) {
+      yield put(getUserLocationsSuccess(userLocation));
+    } else {
+      yield put(getUserLocationsError("failed to sign in with Telegram"));
+    }
+  } catch (error) {
+    console.log(error);
+    yield put(getUserLocationsError(error));
+  }
+}
+
 export function* updateCompleteOneTimeTaskSaga(action) {
   try {
     yield call(handleUpdateCompletedTask, action.payload);
@@ -341,4 +360,5 @@ export function* userSagaWatcher() {
   yield takeLatest(getEarlyBirdOneTimeTaskList.type, getEarlyBirdOneTimeTaskListSaga);
   yield takeLatest(updateCompleteOneTimeTask.type, updateCompleteOneTimeTaskSaga);
   yield takeLatest(updateProfile.type, updateUserProfileSaga);
+  yield takeLatest(getUserLocations.type, getUserLocationsSaga);
 }
