@@ -1,7 +1,22 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import PropTypes from "prop-types";
 
 const UpgradeDetailsModal = ({ upgrade, onClose }) => {
+  const { t } = useTranslation();
+  const logoList = [
+    { region: "mountain", logo: "../assets/images/clicker-character/icon-1.png" },
+    { region: "forest", logo: "../assets/images/clicker-character/icon-2.png" },
+    { region: "deserts", logo: "../assets/images/clicker-character/desert-icon.png" },
+    { region: "cave", logo: "../assets/images/clicker-character/cave-icon.png" },
+    { region: "iceland", logo: "../assets/images/clicker-character/iceland-icon.png" },
+    { region: "valley", logo: "../assets/images/clicker-character/valley-icon.png" },
+  ];
+
+  const logo = logoList.find(item => item.region === upgrade.region)?.logo || "../assets/images/clicker-character/default-icon.png";
+
+  console.log(upgrade);
+
   return (
     <div
       className="fixed inset-0 bg-transparent backdrop-blur-xl flex justify-center items-center z-[200]"
@@ -13,7 +28,7 @@ const UpgradeDetailsModal = ({ upgrade, onClose }) => {
           backgroundImage: `url("../assets/images/clicker-character/upgrades-details-bg.png")`,
           backgroundPosition: "center",
         }}
-        onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside the modal
+        onClick={(e) => e.stopPropagation()} 
       >
         {/* Close Button */}
         <button className="absolute top-20 right-20 text-white text-4xl" onClick={() => {
@@ -28,15 +43,15 @@ const UpgradeDetailsModal = ({ upgrade, onClose }) => {
           <p className="text-2xl text-yellow-300 mt-2 font-semibold">
             <span className="inline-flex items-center">
               <img
-                src={upgrade.logo}
-                alt={upgrade.name}
+                src={logo}
+                alt="region logo"
                 className="w-6 h-6 mr-2"
               />
             </span>
           </p>
 
           <h2 className="text-4xl text-white font-LuckiestGuy uppercase tracking-wider">
-            {upgrade.name}
+            {t(upgrade.locationId)}
           </h2>
 
           <div className="flex flex-row items-center justify-between">
@@ -46,7 +61,7 @@ const UpgradeDetailsModal = ({ upgrade, onClose }) => {
               alt="gem"
               className="w-6 h-6 mr-2"
             />
-            <p>{upgrade.cost}</p>
+            <p>{upgrade.nextLevelUpgradeCost}</p>
           </div>
 
           <p className="text-white text-base font-sans">
@@ -64,7 +79,7 @@ const UpgradeDetailsModal = ({ upgrade, onClose }) => {
                 className="w-6 h-6 mr-1"
               />
               <p className="text-2xl text-[#80e8ff] font-bold">
-                {upgrade.points}
+                +{upgrade.nextLevelExploraPts}
               </p>
             </div>
           </div>

@@ -22,6 +22,8 @@ const userInitialState = {
   getEarlyBirdOneTimeTaskListLoading: false,
   getEarlyBirdOneTimeTaskListSuccess: false,
   earlyBirdOneTimeTask: [],
+  userLocationsLoading: false,
+  userLocations: [],
 };
 
 export const userSlice = createSlice({
@@ -227,6 +229,17 @@ export const userSlice = createSlice({
       state.error = payload;
       state.getEarlyBirdOneTimeTaskListSuccess = false;
     },
+    getUserLocations: (state, { payload }) => {
+      state.userLocationsLoading = true;
+    },
+    getUserLocationsSuccess: (state, { payload }) => {
+      state.userLocations = payload;
+      state.userLocationsLoading = false;
+    },
+    getUserLocationsError: (state, { payload }) => {
+      state.userLocations = payload;
+      state.userLocationsLoading = false;
+    },
   },
 });
 
@@ -277,7 +290,10 @@ export const {
   getEarlyBirdOneTimeTaskListSuccess,
   getEarlyBirdOneTimeTaskListError,
   updateCompleteOneTimeTask,
-  updateCompleteOneTimeTaskSuccess
+  updateCompleteOneTimeTaskSuccess,
+  getUserLocations,
+  getUserLocationsSuccess,
+  getUserLocationsError
 } = userSlice.actions;
 
 export const useAuthLoading = () => useAppSelector((state) => state.user.loading);
@@ -305,6 +321,7 @@ export const useOneTimeTaskListSuccess = () => useAppSelector((state) => state.u
 export const useEarlyBirdOneTimeTaskList = () => useAppSelector((state) => state.user.earlyBirdOneTimeTask);
 export const useEarlyBirdOneTimeTaskListSuccess = () => useAppSelector((state) => state.user.getEarlyBirdOneTimeTaskListSuccess);
 export const useUserAuthenticated = () => useAppSelector((state) => state.user.isAuthenticated);
+export const useUserLocation = () => useAppSelector((state) => state.user.userLocations);
 
 const userReducer = userSlice.reducer;
 

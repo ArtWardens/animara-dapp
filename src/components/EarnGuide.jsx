@@ -4,6 +4,8 @@ import { getAuth, onAuthStateChanged } from "../firebase/auth";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "../firebase/firebaseConfig";
 import ReferPopup from "./ReferPopup";
+import { useAppDispatch } from "../hooks/storeHooks.js";
+import { getUserLocations } from "../sagaStore/slices/userSlice.js";
 
 function EarnGuide({
     energyRechargable,
@@ -17,6 +19,7 @@ function EarnGuide({
     setIsLeaderboardOpen,
     setIsOneTimeTaskOpen
 }) {
+    const dispatch = useAppDispatch();
 
     const [enableEnergyRecharge, setEnableEnergyRecharge] = useState(false);
     const [enableInviteRecharge, setEnableInviteRecharge] = useState(false);
@@ -39,6 +42,11 @@ function EarnGuide({
 
     const closeModal = () => {
         handleOpenModal("");
+    };
+
+    const handleUserUpgrades = () => {
+        handleOpenModal('upgrades');
+        dispatch(getUserLocations());
     };
 
     const handleChargeEnergy = () => {
@@ -193,7 +201,7 @@ function EarnGuide({
                             className="transition ease-in-out hover:-translate-y-1 hover:scale-110 duration-200"
                             onMouseEnter={handleMouseEnterUpgrades}
                             onMouseLeave={handleMouseLeaveUpgrades}
-                            onClick={() => handleOpenModal('upgrades')}
+                            onClick={handleUserUpgrades}
                         >
                             <img
                                 src={imageSrcUpgrades}
