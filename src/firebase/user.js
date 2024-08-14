@@ -2,7 +2,23 @@ import { auth, db, storage, updateUserLastLogin, dailyLogin } from "../firebase/
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { getDownloadURL, ref, uploadString } from "firebase/storage";
 import { getIdTokenResult, updateProfile } from "firebase/auth";
-import { isReferralCodeValid } from "../utils/fuctions";
+
+export const isReferralCodeValid = async (referralCode) => {
+  try {
+    if (referralCode === ''){
+      return true;
+    }
+    try {
+      const querySnapshot = await db.collection("users").where("referralCode", "==", referralCode).get();
+      return !querySnapshot.empty;
+    } catch (error) {
+      console.log(error);
+    }
+  } catch (error) {
+    console.log(error);
+    return false;
+  }
+};
 
 // functions that we export for saga
 const getUserDataImpl = async (uid) => {
