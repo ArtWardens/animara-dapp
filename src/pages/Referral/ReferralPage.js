@@ -6,7 +6,6 @@ import { FaCopy, FaShareFromSquare } from "react-icons/fa6";
 import { useUserDetails } from "../../sagaStore/slices";
 import gem from "../../assets/images/gem2.png";
 import StyledQRCode from "../../components/StyledQRCode";
-import useAuth from "../../hooks/useAuth.js";
 import Header from "../../components/Header.jsx";
 
 function ReferralPage ({ inviteCode }){
@@ -264,7 +263,7 @@ function ReferralPage ({ inviteCode }){
                       <input
                         type="text"
                         value={inviteCodeState}
-                        readOnly={user?.referralCode ? true : false}
+                        readOnly={currentUser?.referralCode ? true : false}
                         onChange={(e) => setInviteCodeState(e.target.value)}
                         className="w-full bg-[#003358] border-[1px] border-[#245F89] rounded-lg p-3 text-sm font-medium font-outfit tracking-wide"
                       />
