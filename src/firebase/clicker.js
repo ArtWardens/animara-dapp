@@ -1,4 +1,4 @@
-import { auth, db, getUserLocations } from "../firebase/firebaseConfig";
+import { auth, db, getUserLocations, exploreLocation } from "../firebase/firebaseConfig";
 import {  updateDoc, doc } from "firebase/firestore";
 
 const handleUpdateCoins = async (data) => {
@@ -31,7 +31,24 @@ const getUserLocationImpl = async () => {
         const data = await getUserLocations({
             idToken: idToken,
         });
+        return data;
 
+    } catch (error) {
+        console.log("Error handling get user location details ", error);
+      
+    }
+};
+
+const upgradeUserLocationImpl = async (locationId) => {
+    console.log(locationId);
+    // update user's location in firestore
+    try {
+        // obtain the ID token of the currrent logged in user
+        const idToken = await auth.currentUser.getIdToken(false);
+        const data = await exploreLocation({
+            idToken: idToken,
+            locationId: locationId.payload
+        });
         return data;
 
     } catch (error) {
@@ -43,5 +60,6 @@ const getUserLocationImpl = async () => {
 export {
     handleUpdateCoins,
     handleUpdateClickByLevel,
-    getUserLocationImpl
+    getUserLocationImpl,
+    upgradeUserLocationImpl
 };

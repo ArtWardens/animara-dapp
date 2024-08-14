@@ -17,14 +17,14 @@ const ClickerUpgrades = ({ onClose }) => {
 
   const [selectedOption, setSelectedOption] = useState("forest");
   const [selectedUpgrade, setSelectedUpgrade] = useState(null);
-  const [loading, setLoading] = useState(true); // Add loading state
+  const [loading, setLoading] = useState(true); 
 
-  const { data } = useUserLocation(); // Access the data from useUserLocation
-  const userLocations = data?.userLocations || []; // Safely access userLocations array
+  const { data } = useUserLocation(); 
+  const userLocations = data?.userLocations || []; 
 
   useEffect(() => {
     if (data) {
-      setLoading(false); // Set loading to false once data is available
+      setLoading(false); 
     }
   }, [data]);
 
@@ -181,14 +181,14 @@ const ClickerUpgrades = ({ onClose }) => {
                                     className="w-6 h-6 mr-1"
                                   />
                                   <p className="text-[#80e8ff]">
-                                    +{location.currentExploraPts}
+                                    +{location.nextLevelExploraPts || 0}
                                   </p>
                                 </div>
                               </div>
                               <div className="w-full flex flex-row">
                                 <p>
                                   LV.{" "}
-                                  {location.level === -1 ? "-" : location.level + 1}
+                                  {location.level === -1 ? "-" : location.level}
                                 </p>
                                 {location.level !== -1 && (
                                   <div className="flex flex-row ml-[2rem]">

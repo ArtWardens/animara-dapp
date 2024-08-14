@@ -1,5 +1,5 @@
-import { createSlice, current } from '@reduxjs/toolkit';
-import { useAppSelector } from '../../hooks/storeHooks';
+import { createSlice, current } from "@reduxjs/toolkit";
+import { useAppSelector } from "../../hooks/storeHooks";
 
 const userInitialState = {
   loading: false,
@@ -27,7 +27,7 @@ const userInitialState = {
 };
 
 export const userSlice = createSlice({
-  name: 'user',
+  name: "user",
   initialState: userInitialState,
   reducers: {
     signupWithEmail: (state, { payload }) => {
@@ -114,7 +114,7 @@ export const userSlice = createSlice({
     clearLoginError: (state) => {
       state.error = null;
     },
-    resetPassword: (state) =>{
+    resetPassword: (state) => {
       state.resetPasswordLoading = true;
     },
     resetPasswordSuccess: (state, { payload }) => {
@@ -125,7 +125,7 @@ export const userSlice = createSlice({
       state.error = payload;
       state.resetPasswordLoading = false;
     },
-    updateProfile: (state, { payload }) =>{
+    updateProfile: (state, { payload }) => {
       state.updateProfileLoading = true;
       state.updateProfile = payload;
     },
@@ -163,7 +163,7 @@ export const userSlice = createSlice({
         coins: currentUser.coins + payload.coins,
         loggedInToday: true,
         loginDays: currentUser.loginDays + 1,
-      }
+      };
       state.updatePopupLoading = false;
       state.updatePopupSuccess = true;
       state.isOpenDailyPopup = true;
@@ -173,8 +173,7 @@ export const userSlice = createSlice({
       state.updatePopupSuccess = false;
       state.error = payload;
     },
-    closeDailyPopup: () => {
-    },
+    closeDailyPopup: () => { },
     closeDailyPopupSuccess: (state, { payload }) => {
       state.isOpenDailyPopup = false;
     },
@@ -206,14 +205,14 @@ export const userSlice = createSlice({
       state.error = payload;
       state.getOneTimeTaskListSuccess = false;
     },
-    updateCompleteOneTimeTask: () => {},
+    updateCompleteOneTimeTask: () => { },
     updateCompleteOneTimeTaskSuccess: (state, { payload }) => {
       const currentUser = current(state.user);
       state.user = {
         ...currentUser,
         coins: currentUser.coins + payload.coins,
-        completedTask: payload.completedTask
-      }
+        completedTask: payload.completedTask,
+      };
     },
     getEarlyBirdOneTimeTaskList: (state, { payload }) => {
       state.getEarlyBirdOneTimeTaskListLoading = true;
@@ -238,6 +237,30 @@ export const userSlice = createSlice({
     },
     getUserLocationsError: (state, { payload }) => {
       state.userLocations = payload;
+      state.userLocationsLoading = false;
+    },
+    getUserUpgradeLocation: (state, { payload }) => {
+      state.userLocationsLoading = true;
+    },
+    getUserUpgradeLocationSuccess: (state, { payload }) => {
+      const locationIndex = state.userLocations.data.userLocations.findIndex(
+        (location) => location.locationId === payload.data.locationId
+      );
+
+      if (locationIndex !== -1) {
+        // update the location details
+        state.userLocations.data.userLocations[locationIndex] = {
+          ...state.userLocations.data.userLocations[locationIndex],
+          level: payload.data.locationLvl,
+          currentExploraPts: payload.data.locationExploraPts,
+          nextLevelUpgradeCost: payload.data.nextLevelUpgradeCost,
+          nextLevelExploraPts: payload.data.nextLevelExploraPts,
+        };
+      }
+      state.userLocationsLoading = false;
+    },
+
+    getUserUpgradeLocationError: (state, { payload }) => {
       state.userLocationsLoading = false;
     },
   },
@@ -293,7 +316,10 @@ export const {
   updateCompleteOneTimeTaskSuccess,
   getUserLocations,
   getUserLocationsSuccess,
-  getUserLocationsError
+  getUserLocationsError,
+  getUserUpgradeLocation,
+  getUserUpgradeLocationSuccess,
+  getUserUpgradeLocationError,
 } = userSlice.actions;
 
 export const useAuthLoading = () => useAppSelector((state) => state.user.loading);
@@ -322,6 +348,7 @@ export const useEarlyBirdOneTimeTaskList = () => useAppSelector((state) => state
 export const useEarlyBirdOneTimeTaskListSuccess = () => useAppSelector((state) => state.user.getEarlyBirdOneTimeTaskListSuccess);
 export const useUserAuthenticated = () => useAppSelector((state) => state.user.isAuthenticated);
 export const useUserLocation = () => useAppSelector((state) => state.user.userLocations);
+export const useUserLocationLoading = () => useAppSelector((state) => state.user.userLocationsLoading);
 
 const userReducer = userSlice.reducer;
 
