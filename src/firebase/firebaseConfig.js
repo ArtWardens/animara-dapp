@@ -28,5 +28,24 @@ const updateUserLastLogin = httpsCallable(functions, 'updateUserLastLogin');
 const firstLoginLinkReferral = httpsCallable(functions, 'firstLoginLinkReferral');
 const cleanupFailedRegistration = httpsCallable(functions, 'cleanupFailedRegistration');
 const loginWithTelegram = httpsCallable(functions, 'loginWithTelegram');
+const dailyLogin = httpsCallable(functions, 'dailyLogin');
+const completeOneTimeTask = httpsCallable(functions, 'completeOneTimeTask');
+const settleTapSession = httpsCallable(functions, 'settleTapSession');
+const rechargeEnergy = httpsCallable(functions, 'rechargeEnergy');
+const rechargeEnergyByInvite = httpsCallable(functions, 'rechargeEnergyByInvite');
 
-export { auth, app, db, storage, updateUserLastLogin, firstLoginLinkReferral, cleanupFailedRegistration, loginWithTelegram };
+export {
+  auth,
+  app,
+  db,
+  storage,
+  updateUserLastLogin,
+  firstLoginLinkReferral,
+  cleanupFailedRegistration,
+  loginWithTelegram,
+  dailyLogin,
+  completeOneTimeTask,
+  settleTapSession,
+  rechargeEnergy,
+  rechargeEnergyByInvite
+};

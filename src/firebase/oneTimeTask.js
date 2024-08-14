@@ -1,5 +1,5 @@
-import { db } from "./firebaseConfig";
-import { updateDoc, doc, collection, getDocs, increment } from "firebase/firestore";
+import { auth, db, completeOneTimeTask } from "./firebaseConfig";
+import { collection, getDocs } from "firebase/firestore";
 
 const handleGetOneTimeTaskList = async () => {
     try {
@@ -11,22 +11,17 @@ const handleGetOneTimeTaskList = async () => {
     }
 };
 
-const handleUpdateCompletedTask = async (data) => {
+const handleCompletedOneTimeTask = async (taskId) => {
     try {
-        const taskRef = doc(db, "oneTimeTask", data.uid);
-        const userRef = doc(db, "users", data.uid);
-
-        await updateDoc(taskRef, { 
-            completedTask: data.completedTask 
-        });
-
-        await updateDoc(userRef, { coins: increment(data.coins) });
+        const idToken = await auth.currentUser.getIdToken(/* forceRefresh */ false);
+        const { data } = await completeOneTimeTask({idToken: idToken, taskId: taskId});
+        return data;
     }catch (error) {
         console.log("Error setting completed task: ", error)
     }
 };
 
 export {
-    handleUpdateCompletedTask,
+    handleCompletedOneTimeTask,
     handleGetOneTimeTaskList
 };

@@ -1,29 +1,32 @@
 import React, { useEffect, useRef, useState } from "react";
 import { PropTypes } from "prop-types";
-import { getAuth, onAuthStateChanged } from "../firebase/auth";
-import { doc, getDoc } from "firebase/firestore";
-import { db } from "../firebase/firebaseConfig";
+import { useUserDetails, useLocalStamina, useRechargeLoading, rechargeStamina } from '../sagaStore/slices';
+import { useAppDispatch } from "../hooks/storeHooks.js";
+import {
+    StaminaRechargeTypeBasic,
+    StaminaRechargeTypeInvite,
+  } from "../utils/constants"
 import ReferPopup from "./ReferPopup";
 
 function EarnGuide({
-    energyRechargable,
-    handleUpdateRechargableEnergy,
-    inviteRechargable,
-    handleUpdateRechargableInvite,
     modalOpen,
     handleOpenModal,
-    gameData,
-    rewardRate,
-    setIsLeaderboardOpen,
     setIsOneTimeTaskOpen
 }) {
-
+    const dispatch = useAppDispatch();
+    const currentUser = useUserDetails();
+    const localStamina = useLocalStamina();
+    const rechargeLoading = useRechargeLoading();
+    const trigger = useRef(null);
+    const modal = useRef(null);
+    const [showPopup, setShowPopup] = useState(false);
     const [enableEnergyRecharge, setEnableEnergyRecharge] = useState(false);
     const [enableInviteRecharge, setEnableInviteRecharge] = useState(false);
-
-    // const [imageSrcLeaderboard, setImageSrcLeaderboard] = useState("../assets/images/clicker-character/leaderboardbtn.png");
-    // const handleMouseEnterLeaderboard = () => setImageSrcLeaderboard("../assets/images/clicker-character/leaderboardHover.png");
-    // const handleMouseLeaveLeaderboard = () => setImageSrcLeaderboard("../assets/images/clicker-character/leaderboardbtn.png");
+    const [guideSlideUp, setguideSlideUp] = useState(false);
+    const [showBoosts, setShowBoosts] = useState(false);
+    const [showUpgrades, setShowUpgrades] = useState(false);
+    const [showTasks, setShowTasks] = useState(false);
+    const [isRecharging, setIsRecharging] = useState(false);
 
     const [imageSrcBoosts, setImageSrcBoosts] = useState("../assets/images/clicker-character/boostsBtn.png");
     const handleMouseEnterBoosts = () => setImageSrcBoosts("../assets/images/clicker-character/boostsHover.png");
@@ -42,31 +45,25 @@ function EarnGuide({
     };
 
     const handleChargeEnergy = () => {
-        if (energyRechargable > 0 && enableEnergyRecharge) {
-            handleUpdateRechargableEnergy();
+        if (currentUser.energyRechargeRemaining > 0 && enableEnergyRecharge) {
+            setIsRecharging(true);
+            dispatch(rechargeStamina({ opType: StaminaRechargeTypeBasic }));
         }
     };
 
     const handleChargeEnergyByInvite = () => {
-        if (inviteRechargable > 0 && enableInviteRecharge) {
-            setTimeout(() => {
-                handleUpdateRechargableInvite();
-            }, 5000);
+        if (currentUser.inviteRechargeRemaining > 0 && enableInviteRecharge) {
+            setShowPopup(true);
         }
     };
-    
-    const trigger = useRef(null);
-    const modal = useRef(null);
 
-    const [showPopup, setShowPopup] = useState(false);
-    const [inviteCode, setInviteCode] = useState("");
-    const auth = getAuth();
+    const handleReferCompletion = () =>{
+        setShowPopup(false);
+        setIsRecharging(true);
+        dispatch(rechargeStamina({ opType: StaminaRechargeTypeInvite }));
+    }
 
-    const [guideSlideUp, setguideSlideUp] = useState(false);
-    const [showBoosts, setShowBoosts] = useState(false);
-    const [showUpgrades, setShowUpgrades] = useState(false);
-    const [showTasks, setShowTasks] = useState(false);
-
+    // intro animation
     useEffect(() => {
         const guideSlide = setTimeout(() => {
         setguideSlideUp(true);
@@ -93,6 +90,7 @@ function EarnGuide({
         };
     }, []);
 
+    // close modal when clicking outside
     useEffect(() => {
         const clickHandler = ({ target }) => {
             if (!modal.current) return;
@@ -103,6 +101,7 @@ function EarnGuide({
         return () => document.removeEventListener("click", clickHandler);
     });
 
+    // close modal when key donw outside
     useEffect(() => {
         const keyHandler = ({ keyCode }) => {
             if (modalOpen === "" || keyCode !== 27) return;
@@ -112,28 +111,24 @@ function EarnGuide({
         return () => document.removeEventListener("keydown", keyHandler);
     });
 
+    // auto close modal after energy recharge
+    useEffect(()=>{
+        if (modalOpen === 'boosts' && isRecharging && !rechargeLoading ){
+            setIsRecharging(false);
+            handleOpenModal("");
+        }
+    }, [modalOpen, isRecharging, rechargeLoading, handleOpenModal]);
+
+    // lock stamina recharge when max stamina
     useEffect(() => {
-        if (gameData?.mascot2?.energy === gameData?.mascot2?.clickByLevel && gameData?.mascot2?.clickByLevel !== 0) {
+        if (localStamina !== currentUser?.maxStamina) {
             setEnableEnergyRecharge(true);
             setEnableInviteRecharge(true);
         } else {
             setEnableEnergyRecharge(false);
             setEnableInviteRecharge(false);
         }
-    }, [gameData?.mascot2?.clickByLevel, gameData?.mascot2?.energy]);
-
-    onAuthStateChanged(auth, async (currentUser) => {
-        if (currentUser) {
-          const docRef = doc(db, "users", currentUser.uid);
-          const docSnap = await getDoc(docRef);
-    
-          if (docSnap.exists()) {
-            setInviteCode(docSnap.data().referralCode);
-          } else {
-            console.log("No such document!");
-          }
-        }
-    });
+    }, [currentUser, localStamina]);
 
     return (
         <>
@@ -167,22 +162,6 @@ function EarnGuide({
                             />
                         </button>
                     </div>
-                    
-                    {/* <div className="relative rounded-2xl w-full flex justify-center items-end">
-                        <button
-                            className="transition ease-in-out hover:-translate-y-1 hover:scale-110 duration-200"
-                            onMouseEnter={handleMouseEnterLeaderboard}
-                            onMouseLeave={handleMouseLeaveLeaderboard}
-                            ref={trigger}
-                            onClick={() => setIsLeaderboardOpen(true)}
-                        >
-                            <img
-                                src={imageSrcLeaderboard}
-                                className="h-full w-full"
-                                alt="leaderboard"
-                            />
-                        </button>
-                    </div> */}
 
                     <div
                         className={`relative rounded-2xl w-full flex justify-center items-end transition-transform duration-500 ease-in-out ${
@@ -259,28 +238,29 @@ function EarnGuide({
                         <ul className="grid w-full gap-4 mb-8">
                             <div className='flex flex-row justify-between items-center'>
                                 <h3 className='text-3xl'>
-                                    Free Daily Boosters
+                                    Free Stamina Recharges
                                 </h3>
-                                <a className='text-4xl mx-3' type="button" onClick={closeModal}>&times;</a>
+                                <button className='text-4xl mx-3' type="button" onClick={closeModal}>&times;</button>
                             </div>
                             <li>
                                 <div
                                     className={`
-                                        ${energyRechargable > 0 && enableEnergyRecharge ? "dark:hover:bg-gray-700 dark:hover:text-gray-300 hover:text-gray-600 hover:bg-gray-50 cursor-pointer" : "dark:bg-gray-700 pointer-events-none"}
+                                        ${currentUser.energyRechargeRemaining > 0 && enableEnergyRecharge ? "dark:hover:bg-gray-700 dark:hover:text-gray-300 hover:text-gray-600 hover:bg-gray-50 cursor-pointer" : "dark:bg-gray-700 pointer-events-none"}
                                         inline-flex items-center justify-between w-full p-2 text-gray-500 bg-white border-2 border-gray-200 rounded-lg dark:border-gray-700 dark:text-gray-400 dark:bg-gray-800
                                     `}
                                 >
                                     <div
                                         className='flex flex-1 items-center'
                                         onClick={handleChargeEnergy}
+                                        disabled={rechargeLoading}
                                     >
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="ml-4 md:ml-6 w-10 h-10 text-fuchsia-500">
                                             <path strokeLinecap="round" strokeLinejoin="round" d="M21 10.5h.375c.621 0 1.125.504 1.125 1.125v2.25c0 .621-.504 1.125-1.125 1.125H21M4.5 10.5H18V15H4.5v-4.5ZM3.75 18h15A2.25 2.25 0 0 0 21 15.75v-6a2.25 2.25 0 0 0-2.25-2.25h-15A2.25 2.25 0 0 0 1.5 9.75v6A2.25 2.25 0 0 0 3.75 18Z" />
                                         </svg>
                                         <div className="ml-10 w-full text-2xl text-left">
-                                            Energy Refresh
+                                            Free Recharge
                                             <div className="w-full text-lg">
-                                                <span className="text-fuchsia-500 text-xl">{energyRechargable}/{rewardRate?.basedRefresh || 0} &nbsp;</span>available today
+                                                <span className="text-fuchsia-500 text-xl">{currentUser.energyRechargeRemaining}/{currentUser.energyRechargable || 0} &nbsp;</span>available today
                                             </div>
                                         </div>
                                     </div>
@@ -289,15 +269,13 @@ function EarnGuide({
                             <li>
                                 <div
                                     className={`
-                                        ${inviteRechargable > 0 && enableInviteRecharge ? "dark:hover:bg-gray-700 dark:hover:text-gray-300 hover:text-gray-600 hover:bg-gray-50 cursor-pointer" : "dark:bg-gray-700 pointer-events-none"}
+                                        ${currentUser.inviteRechargeRemaining > 0 && enableInviteRecharge ? "dark:hover:bg-gray-700 dark:hover:text-gray-300 hover:text-gray-600 hover:bg-gray-50 cursor-pointer" : "dark:bg-gray-700 pointer-events-none"}
                                         inline-flex items-center justify-between w-full p-2 text-gray-500 bg-white border-2 border-gray-200 rounded-lg dark:border-gray-700 dark:text-gray-400 dark:bg-gray-800
                                     `}
                                 >
                                     <div className='flex flex-1 items-center'
-                                        onClick={() => {
-                                            setShowPopup(true);
-                                            handleChargeEnergyByInvite();
-                                        }}
+                                        onClick={handleChargeEnergyByInvite}
+                                        disabled={rechargeLoading}
                                     >
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="ml-4 md:ml-6 w-10 h-10 text-green-500">
                                             <path strokeLinecap="round" strokeLinejoin="round" d="M7.217 10.907a2.25 2.25 0 1 0 0 2.186m0-2.186c.18.324.283.696.283 1.093s-.103.77-.283 1.093m0-2.186 9.566-5.314m-9.566 7.5 9.566 5.314m0 0a2.25 2.25 0 1 0 3.935 2.186 2.25 2.25 0 0 0-3.935-2.186Zm0-12.814a2.25 2.25 0 1 0 3.933-2.185 2.25 2.25 0 0 0-3.933 2.185Z" />
@@ -305,7 +283,7 @@ function EarnGuide({
                                         <div className="ml-10 w-full text-2xl text-left">
                                             Invite Friend
                                             <div className="w-full text-lg text-">
-                                                Refer to a friend to get <span className={`text-green-500 text-xl`}>&nbsp;{rewardRate?.inviteRefresh}&nbsp;</span> energy refresh.
+                                                Send an invite to friend to recharge stamina for free<span className="text-fuchsia-500 text-xl">{currentUser.inviteRechargeRemaining}/{currentUser.inviteRechargable || 0} &nbsp;</span>available today
                                             </div>
                                         </div>
                                     </div>
@@ -314,9 +292,7 @@ function EarnGuide({
                         </ul>
                         {showPopup && (
                             <ReferPopup
-                                inviteCode={inviteCode}
-                                rewardRate={rewardRate}
-                                onClose={() => setShowPopup(false)}
+                                onClose={handleReferCompletion}
                             />
                         )}
                     </div>
@@ -327,15 +303,8 @@ function EarnGuide({
 }
 
 EarnGuide.propTypes = {
-    energyRechargable: PropTypes.number,
-    handleUpdateRechargableEnergy: PropTypes.func,
-    inviteRechargable: PropTypes.number,
-    handleUpdateRechargableInvite: PropTypes.func,
-    modalOpen: PropTypes.string,
+    modalOpen: PropTypes.bool,
     handleOpenModal: PropTypes.func,
-    gameData: PropTypes.object,
-    rewardRate: PropTypes.number,
-    setIsLeaderboardOpen: PropTypes.bool,
     setIsOneTimeTaskOpen: PropTypes.bool
 }
 
