@@ -29,5 +29,6 @@ const firstLoginLinkReferral = httpsCallable(functions, 'firstLoginLinkReferral'
 const cleanupFailedRegistration = httpsCallable(functions, 'cleanupFailedRegistration');
 const loginWithTelegram = httpsCallable(functions, 'loginWithTelegram');
 const getUserLocations = httpsCallable(functions, 'getUserLocations');
+const exploreLocation = httpsCallable(functions, 'exploreLocation');
 
-export { auth, app, db, storage, updateUserLastLogin, firstLoginLinkReferral, cleanupFailedRegistration, loginWithTelegram, getUserLocations };
+export { auth, app, db, storage, updateUserLastLogin, firstLoginLinkReferral, cleanupFailedRegistration, loginWithTelegram, getUserLocations, exploreLocation };

@@ -64,6 +64,9 @@ import {
   getUserLocations,
   getUserLocationsSuccess,
   getUserLocationsError,
+  getUserUpgradeLocation,
+  getUserUpgradeLocationSuccess,
+  getUserUpgradeLocationError,
 } from "../sagaStore/slices";
 import {
   calculateCountdownRemaining,
@@ -76,7 +79,10 @@ import {
   getFromLocalStorage,
   removeFromLocalStorage,
 } from "../utils/localStorage";
-import { getUserLocationImpl } from "../firebase/clicker";
+import {
+  getUserLocationImpl,
+  upgradeUserLocationImpl,
+} from "../firebase/clicker";
 
 export function* signupWithEmailSaga({ payload }) {
   try {
@@ -131,12 +137,9 @@ export function* loginWithEmailSaga({ payload }) {
     if (user?.uid) {
       const token = yield call(getIdTokenResult, user);
       addToLocalStorage("uid", user.uid);
-      if (
-        !user.emailVerified ||
-        token.claims.limitedAccess === true
-      ) {
+      if (!user.emailVerified || token.claims.limitedAccess === true) {
         //redirect user to login page
-        window.location.href = '/limited-access';  
+        window.location.href = "/limited-access";
         return;
       }
       const userData = yield call(handleGetUserData, user.uid);
@@ -186,8 +189,10 @@ export function* loginWithTwitterSaga() {
     }
   } catch (error) {
     console.error(error);
-    if (error.code === 'auth/account-exists-with-different-credential') {
-      toast.error("Account linked with Google, please Login with Google instead");
+    if (error.code === "auth/account-exists-with-different-credential") {
+      toast.error(
+        "Account linked with Google, please Login with Google instead"
+      );
     } else {
       toast.error("Failed to sign in with Twitter");
     }
@@ -213,10 +218,9 @@ export function* loginWithTelegramSaga(telegramUser) {
   }
 }
 
-
 export function* resetPasswordSaga(action) {
   try {
-    const email = action.payload; 
+    const email = action.payload;
     const result = yield call(resetPasswordImpl, email);
     if (result) {
       yield put(resetPasswordSuccess());
@@ -233,10 +237,15 @@ export function* resetPasswordSaga(action) {
 export function* updateUserProfileSaga({ payload }) {
   try {
     const { fullName, inviteCode, phoneNumber, profilePicture } = payload;
-    const result = yield call(updateUserProfileImpl, fullName, inviteCode, phoneNumber, profilePicture);
+    const result = yield call(
+      updateUserProfileImpl,
+      fullName,
+      inviteCode,
+      phoneNumber,
+      profilePicture
+    );
     yield put(updateProfileSuccess(result));
     toast.success("Profile updated successfully");
-
   } catch (error) {
     // toast.error("failed to edit profile");
     yield put(updateProfileError(error));
@@ -292,10 +301,12 @@ export function* getLeaderBoardSaga(action) {
 export function* getOneTimeTaskListSaga() {
   try {
     const taskList = yield call(handleGetOneTimeTaskList, null);
-    const filterOneTimeTask = taskList?.filter((item) => item?.taskType === "normal")
+    const filterOneTimeTask = taskList?.filter(
+      (item) => item?.taskType === "normal"
+    );
     yield put(getOneTimeTaskListSuccess(filterOneTimeTask));
   } catch (error) {
-    console.error('Error retrieving oneTimeTaskList: ', error);
+    console.error("Error retrieving oneTimeTaskList: ", error);
     yield put(getOneTimeTaskListError(error));
   }
 }
@@ -303,23 +314,52 @@ export function* getOneTimeTaskListSaga() {
 export function* getEarlyBirdOneTimeTaskListSaga() {
   try {
     const taskList = yield call(handleGetOneTimeTaskList, null);
-    const filterOneTimeTask = taskList?.filter((item) => item?.taskType === "earlybird")
+    const filterOneTimeTask = taskList?.filter(
+      (item) => item?.taskType === "earlybird"
+    );
     yield put(getEarlyBirdOneTimeTaskListSuccess(filterOneTimeTask));
   } catch (error) {
-    console.error('Error retrieving earlyBirdOneTimeTaskList: ', error);
+    console.error("Error retrieving earlyBirdOneTimeTaskList: ", error);
     yield put(getEarlyBirdOneTimeTaskListError(error));
+  }
+}
+
+export function* getUserUpgradeLocationsSaga(locationId) {
+  try {
+    const upgradeUserLocation = yield call(upgradeUserLocationImpl, locationId);
+    if (upgradeUserLocation) {
+      yield put(getUserUpgradeLocationSuccess(upgradeUserLocation));
+    } else {
+      yield put(
+        getUserUpgradeLocationError(
+          "Failed to update upgrades. Please try again. "
+        )
+      );
+    }
+  } catch (error) {
+    console.log(error);
+    if (error.code === "max-level-reached") {
+      toast.error(
+        "User has reached the maximum level for this location already. "
+      );
+    } else {
+      toast.error("Failed to upgrade location. Please try again. ");
+    }
+    yield put(getUserLocationsError(error));
   }
 }
 
 export function* getUserLocationsSaga() {
   try {
     const userLocation = yield call(getUserLocationImpl);
-    console.log(userLocation);
     if (userLocation) {
       yield put(getUserLocationsSuccess(userLocation));
     } else {
-      yield put(getUserLocationsError("failed to sign in with Telegram"));
+      yield put(
+        getUserLocationsError("Failed to get upgrades. Please try again. ")
+      );
     }
+    return userLocation;
   } catch (error) {
     console.log(error);
     yield put(getUserLocationsError(error));
@@ -331,7 +371,7 @@ export function* updateCompleteOneTimeTaskSaga(action) {
     yield call(handleUpdateCompletedTask, action.payload);
     yield put(updateCompleteOneTimeTaskSuccess(action.payload));
   } catch (error) {
-    console.error('Error updating oneTimeTaskList: ', error);
+    console.error("Error updating oneTimeTaskList: ", error);
   }
 }
 
@@ -361,4 +401,5 @@ export function* userSagaWatcher() {
   yield takeLatest(updateCompleteOneTimeTask.type, updateCompleteOneTimeTaskSaga);
   yield takeLatest(updateProfile.type, updateUserProfileSaga);
   yield takeLatest(getUserLocations.type, getUserLocationsSaga);
+  yield takeLatest(getUserUpgradeLocation.type, getUserUpgradeLocationsSaga);
 }
