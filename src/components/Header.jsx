@@ -14,7 +14,7 @@ function Header() {
     const currentUser = useUserDetails();
     const localCoins = useLocalCoins();
     const trigger = useRef(null);
-    const totalClicksRef = useRef(null);
+    const coinsDisplayRef = useRef(null);
 
     // navigation bar setup
     const navDestinations = [
@@ -60,7 +60,7 @@ function Header() {
 
     useEffect(() => {
         const adjustFontSize = () => {
-          const element = totalClicksRef.current;
+          const element = coinsDisplayRef.current;
           const containerWidth = element.parentElement.offsetWidth;
           let newFontSize = 36;
           
@@ -131,7 +131,7 @@ function Header() {
                         />
                         <div className="relative flex items-center justify-center w-44">
                             <span
-                                ref={totalClicksRef}
+                                ref={coinsDisplayRef}
                                 className="relative text-3xl text-amber-500 tracking-normal w-full overflow-hidden text-left"
                                 style={{
                                     WebkitTextStrokeWidth: '1.75px',
