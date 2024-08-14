@@ -1,23 +1,10 @@
 import React, { useEffect, useState } from "react";
-import PropTypes from "prop-types";
-import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
-import useAuth from "../../hooks/useAuth.js";
 import Header from "../../components/Header.jsx";
 import { fetchDate, startCountdown } from '../../firebase/countDown';
 
-function ReferralPage({ currentUser, totalClicks }) {
-    const navigate = useNavigate();
-    const { isLoggedIn, loading } = useAuth();
+function ReferralPage() {
     const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
     const [isContainerVisible, setIsContainerVisible] = useState(true);
-
-    useEffect(() => {
-        if (!isLoggedIn && !loading) {
-            navigate("/login");
-            toast.error("You need to be logged in to access this page");
-        }
-    }, [isLoggedIn, navigate, loading]);
 
     useEffect(() => {
         const fetchAndStartCountdown = async () => {
@@ -33,7 +20,7 @@ function ReferralPage({ currentUser, totalClicks }) {
 
     return (
         <>
-            <Header currentUser={currentUser} totalClicks={totalClicks} />
+            <Header />
 
             <div
                 className="flex flex-col items-center pb-4 px-20 min-h-screen"
@@ -256,10 +243,5 @@ function ReferralPage({ currentUser, totalClicks }) {
         </>
     );
 }
-
-ReferralPage.propTypes = {
-    currentUser: PropTypes.object,
-    totalClicks: PropTypes.number
-};
 
 export default ReferralPage;

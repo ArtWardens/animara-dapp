@@ -1,18 +1,15 @@
 import React, { useEffect, useMemo, useState } from "react";
-import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";
-import useAuth from "../../hooks/useAuth.js";
 import Header from "../../components/Header.jsx";
 import { FaInstagram, FaTwitter, FaTelegramPlane, FaYoutube, FaLink } from 'react-icons/fa';
-import { getEarlyBirdOneTimeTaskList, useEarlyBirdOneTimeTaskList, useTaskIdToComplete, useEarlyBirdOneTimeTaskListSuccess, completeOneTimeTask } from "../../sagaStore/slices/userSlice.js";
+import { useUserDetails,getEarlyBirdOneTimeTaskList, useEarlyBirdOneTimeTaskList, useTaskIdToComplete, useEarlyBirdOneTimeTaskListSuccess, completeOneTimeTask } from "../../sagaStore/slices/userSlice.js";
 import { fetchDate, startCountdown } from '../../firebase/countDown';
 
-const EarlyBirdPage = ({ currentUser, totalClicks, setTotalClicks }) => {
+const EarlyBirdPage = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const { isLoggedIn, loading } = useAuth();
+    const currentUser = useUserDetails();
     const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
     const [isContainerVisible, setIsContainerVisible] = useState(true);
 
@@ -25,13 +22,6 @@ const EarlyBirdPage = ({ currentUser, totalClicks, setTotalClicks }) => {
             dispatch(getEarlyBirdOneTimeTaskList());
         }
     }, [dispatch, getEarlyBirdOneTimeTaskListSuccess]);
-
-    useEffect(() => {
-        if (!isLoggedIn && !loading) {
-            navigate("/login");
-            toast.error("You need to be logged in to access this page");
-        }
-    }, [isLoggedIn, navigate, loading]);
 
     useEffect(() => {
         const fetchAndStartCountdown = async () => {
@@ -126,7 +116,7 @@ const EarlyBirdPage = ({ currentUser, totalClicks, setTotalClicks }) => {
 
     return (
         <>
-            <Header currentUser={currentUser} totalClicks={totalClicks} />
+            <Header />
 
             <div
                 className="flex-grow flex flex-col place-content-center items-center px-24 pb-4 min-h-screen"
@@ -259,6 +249,7 @@ const EarlyBirdPage = ({ currentUser, totalClicks, setTotalClicks }) => {
                         <img
                             src={"../assets/images/clicker-character/noticeBoard.png"}
                             className="w-full absolute bottom-0"
+                            alt=""
                         />
                         <div className="w-full flex flex-col absolute px-14 gap-1.2 bottom-40">
                             <div
@@ -313,11 +304,5 @@ const EarlyBirdPage = ({ currentUser, totalClicks, setTotalClicks }) => {
         </>
     );
 }
-
-EarlyBirdPage.propTypes = {
-    currentUser: PropTypes.object,
-    totalClicks: PropTypes.number,
-    setTotalClicks: PropTypes.func,
-};
 
 export default EarlyBirdPage;

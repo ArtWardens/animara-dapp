@@ -8,17 +8,24 @@ import {
   loginWithTwitterImpl,
   loginWithTelegramImpl,
   resetPasswordImpl,
+  logoutImpl,
+  getCurrentUserIdImpl,
 } from "../firebase/auth";
 import {
   updateUserProfileImpl,
-  handleGetUserData,
-  handleUpdateDailyLogin,
+  getUserDataImpl,
+  updateDailyLoginImpl,
 } from "../firebase/user";
 import { handleGetLeaderboard } from "../firebase/leaderboard";
 import {
   handleGetOneTimeTaskList,
   handleCompletedOneTimeTask,
 } from "../firebase/oneTimeTask";
+import {
+  settleTapSessionImpl,
+  rechargeEnergyImpl,
+  rechargeEnergyByInviteImpl
+} from '../firebase/clicker';
 import {
   closeDailyPopup,
   closeDailyPopupSuccess,
@@ -39,6 +46,7 @@ import {
   resetPasswordError,
   logOut,
   logOutSuccess,
+  logOutError,
   loginWithEmail,
   loginWithEmailSuccess,
   loginWithEmailError,
@@ -63,18 +71,24 @@ import {
   updateProfile,
   updateProfileSuccess,
   updateProfileError,
+  consumeStamina,
+  settleTapSession,
+  settleTapSessionSuccess,
+  settleTapSessionError,
+  rechargeStamina,
+  rechargeStaminaSuccess,
+  rechargeStaminaError,
 } from "../sagaStore/slices";
+import {
+  StaminaRechargeTypeBasic,
+  StaminaRechargeTypeInvite,
+} from "../utils/constants"
 import {
   calculateCountdownRemaining,
   getCooldownTime,
   setCooldownTime,
   setDashboardData,
 } from "../utils/getTimeRemaining";
-import {
-  addToLocalStorage,
-  getFromLocalStorage,
-  removeFromLocalStorage,
-} from "../utils/localStorage";
 
 export function* signupWithEmailSaga({ payload }) {
   try {
@@ -128,7 +142,6 @@ export function* loginWithEmailSaga({ payload }) {
     const user = yield call(loginWithEmailImpl, payload);
     if (user?.uid) {
       const token = yield call(getIdTokenResult, user);
-      addToLocalStorage("uid", user.uid);
       if (
         !user.emailVerified ||
         token.claims.limitedAccess === true
@@ -137,7 +150,7 @@ export function* loginWithEmailSaga({ payload }) {
         window.location.href = '/limited-access';  
         return;
       }
-      const userData = yield call(handleGetUserData, user.uid);
+      const userData = yield call(getUserDataImpl, user.uid);
       yield put(loginWithEmailSuccess(userData));
 
       toast.success("Signed in");
@@ -156,8 +169,7 @@ export function* loginWithGoogleSaga() {
   try {
     const user = yield call(loginWithGoogleImpl);
     if (user?.uid) {
-      addToLocalStorage("uid", user.uid);
-      const userData = yield call(handleGetUserData, user.uid);
+      const userData = yield call(getUserDataImpl, user.uid);
       yield put(loginWithGoogleSuccess(userData));
       toast.success("Signed in with Google");
     } else {
@@ -174,8 +186,7 @@ export function* loginWithTwitterSaga() {
   try {
     const user = yield call(loginWithTwitterImpl);
     if (user?.uid) {
-      addToLocalStorage("uid", user.uid);
-      const userData = yield call(handleGetUserData, user.uid);
+      const userData = yield call(getUserDataImpl, user.uid);
       yield put(loginWithTwitterSuccess(userData));
       toast.success("Signed in with Twitter");
     } else {
@@ -197,8 +208,7 @@ export function* loginWithTelegramSaga(telegramUser) {
   try {
     const user = yield call(loginWithTelegramImpl, telegramUser);
     if (user?.uid) {
-      addToLocalStorage("uid", user.uid);
-      const userData = yield call(handleGetUserData, user.uid);
+      const userData = yield call(getUserDataImpl, user.uid);
       yield put(loginWithTelegramSuccess(userData));
       toast.success("Signed in with Telegram");
     } else {
@@ -210,7 +220,6 @@ export function* loginWithTelegramSaga(telegramUser) {
     yield put(loginWithTelegramError(error));
   }
 }
-
 
 export function* resetPasswordSaga(action) {
   try {
@@ -244,19 +253,18 @@ export function* updateUserProfileSaga({ payload }) {
 }
 
 export function* getUserSaga() {
-  const uid = getFromLocalStorage("uid");
-  if (uid) {
-    addToLocalStorage("uid", uid);
-    const userData = yield call(handleGetUserData, uid);
+  try{
+    const uid = getCurrentUserIdImpl();
+    const userData = yield call(getUserDataImpl, uid);
     yield put(getUserSuccess(userData));
-  } else {
-    yield put(getUserError(null));
+  } catch (error){
+    yield put(getUserError(error));
   }
 }
 
 export function* updateDailyLoginSaga() {
   try {
-    const dailyLoginResult = yield call(handleUpdateDailyLogin);
+    const dailyLoginResult = yield call(updateDailyLoginImpl);
     yield put(updateDailyLoginSuccess(dailyLoginResult));
   } catch (error) {
     console.log("Failed to daily login with error: ", error);
@@ -318,12 +326,48 @@ export function* updateOneTimeTaskSaga({ payload }) {
 }
 
 export function* logOutSaga() {
-  removeFromLocalStorage("uid");
-  yield put(logOutSuccess(null));
+  try{
+    console.log(`saga logging out`);
+    yield call(logoutImpl);
+    console.log(`saga logged out`);
+    yield put(logOutSuccess());
+  }catch (error){
+    yield put(logOutError(error));
+  }
 }
 
 export function* closeDailyPopupSaga() {
   yield put(closeDailyPopupSuccess());
+}
+
+export function* consumeStaminaSaga(){
+  // empty
+}
+
+export function* settleTapSessionSaga({ payload }) {
+  try{
+    const result = yield call(settleTapSessionImpl(payload));
+    yield put(settleTapSessionSuccess(result));
+  }catch (error){
+    yield put(settleTapSessionError(error));
+  }
+}
+
+export function* rechargeStaminaSaga({ payload }) {
+  try{
+    let result;
+    const opType = payload.opType;
+    if (opType === StaminaRechargeTypeBasic){
+      result = yield call(rechargeEnergyImpl);
+    }else if (opType === StaminaRechargeTypeInvite){
+      result = yield call(rechargeEnergyByInviteImpl);
+    }else{
+      yield put(rechargeStaminaError({ message: 'invalid-regcharge-type'}));
+    }
+    yield put(rechargeStaminaSuccess(result));
+  }catch (error){
+    yield put(rechargeStaminaError(error));
+  }
 }
 
 export function* userSagaWatcher() {
@@ -342,4 +386,7 @@ export function* userSagaWatcher() {
   yield takeLatest(getEarlyBirdOneTimeTaskList.type, getEarlyBirdOneTimeTaskListSaga);
   yield takeLatest(completeOneTimeTask.type, updateOneTimeTaskSaga);
   yield takeLatest(updateProfile.type, updateUserProfileSaga);
+  yield takeLatest(consumeStamina.type, consumeStaminaSaga);
+  yield takeLatest(settleTapSession.type, settleTapSessionSaga);
+  yield takeLatest(rechargeStamina.type, rechargeStaminaSaga);
 }
