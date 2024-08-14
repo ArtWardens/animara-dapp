@@ -2,14 +2,12 @@ import React, { useEffect, useState, useRef } from "react";
 import { useDispatch } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom/dist";
 import { PropagateLoader } from "react-spinners";
-import { logOut, useUserDetails, useLocalCoins, useUserAuthenticated, useAuthLoading } from "../sagaStore/slices";
+import { logOut, useUserDetails, useLocalCoins } from "../sagaStore/slices";
 
 function Header() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const location = useLocation();
-    const isAuthenticated = useUserAuthenticated();
-    const isAuthLoading = useAuthLoading();
     const currentPath = location.pathname;
     const currentUser = useUserDetails();
     const localCoins = useLocalCoins();
@@ -40,16 +38,6 @@ function Header() {
     const handleLogout = () => {
         dispatch(logOut());
     };
-
-    
-    useEffect(() => {
-        const timer = setTimeout(() => {
-            if (!isAuthLoading && !isAuthenticated) {
-                navigate('/login');
-            }
-        }, 1500);
-        return () => clearTimeout(timer);
-    }, [isAuthLoading, isAuthenticated, navigate]);
 
     // State for mobile menu
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
