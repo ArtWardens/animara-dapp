@@ -92,7 +92,7 @@ const ClickerView = () => {
     setCurrentMascot(mascots[currentUser?.level]);
 
     // check and popup daily login
-    if (!currentUser.loggedInToday) {
+    if (currentUser && !currentUser?.loggedInToday) {
       dispatch(updateDailyLogin());
     }
   }, [currentUser, dispatch]);
