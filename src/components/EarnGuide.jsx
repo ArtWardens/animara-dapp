@@ -305,7 +305,7 @@ function EarnGuide({
 EarnGuide.propTypes = {
     modalOpen: PropTypes.bool,
     handleOpenModal: PropTypes.func,
-    setIsOneTimeTaskOpen: PropTypes.bool
+    setIsOneTimeTaskOpen: PropTypes.func
 }
 
 export default EarnGuide;
