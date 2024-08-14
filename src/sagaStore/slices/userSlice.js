@@ -1,8 +1,15 @@
-import { createSlice, current } from "@reduxjs/toolkit";
-import { useAppSelector } from "../../hooks/storeHooks";
+import { createSlice, current } from '@reduxjs/toolkit';
+import { useAppSelector } from '../../hooks/storeHooks';
+import {
+  addToLocalStorage,
+} from "../../utils/localStorage";
+import {
+    StaminaRechargeTypeBasic,
+    StaminaRechargeTypeInvite,
+  } from "../../utils/constants"
 
 const userInitialState = {
-  loading: false,
+  authLoading: false,
   resetPasswordLoading: false,
   updateProfile: [],
   updateProfileLoading: false,
@@ -15,106 +22,119 @@ const userInitialState = {
   isAuthenticated: false,
   isOpenDailyPopup: false,
   user: null,
+  localCoins: 0,
+  localStamina: 0,
   error: null,
   getOneTimeTaskListLoading: false,
   getOneTimeTaskListSuccess: false,
   oneTimeTaskList: [],
+  taskIdToComplete: '',
   getEarlyBirdOneTimeTaskListLoading: false,
   getEarlyBirdOneTimeTaskListSuccess: false,
   earlyBirdOneTimeTask: [],
+  settleTapSessionLoading: false,
+  rechargeStaminaLoading: false,
+  rechargeOpType: '',
   userLocationsLoading: false,
   userLocations: [],
 };
 
 export const userSlice = createSlice({
-  name: "user",
+  name: 'user',
   initialState: userInitialState,
   reducers: {
     signupWithEmail: (state, { payload }) => {
-      state.loading = true;
+      state.authLoading = true;
     },
     signupWithEmailSuccess: (state, { payload }) => {
-      state.loading = false;
+      state.authLoading = false;
     },
     signupWithEmailError: (state, { payload }) => {
       state.isAuthenticated = false;
       state.error = payload;
-      state.loading = false;
+      state.authLoading = false;
     },
     completeSignUpWithEmail: (state, { payload }) => {
-      state.loading = true;
+      state.authLoading = true;
     },
     completeSignUpWithEmailSuccess: (state, { payload }) => {
-      state.loading = false;
+      state.authLoading = false;
     },
     completeSignUpWithEmailError: (state, { payload }) => {
       state.isAuthenticated = false;
       state.error = payload;
-      state.loading = false;
+      state.authLoading = false;
     },
     loginWithEmail: (state, { payload }) => {
-      state.loading = true;
+      state.authLoading = true;
     },
     loginWithEmailSuccess: (state, { payload }) => {
-      state.isAuthenticated = true;
-      state.loading = false;
+      addToLocalStorage("uid", payload.uid);
       state.user = payload;
+      state.isAuthenticated = true;
+      state.authLoading = false;
     },
     loginWithEmailError: (state, { payload }) => {
       state.isAuthenticated = false;
       state.error = payload;
-      state.loading = false;
+      state.authLoading = false;
     },
     loginWithGoogle: (state, { payload }) => {
-      state.loading = true;
+      state.authLoading = true;
     },
     loginWithGoogleSuccess: (state, { payload }) => {
       state.isAuthenticated = true;
-      state.loading = false;
+      state.authLoading = false;
       state.user = payload;
     },
     loginWithGoogleError: (state, { payload }) => {
       state.isAuthenticated = false;
       state.error = payload;
-      state.loading = false;
+      state.authLoading = false;
     },
     loginWithTwitter: (state, { payload }) => {
-      state.loading = true;
+      state.authLoading = true;
     },
     loginWithTwitterSuccess: (state, { payload }) => {
       state.isAuthenticated = true;
-      state.loading = false;
+      state.authLoading = false;
       state.user = payload;
     },
     loginWithTwitterError: (state, { payload }) => {
       state.isAuthenticated = false;
       state.error = payload;
-      state.loading = false;
+      state.authLoading = false;
     },
     loginWithTelegram: (state, { payload }) => {
-      state.loading = true;
+      state.authLoading = true;
     },
     loginWithTelegramSuccess: (state, { payload }) => {
       state.isAuthenticated = true;
-      state.loading = false;
+      state.authLoading = false;
       state.user = payload;
     },
     loginWithTelegramError: (state, { payload }) => {
       state.isAuthenticated = false;
       state.error = payload;
-      state.loading = false;
+      state.authLoading = false;
     },
     logOut: (state) => {
-      state.isAuthenticated = false;
-      state.user = null;
+      state.authLoading = true;
     },
-    logOutSuccess: (state, { payload }) => {
-      state.user = payload;
+    logOutSuccess: (state) => {
+      state.user = null;
+      state.localCoins = 0;
+      state.localStamina = 0;
+      state.isAuthenticated = false;
+      state.authLoading = false;
+    },
+    logOutError: (state) => {
+      state.authLoading = false;
     },
     clearLoginError: (state) => {
       state.error = null;
     },
-    resetPassword: (state) => {
+    resetPassword: (state) =>{
       state.resetPasswordLoading = true;
     },
     resetPasswordSuccess: (state, { payload }) => {
@@ -125,7 +145,7 @@ export const userSlice = createSlice({
       state.error = payload;
       state.resetPasswordLoading = false;
     },
-    updateProfile: (state, { payload }) => {
+    updateProfile: (state, { payload }) =>{
       state.updateProfileLoading = true;
       state.updateProfile = payload;
     },
@@ -139,7 +159,7 @@ export const userSlice = createSlice({
     },
     setError: (state, { payload }) => {
       state.error = payload;
-      state.loading = false;
+      state.authLoading = false;
     },
     getUser: (state, { payload }) => {
       state.getUserLoading = true;
@@ -147,23 +167,26 @@ export const userSlice = createSlice({
     getUserSuccess: (state, { payload }) => {
       state.getUserLoading = false;
       state.user = payload;
+      state.localStamina = payload.stamina;
+      state.localCoins = payload.coins;
     },
     getUserError: (state, { payload }) => {
       state.getUserLoading = false;
       state.user = payload;
     },
-    updateDailyLogin: (state, { payload }) => {
+    updateDailyLogin: (state) => {
       state.updatePopupLoading = true;
       state.updatePopupSuccess = false;
     },
     updateDailyLoginSuccess: (state, { payload }) => {
       const currentUser = current(state.user);
+      state.localCoins = payload.updatedCoins;
       state.user = {
         ...currentUser,
-        coins: currentUser.coins + payload.coins,
+        coins:  payload.updatedCoins,
         loggedInToday: true,
-        loginDays: currentUser.loginDays + 1,
-      };
+        loginDays: payload.newLoginDay,
+      }
       state.updatePopupLoading = false;
       state.updatePopupSuccess = true;
       state.isOpenDailyPopup = true;
@@ -173,7 +196,8 @@ export const userSlice = createSlice({
       state.updatePopupSuccess = false;
       state.error = payload;
     },
-    closeDailyPopup: () => { },
+    closeDailyPopup: () => {
+    },
     closeDailyPopupSuccess: (state, { payload }) => {
       state.isOpenDailyPopup = false;
     },
@@ -205,14 +229,23 @@ export const userSlice = createSlice({
       state.error = payload;
       state.getOneTimeTaskListSuccess = false;
     },
-    updateCompleteOneTimeTask: () => { },
-    updateCompleteOneTimeTaskSuccess: (state, { payload }) => {
+    completeOneTimeTask: (state, { payload }) => {
+      state.taskIdToComplete = payload.taskId;
+    },
+    completeOneTimeTaskSuccess: (state, { payload }) => {
       const currentUser = current(state.user);
+      let taskList = state.user.completedTask;
+      taskList.push(payload.completedTaskId);
       state.user = {
         ...currentUser,
-        coins: currentUser.coins + payload.coins,
-        completedTask: payload.completedTask,
-      };
+        coins: payload.updatedCoins,
+        completedTask: taskList
+      }
+      state.taskIdToComplete = '';
+    },
+    completeOneTimeTaskError: (state, { payload }) => {
+      state.taskIdToComplete = '';
+      state.error = payload;
     },
     getEarlyBirdOneTimeTaskList: (state, { payload }) => {
       state.getEarlyBirdOneTimeTaskListLoading = true;
@@ -227,6 +260,63 @@ export const userSlice = createSlice({
       state.getEarlyBirdOneTimeTaskListLoading = false;
       state.error = payload;
       state.getEarlyBirdOneTimeTaskListSuccess = false;
+    },
+    consumeStamina: (state, { payload }) => {
+      const prevStamina = state.localStamina;
+      const newStamina = prevStamina - payload.staminaToConsume;
+      state.localStamina = newStamina;
+      const prevCoins = state.localCoins;
+      const newCoins = prevCoins + payload.coinToGain;
+      state.localCoins = newCoins;
+    },
+    settleTapSession: (state) => {
+      state.settleTapSessionLoading = true;
+    },
+    settleTapSessionSuccess: (state, { payload }) => {
+      const currentUser = current(state.user);
+      state.user = {
+        ...currentUser,
+        coins: payload.newCoinAmt,
+        stamina: payload.newStamina,
+      }
+      state.localStamina = payload.newStamina;
+      state.localCoins = payload.newCoinAmt;
+      state.settleTapSessionLoading = true;
+    },
+    settleTapSessionError: (state, { payload }) => {
+      console.log(`failed to settle tap session with error; ${payload}`);
+      // check if is desync error
+      const currentUser = current(state.user);
+      state.localStamina = currentUser.stamina;
+      state.localCoins = currentUser.coins;
+      state.error = payload;
+      state.settleTapSessionLoading = true;
+    },
+    rechargeStamina: (state, { payload }) => {
+      state.rechargeStaminaLoading = true;
+      state.rechargeOpType = payload.opType;
+    },
+    rechargeStaminaSuccess: (state, { payload }) => {
+      const currentUser = current(state.user);
+      if (state.rechargeOpType === StaminaRechargeTypeBasic){
+        state.user = {
+          ...currentUser,
+          stamina: payload.newStamina,
+          staminaRechargeRemaining: payload.newRechargeRemaining,
+        }
+      }else if (state.rechargeOpType === StaminaRechargeTypeInvite){
+        state.user = {
+          ...currentUser,
+          stamina: payload.newStamina,
+          inviteRechargeRemaining: payload.newRechargeRemaining,
+        }
+      } 
+      state.localStamina = payload.newStamina;
+      state.rechargeStaminaLoading = false;
+    },
+    rechargeStaminaError: (state, { payload }) => {
+      state.error = payload;
+      state.rechargeStaminaLoading = false;
     },
     getUserLocations: (state, { payload }) => {
       state.userLocationsLoading = true;
@@ -269,6 +359,7 @@ export const userSlice = createSlice({
 export const {
   logOut,
   logOutSuccess,
+  logOutError,
   signupWithEmail,
   signupWithEmailSuccess,
   signupWithEmailError,
@@ -312,7 +403,16 @@ export const {
   getEarlyBirdOneTimeTaskList,
   getEarlyBirdOneTimeTaskListSuccess,
   getEarlyBirdOneTimeTaskListError,
-  updateCompleteOneTimeTask,
+  completeOneTimeTask,
+  completeOneTimeTaskSuccess,
+  completeOneTimeTaskError,
+  consumeStamina,
+  settleTapSession,
+  settleTapSessionSuccess,
+  settleTapSessionError,
+  rechargeStamina,
+  rechargeStaminaSuccess,
+  rechargeStaminaError,
   updateCompleteOneTimeTaskSuccess,
   getUserLocations,
   getUserLocationsSuccess,
@@ -322,31 +422,36 @@ export const {
   getUserUpgradeLocationError,
 } = userSlice.actions;
 
-export const useAuthLoading = () => useAppSelector((state) => state.user.loading);
-export const useLoginLoading = () => useAppSelector((state) => state.user.loading);
+export const useAuthLoading = () => useAppSelector((state) => state.user.authLoading);
+export const useLoginLoading = () => useAppSelector((state) => state.user.authLoading);
 export const useLoginError = () => useAppSelector((state) => state.user.error);
 export const useSignupError = () => useAppSelector((state) => state.user.error);
-export const useCompleteSignupWithEmailLoading = () => useAppSelector((state) => state.user.loading);
+export const useCompleteSignupWithEmailLoading = () => useAppSelector((state) => state.user.authLoading);
 export const useCompleteSignupWithEmailError = () => useAppSelector((state) => state.user.error);
-export const useLoginWithGoogleLoading = () => useAppSelector((state) => state.user.loading);
+export const useLoginWithGoogleLoading = () => useAppSelector((state) => state.user.authLoading);
 export const useLoginWithGoogleError = () => useAppSelector((state) => state.user.error);
-export const useLoginWithTwitterLoading = () => useAppSelector((state) => state.user.loading);
+export const useLoginWithTwitterLoading = () => useAppSelector((state) => state.user.authLoading);
 export const useLoginWithTwitterError = () => useAppSelector((state) => state.user.error);
-export const useLoginWithTelegramLoading = () => useAppSelector((state) => state.user.loading);
+export const useLoginWithTelegramLoading = () => useAppSelector((state) => state.user.authLoading);
 export const useLoginWithTelegramError = () => useAppSelector((state) => state.user.error);
 export const useResetPasswordError = () => useAppSelector((state) => state.user.error);
 export const useResetPasswordLoading = () => useAppSelector((state) => state.user.resetPasswordLoading);
 export const useUpdateProfileLoading = () => useAppSelector((state) => state.user.updateProfileLoading);
 export const useUserDetails = () => useAppSelector((state) => state.user.user);
+export const useUserDetailsLoading = () => useAppSelector((state) => state.user.getUserLoading);
 export const useLeaderBoardDetails = () => useAppSelector((state) => state.user.leaderBoard);
 export const useLeaderBoardLoading = () => useAppSelector((state) => state.user.getLeaderBoardLoading);
 export const useLeaderBoardLoadSuccess = () => useAppSelector((state) => state.user.getLeaderBoardSuccess);
 export const useIsOpenDailyPopup = () => useAppSelector((state) => state.user.isOpenDailyPopup);
 export const useOneTimeTaskList = () => useAppSelector((state) => state.user.oneTimeTaskList);
+export const useTaskIdToComplete = () => useAppSelector((state) => state.user.taskIdToComplete);
 export const useOneTimeTaskListSuccess = () => useAppSelector((state) => state.user.getOneTimeTaskListSuccess);
 export const useEarlyBirdOneTimeTaskList = () => useAppSelector((state) => state.user.earlyBirdOneTimeTask);
 export const useEarlyBirdOneTimeTaskListSuccess = () => useAppSelector((state) => state.user.getEarlyBirdOneTimeTaskListSuccess);
 export const useUserAuthenticated = () => useAppSelector((state) => state.user.isAuthenticated);
+export const useLocalCoins = () => useAppSelector((state) => state.user.localCoins);
+export const useLocalStamina = () => useAppSelector((state) => state.user.localStamina);
+export const useRechargeLoading = () => useAppSelector((state) => state.user.rechargeStaminaLoading);
 export const useUserLocation = () => useAppSelector((state) => state.user.userLocations);
 export const useUserLocationLoading = () => useAppSelector((state) => state.user.userLocationsLoading);
 

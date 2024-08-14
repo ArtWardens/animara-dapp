@@ -3,28 +3,20 @@ import { PropTypes } from "prop-types";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { FaCopy, FaShareFromSquare } from "react-icons/fa6";
+import { useUserDetails } from "../../sagaStore/slices";
 import gem from "../../assets/images/gem2.png";
 import StyledQRCode from "../../components/StyledQRCode";
-import useAuth from "../../hooks/useAuth.js";
 import Header from "../../components/Header.jsx";
 
-function ReferralPage ({ currentUser, totalClicks, inviteCode }){
+function ReferralPage ({ inviteCode }){
+  const navigate = useNavigate();
+  const currentUser = useUserDetails();
   const [inviteCodeState, setInviteCodeState] = useState(inviteCode);
   const inviteLink = `${window.location.origin}/signup?invite-code=${inviteCodeState}`;
 
-  const navigate = useNavigate();
-  const { isLoggedIn, loading, user } = useAuth();
-
   useEffect(() => {
-    setInviteCodeState(user?.referralCode || "");
-  }, [user]);
-
-  useEffect(() => {
-    if (!isLoggedIn && !loading) {
-      navigate("/login");
-      toast.error("You need to be logged in to access this page");
-    }
-  }, [isLoggedIn, navigate, loading]);
+    setInviteCodeState(currentUser?.referralCode || "");
+  }, [currentUser]);
 
   const shareInviteLink = () => {
     if (navigator.share) {
@@ -48,10 +40,7 @@ function ReferralPage ({ currentUser, totalClicks, inviteCode }){
 
   return (
     <>
-      <Header
-        currentUser={currentUser}
-        totalClicks={totalClicks}
-      />
+      <Header />
 
       <div
         className="flex flex-col items-center pb-4 px-16 min-h-screen"
@@ -63,7 +52,7 @@ function ReferralPage ({ currentUser, totalClicks, inviteCode }){
           backgroundAttachment: 'fixed',
         }}
       >
-        <div className="container flex flex-col items-center gap-6 pt-36 tracking-wider">
+        <div className="container flex flex-col items-center gap-6 pt-40 tracking-wider">
           <div className="text-center text-white text-3xl uppercase">Refer Friends</div>
           <span
             className="text-center text-amber-500 text-6xl uppercase leading-5 tracking-normal pb-2"
@@ -136,14 +125,14 @@ function ReferralPage ({ currentUser, totalClicks, inviteCode }){
                       backgroundRepeat: 'no-repeat',
                     }}
                   >
-                    <div className="text-neutral-700 text-xl tracking-wider pb-4">
+                    <div className="text-neutral-700 text-xl tracking-wider pb-3">
                       YOUR REFERRAL STATS
                     </div>
                     <div className="flex w-full gap-8">
                       <div className="w-1/2">
                         <div className="justify-start items-start">
                           <p
-                            className="text-amber-500 text-5xl"
+                            className="text-amber-500 text-5xl lg:text-4xl 2xl:text-5xl"
                             style={{
                               WebkitTextStrokeWidth: '2px',
                               WebkitTextStrokeColor: 'var(--Color-11, #FFF)',
@@ -160,7 +149,7 @@ function ReferralPage ({ currentUser, totalClicks, inviteCode }){
                               textShadow: '0px 2px 4px rgba(0, 0, 0, 0.25)',
                             }}
                           >
-                            NFT PURCHASED
+                            NFT PURCHASE
                           </p>
                           <div className="text-neutral-700 text-xs font-semibold font-outfit">
                             Begin foundational development, core mechanics.
@@ -170,7 +159,7 @@ function ReferralPage ({ currentUser, totalClicks, inviteCode }){
                       <div className="w-1/2">
                         <div className="justify-start items-start">
                           <p
-                            className="text-sky-700 text-5xl"
+                            className="text-sky-700 text-5xl lg:text-4xl 2xl:text-5xl"
                             style={{
                               WebkitTextStrokeWidth: '2px',
                               WebkitTextStrokeColor: 'var(--Color-11, #FFF)',
@@ -222,7 +211,7 @@ function ReferralPage ({ currentUser, totalClicks, inviteCode }){
                           500 sol
                         </div>
                       </div>
-                      <div className="pb-2 justify-center items-center inline-flex hover:scale-105 transition-transform duration-200">
+                      <div className="pb-1 justify-center items-center inline-flex hover:scale-105 transition-transform duration-200">
                         <div className="h-[60px] w-[160px] bg-[#FFDC62] rounded-full border border-[#E59E69] justify-center items-center inline-flex shadow-[0px_4px_4px_0px_#FFFBEF_inset,0px_-4px_4px_0px_rgba(255,249,228,0.48),0px_5px_4px_0px_rgba(232,140,72,0.48)] hover:bg-[#FFB23F] hover:pl-[24px] hover:pr-[20px] hover:border-1 hover:border-[#E59E69] hover:shadow-[0px_4px_4px_0px_rgba(255,210,143,0.61)_inset,0px_4px_4px_0px_rgba(136,136,136,0.48)] cursor-pointer">
                           <div
                             className="text-center text-white text-2xl font-normal"
@@ -233,7 +222,7 @@ function ReferralPage ({ currentUser, totalClicks, inviteCode }){
                         </div>
                       </div>
                       <div className="justify-start items-center gap-0.5 inline-flex">
-                        <span className="w-[135px] text-white text-xs font-outfit">Get additional<span className="text-white font-LuckiestGuy text-xs tracking-wide"> 250 SOL</span>, if you own NFT!</span>
+                        <span className="w-[130px] text-white text-xs font-outfit">Get additional<span className="text-white font-LuckiestGuy text-xs tracking-wide"> 250 SOL</span>, if you own NFT!</span>
                         <div className="flex justify-center items-center p-2 rounded-lg bg-[#FFC85A] shadow-[0px_1px_2px_0px_rgba(198,115,1,0.66)] hover:bg-[#FFAA00] hover:shadow-[0px_4px_4px_0px_rgba(255,210,143,0.61)_inset,0px_4px_4px_0px_rgba(232,140,72,0.48)] cursor-pointer hover:scale-105 transition-transform duration-200">
                           <div
                             className="text-orange-50 text-xs"
@@ -274,7 +263,7 @@ function ReferralPage ({ currentUser, totalClicks, inviteCode }){
                       <input
                         type="text"
                         value={inviteCodeState}
-                        readOnly={user?.referralCode ? true : false}
+                        readOnly={currentUser?.referralCode ? true : false}
                         onChange={(e) => setInviteCodeState(e.target.value)}
                         className="w-full bg-[#003358] border-[1px] border-[#245F89] rounded-lg p-3 text-sm font-medium font-outfit tracking-wide"
                       />
@@ -299,7 +288,7 @@ function ReferralPage ({ currentUser, totalClicks, inviteCode }){
                 </div>
 
                 <div
-                  className="h-9 mx-4 mb-5 text-sm tracking-wider bg-amber-400 shadow-[0px_4px_4px_0px_rgba(255,210,143,0.61)_inset] rounded-full border-orange-300 justify-center items-center gap-2 flex hover:bg-[#FFC85A] hover:shadow-[0px_1px_2px_0px_rgba(198,115,1,0.66)] hover:border-[#FFC85A] cursor-pointer hover:scale-105 transition-transform duration-200"
+                  className="h-9 mx-7 mb-5 text-sm tracking-wider bg-amber-400 shadow-[0px_4px_4px_0px_rgba(255,210,143,0.61)_inset] rounded-full border-orange-300 justify-center items-center gap-2 flex hover:bg-[#FFC85A] hover:shadow-[0px_1px_2px_0px_rgba(198,115,1,0.66)] hover:border-[#FFC85A] cursor-pointer hover:scale-105 transition-transform duration-200"
                   onClick={shareInviteLink}
                 >
                   <FaShareFromSquare className="w-4 h-4 mr-2" />

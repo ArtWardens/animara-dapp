@@ -2,18 +2,23 @@ import React, { useEffect, useState } from "react";
 import { PropTypes } from "prop-types";
 import { BsCopy } from "react-icons/bs";
 import StyledQRCode from "./StyledQRCode";
-import gem from "../assets/images/gem2.png";
 import { toast } from "react-toastify";
+import { useUserDetails } from '../sagaStore/slices';
+import gem from "../assets/images/gem2.png";
 
-const ReferPopup = ({ inviteCode, onClose, rewardRate }) => {
-
+const ReferPopup = ({ onClose }) => {
+  const currentUser = useUserDetails();
   const [countdown, setCountdown] = useState(5);
   const [isCloseEnabled, setIsCloseEnabled] = useState(false);
-  const inviteLink = `${window.location.origin}/signup?invite-code=${inviteCode}`;
+  const [inviteLink, setInviteLink] = useState('');
+
+  useEffect(()=>{
+    setInviteLink(`${window.location.origin}/signup?invite-code=${currentUser.inviteCode}`);
+  }, [currentUser]);
 
   const handleCopyToClipboard = () => {
     navigator.clipboard
-      .writeText(inviteCode)
+      .writeText(currentUser.inviteCode)
       .then(() => {
         // Success feedback
         toast.success("Invite code copied to clipboard!");
@@ -76,11 +81,11 @@ const ReferPopup = ({ inviteCode, onClose, rewardRate }) => {
         </button>
         <h2 className="text-2xl font-bold mb-4">Invite Friends</h2>
         <p className="mb-4">
-          Get <span className="text-purple-300">{rewardRate?.inviteRefresh}</span> Energy Bar
+          Get <span className="text-purple-300">{currentUser.inviteRechargable}</span> Energy Bar
         </p>
         <p>Your Invite Code</p>
         <div className="p-2 rounded text-center flex items-center">
-          <code className="mr-3">{inviteCode}</code>
+          <code className="mr-3">{currentUser.inviteCode}</code>
           <BsCopy onClick={handleCopyToClipboard} className="cursor-pointer" />
         </div>
         <div>
@@ -100,7 +105,6 @@ const ReferPopup = ({ inviteCode, onClose, rewardRate }) => {
 ReferPopup.propTypes = {
   inviteCode: PropTypes.string,
   onClose: PropTypes.func,
-  rewardRate: PropTypes.number
 }
 
 export default ReferPopup;

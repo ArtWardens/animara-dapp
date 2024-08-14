@@ -24,7 +24,7 @@ const LeaderBoardModal = ({ setIsLeaderBoardOpen, countdown, timeRemaining }) =>
       const formattedDate = `${currentDate.getFullYear()}_${String(currentDate.getMonth() + 1).padStart(2, '0')}_${String(currentDate.getDate()).padStart(2, '0')}`;
       dispatch(getLeaderBoard(formattedDate));
     }
-  }, []);
+  }, [dispatch, leaderBoardLoaded, leaderBoardLoading]);
 
   useEffect(() => {
     if (!leaderBoardLoading && leaderBoardLoaded && countdown === 0) {
@@ -33,7 +33,7 @@ const LeaderBoardModal = ({ setIsLeaderBoardOpen, countdown, timeRemaining }) =>
 
       dispatch(getLeaderBoard(formattedDate));
     }
-  }, [countdown, dispatch, leaderBoardLoaded, leaderBoardLoading]);
+  }, [dispatch, countdown, leaderBoardLoaded, leaderBoardLoading]);
 
   const userDetails = useUserDetails();
   return (

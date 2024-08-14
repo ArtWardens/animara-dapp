@@ -1,25 +1,40 @@
-import { auth, db, getUserLocations, exploreLocation } from "../firebase/firebaseConfig";
-import {  updateDoc, doc } from "firebase/firestore";
+import { auth, getUserLocations, exploreLocation, settleTapSession, rechargeEnergyByInvite, rechargeEnergy } from "./firebaseConfig";
 
-const handleUpdateCoins = async (data) => {
+const settleTapSessionImpl = async ({ newCointAmt, newStamina }) => {
     try {
-        // ! Update to data.uid
-        const docRef = doc(db, "users", data.uid);
-        
-        await updateDoc(docRef, { coins: data.coins });
+        const idToken = await auth.currentUser.getIdToken(/* forceRefresh */ false);
+        const { data } = await settleTapSession({
+            idToken: idToken,
+            newCoinAmt: newCointAmt,
+            newStamina: newStamina
+        });
+        return data;
     }catch (error) {
-        console.log("Error setting user data: ", error)
+        console.log("Error settling tap session: ", error)
     }
 };
 
-const handleUpdateClickByLevel = async (data) => {
+const rechargeEnergyImpl = async () => {
     try {
-        // ! Update to data.uid
-        const docRef = doc(db, "users", data.uid);
-        
-        await updateDoc(docRef, { clickByLevel: data.clickByLevel });
+        const idToken = await auth.currentUser.getIdToken(/* forceRefresh */ false);
+        const { data } = await rechargeEnergy({
+            idToken: idToken,
+        });
+        return data;
     }catch (error) {
-        console.log("Error setting user data: ", error)
+        console.log("Error handling energy recharge: ", error)
+    }
+};
+
+const rechargeEnergyByInviteImpl = async () => {
+    try {
+        const idToken = await auth.currentUser.getIdToken(/* forceRefresh */ false);
+        const { data } = await rechargeEnergyByInvite({
+            idToken: idToken,
+        });
+        return data;
+    }catch (error) {
+        console.log("Error handling energy recharge by invite: ", error)
     }
 };
 
@@ -35,7 +50,7 @@ const getUserLocationImpl = async () => {
 
     } catch (error) {
         console.log("Error handling get user location details ", error);
-      
+
     }
 };
 
@@ -53,13 +68,14 @@ const upgradeUserLocationImpl = async (locationId) => {
 
     } catch (error) {
         console.log("Error handling get user location details ", error);
-      
+
     }
 };
 
 export {
-    handleUpdateCoins,
-    handleUpdateClickByLevel,
+    settleTapSessionImpl,
+    rechargeEnergyImpl,
+    rechargeEnergyByInviteImpl,
     getUserLocationImpl,
     upgradeUserLocationImpl
 };
