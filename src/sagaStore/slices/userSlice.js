@@ -193,11 +193,6 @@ export const userSlice = createSlice({
       state.updatePopupLoading = false;
       state.updatePopupSuccess = false;
       state.error = payload;
-      const currentUser = current(state.user);
-      state.user = {
-        ...currentUser,
-        loggedInToday: true,
-      }
     },
     closeDailyPopup: () => {
     },
