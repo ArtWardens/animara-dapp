@@ -346,7 +346,7 @@ export function* consumeStaminaSaga(){
 
 export function* settleTapSessionSaga({ payload }) {
   try{
-    const result = yield call(settleTapSessionImpl(payload));
+    const result = yield call(settleTapSessionImpl, payload);
     yield put(settleTapSessionSuccess(result));
   }catch (error){
     yield put(settleTapSessionError(error));
