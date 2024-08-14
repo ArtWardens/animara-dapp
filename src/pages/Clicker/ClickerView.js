@@ -76,12 +76,12 @@ const ClickerView = () => {
 
   // grant depletion rewards
   useEffect(() => {
-    const shouldGainRewards = currentUser?.stamina === 0;
+    const shouldGainRewards = currentUser && currentUser?.stamina === 0;
 
     if (shouldGainRewards) {
       dispatch(consumeStamina({
         staminaToConsume: 0,
-        coinToGain: 150
+        coinToGain: currentUser.depletionReward
       }));
     }
   }, [dispatch, currentUser, setIsOpenRewardModal]);
