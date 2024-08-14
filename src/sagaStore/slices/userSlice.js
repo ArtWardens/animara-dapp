@@ -301,7 +301,7 @@ export const userSlice = createSlice({
         state.user = {
           ...currentUser,
           stamina: payload.newStamina,
-          energyRechargeRemaining: payload.newRechargeRemaining,
+          staminaRechargeRemaining: payload.newRechargeRemaining,
         }
       }else if (state.rechargeOpType === StaminaRechargeTypeInvite){
         state.user = {

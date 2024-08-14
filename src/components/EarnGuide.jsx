@@ -45,7 +45,7 @@ function EarnGuide({
     };
 
     const handleChargeEnergy = () => {
-        if (currentUser.energyRechargeRemaining > 0 && enableEnergyRecharge) {
+        if (currentUser.staminaRechargeRemaining > 0 && enableEnergyRecharge) {
             setIsRecharging(true);
             dispatch(rechargeStamina({ opType: StaminaRechargeTypeBasic }));
         }
@@ -245,7 +245,7 @@ function EarnGuide({
                             <li>
                                 <div
                                     className={`
-                                        ${currentUser.energyRechargeRemaining > 0 && enableEnergyRecharge ? "dark:hover:bg-gray-700 dark:hover:text-gray-300 hover:text-gray-600 hover:bg-gray-50 cursor-pointer" : "dark:bg-gray-700 pointer-events-none"}
+                                        ${currentUser?.staminaRechargeRemaining > 0 && enableEnergyRecharge ? "dark:hover:bg-gray-700 dark:hover:text-gray-300 hover:text-gray-600 hover:bg-gray-50 cursor-pointer" : "dark:bg-gray-700 pointer-events-none"}
                                         inline-flex items-center justify-between w-full p-2 text-gray-500 bg-white border-2 border-gray-200 rounded-lg dark:border-gray-700 dark:text-gray-400 dark:bg-gray-800
                                     `}
                                 >
@@ -260,7 +260,7 @@ function EarnGuide({
                                         <div className="ml-10 w-full text-2xl text-left">
                                             Free Recharge
                                             <div className="w-full text-lg">
-                                                <span className="text-fuchsia-500 text-xl">{currentUser.energyRechargeRemaining}/{currentUser.energyRechargable || 0} &nbsp;</span>available today
+                                                <span className="text-fuchsia-500 text-xl">{currentUser?.staminaRechargeRemaining}/{currentUser?.staminaRechargable || 0} &nbsp;</span>available today
                                             </div>
                                         </div>
                                     </div>
@@ -269,7 +269,7 @@ function EarnGuide({
                             <li>
                                 <div
                                     className={`
-                                        ${currentUser.inviteRechargeRemaining > 0 && enableInviteRecharge ? "dark:hover:bg-gray-700 dark:hover:text-gray-300 hover:text-gray-600 hover:bg-gray-50 cursor-pointer" : "dark:bg-gray-700 pointer-events-none"}
+                                        ${currentUser?.inviteRechargeRemaining > 0 && enableInviteRecharge ? "dark:hover:bg-gray-700 dark:hover:text-gray-300 hover:text-gray-600 hover:bg-gray-50 cursor-pointer" : "dark:bg-gray-700 pointer-events-none"}
                                         inline-flex items-center justify-between w-full p-2 text-gray-500 bg-white border-2 border-gray-200 rounded-lg dark:border-gray-700 dark:text-gray-400 dark:bg-gray-800
                                     `}
                                 >
@@ -283,7 +283,7 @@ function EarnGuide({
                                         <div className="ml-10 w-full text-2xl text-left">
                                             Invite Friend
                                             <div className="w-full text-lg text-">
-                                                Send an invite to friend to recharge stamina for free<span className="text-fuchsia-500 text-xl">{currentUser.inviteRechargeRemaining}/{currentUser.inviteRechargable || 0} &nbsp;</span>available today
+                                                Send an invite to friend to recharge stamina for free<span className="text-fuchsia-500 text-xl">{currentUser?.inviteRechargeRemaining}/{currentUser?.inviteRechargable || 0} &nbsp;</span>available today
                                             </div>
                                         </div>
                                     </div>
