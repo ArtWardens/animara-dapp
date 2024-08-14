@@ -14,7 +14,7 @@ import {
   cleanupFailedRegistration,
   loginWithTelegram,
 } from "./firebaseConfig.js";
-import { isReferralCodeValid } from "../utils/fuctions.js";
+import { isReferralCodeValid } from "./user";
 
 const signUpWithEmailImpl = async (email, password, name, referralCode) => {
   try {
