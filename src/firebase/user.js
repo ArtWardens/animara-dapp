@@ -1,19 +1,14 @@
-import {
-  auth,
-  db,
-  storage,
-  updateUserLastLogin,
-} from "../firebase/firebaseConfig";
-import { doc, getDoc, increment, updateDoc } from "firebase/firestore";
+import { auth, db, storage, updateUserLastLogin, dailyLogin } from "../firebase/firebaseConfig";
+import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { getDownloadURL, ref, uploadString } from "firebase/storage";
 import { getIdTokenResult, updateProfile } from "firebase/auth";
 import { isReferralCodeValid } from "../utils/fuctions";
 
 // functions that we export for saga
-const handleGetUserData = async (uid) => {
-  try {
-    const docRef = doc(db, "users", uid);
-    const docSnap = await getDoc(docRef);
+const getUserDataImpl = async (uid) => {
+    try {
+        const docRef = doc(db, 'users', uid);
+        const docSnap = await getDoc(docRef);
 
     let canResetPassword = false;
     const token = await getIdTokenResult(auth.currentUser);
@@ -21,7 +16,7 @@ const handleGetUserData = async (uid) => {
     const completedTaskRef = doc(db, "oneTimeTask", uid);
     const completedTaskSnap = await getDoc(completedTaskRef);
 
-    if (token.signInProvider == "password") {
+    if (token.signInProvider === "password") {
       canResetPassword = true;
     }
 
@@ -95,8 +90,9 @@ const updateUserProfileImpl = async (
 
     // Only update invite code if it is not already set
     if (!currentData.referredBy && inviteCode) {
+      // note: firebase functions that listens to changes on referredBy
+      // will be responsible to grant the necessary rewards
       updateData.referredBy = inviteCode;
-      // await updateCoins(inviteCode, user);
     }
 
     // Prepare updates for Firestore and Firebase Auth
@@ -109,14 +105,14 @@ const updateUserProfileImpl = async (
 
     // Execute updates concurrently
     await Promise.all([firestoreUpdate, authUpdate]);
-    return await handleGetUserData(auth.currentUser.uid);
+    return await getUserDataImpl(auth.currentUser.uid);
 
   } catch (error) {
     console.error("Error updating user profile:", error);
   }
 };
 
-const handleUpdateUserLeaveTime = async () => {
+const updateUserLeaveTimeImpl = async () => {
   try {
     const idToken = await auth.currentUser.getIdToken(/* forceRefresh */ false);
     console.log(`idToken ${idToken}`);
@@ -126,51 +122,19 @@ const handleUpdateUserLeaveTime = async () => {
   }
 };
 
-const handleUpdateUserRechargableEnergy = async (data) => {
+const updateDailyLoginImpl = async () => {
   try {
-    const docRef = doc(db, "users", data.uid);
-    await updateDoc(docRef, {
-      energyRechargable: data.count,
-      clickByLevel: 0,
-      isCompletedToday: false,
-    });
-  } catch (error) {
-    console.log("Error setting user data: ", error);
+    const idToken = await auth.currentUser.getIdToken(/* forceRefresh */ false);
+    const { data } = await dailyLogin({idToken: idToken});
+    return data;
+  }catch (error) {
+      console.log("Error updating daily login: ", error)
   }
-};
-
-const handleUpdateUserRechargableInvite = async (data) => {
-  try {
-    const docRef = doc(db, "users", data.uid);
-    await updateDoc(docRef, {
-      inviteRechargable: data.count,
-      clickByLevel: 0,
-      isCompletedToday: false,
-    });
-  } catch (error) {
-    console.log("Error setting user data: ", error);
-  }
-};
-
-const handleUpdateDailyLogin = async (data) => {
-  console.log(data);
-  try {
-    const docRef = doc(db, "users", data.uid);
-    updateDoc(docRef, {
-      loggedInToday: true,
-      coins: increment(data.coins),
-      loginDays: increment(1),
-    });
-  } catch (error) {
-    console.log("Error getting user data: ", error);
-  }
-};
+}
 
 export {
-  handleGetUserData,
-  updateUserProfileImpl,
-  handleUpdateUserLeaveTime,
-  handleUpdateUserRechargableEnergy,
-  handleUpdateUserRechargableInvite,
-  handleUpdateDailyLogin,
+    getUserDataImpl,
+    updateUserProfileImpl,
+    updateUserLeaveTimeImpl,
+    updateDailyLoginImpl
 };

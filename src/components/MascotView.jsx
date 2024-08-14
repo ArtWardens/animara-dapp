@@ -1,41 +1,33 @@
 import React, { useEffect, useRef, useState } from "react";
 import { PropTypes } from "prop-types";
 import useSound from "use-sound";
-import ClickCounter from "./ClickCounter";
+import { useAppDispatch } from "../hooks/storeHooks.js";
+import { useUserDetails, useLocalStamina, consumeStamina } from "../sagaStore/slices";
 import { getImagePath, getAllImagePaths } from "../utils/getImagePath";
 import { preloadImages } from "../utils/preloadImages";
-import { addToLocalStorage, getFromLocalStorage } from "../utils/localStorage";
+import Header from "./Header.jsx";
 
 const MascotView = ({
-  userProgress,
-  setGameData,
   currentMascot,
-  setIdle,
-  gameData,
-  totalClicks,
-  setTotalClicks,
-  currentUser,
   isOpenRewardModal,
   setIsOpenRewardModal,
-  rewardRate,
   handleOpenModal
 }) => {
-
+  const dispatch = useAppDispatch();
+  const currentUser = useUserDetails();
+  const localStamina = useLocalStamina();
+  const [preloadedImage, setPreloadedImage] = useState(false);
   const [showImage, setShowImage] = useState('');
   const [plusOneEffect, setPlusOneEffect] = useState({ show: false, left: 0, top: 0 });
   const timerRef = useRef(null);
   const plusOneTimerRef = useRef(null);
   const [mascotSound] = useSound(currentMascot?.sound);
 
-  const [isVisible, setIsVisible] = useState(false);
   const [startSlide, setStartSlide] = useState(false);
   const [isInteractive, setIsInteractive] = useState(false);
 
+  // intro anim
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsVisible(true);
-    }, 800);
-
     const slideTimer = setTimeout(() => {
       setStartSlide(true);
     }, 1000);
@@ -45,22 +37,27 @@ const MascotView = ({
     }, 2000); // Adjust this delay to match the duration of your transitions
 
     return () => {
-      clearTimeout(timer);
       clearTimeout(slideTimer);
       clearTimeout(interactivityTimer);
     };
   }, []);
 
+  // initial setup
   useEffect(() => {
-    preloadImages(getAllImagePaths(userProgress));
-  }, [userProgress]);
+    // preload images if enter on the first time
+    if (!preloadedImage){
+      preloadImages(getAllImagePaths(currentUser));
+      setPreloadedImage(true);
+    }
 
-  useEffect(() => {
+    // set image
+    setShowImage(getImagePath(currentUser));
+
     const resetTimer = () => {
-      if (isInteractive) {
+      if (isInteractive && currentUser) {
         clearTimeout(timerRef.current);
         timerRef.current = setTimeout(() => {
-          setShowImage(getImagePath(userProgress, gameData, currentMascot, currentUser));
+          setShowImage(getImagePath(currentUser));
         }, 3000);
       }
     };
@@ -68,55 +65,57 @@ const MascotView = ({
     return () => {
       document.removeEventListener("mousedown", resetTimer);
     };
-  }, [isInteractive, currentMascot, currentUser, gameData, setIdle, userProgress]);
+  }, [isInteractive, currentUser, preloadedImage]);
 
-  useEffect(() => {
-    setShowImage(getImagePath(userProgress, gameData, currentMascot, currentUser));
-  }, [gameData, currentMascot, userProgress, currentUser]);
-
+  // tap handlers
   const handleMouseDown = () => {
+    // skip if not interactive
     if (!isInteractive) return;
 
-    if (gameData?.mascot2?.energy > gameData?.mascot2?.clickByLevel) {
-      const LocalClickByLevel = getFromLocalStorage("LocalClickByLevel");
-      setGameData((pre) => {
-        const totalClicksCount = pre[currentMascot.version]?.clickByLevel + rewardRate?.tapCount;
-
-        addToLocalStorage("LocalClickByLevel", (parseInt(LocalClickByLevel) || 0) + pre[currentMascot.version]?.numberOfClicks);
-        addToLocalStorage("TotalLocalClickByLevel", totalClicksCount);
-
-        return {
-          ...pre,
-          [currentMascot.version]: {
-            ...pre.mascot2,
-            numberOfClicks: (pre[currentMascot.version]?.numberOfClicks || 0) + rewardRate?.tapCount,
-            clickByLevel: totalClicksCount,
-          }
-        }
-      });
-
-      mascotSound();
-
-      const randomLeft = Math.random() * 70 + 15;
-      const randomTop = Math.random() * 50 + 5; // Adjusted range to appear higher
-      setPlusOneEffect({ show: false, left: randomLeft, top: randomTop });
-
-      setTimeout(() => {
-        setPlusOneEffect({ show: true, left: randomLeft, top: randomTop });
-      }, 0);
-
-      if (plusOneTimerRef.current) {
-        clearTimeout(plusOneTimerRef.current);
-      }
-      plusOneTimerRef.current = setTimeout(() => {
-        setPlusOneEffect({ show: false, left: 0, top: 0 });
-      }, 1000);
-
-    } else {
+    // skip and show boost modal if out of stamina
+    if (localStamina <= 0){
       handleOpenModal("boosts");
+      return;
     }
-  };
 
+    // has stamina to click
+    const restartIdleTimer = () => {
+      // reset timer whenever we call this
+      if (timerRef.current) {
+        clearTimeout(timerRef.current);
+      }
+      // set a timer to reset mascot after no action for a duration
+      timerRef.current = setTimeout(() => {
+        setShowImage(getImagePath(currentUser));
+      }, 3000);
+    };
+    restartIdleTimer();
+
+    // proceed with click
+    dispatch(consumeStamina({
+      staminaToConsume: 1,
+      coinToGain: 1
+    }));
+
+    // play sfx
+    mascotSound();
+
+    // show floating number
+    const randomLeft = Math.random() * 70 + 15;
+    const randomTop = Math.random() * 50 + 5; // Adjusted range to appear higher
+    setPlusOneEffect({ show: false, left: randomLeft, top: randomTop });
+
+    setTimeout(() => {
+      setPlusOneEffect({ show: true, left: randomLeft, top: randomTop });
+    }, 0);
+
+    if (plusOneTimerRef.current) {
+      clearTimeout(plusOneTimerRef.current);
+    }
+    plusOneTimerRef.current = setTimeout(() => {
+      setPlusOneEffect({ show: false, left: 0, top: 0 });
+    }, 1000);
+  };
   const handleMouseUp = () => { };
 
   const closeRewardModal = () => {
@@ -125,25 +124,16 @@ const MascotView = ({
 
   return (
     <div
-      onMouseDown={handleMouseDown}
-      onMouseUp={handleMouseUp}
-      onMouseLeave={handleMouseUp}
-      className="cursor-pointer flex justify-center items-end h-screen w-screen pb-16"
+      className="flex justify-center items-end h-screen w-screen pb-16"
     >
 
-      <ClickCounter
-        gameData={gameData}
-        currentMascot={currentMascot}
-        totalClicks={totalClicks}
-        setTotalClicks={setTotalClicks}
-        rewardRate={rewardRate}
-        setIsOpenRewardModal={setIsOpenRewardModal}
-      />
+      <Header />
 
       <div
-        className={`w-5/6 h-4/5 rounded-3xl p-3 transition-opacity duration-500 ${
-          isVisible ? 'opacity-100' : 'opacity-0'
-        }`}
+        onMouseDown={handleMouseDown}
+        onMouseUp={handleMouseUp}
+        onMouseLeave={handleMouseUp}
+        className={`cursor-pointer w-5/6 h-4/5 rounded-3xl p-3`}
         style={{
           border: '2px solid var(--Color, #F4FBFF)',
           background: 'rgba(155, 231, 255, 0.58)',
@@ -151,7 +141,9 @@ const MascotView = ({
           backdropFilter: 'blur(15px)',
         }}
       >
-        <div className="absolute flex w-full justify-between -top-9">
+        <div 
+          className="absolute flex w-full justify-between -top-9"
+        >
           <img
             src={"../assets/images/clicker-character/ring01.png"}
             alt="ring"
@@ -221,17 +213,9 @@ const MascotView = ({
 };
 
 MascotView.propTypes = {
-  userProgress: PropTypes.number,
-  setGameData: PropTypes.func,
   currentMascot: PropTypes.object,
-  setIdle: PropTypes.func,
-  gameData: PropTypes.object,
-  totalClicks: PropTypes.number,
-  setTotalClicks: PropTypes.func,
-  currentUser: PropTypes.object,
   isOpenRewardModal: PropTypes.bool,
   setIsOpenRewardModal: PropTypes.func,
-  rewardRate: PropTypes.object,
   handleOpenModal: PropTypes.func
 }
 
