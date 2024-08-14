@@ -30,6 +30,9 @@ const cleanupFailedRegistration = httpsCallable(functions, 'cleanupFailedRegistr
 const loginWithTelegram = httpsCallable(functions, 'loginWithTelegram');
 const dailyLogin = httpsCallable(functions, 'dailyLogin');
 const completeOneTimeTask = httpsCallable(functions, 'completeOneTimeTask');
+const settleTapSession = httpsCallable(functions, 'settleTapSession');
+const rechargeEnergy = httpsCallable(functions, 'rechargeEnergy');
+const rechargeEnergyByInvite = httpsCallable(functions, 'rechargeEnergyByInvite');
 
 export {
   auth,
@@ -41,5 +44,8 @@ export {
   cleanupFailedRegistration,
   loginWithTelegram,
   dailyLogin,
-  completeOneTimeTask
+  completeOneTimeTask,
+  settleTapSession,
+  rechargeEnergy,
+  rechargeEnergyByInvite
 };

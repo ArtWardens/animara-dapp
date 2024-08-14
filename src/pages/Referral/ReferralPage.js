@@ -3,28 +3,21 @@ import { PropTypes } from "prop-types";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { FaCopy, FaShareFromSquare } from "react-icons/fa6";
+import { useUserDetails } from "../../sagaStore/slices";
 import gem from "../../assets/images/gem2.png";
 import StyledQRCode from "../../components/StyledQRCode";
-import useAuth from "../../hooks/useAuth.js";
 import Header from "../../components/Header.jsx";
 
-function ReferralPage ({ currentUser, totalClicks, inviteCode }){
+function ReferralPage ({ inviteCode }){
   const [inviteCodeState, setInviteCodeState] = useState(inviteCode);
   const inviteLink = `${window.location.origin}/signup?invite-code=${inviteCodeState}`;
 
   const navigate = useNavigate();
-  const { isLoggedIn, loading, user } = useAuth();
+  const currentUser = useUserDetails();
 
   useEffect(() => {
-    setInviteCodeState(user?.referralCode || "");
-  }, [user]);
-
-  useEffect(() => {
-    if (!isLoggedIn && !loading) {
-      navigate("/login");
-      toast.error("You need to be logged in to access this page");
-    }
-  }, [isLoggedIn, navigate, loading]);
+    setInviteCodeState(currentUser?.referralCode || "");
+  }, [currentUser]);
 
   const shareInviteLink = () => {
     if (navigator.share) {
@@ -48,10 +41,7 @@ function ReferralPage ({ currentUser, totalClicks, inviteCode }){
 
   return (
     <>
-      <Header
-        currentUser={currentUser}
-        totalClicks={totalClicks}
-      />
+      <Header />
 
       <div
         className="flex flex-col items-center pb-4 px-16 min-h-screen"
@@ -274,7 +264,7 @@ function ReferralPage ({ currentUser, totalClicks, inviteCode }){
                       <input
                         type="text"
                         value={inviteCodeState}
-                        readOnly={user?.referralCode ? true : false}
+                        readOnly={currentUser?.referralCode ? true : false}
                         onChange={(e) => setInviteCodeState(e.target.value)}
                         className="w-full bg-[#003358] border-[1px] border-[#245F89] rounded-lg p-3 text-sm font-medium font-outfit tracking-wide"
                       />
@@ -316,8 +306,6 @@ function ReferralPage ({ currentUser, totalClicks, inviteCode }){
 }
 
 ReferralPage.propTypes = {
-  currentUser: PropTypes.object,
-  totalClicks: PropTypes.number,
   inviteCode: PropTypes.string
 };
 
