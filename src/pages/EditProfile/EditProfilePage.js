@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from "react";
-import { PropTypes } from "prop-types";
 import PhoneInput from "react-phone-number-input";
 import { useNavigate } from "react-router-dom";
 import "react-phone-number-input/style.css";
@@ -15,7 +14,7 @@ import {
 import Header from "../../components/Header.jsx";
 import "./EditProfile.css";
 
-const EditProfilePage = ({ totalClicks }) => {
+const EditProfilePage = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const resetPasswordLoading = useResetPasswordLoading();
@@ -81,7 +80,7 @@ const EditProfilePage = ({ totalClicks }) => {
 
   return (
     <>
-      <Header currentUser={user} totalClicks={totalClicks} />
+      <Header />
 
       <div
         className="justify-center items-center place-content-center p-44 min-h-screen"
@@ -276,10 +275,6 @@ const EditProfilePage = ({ totalClicks }) => {
       </div>
     </>
   );
-};
-
-EditProfilePage.propTypes = {
-  totalClicks: PropTypes.number,
 };
 
 export default EditProfilePage;

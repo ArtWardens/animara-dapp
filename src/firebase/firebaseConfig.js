@@ -12,7 +12,7 @@ const firebaseConfig = {
   storageBucket: "moveon-b6ea3.appspot.com",
   messagingSenderId: "269542446082",
   appId: "1:269542446082:web:53fd0253312517702a831b",
-  measurementId: "G-WQVCSX6C65"
+  measurementId: "G-WQVCSX6C65",
 };
 
 // Initialize Firebase
@@ -24,11 +24,41 @@ const storage = getStorage(app);
 const functions = getFunctions(app);
 
 // define all firebase functions here
-const updateUserLastLogin = httpsCallable(functions, 'updateUserLastLogin');
-const firstLoginLinkReferral = httpsCallable(functions, 'firstLoginLinkReferral');
-const cleanupFailedRegistration = httpsCallable(functions, 'cleanupFailedRegistration');
-const loginWithTelegram = httpsCallable(functions, 'loginWithTelegram');
-const getUserLocations = httpsCallable(functions, 'getUserLocations');
-const exploreLocation = httpsCallable(functions, 'exploreLocation');
+const updateUserLastLogin = httpsCallable(functions, "updateUserLastLogin");
+const firstLoginLinkReferral = httpsCallable(
+  functions,
+  "firstLoginLinkReferral"
+);
+const cleanupFailedRegistration = httpsCallable(
+  functions,
+  "cleanupFailedRegistration"
+);
+const loginWithTelegram = httpsCallable(functions, "loginWithTelegram");
+const dailyLogin = httpsCallable(functions, "dailyLogin");
+const completeOneTimeTask = httpsCallable(functions, "completeOneTimeTask");
+const settleTapSession = httpsCallable(functions, "settleTapSession");
+const rechargeEnergy = httpsCallable(functions, "rechargeEnergy");
+const rechargeEnergyByInvite = httpsCallable(
+  functions,
+  "rechargeEnergyByInvite"
+);
+const getUserLocations = httpsCallable(functions, "getUserLocations");
+const exploreLocation = httpsCallable(functions, "exploreLocation");
 
-export { auth, app, db, storage, updateUserLastLogin, firstLoginLinkReferral, cleanupFailedRegistration, loginWithTelegram, getUserLocations, exploreLocation };
+export {
+  auth,
+  app,
+  db,
+  storage,
+  updateUserLastLogin,
+  firstLoginLinkReferral,
+  cleanupFailedRegistration,
+  loginWithTelegram,
+  dailyLogin,
+  completeOneTimeTask,
+  settleTapSession,
+  rechargeEnergy,
+  rechargeEnergyByInvite,
+  getUserLocations,
+  exploreLocation,
+};
