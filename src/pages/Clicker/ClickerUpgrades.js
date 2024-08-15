@@ -22,7 +22,6 @@ const ClickerUpgrades = ({ onClose }) => {
 
   const { data } = useUserLocation();
   const userLocations = data?.userLocations || [];
-  console.log(userLocations);
 
   useEffect(() => {
     if (data) {
