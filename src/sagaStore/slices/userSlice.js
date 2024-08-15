@@ -329,10 +329,10 @@ export const userSlice = createSlice({
       state.userLocations = payload;
       state.userLocationsLoading = false;
     },
-    getUserUpgradeLocation: (state, { payload }) => {
+    upgradeUserLocation: (state, { payload }) => {
       state.userLocationsLoading = true;
     },
-    getUserUpgradeLocationSuccess: (state, { payload }) => {
+    upgradeUserLocationSuccess: (state, { payload }) => {
       const locationIndex = state.userLocations.data.userLocations.findIndex(
         (location) => location.locationId === payload.data.locationId
       );
@@ -349,8 +349,7 @@ export const userSlice = createSlice({
       }
       state.userLocationsLoading = false;
     },
-
-    getUserUpgradeLocationError: (state, { payload }) => {
+    upgradeUserLocationError: (state, { payload }) => {
       state.userLocationsLoading = false;
     },
   },
@@ -417,9 +416,9 @@ export const {
   getUserLocations,
   getUserLocationsSuccess,
   getUserLocationsError,
-  getUserUpgradeLocation,
-  getUserUpgradeLocationSuccess,
-  getUserUpgradeLocationError,
+  upgradeUserLocation,
+  upgradeUserLocationSuccess,
+  upgradeUserLocationError,
 } = userSlice.actions;
 
 export const useAuthLoading = () => useAppSelector((state) => state.user.authLoading);

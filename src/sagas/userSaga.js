@@ -83,9 +83,9 @@ import {
   getUserLocations,
   getUserLocationsSuccess,
   getUserLocationsError,
-  getUserUpgradeLocation,
-  getUserUpgradeLocationSuccess,
-  getUserUpgradeLocationError,
+  upgradeUserLocation,
+  upgradeUserLocationSuccess,
+  upgradeUserLocationError,
 } from "../sagaStore/slices";
 import {
   StaminaRechargeTypeBasic,
@@ -382,13 +382,10 @@ export function* getUserUpgradeLocationsSaga(locationId) {
   try {
     const upgradeUserLocation = yield call(upgradeUserLocationImpl, locationId);
     if (upgradeUserLocation) {
-      yield put(getUserUpgradeLocationSuccess(upgradeUserLocation));
+      console.log("ok");
+      yield put(upgradeUserLocationSuccess(upgradeUserLocation));
     } else {
-      yield put(
-        getUserUpgradeLocationError(
-          "Failed to update upgrades. Please try again. "
-        )
-      );
+      yield put(upgradeUserLocationError(upgradeUserLocation));
     }
   } catch (error) {
     console.log(error);
@@ -400,6 +397,7 @@ export function* getUserUpgradeLocationsSaga(locationId) {
       toast.error("Failed to upgrade location. Please try again. ");
     }
     yield put(getUserLocationsError(error));
+    toast.error("Unknown error occured. Please try again. ");
   }
 }
 
@@ -440,5 +438,5 @@ export function* userSagaWatcher() {
   yield takeLatest(settleTapSession.type, settleTapSessionSaga);
   yield takeLatest(rechargeStamina.type, rechargeStaminaSaga);
   yield takeLatest(getUserLocations.type, getUserLocationsSaga);
-  yield takeLatest(getUserUpgradeLocation.type, getUserUpgradeLocationsSaga);
+  yield takeLatest(upgradeUserLocation.type, getUserUpgradeLocationsSaga);
 }
