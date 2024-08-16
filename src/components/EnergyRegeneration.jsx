@@ -1,42 +1,28 @@
 import React, { useState, useEffect } from "react";
 import { PropTypes } from "prop-types";
 import { ProgressBar } from "react-progressbar-fancy";
+import { useLocalStamina, useUserDetails } from "../sagaStore/slices";
 import { getTimeRemaining } from '../utils/getTimeRemaining';
 import LeaderBoardModal from './LeaderBoardModal';
-import OneTimeTask from './OneTimeTask';
+import TaskList from './TaskList';
 
-function EnergyRegeneration({ 
-    currentUser, 
-    gameData, 
-    totalClicks, 
-    setTotalClicks,
+function EnergyRegeneration({
     isLeaderboardOpen,
     setIsLeaderboardOpen,
     isOneTimeTaskOpen,
     setIsOneTimeTaskOpen,
 }) {
-
-    const [profitPerHour, setProfitPerHour] = useState(0);
+    const currentUser = useUserDetails();
+    const localStamina = useLocalStamina();
+    const [profitPerHour, setProfitPerHour] = useState('');
     const [progressBarWidth, setProgressBarWidth] = useState(0);
-
-    useEffect(() => {
-        setProfitPerHour(currentUser?.profitPerHour)
-    }, [currentUser])
-
-    useEffect(() => {
-        const maxEnergy = gameData?.mascot2?.energy;
-        const currentEnergy = maxEnergy - gameData?.mascot2?.clickByLevel || 0;
-
-        const energyPercentage = (currentEnergy / maxEnergy) * 100;
-        setProgressBarWidth(Math.min(energyPercentage, 100));
-    }, [gameData]);
-
     const [timeRemaining, setTimeRemaining] = useState(getTimeRemaining());
     const [countDownRemaining] = useState(0);
 
     const [showFirstDiv, setShowFirstDiv] = useState(false);
     const [showProgressBar, setShowProgressBar] = useState(false);
 
+    // intro anim
     useEffect(() => {
         const firstDivTimer = setTimeout(() => {
         setShowFirstDiv(true);
@@ -47,8 +33,8 @@ function EnergyRegeneration({
         }, 500);
 
         return () => {
-        clearTimeout(firstDivTimer);
-        clearTimeout(progressBarTimer);
+            clearTimeout(firstDivTimer);
+            clearTimeout(progressBarTimer);
         };
     }, []);
  
@@ -60,11 +46,20 @@ function EnergyRegeneration({
         return () => clearInterval(intervalId);
     }, []);
 
+    useEffect(() => {
+        // update profit per hour
+        setProfitPerHour(!currentUser?.profitPerHour || currentUser?.profitPerHour === 0 ? '-' : `+${currentUser?.profitPerHour}`);
+
+        // update energy
+        const energyPercentage = (localStamina / currentUser?.maxStamina) * 100;
+        setProgressBarWidth(Math.max(0, Math.min(energyPercentage, 100)));
+    }, [currentUser, localStamina]);
+
     return (
         <>
             <div className="absolute grid grid-cols-3 gap-3 justify-center items-center w-full mx-auto my-4 p-12 top-60"
                 style={{
-                    zIndex: 80,
+                    zIndex: 20,
                 }}
             >
 
@@ -104,7 +99,7 @@ function EnergyRegeneration({
                                     textTransform: 'uppercase'
                                 }}
                             >
-                                +{profitPerHour}
+                                {profitPerHour}
                             </div>
                             <div className="text-sm font-outfit">Profit Per 12h</div>
                         </div>
@@ -113,11 +108,11 @@ function EnergyRegeneration({
 
                 <ProgressBar
                     score={progressBarWidth}
-                    progressColor="#AD00FF"
-                    primaryColor="#AD00FF"
-                    secondaryColor="#FFF500"
+                    progressColor="#80E8FF"
+                    primaryColor="#49DEFF"
+                    secondaryColor="#FAFF00"
                     hideText={true}
-                    className={`text-center border-2 border-fuchsia-600 border-solid rounded-tl-3xl rounded-tr-md rounded-br-3xl rounded-bl-md pt-1 pb-2 transition-opacity duration-700 ${
+                    className={`text-center border-2 border-white border-solid rounded-tl-3xl rounded-tr-md rounded-br-3xl rounded-bl-md pt-1 pb-2 transition-opacity duration-700 ${
                       showProgressBar ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0'
                     }`}
                 />
@@ -133,7 +128,7 @@ function EnergyRegeneration({
                     zIndex: 100,
                 }}
                 >
-                <OneTimeTask setIsOneTimeTaskOpen={setIsOneTimeTaskOpen} totalClicks={totalClicks} setTotalClicks={setTotalClicks}/>
+                <TaskList setIsOneTimeTaskOpen={setIsOneTimeTaskOpen} />
                 </div>
             )}
 
@@ -159,10 +154,6 @@ function EnergyRegeneration({
 }
 
 EnergyRegeneration.propTypes = {
-    currentUser: PropTypes.object, 
-    gameData: PropTypes.object, 
-    totalClicks: PropTypes.number, 
-    setTotalClicks: PropTypes.func,
     isLeaderboardOpen: PropTypes.bool,
     setIsLeaderboardOpen: PropTypes.func,
     isOneTimeTaskOpen: PropTypes.bool,

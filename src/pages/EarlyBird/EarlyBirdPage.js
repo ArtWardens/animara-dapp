@@ -1,38 +1,25 @@
 import React, { useEffect, useMemo, useState } from "react";
-import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";
-import useAuth from "../../hooks/useAuth.js";
 import Header from "../../components/Header.jsx";
 import { FaInstagram, FaTwitter, FaTelegramPlane, FaYoutube, FaLink } from 'react-icons/fa';
-import { getEarlyBirdOneTimeTaskList, useEarlyBirdOneTimeTaskList, useTaskIdToComplete, useEarlyBirdOneTimeTaskListSuccess, completeOneTimeTask } from "../../sagaStore/slices/userSlice.js";
+import { useUserDetails,getEarlyBirdOneTimeTaskList, useEarlyBirdOneTimeTaskList, useTaskIdToComplete, useEarlyBirdOneTimeTaskListSuccess, completeOneTimeTask } from "../../sagaStore/slices/userSlice.js";
 import { fetchDate, startCountdown } from '../../firebase/countDown';
 
-const EarlyBirdPage = ({ currentUser, totalClicks, setTotalClicks }) => {
+const EarlyBirdPage = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const { isLoggedIn, loading } = useAuth();
+    const currentUser = useUserDetails();
     const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
     const [isContainerVisible, setIsContainerVisible] = useState(true);
-
     const earlyBirdOneTimeTaskList = useEarlyBirdOneTimeTaskList();
     const getEarlyBirdOneTimeTaskListSuccess = useEarlyBirdOneTimeTaskListSuccess();
     const taskIdToComplete = useTaskIdToComplete();
-
     useEffect(() => {
         if (!getEarlyBirdOneTimeTaskListSuccess) {
             dispatch(getEarlyBirdOneTimeTaskList());
         }
     }, [dispatch, getEarlyBirdOneTimeTaskListSuccess]);
-
-    useEffect(() => {
-        if (!isLoggedIn && !loading) {
-            navigate("/login");
-            toast.error("You need to be logged in to access this page");
-        }
-    }, [isLoggedIn, navigate, loading]);
-
     useEffect(() => {
         const fetchAndStartCountdown = async () => {
             const earlyBirdDate = await fetchDate("earlyBird");
@@ -41,10 +28,8 @@ const EarlyBirdPage = ({ currentUser, totalClicks, setTotalClicks }) => {
                 return cleanup;
             }
         };
-
         fetchAndStartCountdown();
     }, []);
-
     const getIconComponent = (actionType) => {
         switch (actionType) {
             case 'youtube':
@@ -59,7 +44,6 @@ const EarlyBirdPage = ({ currentUser, totalClicks, setTotalClicks }) => {
                 return FaLink;
         }
     };
-
     const renderEarlyBirdTaskList = useMemo(() => {
         const handleTaskClick = (task) => {
             window.open(task.url, '_blank');
@@ -123,11 +107,9 @@ const EarlyBirdPage = ({ currentUser, totalClicks, setTotalClicks }) => {
             })
         );
     }, [earlyBirdOneTimeTaskList, currentUser, dispatch, taskIdToComplete]);
-
     return (
         <>
-            <Header currentUser={currentUser} totalClicks={totalClicks} />
-
+            <Header />
             <div
                 className="flex-grow flex flex-col place-content-center items-center px-24 pb-4 min-h-screen"
                 style={{
@@ -138,8 +120,8 @@ const EarlyBirdPage = ({ currentUser, totalClicks, setTotalClicks }) => {
                     backgroundAttachment: 'fixed',
                 }}
             >
-                <div className="w-full h-full flex gap-4 pt-32 container">
-                    <div className="w-[68%]">
+                <div className="w-full h-full flex gap-4 pt-40 container">
+                    <div className="w-[68%] lg:w-[65%] 2xl:w-[68%]">
                         <div
                             className="w-full rounded-3xl p-3"
                             style={{
@@ -168,7 +150,8 @@ const EarlyBirdPage = ({ currentUser, totalClicks, setTotalClicks }) => {
                             </div>
 
                             <div
-                                className="rounded-2xl place-content-center p-8 grid gap-2"
+
+                                className="rounded-2xl place-content-center p-8 grid gap-4 min-h-[60dvh] lg:min-h-[90dvh] 2xl:min-h-[60dvh]"
                                 style={{
                                     backgroundImage: 'url("../assets/images/clicker-character/earlyBBG.png")',
                                     backgroundSize: 'cover',
@@ -177,130 +160,138 @@ const EarlyBirdPage = ({ currentUser, totalClicks, setTotalClicks }) => {
                                 }}
                             >
                                 <h1
+
                                     className="text-center text-[#ffa900] text-6xl p-2"
                                     style={{
-                                        WebkitTextStrokeWidth: '4px',
+                                        WebkitTextStrokeWidth: '3.5px',
                                         WebkitTextStrokeColor: 'var(--Color-11, #FFF)',
                                     }}
                                 >
                                     Early Bird Missions
+
                                 </h1>
 
                                 {isContainerVisible && (
-                                    <div className="w-1/2 p-4 bg-[#003260] rounded-3xl shadow-inner border border-[#7fc1ff] flex-col justify-self-center items-center gap-2 inline-flex">
+                                    <div className="w-1/2 py-3 px-4 bg-[#003260] rounded-3xl shadow-inner border border-[#7fc1ff] flex-col justify-self-center items-center gap-2 inline-flex">
                                         <p className="text-lg">Missions Ends In</p>
 
-                                        <div className="h-[50px] justify-start items-center inline-flex gap-1 pb-3">
-                                            <div className="w-12 h-1/2 bg-[#003260] shadow-inner flex-col justify-center items-center gap-2 inline-flex">
+                                        <div className="h-[50px] justify-start items-center inline-flex gap-1 pb-2">
+                                            <div className="w-12 h-1/2 bg-[#003260] shadow-inner flex-col justify-center items-center gap-1 inline-flex">
                                                 <div className="w-12 h-8 flex-col justify-center items-center gap-4 flex">
-                                                    <div className="text-center text-white text-3xl tracking-wide font-outfit">{timeLeft.days}</div>
+                                                    <div className="text-center text-white text-[24px] tracking-wide font-outfit">{timeLeft.days}</div>
                                                 </div>
-                                                <div className="text-center text-white text-[8px] font-outfit uppercase">Days</div>
+                                                <div className="text-center text-white text-[9px] font-outfit uppercase">Days</div>
                                             </div>
                                             <span className="text-white font-outfit font-semibold text-2xl">:</span>
-                                            <div className="w-12 h-1/2 bg-[#003260] shadow-inner flex-col justify-center items-center gap-2 inline-flex">
+                                            <div className="w-12 h-1/2 bg-[#003260] shadow-inner flex-col justify-center items-center gap-1 inline-flex">
                                                 <div className="w-12 h-8 flex-col justify-center items-center gap-4 flex">
-                                                    <div className="text-center text-white text-3xl tracking-wide font-outfit">{timeLeft.hours}</div>
+                                                    <div className="text-center text-white text-[24px] tracking-wide font-outfit">{timeLeft.hours}</div>
                                                 </div>
-                                                <div className="text-center text-white text-[8px] font-outfit uppercase">Hours</div>
+                                                <div className="text-center text-white text-[9px] font-outfit uppercase">Hours</div>
                                             </div>
                                             <span className="text-white font-outfit font-semibold text-2xl">:</span>
-                                            <div className="w-12 h-1/2 bg-[#003260] shadow-inner flex-col justify-center items-center gap-2 inline-flex">
+                                            <div className="w-12 h-1/2 bg-[#003260] shadow-inner flex-col justify-center items-center gap-1 inline-flex">
                                                 <div className="w-12 h-8 flex-col justify-center items-center gap-4 flex">
-                                                    <div className="text-center text-white text-3xl tracking-wide font-outfit">{timeLeft.minutes}</div>
+                                                    <div className="text-center text-white text-[24px] tracking-wide font-outfit">{timeLeft.minutes}</div>
                                                 </div>
-                                                <div className="text-center text-white text-[8px] font-outfit uppercase">Minutes</div>
+                                                <div className="text-center text-white text-[9px] font-outfit uppercase">Minutes</div>
                                             </div>
                                             <span className="text-white font-outfit font-semibold text-2xl">:</span>
-                                            <div className="w-12 h-1/2 bg-[#003260] shadow-inner flex-col justify-center items-center gap-2 inline-flex">
+                                            <div className="w-12 h-1/2 bg-[#003260] shadow-inner flex-col justify-center items-center gap-1 inline-flex">
                                                 <div className="w-12 h-8 flex-col justify-center items-center gap-4 flex">
-                                                    <div className="text-center text-white text-3xl tracking-wide font-outfit">{timeLeft.seconds}</div>
+                                                    <div className="text-center text-white text-[24px] tracking-wide font-outfit">{timeLeft.seconds}</div>
                                                 </div>
-                                                <div className="text-center text-white text-[8px] font-outfit uppercase">Seconds</div>
+                                                <div className="text-center text-white text-[9px] font-outfit uppercase">Seconds</div>
                                             </div>
                                         </div>
                                     </div>
                                 )}
 
-                                <p className="text-center text-white text-lg font-semibold font-outfit py-2">
+                                <p className="text-center text-white text-lg font-semibold font-outfit py-3">
                                     Complete the following task within the time limit to get
+
                                     <br />
                                     <span
-                                        className="font-LuckiestGuy text-[#ffa900] text-2xl"
+
+                                        className="font-LuckiestGuy text-[#ffa900] text-[28px]"
                                         style={{
-                                            WebkitTextStrokeWidth: '0.5px',
+                                            WebkitTextStrokeWidth: '1px',
                                             WebkitTextStrokeColor: 'var(--Color-11, #FFF)',
                                         }}
                                     >
-                                        25% Discount &nbsp;
+                                        25% Discount
+
                                     </span>
-                                    when buying our NFTs!
+                                    &ensp;when buying our NFTs!
                                 </p>
 
                                 {renderEarlyBirdTaskList}
 
                                 <div
-                                    className="w-[240px] h-[80px] flex justify-self-center items-center mt-4 hover:scale-110 transition-transform duration-200 cursor-pointer"
+
+                                    className="w-[240px] h-[80px] flex justify-self-center items-center mt-4 hover:scale-105 transition-transform duration-200 cursor-pointer"
                                     onClick={() => navigate('/mint')}
                                 >
                                     <div className="bg-[#ffb23e] rounded-full border border-[#e59e69] flex justify-center items-center w-full h-full hover:bg-[#FFDC62] hover:shadow-[0px_4px_4px_0px_rgba(255,210,143,0.61)_inset,0px_4px_4px_0px_rgba(232,140,72,0.48)] cursor-pointer">
                                         <div
+
                                             className="text-center text-white text-3xl"
                                             style={{ textShadow: '0px 2px 0.6px rgba(240, 139, 0, 0.66)' }}
                                         >
                                             Mint Now
+
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div className="w-[32%] z-10 scale-150 justify-start items-center origin-bottom relative">
+                    <div className="w-[32%] lg:w-[35%] 2xl:w-[32%] z-10 scale-150 justify-start items-center origin-bottom relative">
                         <img
+
                             src={"../assets/images/clicker-character/noticeBoard.png"}
                             className="w-full absolute bottom-0"
+                            alt=""
                         />
-                        <div className="w-full flex flex-col absolute px-14 gap-1.2 bottom-40">
+                        <div className="w-full flex flex-col absolute px-12 lg:px-12 2xl:px-16 gap-1 bottom-44 lg:bottom-36 2xl:bottom-40 text-4xl lg:text-3xl 2xl:text-4xl">
                             <div
+
                                 className="text-[#0163be] tracking-wide text-right w-full"
                                 style={{
                                     WebkitTextStrokeWidth: '1.5px',
                                     WebkitTextStrokeColor: 'var(--Color-11, #FFF)',
-                                    fontSize: '32px'
                                 }}
                             >
                                 NFT PERKS
+
                             </div>
-                            <h3 className="text-sm w-full">
+                            <h3 className="text-xs w-full">
                                 Exclusive Content
+
                                 <p
-                                    className="leading-normal font-outfit text-justify"
-                                    style={{
-                                        fontSize: '8px',
-                                    }}
+
+                                    className="leading-normal font-outfit text-justify text-[9px] lg:text-[9px] 2xl:text-[10px]"
                                 >
                                     Unlock hidden realms, mystery boxes, and more exclusive rewards!<br />
                                     Compete for your chance to win our 1 million USDT prize!
                                 </p>
                             </h3>
-                            <h3 className="text-sm w-full">
+                            <h3 className="text-xs w-full">
                                 NFT Summon
+
                                 <p
-                                    className="leading-normal font-outfit text-justify"
-                                    style={{
-                                        fontSize: '8px',
-                                    }}
+
+                                    className="leading-normal font-outfit text-justify text-[9px] lg:text-[9px] 2xl:text-[10px]"
                                 >
                                     Each NFT has the power to mint a new one! Collect or trade them to grow the Animara universe and maintain their value.
                                 </p>
                             </h3>
-                            <h3 className="text-sm w-full">
+                            <h3 className="text-xs w-full">
                                 Access to Play-to-Earn Game
+
                                 <p
-                                    className="leading-normal font-outfit text-justify"
-                                    style={{
-                                        fontSize: '8px',
-                                    }}
+
+                                    className="leading-normal font-outfit text-justify text-[9px] lg:text-[9px] 2xl:text-[10px]"
                                 >
                                     Our NFTs are your gateway to the Play-to-Earn ecosystem.<br />
                                     Join the Animara community and start earning as you play!
@@ -313,11 +304,5 @@ const EarlyBirdPage = ({ currentUser, totalClicks, setTotalClicks }) => {
         </>
     );
 }
-
-EarlyBirdPage.propTypes = {
-    currentUser: PropTypes.object,
-    totalClicks: PropTypes.number,
-    setTotalClicks: PropTypes.func,
-};
 
 export default EarlyBirdPage;

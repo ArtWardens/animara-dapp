@@ -1,35 +1,49 @@
-import { PropTypes } from "prop-types";
 import React, { useEffect, useState, useRef } from "react";
 import { useDispatch } from "react-redux";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+import { useLocation, useNavigate } from "react-router-dom/dist";
 import { PropagateLoader } from "react-spinners";
-import { logOut } from "../sagaStore/slices";
+import { logOut, useUserDetails, useLocalCoins } from "../sagaStore/slices";
 
-function Header({ currentUser }) {
+const lngs = {
+    en: { nativeName: "English" },
+    cn: { nativeName: "中文" },
+  };
+
+function Header() {
+    const { i18n } = useTranslation();
+    const [langDropdownOpen, setLangDropdownOpen] = useState(false);
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const location = useLocation();
     const currentPath = location.pathname;
-
+    const currentUser = useUserDetails();
+    const localCoins = useLocalCoins();
     const trigger = useRef(null);
+    const coinsDisplayRef = useRef(null);
 
-    const handleButtonClick = (link) => {
-        if (link) {
-            navigate(link);
-        }
-    };
+    const handleLangChange = (lng) => {
+        i18n.changeLanguage(lng);
+        setLangDropdownOpen(false);
+      };
 
-    const handleEditProfile = () => {
-        navigate('/edit-profile');
-    };
-
-    const buttons = [
+    // navigation bar setup
+    const navDestinations = [
         { name: 'AMIPALS', link: '/amipals' },
         { name: 'EARLY BIRD', link: '/early-bird' },
         { name: 'MINT', link: '/mint' },
         { name: 'REFERRAL', link: '/referral' },
     ];
+    const handleButtonClick = (link) => {
+        if (link) {
+            navigate(link);
+        }
+    };
+    const handleEditProfile = () => {
+        navigate('/edit-profile');
+    };
 
+    // setup logout button
     const [imageSrcLogout, setImageSrcLogout] = useState("../assets/images/clicker-character/logout.png");
     const handleMouseEnterLogout = () => setImageSrcLogout("../assets/images/clicker-character/logout-hover.png");
     const handleMouseLeaveLogout = () => setImageSrcLogout("../assets/images/clicker-character/logout.png");
@@ -41,14 +55,13 @@ function Header({ currentUser }) {
     // State for mobile menu
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-    const totalClicksRef = useRef(null);
 
     // State for loading profile image
     const [loadingImage, setLoadingImage] = useState(true);
 
     useEffect(() => {
         const adjustFontSize = () => {
-          const element = totalClicksRef.current;
+          const element = coinsDisplayRef.current;
           const containerWidth = element.parentElement.offsetWidth;
           let newFontSize = 36;
           
@@ -61,7 +74,7 @@ function Header({ currentUser }) {
         };
     
         adjustFontSize();
-      }, [currentUser?.coins]);
+      }, [localCoins]);
 
     // Function to format number with commas
     const formatNumberWithCommas = (number) => {
@@ -81,7 +94,7 @@ function Header({ currentUser }) {
                 }}
             >
                 <div className="p-1 w-20 h-20 relative">
-                    <a onClick={handleEditProfile}>
+                    <button onClick={handleEditProfile}>
                         {loadingImage && (
                             <div className="flex justify-center items-center">
                             <div className="flex justify-center items-center h-56">
@@ -103,7 +116,7 @@ function Header({ currentUser }) {
                             onLoad={() => setLoadingImage(false)}
                             onError={() => setLoadingImage(false)}
                         />
-                    </a>
+                    </button>
                 </div>
 
                 <div className="flex flex-col place-content-center">
@@ -119,14 +132,14 @@ function Header({ currentUser }) {
                         />
                         <div className="relative flex items-center justify-center w-44">
                             <span
-                                ref={totalClicksRef}
+                                ref={coinsDisplayRef}
                                 className="relative text-3xl text-amber-500 tracking-normal w-full overflow-hidden text-left"
                                 style={{
                                     WebkitTextStrokeWidth: '1.75px',
                                     WebkitTextStrokeColor: 'var(--Color-11, #FFF)'
                                 }}
                             >
-                                {formatNumberWithCommas(currentUser?.coins)}
+                                {formatNumberWithCommas(localCoins)}
                             </span>
                         </div>
                     </div>
@@ -138,7 +151,30 @@ function Header({ currentUser }) {
                     zIndex: 91,
                 }}
             >
-                {buttons.map(({ name, link }) => (
+                <div className="relative">
+                <img
+                  src="../assets/images/clicker-character/locale.png"
+                  className="w-[3dvw] xl:w-[1.5dvw] cursor-pointer"
+                  onClick={() => setLangDropdownOpen(!langDropdownOpen)}
+                />
+                {langDropdownOpen && (
+                  <div className="absolute right-0 mt-2 w-[150px] bg-white shadow-lg rounded-md z-10">
+                    {Object.keys(lngs).map((lng) => (
+                      <button
+                        className="block w-full px-4 py-2 text-left hover:bg-gray-200"
+                        type="submit"
+                        key={lng}
+                        onClick={() => handleLangChange(lng)}
+                        disabled={i18n.resolvedLanguage === lng}
+                      >
+                        {lngs[lng].nativeName}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+              
+                {navDestinations.map(({ name, link }) => (
                     <button
                         key={name}
                         onClick={() => handleButtonClick(link)}
@@ -237,7 +273,7 @@ function Header({ currentUser }) {
                     </div>
 
                     <div className="space-y-4 mb-16 z-60">
-                        {buttons.map(({ name, link }) => (
+                        {navDestinations.map(({ name, link }) => (
                             <button
                                 key={name}
                                 onClick={() => handleButtonClick(link)}
@@ -266,10 +302,5 @@ function Header({ currentUser }) {
         </>
     );
 }
-
-Header.propTypes = {
-    currentUser: PropTypes.object, 
-    totalClicks: PropTypes.number
-  }
 
 export default Header;

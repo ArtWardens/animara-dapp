@@ -1,42 +1,32 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { PropTypes } from "prop-types";
 import { useAppDispatch } from '../hooks/storeHooks';
-import { getUser, useUserDetails, useAuthLoading, useUserAuthenticated } from '../sagaStore/slices';
-import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom/dist";
+import { getUser } from '../sagaStore/slices';
+import { useUserAuthenticated, useAuthLoading } from "../sagaStore/slices";
+// import { useNavigate } from "react-router-dom";
+// import { toast } from "react-toastify";
 
 const ClickerController = ({ Children }) => {
   const dispatch = useAppDispatch();
-  const currentUser = useUserDetails();
   const navigate = useNavigate();
   const isAuthenticated = useUserAuthenticated();
   const isAuthLoading = useAuthLoading();
-  
-  const [gameData, setGameData] = useState({});
-  const [totalClicks, setTotalClicks] = useState(gameData?.currentScore);
-
+    
   useEffect(() => {
-    if (!isAuthenticated && !isAuthLoading) {
-      navigate("/login");
-      toast.error("Please login with your account to access this page");
+    if (!isAuthLoading && !isAuthenticated) {
+      navigate('/login');
     }
-  }, [isAuthenticated, navigate, isAuthLoading]);
+}, [isAuthLoading, isAuthenticated, navigate]);
+
 
   useEffect(() => {
     dispatch(getUser());
   }, [dispatch]);
 
-  console.log(gameData);
-
   return (
     <div>
-        <Children
-            currentUser={currentUser}
-            gameData={gameData}
-            setGameData={setGameData}
-            totalClicks={totalClicks}
-            setTotalClicks={setTotalClicks}
-        />
+        <Children />
     </div>
   );
 };

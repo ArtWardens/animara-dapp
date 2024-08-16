@@ -90,6 +90,11 @@ const tailwinConfig = {
           '0%': { opacity: 1 },
           '100%': { opacity: 0 },
         },
+        fadeInOut: {
+          '0%': { opacity: 0 },
+          '25%': { opacity: 1 },
+          '100%': { opacity: 0 },
+        },
         slideInFromBottom: {
           '0%': { transform: 'translateY(100%)', opacity: 0 },
           '100%': { transform: 'translateY(0)', opacity: 1 },
@@ -124,8 +129,9 @@ const tailwinConfig = {
         modalClose: 'modalClose 0.3s ease-in',
         fadeIn: 'fadeIn 0.3s ease-out',
         fadeOut: 'fadeOut 0.3s ease-in',
-        slideInFromBottom: 'slideInFromBottom 1s ease-out',
-        slideOutToBottom: 'slideOutToBottom 1s ease-in',
+        fadeInOut: 'fadeInOut 0.5s ease-out',
+        slideInFromBottom: 'slideInFromBottom 0.5s ease-out',
+        slideOutToBottom: 'slideOutToBottom 0.5s ease-in',
         slideInFromTop: 'slideInFromTop 0.5s ease-out',
         slideOutToTop: 'slideOutToTop 0.5s ease-in',
       },

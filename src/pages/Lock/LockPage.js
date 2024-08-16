@@ -1,14 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { PropTypes } from "prop-types";
-import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
-import useAuth from "../../hooks/useAuth.js";
 import Header from "../../components/Header.jsx";
 import { fetchDate, startCountdown } from '../../firebase/countDown';
 
-const LockPage = ({ currentUser, totalClicks }) => {
-    const navigate = useNavigate();
-    const { isLoggedIn, loading } = useAuth();
+const LockPage = () => {
     const [showLeftChain, setShowLeftChain] = useState(false);
     const [showRightChain, setShowRightChain] = useState(false);
     const [showLock, setShowLock] = useState(false);
@@ -16,12 +10,6 @@ const LockPage = ({ currentUser, totalClicks }) => {
     const [reverse, setReverse] = useState(false);
     const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
 
-    useEffect(() => {
-        if (!isLoggedIn && !loading) {
-            navigate("/login");
-            toast.error("You need to be logged in to access this page");
-        }
-    }, [isLoggedIn, navigate, loading]);
 
     useEffect(() => {
         const timer1 = setTimeout(() => setShowLeftChain(true), 500);
@@ -55,7 +43,7 @@ const LockPage = ({ currentUser, totalClicks }) => {
 
     return (
         <>
-            <Header currentUser={currentUser} totalClicks={totalClicks} />
+            <Header />
 
             <div
                 className="relative flex-grow flex flex-col place-content-center items-center px-24 pb-4 min-h-screen bg-cover bg-center bg-no-repeat bg-fixed"
@@ -119,11 +107,6 @@ const LockPage = ({ currentUser, totalClicks }) => {
             </div>
         </>
     );
-};
-
-LockPage.propTypes = {
-    currentUser: PropTypes.object,
-    totalClicks: PropTypes.number,
 };
 
 export default LockPage;
