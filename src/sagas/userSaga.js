@@ -378,26 +378,27 @@ export function* rechargeStaminaSaga({ payload }) {
   }
 }
 
-export function* getUserUpgradeLocationsSaga(locationId) {
+export function* upgradeUserLocationsSaga(locationId) {
   try {
-    const upgradeUserLocation = yield call(upgradeUserLocationImpl, locationId);
-    if (upgradeUserLocation) {
-      console.log("ok");
-      yield put(upgradeUserLocationSuccess(upgradeUserLocation));
-    } else {
-      yield put(upgradeUserLocationError(upgradeUserLocation));
-    }
-  } catch (error) {
-    console.log(error);
-    if (error.code === "max-level-reached") {
+    const upgradeUserLocation = yield call(upgradeUserLocationImpl, locationId);   
+    yield put(upgradeUserLocationSuccess(upgradeUserLocation));
+    toast.success("Location level upgraded successfully. ");
+  } 
+  catch (error) {
+    if (error === "insufficient-funds") {
       toast.error(
-        "User has reached the maximum level for this location already. "
+        "Insufficient coins owned to upgrade this location. "
       );
-    } else {
+    } 
+    else if (error === "location-max-level") {
+      toast.error(
+        "Max level reached for this location. "
+      );
+    } 
+    else {
       toast.error("Failed to upgrade location. Please try again. ");
     }
-    yield put(getUserLocationsError(error));
-    toast.error("Unknown error occured. Please try again. ");
+    yield put(upgradeUserLocationError(error));
   }
 }
 
@@ -438,5 +439,5 @@ export function* userSagaWatcher() {
   yield takeLatest(settleTapSession.type, settleTapSessionSaga);
   yield takeLatest(rechargeStamina.type, rechargeStaminaSaga);
   yield takeLatest(getUserLocations.type, getUserLocationsSaga);
-  yield takeLatest(upgradeUserLocation.type, getUserUpgradeLocationsSaga);
+  yield takeLatest(upgradeUserLocation.type, upgradeUserLocationsSaga);
 }

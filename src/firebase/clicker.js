@@ -43,7 +43,7 @@ const getUserLocationImpl = async () => {
     try {
         // obtain the ID token of the currrent logged in user
         const idToken = await auth.currentUser.getIdToken(false);
-        const data = await getUserLocations({
+        const { data } = await getUserLocations({
             idToken: idToken,
         });
         return data;
@@ -55,22 +55,25 @@ const getUserLocationImpl = async () => {
 };
 
 const upgradeUserLocationImpl = async (locationId) => {
-    console.log(locationId);
-    // update user's location in firestore
     try {
-        // obtain the ID token of the currrent logged in user
         const idToken = await auth.currentUser.getIdToken(false);
-        const data = await exploreLocation({
+        const result = await exploreLocation({
             idToken: idToken,
             locationId: locationId.payload
         });
-        return data;
+
+        if (result.data.error) {
+            throw result.data.error;
+        }
+
+        return result;
 
     } catch (error) {
-        console.log("Error handling get user location details ", error);
-
+        console.log("Error handling get user location details:", error);
+        throw error;
     }
 };
+
 
 export {
     settleTapSessionImpl,

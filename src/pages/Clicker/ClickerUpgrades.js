@@ -20,14 +20,13 @@ const ClickerUpgrades = ({ onClose }) => {
   const [selectedUpgrade, setSelectedUpgrade] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  const { data } = useUserLocation();
-  const userLocations = data?.userLocations || [];
+  const { userLocations } = useUserLocation();
 
   useEffect(() => {
-    if (data) {
+    if (userLocations) {
       setLoading(false);
     }
-  }, [data]);
+  }, [userLocations]);
 
   return (
     <div
@@ -80,8 +79,15 @@ const ClickerUpgrades = ({ onClose }) => {
 
           {/* Show loader if loading is true, otherwise display the content */}
           {loading ? (
-            <div className="flex justify-center items-center my-auto">
-              <PropagateLoader color={"#FFB23F"} />
+            <div className="h-full flex flex-row">
+              <div className="w-[10%] items-start justify-start mt-[4rem]">
+                <p className="ml-[4rem] cursor-pointer" onClick={onClose}>
+                  &lt;&nbsp; Back
+                </p>
+              </div>
+              <div className="w-[80%] flex justify-center items-center my-auto">
+                <PropagateLoader color={"#FFB23F"} />
+              </div>
             </div>
           ) : (
             <div className="flex flex-row justify-start mt-[4rem] gap-[6rem]">
@@ -171,18 +177,21 @@ const ClickerUpgrades = ({ onClose }) => {
                                       className="w-6 h-6 mr-1"
                                     />
                                     <p className="text-[#80e8ff]">
-                                      +{location.level === 0 && location.level !== -1 
-                                      ? location.nextLevelExploraPts 
-                                      : location.currentExploraPts}
+                                      +
+                                      {location.level === 0 &&
+                                      location.level !== -1
+                                        ? location.nextLevelExploraPts
+                                        : location.currentExploraPts}
                                     </p>
                                   </div>
                                 </div>
                                 <div className="w-full border-t-2 border-blue-400 my-[0.5rem]"></div>
                                 <div className="w-full flex flex-row justify-between">
                                   <p>
-                                    {location.level === 0 && location.level !== -1
-                                      ? "Unlock"
-                                      : "Upgrade with" }
+                                    {location.level === 0 &&
+                                    location.level !== -1
+                                      ? "Explore"
+                                      : "Upgrade with"}
                                   </p>
                                   {location.level !== -1 && (
                                     <div className="flex flex-row ml-[2rem]">

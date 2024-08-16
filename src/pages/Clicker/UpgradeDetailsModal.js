@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import { useAppDispatch } from "../../hooks/storeHooks.js";
 import {
   upgradeUserLocation,
+  useUpgradeUserLocationError,
   useUserLocationLoading,
 } from "../../sagaStore/slices/userSlice.js";
 import { PropagateLoader } from "react-spinners";
@@ -11,6 +12,7 @@ import { PropagateLoader } from "react-spinners";
 const UpgradeDetailsModal = ({ upgrade, isMaxLevel, onClose }) => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
+  const upgradeUserLocationError = useUpgradeUserLocationError();
   const isUserLocationLoading = useUserLocationLoading();
   const [isExploredSuccessfully, setIsExploredSuccessfully] = useState(false);
   const [hasStartedUpgrade, setHasStartedUpgrade] = useState(false);
@@ -64,9 +66,7 @@ const UpgradeDetailsModal = ({ upgrade, isMaxLevel, onClose }) => {
   };
 
   return (
-    <div
-      className="fixed inset-0 bg-transparent backdrop-blur-xl rounded-xl flex justify-center items-center z-[200]"
-    >
+    <div className="fixed inset-0 bg-transparent backdrop-blur-xl rounded-xl flex justify-center items-center z-[200]">
       {isUserLocationLoading && (
         <div className="absolute inset-0 flex justify-center items-center bg-transparent rounded-full w-full z-[210]">
           <div className="flex justify-center items-center">
@@ -79,11 +79,18 @@ const UpgradeDetailsModal = ({ upgrade, isMaxLevel, onClose }) => {
 
       {!isUserLocationLoading &&
       (showMaxLevelMessage || isExploredSuccessfully) ? (
-        <div className="absolute inset-0 flex justify-center items-center bg-transparent rounded-xl w-full z-[210]" onClick={onClose}>
-          <div className="text-center">
-            {showMaxLevelMessage ? (
+        <div
+          className="absolute inset-0 flex justify-center items-center bg-transparent rounded-xl w-full z-[210]"
+          onClick={onClose}
+        >
+          <div className="text-center tracking-wider">
+            {upgradeUserLocationError === "location-max-level" ? (
               <p className="text-4xl text-red-500 font-bold">
                 Failed to upgrade location. Max level reached
+              </p>
+            ) : upgradeUserLocationError === "insufficient-funds" ? (
+              <p className="text-4xl text-red-500 font-bold">
+                Failed to upgrade location level. Insufficient coins.
               </p>
             ) : (
               <p className="text-4xl text-yellow-400 font-bold">
@@ -143,10 +150,10 @@ const UpgradeDetailsModal = ({ upgrade, isMaxLevel, onClose }) => {
                     Explora Points
                   </p>
                   <img
-                        src={"../assets/images/clicker-character/icon-2.png"}
-                        alt="icon2"
-                        className="w-6 h-6 mr-1"
-                      />
+                    src={"../assets/images/clicker-character/icon-2.png"}
+                    alt="icon2"
+                    className="w-6 h-6 mr-1"
+                  />
                   <p className="text-2xl text-[#80e8ff] font-bold">
                     {upgrade.currentExploraPts}
                   </p>
@@ -170,12 +177,12 @@ const UpgradeDetailsModal = ({ upgrade, isMaxLevel, onClose }) => {
               {!isMaxLevel && (
                 <>
                   <button
-                  className="bg-[#ffdc61] text-white mt-8 px-8 py-2 rounded-full text-lg uppercase"
-                  onClick={handleUpgrade}
-                  disabled={isUserLocationLoading}
-                >
-                  {isUserLocationLoading ? "Loading..." : "Go Ahead"}
-                </button>
+                    className="bg-[#ffdc61] text-white mt-8 px-8 py-2 rounded-full text-lg uppercase"
+                    onClick={handleUpgrade}
+                    disabled={isUserLocationLoading}
+                  >
+                    {isUserLocationLoading ? "Loading..." : "Go Ahead"}
+                  </button>
                 </>
               )}
             </div>
