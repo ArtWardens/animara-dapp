@@ -1,8 +1,8 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useCallback } from "react";
 import { PropTypes } from "prop-types";
 import useSound from "use-sound";
 import { useAppDispatch } from "../hooks/storeHooks.js";
-import { useUserDetails, useLocalStamina, useLocalCoins, consumeStamina, settleTapSession } from "../sagaStore/slices";
+import { useUserDetails, useLocalStamina, useLocalCoins, useSettleTapSessionLoading, consumeStamina, settleTapSession } from "../sagaStore/slices";
 import { getAllImagePaths } from "../utils/getImagePath";
 import Header from "./Header.jsx";
 
@@ -15,6 +15,7 @@ const MascotView = ({
   const currentUser = useUserDetails();
   const localCoins = useLocalCoins();
   const localStamina = useLocalStamina();
+  const settlingTapSession = useSettleTapSessionLoading();
   const [preloadedImage, setPreloadedImage] = useState(false);
   const [imgIndex, setImgIndex] = useState(0);
   const [mascotImages, setMascotImages] = useState([]);
@@ -24,9 +25,13 @@ const MascotView = ({
   const [rewardModalFading, setRewardModalFading] = useState(false);
   const [startSlide, setStartSlide] = useState(false);
   const [isInteractive, setIsInteractive] = useState(false);
-  const timerRef = useRef(null);
+  const idleTimerRef = useRef(null);
+  const periodicSettlerTimerRef = useRef(null);
   const plusOneTimerRef = useRef(null);
 
+  const tapSessionSettleInterval = 5000;
+  const idleTimeoutDuration = 1500;
+  
   // intro anim
   useEffect(() => {
     const slideTimer = setTimeout(() => {
@@ -59,20 +64,10 @@ const MascotView = ({
     // Note: setup various conditions in which we attempt to
     // settle a tap session
     // we settle tap session by session to prevent backend overload
-    // Condition 1: every 10 seconds when user is actively clicking
-    const interval = setInterval(() => {
-      if (currentUser.coins !== localCoins || currentUser.stamina !== localStamina){
-        dispatch(settleTapSession({
-          newCointAmt: localCoins,
-          newStamina: localStamina,
-        }));
-      }
-    }, 10000);
-
-    // Condition 2: when user's moves away from browser
+    // Condition 1: when user's moves away from browser
     const handleMouseLeave = (event) => {
       if (event.clientY <= 0) {
-        if (currentUser.coins !== localCoins || currentUser.stamina !== localStamina){
+        if (!settlingTapSession && (currentUser.coins !== localCoins || currentUser.stamina !== localStamina)){
           dispatch(settleTapSession({
             newCointAmt: localCoins,
             newStamina: localStamina,
@@ -81,7 +76,7 @@ const MascotView = ({
       }
     };
 
-    // Condition 3: when user closes browser
+    // Condition 2: when user closes browser
     const handleVisibilityChange = () => {
       if (document.visibilityState === 'hidden') {
         if (currentUser.coins !== localCoins || currentUser.stamina !== localStamina){
@@ -97,66 +92,103 @@ const MascotView = ({
     document.addEventListener('visibilitychange', handleVisibilityChange);
  
     return () => {
-      clearInterval(interval);
       document.removeEventListener('mouseleave', handleMouseLeave);
       document.removeEventListener('visibilitychange', handleVisibilityChange);
     };
-  }, [dispatch, currentUser, localCoins, localStamina, preloadedImage]);
+  }, [dispatch, currentUser, localCoins, localStamina, preloadedImage, settlingTapSession]);
+
+  // periodic tap session settler
+  const setupSettler = useCallback(() =>{
+    // skip setup settler if already present
+    if (periodicSettlerTimerRef.current){ return; }
+
+    // try to settle tap session if there are any changes
+    if (!settlingTapSession && (currentUser?.coins !== localCoins || currentUser?.stamina !== localStamina)){
+      console.log('dispatch');
+      dispatch(settleTapSession({
+        newCointAmt: localCoins,
+        newStamina: localStamina,
+      }));
+    }
+
+    // set a timer to repeat this set
+    clearInterval(periodicSettlerTimerRef.current);
+    periodicSettlerTimerRef.current = setInterval(() => {
+      periodicSettlerTimerRef.current = null;
+    }, tapSessionSettleInterval);
+  }, [settlingTapSession, localCoins, localStamina, currentUser, dispatch]);
 
   // tap handlers
-  const handleMouseDown = () => {
-    // skip if not interactive
-    if (!isInteractive) return;
-
-    // skip if stamina too low
-    if (localStamina === 0 && openModal !== 'boosts' && isOpenRewardModal === false){
-      // skip and show boost modal if out of stamina
-      setOpenModal("boosts");
-      return;
-    }
-
-    // has stamina to click, change picture
-    setImgIndex(((currentUser.maxStamina - localStamina) % 2) + 1);
-    
-    // kickstart idle timer
-    const restartIdleTimer = () => {
-      // reset timer whenever we call this
-      if (timerRef.current) {
-        clearTimeout(timerRef.current);
+  const handleTap = useCallback(
+    () => {
+      // skip if not interactive
+      if (!isInteractive) return;
+  
+      // skip if stamina too low
+      if (localStamina === 0 && openModal !== 'boosts' && isOpenRewardModal === false){
+        // skip and show boost modal if out of stamina
+        setOpenModal("boosts");
+        return;
       }
-      // set a timer to reset mascot after no action for a duration
-      timerRef.current = setTimeout(() => {
-        setImgIndex(0);
-      }, 3000);
-    };
-    restartIdleTimer();
-
-    // proceed with click
-    dispatch(consumeStamina({
-      staminaToConsume: 1,
-      coinToGain: 1
-    }));
-
-    // play sfx
-    mascotSound();
-
-    // show floating number
-    const randomLeft = Math.random() * 70 + 15;
-    const randomTop = Math.random() * 50 + 5; // Adjusted range to appear higher
-    setPlusOneEffect({ show: false, left: randomLeft, top: randomTop });
-
-    setTimeout(() => {
-      setPlusOneEffect({ show: true, left: randomLeft, top: randomTop });
-    }, 0);
-
-    if (plusOneTimerRef.current) {
-      clearTimeout(plusOneTimerRef.current);
-    }
-    plusOneTimerRef.current = setTimeout(() => {
-      setPlusOneEffect({ show: false, left: 0, top: 0 });
-    }, 500);
-  };
-  const handleMouseUp = () => { };
+  
+      // has stamina to click, change picture
+      setImgIndex(((currentUser.maxStamina - localStamina) % 2) + 1);
+      
+      // kickstart idle timer
+      const restartIdleTimer = () => {
+        // reset timer whenever we call this
+        if (idleTimerRef.current) {
+          clearTimeout(idleTimerRef.current);
+        }
+        // set a timer to reset mascot after no action for a duration
+        idleTimerRef.current = setTimeout(() => {
+          console.log('idle!');
+          setImgIndex(0);
+          clearInterval(periodicSettlerTimerRef.current);
+          periodicSettlerTimerRef.current = null;
+          // Note: if reward modal is opened, then skip idle handling
+          // because usually we are waiting for server to update back depletion rewards
+          if (!settlingTapSession && !isOpenRewardModal && (currentUser?.coins !== localCoins || currentUser?.stamina !== localStamina)){
+            console.log('settle');
+            dispatch(settleTapSession({
+              newCointAmt: localCoins,
+              newStamina: localStamina,
+            }));
+          }
+        }, idleTimeoutDuration);
+      };
+      restartIdleTimer();
+      if (!periodicSettlerTimerRef.current){
+        setupSettler();
+      }
+  
+      // proceed with click
+      dispatch(consumeStamina({
+        staminaToConsume: 1,
+        coinToGain: 1
+      }));
+  
+      // play sfx
+      mascotSound();
+  
+      // show floating number
+      const randomLeft = Math.random() * 70 + 15;
+      const randomTop = Math.random() * 50 + 5; // Adjusted range to appear higher
+      setPlusOneEffect({ show: false, left: randomLeft, top: randomTop });
+  
+      setTimeout(() => {
+        setPlusOneEffect({ show: true, left: randomLeft, top: randomTop });
+      }, 0);
+  
+      if (plusOneTimerRef.current) {
+        clearTimeout(plusOneTimerRef.current);
+      }
+      plusOneTimerRef.current = setTimeout(() => {
+        setPlusOneEffect({ show: false, left: 0, top: 0 });
+      }, 500);
+  },[dispatch, currentUser, settlingTapSession, isInteractive, isOpenRewardModal, localCoins, localStamina, mascotSound, openModal, setOpenModal, setupSettler]);
+  
+  const handleTapUp = () => { };
 
   // grant depletion rewards when local stamina is updated
   useEffect(() => {
@@ -194,9 +226,9 @@ const MascotView = ({
       <Header />
 
       <div
-        onMouseDown={handleMouseDown}
-        onMouseUp={handleMouseUp}
-        onMouseLeave={handleMouseUp}
+        onMouseDown={handleTap}
+        onMouseUp={handleTapUp}
+        onMouseLeave={handleTapUp}
         className={`cursor-pointer w-5/6 h-4/5 rounded-3xl p-3`}
         style={{
           border: '2px solid var(--Color, #F4FBFF)',
