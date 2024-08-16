@@ -24,6 +24,8 @@ const userInitialState = {
   user: null,
   localCoins: 0,
   localStamina: 0,
+  snapshotCoins: 0,
+  snapshotStamina: 0,
   error: null,
   getOneTimeTaskListLoading: false,
   getOneTimeTaskListSuccess: false,
@@ -271,17 +273,21 @@ export const userSlice = createSlice({
     },
     settleTapSession: (state) => {
       state.settleTapSessionLoading = true;
+      state.snapshotCoins = state.localCoins;
+      state.snapshotStamina = state.localStamina;
     },
     settleTapSessionSuccess: (state, { payload }) => {
       const currentUser = current(state.user);
+      const coinDiff = state.localCoins - state.snapshotCoins;
+      const staminaDiff = state.localStamina - state.snapshotStamina;
       state.user = {
         ...currentUser,
-        coins: payload.newCoinAmt,
-        stamina: payload.newStamina,
+        coins: payload.newCoins + coinDiff,
+        stamina: payload.newStamina + staminaDiff,
         canGetDepletionReward: payload.canGetDepletionReward
       }
-      state.localStamina = payload.newStamina;
-      state.localCoins = payload.newCoinAmt;
+      state.localCoins = payload.newCoins + coinDiff;
+      state.localStamina = payload.newStamina + staminaDiff;
       state.settleTapSessionLoading = true;
     },
     settleTapSessionError: (state, { payload }) => {
@@ -451,6 +457,7 @@ export const useOneTimeTaskListSuccess = () => useAppSelector((state) => state.u
 export const useEarlyBirdOneTimeTaskList = () => useAppSelector((state) => state.user.earlyBirdOneTimeTask);
 export const useEarlyBirdOneTimeTaskListSuccess = () => useAppSelector((state) => state.user.getEarlyBirdOneTimeTaskListSuccess);
 export const useUserAuthenticated = () => useAppSelector((state) => state.user.isAuthenticated);
+export const useSettleTapSessionLoading = () => useAppSelector((state) => state.user.settleTapSessionLoading);
 export const useLocalCoins = () => useAppSelector((state) => state.user.localCoins);
 export const useLocalStamina = () => useAppSelector((state) => state.user.localStamina);
 export const useRechargeLoading = () => useAppSelector((state) => state.user.rechargeStaminaLoading);
