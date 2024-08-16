@@ -6,8 +6,6 @@ import {
   sendPasswordResetEmail,
   signInWithEmailAndPassword,
   signInWithPopup,
-  getAuth,
-  onAuthStateChanged,
   signInWithCustomToken,
 } from "firebase/auth";
 import {
@@ -16,7 +14,7 @@ import {
   cleanupFailedRegistration,
   loginWithTelegram,
 } from "./firebaseConfig.js";
-import { isReferralCodeValid } from "../utils/fuctions.js";
+import { isReferralCodeValid } from "./user";
 
 const signUpWithEmailImpl = async (email, password, name, referralCode) => {
   try {
@@ -128,12 +126,7 @@ const loginWithTelegramImpl = async (telegramUser) => {
 };
 
 const logoutImpl = async () => {
-  try {
-    await auth.signOut();
-    return true;
-  } catch (error) {
-    return false;
-  }
+    return await auth.signOut();
 };
 
 const resetPasswordImpl = async (email) => {
@@ -145,6 +138,10 @@ const resetPasswordImpl = async (email) => {
   }
 };
 
+const getCurrentUserIdImpl = ()=>{
+  return auth.currentUser.uid;
+}
+
 export {
   signUpWithEmailImpl,
   getIdTokenResult,
@@ -154,6 +151,5 @@ export {
   loginWithTelegramImpl,
   logoutImpl,
   resetPasswordImpl,
-  getAuth,
-  onAuthStateChanged,
+  getCurrentUserIdImpl,
 };

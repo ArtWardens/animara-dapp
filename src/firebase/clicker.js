@@ -1,29 +1,98 @@
-import { db } from "../firebase/firebaseConfig";
-import {  updateDoc, doc } from "firebase/firestore";
+import { auth, getUserLocations, exploreLocation, settleTapSession, rechargeEnergyByInvite, rechargeEnergy } from "./firebaseConfig";
 
-const handleUpdateCoins = async (data) => {
+const settleTapSessionImpl = async ({ newCointAmt, newStamina }) => {
     try {
-        // ! Update to data.uid
-        const docRef = doc(db, "users", data.uid);
-        
-        await updateDoc(docRef, { coins: data.coins });
+        const idToken = await auth.currentUser.getIdToken(/* forceRefresh */ false);
+        const result = await settleTapSession({
+            idToken: idToken,
+            newCoinAmt: newCointAmt,
+            newStamina: newStamina
+        });
+        if (result.data.error){
+            throw result.data.error;
+        }
+        return result.data;
     }catch (error) {
-        console.log("Error setting user data: ", error)
+        console.log("Failed to settle tap session withe error: ", error);
+        throw error;
     }
 };
 
-const handleUpdateClickByLevel = async (data) => {
+const rechargeEnergyImpl = async () => {
     try {
-        // ! Update to data.uid
-        const docRef = doc(db, "users", data.uid);
-        
-        await updateDoc(docRef, { clickByLevel: data.clickByLevel });
+        const idToken = await auth.currentUser.getIdToken(/* forceRefresh */ false);
+        const result = await rechargeEnergy({
+            idToken: idToken,
+        });
+        if (result.data.error){
+            throw result.data.error;
+        }
+        return result.data;
     }catch (error) {
-        console.log("Error setting user data: ", error)
+        console.log("Failed to recharge stamina with error: ", error);
+        throw error;
+    }
+};
+
+const rechargeEnergyByInviteImpl = async () => {
+    try {
+        const idToken = await auth.currentUser.getIdToken(/* forceRefresh */ false);
+        const result = await rechargeEnergyByInvite({
+            idToken: idToken,
+        });
+        if (result.data.error){
+            throw result.data.error;
+        }
+        return result.data;
+    }catch (error) {
+        console.log("Failed to recharge stamina by invite with error: ", error);
+        throw error;
+    }
+};
+
+
+const getUserLocationImpl = async () => {
+    // get user's updated details for each location from firebase
+    try {
+        // obtain the ID token of the currrent logged in user
+        const idToken = await auth.currentUser.getIdToken(false);
+        const result = await getUserLocations({
+            idToken: idToken,
+        });
+        if (result.data.error){
+            throw result.data.error;
+        }
+        return result.data;
+    }catch (error) {
+        console.log("Failed to get user location with error: ", error);
+        throw error;
+    }
+};
+
+const upgradeUserLocationImpl = async (locationId) => {
+    console.log(locationId);
+    // update user's location in firestore
+    try {
+        // obtain the ID token of the currrent logged in user
+        const idToken = await auth.currentUser.getIdToken(false);
+        const result = await exploreLocation({
+            idToken: idToken,
+            locationId: locationId.payload
+        });
+        if (result.data.error){
+            throw result.data.error;
+        }
+        return result.data;
+    }catch (error) {
+        console.log("Failed to upgrade user location with error: ", error);
+        throw error;
     }
 };
 
 export {
-    handleUpdateCoins,
-    handleUpdateClickByLevel
+    settleTapSessionImpl,
+    rechargeEnergyImpl,
+    rechargeEnergyByInviteImpl,
+    getUserLocationImpl,
+    upgradeUserLocationImpl
 };

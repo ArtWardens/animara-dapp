@@ -1,181 +1,42 @@
-import React, { useEffect, useState, useCallback } from 'react';
-import { PropTypes } from "prop-types";
-import MascotView from '../../components/MascotView';
-import EarnGuide from '../../components/EarnGuide';
-import EnergyRegeneration from '../../components/EnergyRegeneration';
-import '../../styles/globals.css';
-import { mascots } from '../../utils/local.db';
-import { addToLocalStorage, getFromLocalStorage } from '../../utils/localStorage';
-import { handleUpdateCoins, handleUpdateClickByLevel } from '../../firebase/clicker';
-import { handleUpdateUserRechargableEnergy, handleUpdateUserRechargableInvite } from '../../firebase/user';
-import { fetchRewardRate } from '../../firebase/rewardRates';
+import React, { useEffect, useState } from 'react';
 import { Box } from '@mui/material';
 import Modal from '@mui/material/Modal';
 import { useAppDispatch } from '../../hooks/storeHooks';
-import { closeDailyPopup, updateDailyLogin, useIsOpenDailyPopup } from '../../sagaStore/slices';
+import { useUserDetails, useUserDetailsLoading, closeDailyPopup, updateDailyLogin, useIsOpenDailyPopup } from '../../sagaStore/slices';
+import MascotView from '../../components/MascotView';
+import EarnGuide from '../../components/EarnGuide';
+import EnergyRegeneration from '../../components/EnergyRegeneration';
+import { mascots } from '../../utils/local.db';
 import { dailyLogin } from '../../data/constants';
+import ClickerUpgrades from './ClickerUpgrades';
+import '../../styles/globals.css';
 
-const ClickerView = ({ currentUser, gameData, setGameData, totalClicks, setTotalClicks }) => {
+const ClickerView = () => {
   const dispatch = useAppDispatch();
+  const currentUser = useUserDetails();
+  const userDetailsLoading = useUserDetailsLoading();
   const isOpenDailyPopup = useIsOpenDailyPopup();
-  const [isOpenRewardModal, setIsOpenRewardModal] = useState(false);
-  const [modalOpen, handleOpenModal] = useState(false);
-  const [loading, setLoading] = useState(true);
+  const [isLeaderboardOpen, setIsLeaderboardOpen] = useState(false);
+  const [isOneTimeTaskOpen, setIsOneTimeTaskOpen] = useState(false);
+  const [openModal, setOpenModal] = useState("");
+  const [currentMascot, setCurrentMascot] = useState(mascots[0]);
 
-  const [currentMascot] = useState(mascots[1]);
-  const [delay, setDelay] = useState(true);
-  const [countdown] = useState(30);
-
-  
-  const [userProgress] = useState({
-    EarnPerTap: 1,
-    CoinsToLvlUp: 25,
-    Energy: 100,
-    currentLevel: 1,
-    LevelProgress: {
-      prevCTL: 25,
-    }
-  });
-
-  const [energyRechargable, setEnergyRechargable] = useState(0);
-  const [inviteRechargable, setInviteRechargable] = useState(0);
-  const [rewardRate, setRewardRate] = useState(null);
-
-  const updateFirebase = useCallback(() => {
-    const localCoins = getFromLocalStorage("localCoins");
-    const totalLocalCoins = getFromLocalStorage("totalLocalCoins");
-
-    if (currentUser && parseInt(localCoins) > 0) {
-      console.log("Coins Updated!");
-      addToLocalStorage("localCoins", 0);
-      handleUpdateCoins({
-        uid: currentUser.uid,
-        coins: parseInt(totalLocalCoins),
-      });
-    }
-
-    const LocalClickByLevel = getFromLocalStorage("LocalClickByLevel");
-    const TotalLocalClickByLevel = getFromLocalStorage("TotalLocalClickByLevel");
-
-    if (currentUser && parseInt(LocalClickByLevel) > 0) {
-      console.log("ClickByLevel Updated!");
-      addToLocalStorage("LocalClickByLevel", 0);
-      handleUpdateClickByLevel({
-        uid: currentUser.uid,
-        clickByLevel: parseInt(TotalLocalClickByLevel),
-      });
-    }
-  }, [currentUser]);
-
+  // fetch user data
   useEffect(() => {
-    const fetchData = async () => {
-      if (currentUser && !currentUser?.loggedInToday) {
-        dispatch(updateDailyLogin());
-      }
+    // set mascot
+    setCurrentMascot(mascots[currentUser?.level]);
 
-      const rewardRate = await fetchRewardRate();
-      setRewardRate(rewardRate);
-
-      if (currentUser && rewardRate) {
-        setTimeout(() => {
-          setGameData({
-            mascot2: {
-              numberOfClicks: 0,
-              point: 0,
-              quest: 0,
-              energy: rewardRate.stamina,
-              level: currentUser.level,
-              clickByLevel: currentUser.clickByLevel,
-              levelProgress: 0,
-            },
-            totalPoints: 0,
-            currentScore: currentUser.coins,
-          });
-          setLoading(false);
-        }, 1000);
-      }
-
-      if (currentUser?.energyRechargable) {
-        setEnergyRechargable(currentUser.energyRechargable);
-      }
-
-      if (currentUser?.inviteRechargable) {
-        setInviteRechargable(currentUser.inviteRechargable);
-      }
-    };
-
-    fetchData();
-
-    const interval = setInterval(() => {
-      updateFirebase();
-    }, 10000);
-
-    const handleMouseLeave = (event) => {
-      if (event.clientY <= 0) {
-        updateFirebase();
-      }
-    };
-
-    const handleVisibilityChange = () => {
-      if (document.visibilityState === 'hidden') {
-        updateFirebase();
-      }
-    };
-
-    document.addEventListener('mouseleave', handleMouseLeave);
-    document.addEventListener('visibilitychange', handleVisibilityChange);
-
-    return () => {
-      clearInterval(interval);
-      document.removeEventListener('mouseleave', handleMouseLeave);
-      document.removeEventListener('visibilitychange', handleVisibilityChange);
-    };
-  }, [currentUser, dispatch, updateFirebase]);
-
-  const handleUpdateRechargableEnergy = () => {
-    if (currentUser) {
-      handleUpdateUserRechargableEnergy({
-        uid: currentUser.uid,
-        count: currentUser.energyRechargable - 1
-      });
-      setEnergyRechargable(prev => prev - 1);
-      addToLocalStorage("LocalClickByLevel", 0);
-      setGameData((prev) => ({
-        ...prev,
-        mascot2: {
-          ...prev.mascot2,
-          clickByLevel: 0,
-        },
-      }));
+    // check and popup daily login
+    if (currentUser && !currentUser?.loggedInToday) {
+      dispatch(updateDailyLogin());
     }
-  };
-
-  const handleUpdateRechargableInvite = () => {
-    if (currentUser) {
-      handleUpdateUserRechargableInvite({
-        uid: currentUser.uid,
-        count: currentUser.inviteRechargable - 1
-      });
-      setInviteRechargable(prev => prev - 1);
-      addToLocalStorage("LocalClickByLevel", 0);
-      setGameData((prev) => ({
-        ...prev,
-        mascot2: {
-          ...prev.mascot2,
-          clickByLevel: 0,
-        },
-      }));
-    }
-  };
+  }, [currentUser, dispatch]);
 
   const handleClose = () => {
     dispatch(closeDailyPopup());
   };
 
-  const [isLeaderboardOpen, setIsLeaderboardOpen] = useState(false);
-  const [isOneTimeTaskOpen, setIsOneTimeTaskOpen] = useState(false);
-
-  if (loading) {
+  if (userDetailsLoading) {
     return (
       <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-75 flex items-center justify-center z-50">
         <div className="text-center">
@@ -204,13 +65,7 @@ const ClickerView = ({ currentUser, gameData, setGameData, totalClicks, setTotal
   return (
     <>
       <div className="max-w-full flex justify-center items-center relative">
-        <EnergyRegeneration
-          currentUser={currentUser}
-          gameData={gameData}
-          setGameData={setGameData}
-          countdown={countdown}
-          totalClicks={totalClicks}
-          setTotalClicks={setTotalClicks}
+        <EnergyRegeneration 
           isLeaderboardOpen={isLeaderboardOpen}
           setIsLeaderboardOpen={setIsLeaderboardOpen}
           isOneTimeTaskOpen={isOneTimeTaskOpen}
@@ -218,30 +73,14 @@ const ClickerView = ({ currentUser, gameData, setGameData, totalClicks, setTotal
         />
 
         <MascotView
-          userProgress={userProgress}
-          setGameData={setGameData}
           currentMascot={currentMascot}
-          delay={delay}
-          setDelay={setDelay}
-          gameData={gameData}
-          totalClicks={totalClicks}
-          setTotalClicks={setTotalClicks}
-          currentUser={currentUser}
-          isOpenRewardModal={isOpenRewardModal}
-          setIsOpenRewardModal={setIsOpenRewardModal}
-          rewardRate={rewardRate}
-          handleOpenModal={handleOpenModal}
+          openModal={openModal}
+          setOpenModal={setOpenModal}
         />
 
         <EarnGuide
-          energyRechargable={energyRechargable}
-          handleUpdateRechargableEnergy={handleUpdateRechargableEnergy}
-          inviteRechargable={inviteRechargable}
-          handleUpdateRechargableInvite={handleUpdateRechargableInvite}
-          modalOpen={modalOpen}
-          handleOpenModal={handleOpenModal}
-          rewardRate={rewardRate}
-          gameData={gameData}
+          openModal={openModal}
+          setOpenModal={setOpenModal}
           isLeaderboardOpen={isLeaderboardOpen}
           setIsLeaderboardOpen={setIsLeaderboardOpen}
           isOneTimeTaskOpen={isOneTimeTaskOpen}
@@ -291,17 +130,17 @@ const ClickerView = ({ currentUser, gameData, setGameData, totalClicks, setTotal
             </div>
           </div>
         </Modal>
+
+        {openModal === 'upgrades' && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+            <ClickerUpgrades
+              onClose={() => setOpenModal('')} // Close modal when done
+            />
+          </div>
+        )}
       </div>
     </>
   );
-};
-
-ClickerView.propTypes = {
-  currentUser: PropTypes.object,
-  gameData: PropTypes.object,
-  setGameData: PropTypes.func,
-  totalClicks: PropTypes.number,
-  setTotalClicks: PropTypes.func
 };
 
 export default ClickerView;
