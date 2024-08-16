@@ -276,13 +276,13 @@ export const userSlice = createSlice({
         ...currentUser,
         coins: payload.newCoinAmt,
         stamina: payload.newStamina,
+        canGetDepletionReward: payload.canGetDepletionReward
       }
       state.localStamina = payload.newStamina;
       state.localCoins = payload.newCoinAmt;
       state.settleTapSessionLoading = true;
     },
     settleTapSessionError: (state, { payload }) => {
-      console.log(`failed to settle tap session with error; ${payload}`);
       // check if is desync error
       const currentUser = current(state.user);
       state.localStamina = currentUser.stamina;
@@ -301,12 +301,14 @@ export const userSlice = createSlice({
           ...currentUser,
           stamina: payload.newStamina,
           staminaRechargeRemaining: payload.newRechargeRemaining,
+          canGetDepletionReward: payload.canGetDepletionReward
         }
       }else if (state.rechargeOpType === StaminaRechargeTypeInvite){
         state.user = {
           ...currentUser,
           stamina: payload.newStamina,
           inviteRechargeRemaining: payload.newRechargeRemaining,
+          canGetDepletionReward: payload.canGetDepletionReward
         }
       } 
       state.localStamina = payload.newStamina;
