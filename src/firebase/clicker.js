@@ -1,4 +1,4 @@
-import { auth, settleTapSession, rechargeEnergyByInvite, rechargeEnergy } from "./firebaseConfig";
+import { auth, getUserLocations, exploreLocation, settleTapSession, rechargeEnergyByInvite, rechargeEnergy } from "./firebaseConfig";
 
 const settleTapSessionImpl = async ({ newCointAmt, newStamina }) => {
     try {
@@ -13,7 +13,7 @@ const settleTapSessionImpl = async ({ newCointAmt, newStamina }) => {
         }
         return result.data;
     }catch (error) {
-        console.log("Error settling tap session: ", error);
+        console.log("Failed to settle tap session withe error: ", error);
         throw error;
     }
 };
@@ -29,7 +29,7 @@ const rechargeEnergyImpl = async () => {
         }
         return result.data;
     }catch (error) {
-        console.log("Error handling energy recharge: ", error);
+        console.log("Failed to recharge stamina with error: ", error);
         throw error;
     }
 };
@@ -45,7 +45,46 @@ const rechargeEnergyByInviteImpl = async () => {
         }
         return result.data;
     }catch (error) {
-        console.log("Error handling energy recharge by invite: ", error);
+        console.log("Failed to recharge stamina by invite with error: ", error);
+        throw error;
+    }
+};
+
+
+const getUserLocationImpl = async () => {
+    // get user's updated details for each location from firebase
+    try {
+        // obtain the ID token of the currrent logged in user
+        const idToken = await auth.currentUser.getIdToken(false);
+        const result = await getUserLocations({
+            idToken: idToken,
+        });
+        if (result.data.error){
+            throw result.data.error;
+        }
+        return result.data;
+    }catch (error) {
+        console.log("Failed to get user location with error: ", error);
+        throw error;
+    }
+};
+
+const upgradeUserLocationImpl = async (locationId) => {
+    console.log(locationId);
+    // update user's location in firestore
+    try {
+        // obtain the ID token of the currrent logged in user
+        const idToken = await auth.currentUser.getIdToken(false);
+        const result = await exploreLocation({
+            idToken: idToken,
+            locationId: locationId.payload
+        });
+        if (result.data.error){
+            throw result.data.error;
+        }
+        return result.data;
+    }catch (error) {
+        console.log("Failed to upgrade user location with error: ", error);
         throw error;
     }
 };
@@ -53,5 +92,7 @@ const rechargeEnergyByInviteImpl = async () => {
 export {
     settleTapSessionImpl,
     rechargeEnergyImpl,
-    rechargeEnergyByInviteImpl
+    rechargeEnergyByInviteImpl,
+    getUserLocationImpl,
+    upgradeUserLocationImpl
 };
