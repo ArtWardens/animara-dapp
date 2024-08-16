@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Box } from '@mui/material';
 import Modal from '@mui/material/Modal';
 import { useAppDispatch } from '../../hooks/storeHooks';
-import { useUserDetails, useUserDetailsLoading, consumeStamina, settleTapSession, closeDailyPopup, updateDailyLogin, useIsOpenDailyPopup, useLocalCoins, useLocalStamina } from '../../sagaStore/slices';
+import { useUserDetails, useUserDetailsLoading, closeDailyPopup, updateDailyLogin, useIsOpenDailyPopup } from '../../sagaStore/slices';
 import MascotView from '../../components/MascotView';
 import EarnGuide from '../../components/EarnGuide';
 import EnergyRegeneration from '../../components/EnergyRegeneration';
@@ -13,78 +13,12 @@ import '../../styles/globals.css';
 const ClickerView = () => {
   const dispatch = useAppDispatch();
   const currentUser = useUserDetails();
-  const localCoins = useLocalCoins();
-  const localStamina = useLocalStamina();
   const userDetailsLoading = useUserDetailsLoading();
   const isOpenDailyPopup = useIsOpenDailyPopup();
-  const [isOpenRewardModal, setIsOpenRewardModal] = useState(false);
   const [isLeaderboardOpen, setIsLeaderboardOpen] = useState(false);
   const [isOneTimeTaskOpen, setIsOneTimeTaskOpen] = useState(false);
-  const [modalOpen, handleOpenModal] = useState(false);
+  const [openModal, setOpenModal] = useState("");
   const [currentMascot, setCurrentMascot] = useState(mascots[0]);
-  const [delay, setDelay] = useState(true);
-
-  // setup event handlers to settle tap sessions
-  useEffect(() => {
-    // Note: setup various conditions in which we attempt to
-    // settle a tap session
-    // we settle tap session by session to prevent backend overload
-    
-    // Condition 1: every 10 seconds when user is actively clicking
-    const interval = setInterval(() => {
-      if (currentUser.coins !== localCoins || currentUser.stamina !== localStamina){
-        dispatch(settleTapSession({
-          newCointAmt: localCoins,
-          newStamina: localStamina,
-        }));
-      }
-    }, 10000);
-
-    // Condition 2: when user's moves away from browser
-    const handleMouseLeave = (event) => {
-      if (event.clientY <= 0) {
-        if (currentUser.coins !== localCoins || currentUser.stamina !== localStamina){
-          dispatch(settleTapSession({
-            newCointAmt: localCoins,
-            newStamina: localStamina,
-          }));
-        }
-      }
-    };
-
-    // Condition 3: when user closes browser
-    const handleVisibilityChange = () => {
-      if (document.visibilityState === 'hidden') {
-        if (currentUser.coins !== localCoins || currentUser.stamina !== localStamina){
-          dispatch(settleTapSession({
-            newCointAmt: localCoins,
-            newStamina: localStamina,
-          }));
-        }
-      }
-    };
-
-    document.addEventListener('mouseleave', handleMouseLeave);
-    document.addEventListener('visibilitychange', handleVisibilityChange);
-
-    return () => {
-      clearInterval(interval);
-      document.removeEventListener('mouseleave', handleMouseLeave);
-      document.removeEventListener('visibilitychange', handleVisibilityChange);
-    };
-  }, [dispatch, currentUser?.coins, currentUser?.stamina, localCoins, localStamina]);
-
-  // grant depletion rewards
-  useEffect(() => {
-    const shouldGainRewards = currentUser && currentUser?.stamina === 0;
-
-    if (shouldGainRewards) {
-      dispatch(consumeStamina({
-        staminaToConsume: 0,
-        coinToGain: currentUser.depletionReward
-      }));
-    }
-  }, [dispatch, currentUser, setIsOpenRewardModal]);
 
   // fetch user data
   useEffect(() => {
@@ -139,16 +73,13 @@ const ClickerView = () => {
 
         <MascotView
           currentMascot={currentMascot}
-          delay={delay}
-          setDelay={setDelay}
-          isOpenRewardModal={isOpenRewardModal}
-          setIsOpenRewardModal={setIsOpenRewardModal}
-          handleOpenModal={handleOpenModal}
+          openModal={openModal}
+          setOpenModal={setOpenModal}
         />
 
         <EarnGuide
-          modalOpen={modalOpen}
-          handleOpenModal={handleOpenModal}
+          openModal={openModal}
+          setOpenModal={setOpenModal}
           isLeaderboardOpen={isLeaderboardOpen}
           setIsLeaderboardOpen={setIsLeaderboardOpen}
           isOneTimeTaskOpen={isOneTimeTaskOpen}
