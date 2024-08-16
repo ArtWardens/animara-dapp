@@ -2,29 +2,30 @@ import React, { useEffect, useRef, useState } from "react";
 import { PropTypes } from "prop-types";
 import useSound from "use-sound";
 import { useAppDispatch } from "../hooks/storeHooks.js";
-import { useUserDetails, useLocalStamina, consumeStamina } from "../sagaStore/slices";
+import { useUserDetails, useLocalStamina, useLocalCoins, consumeStamina, settleTapSession } from "../sagaStore/slices";
 import { getAllImagePaths } from "../utils/getImagePath";
 import Header from "./Header.jsx";
 
 const MascotView = ({
   currentMascot,
-  isOpenRewardModal,
-  setIsOpenRewardModal,
-  handleOpenModal
+  openModal,
+  setOpenModal
 }) => {
   const dispatch = useAppDispatch();
   const currentUser = useUserDetails();
+  const localCoins = useLocalCoins();
   const localStamina = useLocalStamina();
   const [preloadedImage, setPreloadedImage] = useState(false);
   const [imgIndex, setImgIndex] = useState(0);
   const [mascotImages, setMascotImages] = useState([]);
   const [plusOneEffect, setPlusOneEffect] = useState({ show: false, left: 0, top: 0 });
-  const timerRef = useRef(null);
-  const plusOneTimerRef = useRef(null);
   const [mascotSound] = useSound(currentMascot?.sound);
-
+  const [isOpenRewardModal, setIsOpenRewardModal] = useState(false);
+  const [rewardModalFading, setRewardModalFading] = useState(false);
   const [startSlide, setStartSlide] = useState(false);
   const [isInteractive, setIsInteractive] = useState(false);
+  const timerRef = useRef(null);
+  const plusOneTimerRef = useRef(null);
 
   // intro anim
   useEffect(() => {
@@ -44,27 +45,73 @@ const MascotView = ({
 
   // initial setup
   useEffect(() => {
-    if (!preloadedImage){
-      // preload images if enter on the first time
-      setMascotImages(getAllImagePaths(currentUser));
-
-      // set intial image
-      setImgIndex(0);
-
-      setPreloadedImage(true);
+    if (preloadedImage){
+      return;
     }
+    // preload images if enter on the first time
+    setMascotImages(getAllImagePaths(currentUser));
 
+    // set intial image
+    setImgIndex(0);
+
+    setPreloadedImage(true);
+
+    // Note: setup various conditions in which we attempt to
+    // settle a tap session
+    // we settle tap session by session to prevent backend overload
+    // Condition 1: every 10 seconds when user is actively clicking
+    const interval = setInterval(() => {
+      if (currentUser.coins !== localCoins || currentUser.stamina !== localStamina){
+        dispatch(settleTapSession({
+          newCointAmt: localCoins,
+          newStamina: localStamina,
+        }));
+      }
+    }, 10000);
+
+    // Condition 2: when user's moves away from browser
+    const handleMouseLeave = (event) => {
+      if (event.clientY <= 0) {
+        if (currentUser.coins !== localCoins || currentUser.stamina !== localStamina){
+          dispatch(settleTapSession({
+            newCointAmt: localCoins,
+            newStamina: localStamina,
+          }));
+        }
+      }
+    };
+
+    // Condition 3: when user closes browser
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'hidden') {
+        if (currentUser.coins !== localCoins || currentUser.stamina !== localStamina){
+          dispatch(settleTapSession({
+            newCointAmt: localCoins,
+            newStamina: localStamina,
+          }));
+        }
+      }
+    };
+
+    document.addEventListener('mouseleave', handleMouseLeave);
+    document.addEventListener('visibilitychange', handleVisibilityChange);
  
-  }, [currentUser, localStamina, preloadedImage]);
+    return () => {
+      clearInterval(interval);
+      document.removeEventListener('mouseleave', handleMouseLeave);
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+    };
+  }, [dispatch, currentUser, localCoins, localStamina, preloadedImage]);
 
   // tap handlers
   const handleMouseDown = () => {
     // skip if not interactive
     if (!isInteractive) return;
 
-    // skip and show boost modal if out of stamina
-    if (localStamina <= 0){
-      handleOpenModal("boosts");
+    // skip if stamina too low
+    if (localStamina === 0 && openModal !== 'boosts' && isOpenRewardModal === false){
+      // skip and show boost modal if out of stamina
+      setOpenModal("boosts");
       return;
     }
 
@@ -111,8 +158,32 @@ const MascotView = ({
   };
   const handleMouseUp = () => { };
 
+  // grant depletion rewards when local stamina is updated
+  useEffect(() => {
+    // skip if user not initialized yet
+    if (!currentUser){ return; }
+
+    // check if we should grant depletion reward
+    const shouldGrantDepletionReward = localStamina === 0;
+    if (!shouldGrantDepletionReward || isOpenRewardModal || !currentUser?.canGetDepletionReward) { return; }
+
+    // settle tap session when stamina is depleted
+    // Note: server side will auto grant depletion reward
+    dispatch(settleTapSession({
+      newCointAmt: localCoins,
+      newStamina: localStamina,
+    }));
+
+    // show reward popup
+    setIsOpenRewardModal(true);
+  }, [dispatch, localStamina, localCoins, currentUser, isOpenRewardModal, setIsOpenRewardModal]);
+
   const closeRewardModal = () => {
-    setIsOpenRewardModal(false);
+    setRewardModalFading(true);
+    setTimeout(() => {
+      setIsOpenRewardModal(false);
+      setRewardModalFading(false);
+    }, 500);
   };
 
   return (
@@ -202,7 +273,7 @@ const MascotView = ({
 
       {isOpenRewardModal && (
         <div
-          className={`fixed top-0 flex flex-col h-full w-full items-center justify-center bg-dark/90`}
+          className={`fixed top-0 flex flex-col h-full w-full items-center justify-center bg-dark/90 transition-opacity duration-500 ${rewardModalFading ? 'opacity-0' : 'opacity-100'}`}
           style={{
             zIndex: 100,
           }}
@@ -225,9 +296,8 @@ const MascotView = ({
 
 MascotView.propTypes = {
   currentMascot: PropTypes.object,
-  isOpenRewardModal: PropTypes.bool,
-  setIsOpenRewardModal: PropTypes.func,
-  handleOpenModal: PropTypes.func
+  openModal: PropTypes.string,
+  setOpenModal: PropTypes.func
 }
 
 export default MascotView;
