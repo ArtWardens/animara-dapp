@@ -40,6 +40,12 @@ function EarnGuide({
     const handleMouseEnterTasks = () => setImageSrcTasks("../assets/images/clicker-character/tasksHover.png");
     const handleMouseLeaveTasks = () => setImageSrcTasks("../assets/images/clicker-character/tasksBtn.png");
 
+
+    const handleUserUpgrades = () => {
+        handleOpenModal('upgrades');
+        dispatch(getUserLocations());
+    };
+
     const closeModal = () => {
         setOpenModal("");
     };
@@ -172,7 +178,7 @@ function EarnGuide({
                             className="transition ease-in-out hover:-translate-y-1 hover:scale-110 duration-200"
                             onMouseEnter={handleMouseEnterUpgrades}
                             onMouseLeave={handleMouseLeaveUpgrades}
-                            onClick={() => setOpenModal('upgrades')}
+                            onClick={handleUserUpgrades}
                         >
                             <img
                                 src={imageSrcUpgrades}

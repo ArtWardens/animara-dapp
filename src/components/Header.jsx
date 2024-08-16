@@ -1,10 +1,18 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useDispatch } from "react-redux";
+import { useTranslation } from "react-i18next";
 import { useLocation, useNavigate } from "react-router-dom/dist";
 import { PropagateLoader } from "react-spinners";
 import { logOut, useUserDetails, useLocalCoins } from "../sagaStore/slices";
 
+const lngs = {
+    en: { nativeName: "English" },
+    cn: { nativeName: "中文" },
+  };
+
 function Header() {
+    const { i18n } = useTranslation();
+    const [langDropdownOpen, setLangDropdownOpen] = useState(false);
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const location = useLocation();
@@ -13,6 +21,11 @@ function Header() {
     const localCoins = useLocalCoins();
     const trigger = useRef(null);
     const coinsDisplayRef = useRef(null);
+
+    const handleLangChange = (lng) => {
+        i18n.changeLanguage(lng);
+        setLangDropdownOpen(false);
+      };
 
     // navigation bar setup
     const navDestinations = [
@@ -138,6 +151,29 @@ function Header() {
                     zIndex: 91,
                 }}
             >
+                <div className="relative">
+                <img
+                  src="../assets/images/clicker-character/locale.png"
+                  className="w-[3dvw] xl:w-[1.5dvw] cursor-pointer"
+                  onClick={() => setLangDropdownOpen(!langDropdownOpen)}
+                />
+                {langDropdownOpen && (
+                  <div className="absolute right-0 mt-2 w-[150px] bg-white shadow-lg rounded-md z-10">
+                    {Object.keys(lngs).map((lng) => (
+                      <button
+                        className="block w-full px-4 py-2 text-left hover:bg-gray-200"
+                        type="submit"
+                        key={lng}
+                        onClick={() => handleLangChange(lng)}
+                        disabled={i18n.resolvedLanguage === lng}
+                      >
+                        {lngs[lng].nativeName}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+              
                 {navDestinations.map(({ name, link }) => (
                     <button
                         key={name}

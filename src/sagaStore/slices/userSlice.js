@@ -35,6 +35,8 @@ const userInitialState = {
   settleTapSessionLoading: false,
   rechargeStaminaLoading: false,
   rechargeOpType: '',
+  userLocationsLoading: false,
+  userLocations: [],
 };
 
 export const userSlice = createSlice({
@@ -283,6 +285,7 @@ export const userSlice = createSlice({
       state.settleTapSessionLoading = true;
     },
     settleTapSessionError: (state, { payload }) => {
+      console.log(`failed to settle tap session with error; ${payload}`);
       // check if is desync error
       const currentUser = current(state.user);
       state.localStamina = currentUser.stamina;
@@ -317,6 +320,40 @@ export const userSlice = createSlice({
     rechargeStaminaError: (state, { payload }) => {
       state.error = payload;
       state.rechargeStaminaLoading = false;
+    },
+    getUserLocations: (state, { payload }) => {
+      state.userLocationsLoading = true;
+    },
+    getUserLocationsSuccess: (state, { payload }) => {
+      state.userLocations = payload;
+      state.userLocationsLoading = false;
+    },
+    getUserLocationsError: (state, { payload }) => {
+      state.userLocations = payload;
+      state.userLocationsLoading = false;
+    },
+    upgradeUserLocation: (state, { payload }) => {
+      state.userLocationsLoading = true;
+    },
+    upgradeUserLocationSuccess: (state, { payload }) => {
+      const locationIndex = state.userLocations.data.userLocations.findIndex(
+        (location) => location.locationId === payload.data.locationId
+      );
+
+      if (locationIndex !== -1) {
+        // update the location details
+        state.userLocations.data.userLocations[locationIndex] = {
+          ...state.userLocations.data.userLocations[locationIndex],
+          level: payload.data.locationLvl,
+          currentExploraPts: payload.data.locationExploraPts,
+          nextLevelUpgradeCost: payload.data.nextLevelUpgradeCost,
+          nextLevelExploraPts: payload.data.nextLevelExploraPts,
+        };
+      }
+      state.userLocationsLoading = false;
+    },
+    upgradeUserLocationError: (state, { payload }) => {
+      state.userLocationsLoading = false;
     },
   },
 });
@@ -378,6 +415,13 @@ export const {
   rechargeStamina,
   rechargeStaminaSuccess,
   rechargeStaminaError,
+  updateCompleteOneTimeTaskSuccess,
+  getUserLocations,
+  getUserLocationsSuccess,
+  getUserLocationsError,
+  upgradeUserLocation,
+  upgradeUserLocationSuccess,
+  upgradeUserLocationError,
 } = userSlice.actions;
 
 export const useAuthLoading = () => useAppSelector((state) => state.user.authLoading);
@@ -410,6 +454,8 @@ export const useUserAuthenticated = () => useAppSelector((state) => state.user.i
 export const useLocalCoins = () => useAppSelector((state) => state.user.localCoins);
 export const useLocalStamina = () => useAppSelector((state) => state.user.localStamina);
 export const useRechargeLoading = () => useAppSelector((state) => state.user.rechargeStaminaLoading);
+export const useUserLocation = () => useAppSelector((state) => state.user.userLocations);
+export const useUserLocationLoading = () => useAppSelector((state) => state.user.userLocationsLoading);
 
 const userReducer = userSlice.reducer;
 

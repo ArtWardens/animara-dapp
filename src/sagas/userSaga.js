@@ -24,7 +24,9 @@ import {
 import {
   settleTapSessionImpl,
   rechargeEnergyImpl,
-  rechargeEnergyByInviteImpl
+  rechargeEnergyByInviteImpl,
+  getUserLocationImpl,
+  upgradeUserLocationImpl,
 } from '../firebase/clicker';
 import {
   closeDailyPopup,
@@ -78,6 +80,12 @@ import {
   rechargeStamina,
   rechargeStaminaSuccess,
   rechargeStaminaError,
+  getUserLocations,
+  getUserLocationsSuccess,
+  getUserLocationsError,
+  upgradeUserLocation,
+  upgradeUserLocationSuccess,
+  upgradeUserLocationError,
 } from "../sagaStore/slices";
 import {
   StaminaRechargeTypeBasic,
@@ -327,7 +335,9 @@ export function* updateOneTimeTaskSaga({ payload }) {
 
 export function* logOutSaga() {
   try{
+    console.log(`saga logging out`);
     yield call(logoutImpl);
+    console.log(`saga logged out`);
     yield put(logOutSuccess());
   }catch (error){
     yield put(logOutError(error));
@@ -376,6 +386,46 @@ export function* rechargeStaminaSaga({ payload }) {
   }
 }
 
+export function* getUserUpgradeLocationsSaga(locationId) {
+  try {
+    const upgradeUserLocation = yield call(upgradeUserLocationImpl, locationId);
+    if (upgradeUserLocation) {
+      console.log("ok");
+      yield put(upgradeUserLocationSuccess(upgradeUserLocation));
+    } else {
+      yield put(upgradeUserLocationError(upgradeUserLocation));
+    }
+  } catch (error) {
+    console.log(error);
+    if (error.code === "max-level-reached") {
+      toast.error(
+        "User has reached the maximum level for this location already. "
+      );
+    } else {
+      toast.error("Failed to upgrade location. Please try again. ");
+    }
+    yield put(getUserLocationsError(error));
+    toast.error("Unknown error occured. Please try again. ");
+  }
+}
+
+export function* getUserLocationsSaga() {
+  try {
+    const userLocation = yield call(getUserLocationImpl);
+    if (userLocation) {
+      yield put(getUserLocationsSuccess(userLocation));
+    } else {
+      yield put(
+        getUserLocationsError("Failed to get upgrades. Please try again. ")
+      );
+    }
+    return userLocation;
+  } catch (error) {
+    console.log(error);
+    yield put(getUserLocationsError(error));
+  }
+}
+
 export function* userSagaWatcher() {
   yield takeLatest(signupWithEmail.type, signupWithEmailSaga);
   yield takeLatest(loginWithEmail.type, loginWithEmailSaga);
@@ -395,4 +445,6 @@ export function* userSagaWatcher() {
   yield takeLatest(consumeStamina.type, consumeStaminaSaga);
   yield takeLatest(settleTapSession.type, settleTapSessionSaga);
   yield takeLatest(rechargeStamina.type, rechargeStaminaSaga);
+  yield takeLatest(getUserLocations.type, getUserLocationsSaga);
+  yield takeLatest(upgradeUserLocation.type, getUserUpgradeLocationsSaga);
 }

@@ -8,6 +8,7 @@ import EarnGuide from '../../components/EarnGuide';
 import EnergyRegeneration from '../../components/EnergyRegeneration';
 import { mascots } from '../../utils/local.db';
 import { dailyLogin } from '../../data/constants';
+import ClickerUpgrades from './ClickerUpgrades';
 import '../../styles/globals.css';
 
 const ClickerView = () => {
@@ -129,6 +130,14 @@ const ClickerView = () => {
             </div>
           </div>
         </Modal>
+
+        {openModal === 'upgrades' && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+            <ClickerUpgrades
+              onClose={() => handleOpenModal(false)} // Close modal when done
+            />
+          </div>
+        )}
       </div>
     </>
   );
