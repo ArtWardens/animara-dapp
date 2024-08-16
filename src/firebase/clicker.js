@@ -3,38 +3,50 @@ import { auth, settleTapSession, rechargeEnergyByInvite, rechargeEnergy } from "
 const settleTapSessionImpl = async ({ newCointAmt, newStamina }) => {
     try {
         const idToken = await auth.currentUser.getIdToken(/* forceRefresh */ false);
-        const { data } = await settleTapSession({
+        const result = await settleTapSession({
             idToken: idToken,
             newCoinAmt: newCointAmt,
             newStamina: newStamina
         });
-        return data;
+        if (result.data.error){
+            throw result.data.error;
+        }
+        return result.data;
     }catch (error) {
-        console.log("Error settling tap session: ", error)
+        console.log("Error settling tap session: ", error);
+        throw error;
     }
 };
 
 const rechargeEnergyImpl = async () => {
     try {
         const idToken = await auth.currentUser.getIdToken(/* forceRefresh */ false);
-        const { data } = await rechargeEnergy({
+        const result = await rechargeEnergy({
             idToken: idToken,
         });
-        return data;
+        if (result.data.error){
+            throw result.data.error;
+        }
+        return result.data;
     }catch (error) {
-        console.log("Error handling energy recharge: ", error)
+        console.log("Error handling energy recharge: ", error);
+        throw error;
     }
 };
 
 const rechargeEnergyByInviteImpl = async () => {
     try {
         const idToken = await auth.currentUser.getIdToken(/* forceRefresh */ false);
-        const { data } = await rechargeEnergyByInvite({
+        const result = await rechargeEnergyByInvite({
             idToken: idToken,
         });
-        return data;
+        if (result.data.error){
+            throw result.data.error;
+        }
+        return result.data;
     }catch (error) {
-        console.log("Error handling energy recharge by invite: ", error)
+        console.log("Error handling energy recharge by invite: ", error);
+        throw error;
     }
 };
 

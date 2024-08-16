@@ -327,9 +327,7 @@ export function* updateOneTimeTaskSaga({ payload }) {
 
 export function* logOutSaga() {
   try{
-    console.log(`saga logging out`);
     yield call(logoutImpl);
-    console.log(`saga logged out`);
     yield put(logOutSuccess());
   }catch (error){
     yield put(logOutError(error));
@@ -349,6 +347,8 @@ export function* settleTapSessionSaga({ payload }) {
     const result = yield call(settleTapSessionImpl, payload);
     yield put(settleTapSessionSuccess(result));
   }catch (error){
+    // to localize
+    toast.error('Failed to sync game progress');
     yield put(settleTapSessionError(error));
   }
 }
@@ -366,6 +366,12 @@ export function* rechargeStaminaSaga({ payload }) {
     }
     yield put(rechargeStaminaSuccess(result));
   }catch (error){
+    // to localize
+    if (error === 'insufficient-recharge'){
+      toast.error('Out of recharge');
+    }else{
+      toast.error('Failed to Recharge Stamina');
+    }
     yield put(rechargeStaminaError(error));
   }
 }
