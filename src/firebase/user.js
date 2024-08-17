@@ -22,9 +22,9 @@ export const isReferralCodeValid = async (referralCode) => {
 
 // functions that we export for saga
 const getUserDataImpl = async (uid) => {
-    try {
-        const docRef = doc(db, 'users', uid);
-        const docSnap = await getDoc(docRef);
+  try {
+    const docRef = doc(db, 'users', uid);
+    const docSnap = await getDoc(docRef);
 
     let canResetPassword = false;
     const token = await getIdTokenResult(auth.currentUser);
@@ -138,7 +138,7 @@ const updateUserLeaveTimeImpl = async () => {
   }
 };
 
-const updateDailyLoginImpl = async () => {
+const dailyLoginImpl = async () => {
   try {
     const idToken = await auth.currentUser.getIdToken(/* forceRefresh */ false);
     const { data } = await dailyLogin({idToken: idToken});
@@ -152,5 +152,5 @@ export {
     getUserDataImpl,
     updateUserProfileImpl,
     updateUserLeaveTimeImpl,
-    updateDailyLoginImpl
+    dailyLoginImpl
 };
