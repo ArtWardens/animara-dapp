@@ -344,20 +344,27 @@ export const userSlice = createSlice({
     },
     upgradeUserLocationSuccess: (state, { payload }) => {
       const locationIndex = state.userLocations.userLocations.findIndex(
-        (location) => location.locationId === payload.data.locationId
+        (location) => location.locationId === payload.locationId
       );
 
       if (locationIndex !== -1) {
         // update the location details
         state.userLocations.userLocations[locationIndex] = {
           ...state.userLocations.userLocations[locationIndex],
-          level: payload.data.locationLvl,
-          currentExploraPts: payload.data.locationExploraPts,
-          nextLevelUpgradeCost: payload.data.nextLevelUpgradeCost,
-          nextLevelExploraPts: payload.data.nextLevelExploraPts,
+          level: payload.locationLvl,
+          currentExploraPts: payload.locationExploraPts,
+          nextLevelUpgradeCost: payload.nextLevelUpgradeCost,
+          nextLevelExploraPts: payload.nextLevelExploraPts,
         };
       }
-      state.localCoins = payload.data.updatedCoins;
+      const currentUser = current(state.user);
+      state.user = {
+        ...currentUser,
+        level: payload.updatedLvl,
+        profitPerHour: payload.updatedExploraPts,
+        coins: payload.updatedCoins,
+      }
+      state.localCoins = payload.updatedCoins;
       state.userLocationsLoading = false;
     },
     upgradeUserLocationError: (state, { payload }) => {
