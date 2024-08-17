@@ -70,10 +70,7 @@ const getUserLocationImpl = async () => {
 };
 
 const upgradeUserLocationImpl = async (locationId) => {
-    console.log(locationId);
-    // update user's location in firestore
     try {
-        // obtain the ID token of the currrent logged in user
         const idToken = await auth.currentUser.getIdToken(false);
         const result = await exploreLocation({
             idToken: idToken,
@@ -88,6 +85,7 @@ const upgradeUserLocationImpl = async (locationId) => {
         throw error;
     }
 };
+
 
 export {
     settleTapSessionImpl,
