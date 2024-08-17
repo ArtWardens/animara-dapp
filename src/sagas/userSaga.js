@@ -14,7 +14,7 @@ import {
 import {
   updateUserProfileImpl,
   getUserDataImpl,
-  updateDailyLoginImpl,
+  dailyLoginImpl,
 } from "../firebase/user";
 import { handleGetLeaderboard } from "../firebase/leaderboard";
 import {
@@ -272,7 +272,7 @@ export function* getUserSaga() {
 
 export function* updateDailyLoginSaga() {
   try {
-    const dailyLoginResult = yield call(updateDailyLoginImpl);
+    const dailyLoginResult = yield call(dailyLoginImpl);
     yield put(updateDailyLoginSuccess(dailyLoginResult));
   } catch (error) {
     console.log("Failed to daily login with error: ", error);
