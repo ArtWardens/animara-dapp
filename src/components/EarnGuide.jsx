@@ -64,9 +64,9 @@ function EarnGuide({
     };
 
     const handleReferCompletion = () =>{
-        setShowPopup(false);
         setIsRecharging(true);
         dispatch(rechargeStamina({ opType: StaminaRechargeTypeInvite }));
+        setShowPopup(false);
     }
 
     // intro animation
