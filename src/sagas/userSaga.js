@@ -15,6 +15,7 @@ import {
   updateUserProfileImpl,
   getUserDataImpl,
   dailyLoginImpl,
+  getReferralStatsImpl,
 } from "../firebase/user";
 import { handleGetLeaderboard } from "../firebase/leaderboard";
 import {
@@ -86,6 +87,9 @@ import {
   upgradeUserLocation,
   upgradeUserLocationSuccess,
   upgradeUserLocationError,
+  getReferralStats,
+  getReferralStatsSuccess,
+  getReferralStatsError,
 } from "../sagaStore/slices";
 import {
   StaminaRechargeTypeBasic,
@@ -427,6 +431,21 @@ export function* getUserLocationsSaga() {
   }
 }
 
+export function* getReferralStatsSaga() {
+  try {
+    const referralStats = yield call(getReferralStatsImpl);
+    if (referralStats) {
+      yield put(getReferralStatsSuccess(referralStats));
+    } else {
+      yield put(
+        getReferralStatsError("Failed to get referral stats. Please try again. ")
+      );
+    }
+  } catch (error) {
+    yield put(getReferralStatsSuccess(error));
+  }
+}
+
 export function* userSagaWatcher() {
   yield takeLatest(signupWithEmail.type, signupWithEmailSaga);
   yield takeLatest(loginWithEmail.type, loginWithEmailSaga);
@@ -448,4 +467,5 @@ export function* userSagaWatcher() {
   yield takeLatest(rechargeStamina.type, rechargeStaminaSaga);
   yield takeLatest(getUserLocations.type, getUserLocationsSaga);
   yield takeLatest(upgradeUserLocation.type, upgradeUserLocationsSaga);
+  yield takeLatest(getReferralStats.type, getReferralStatsSaga);
 }

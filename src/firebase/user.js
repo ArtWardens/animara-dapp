@@ -1,4 +1,4 @@
-import { auth, db, storage, updateUserLastLogin, dailyLogin } from "../firebase/firebaseConfig";
+import { auth, db, storage, updateUserLastLogin, dailyLogin, getReferralStats } from "../firebase/firebaseConfig";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { getDownloadURL, ref, uploadString } from "firebase/storage";
 import { getIdTokenResult, updateProfile } from "firebase/auth";
@@ -144,7 +144,21 @@ const dailyLoginImpl = async () => {
     const { data } = await dailyLogin({idToken: idToken});
     return data;
   }catch (error) {
-      console.log("Error updating daily login: ", error)
+      console.log("Failed to daily login with error: ", error)
+  }
+}
+
+const getReferralStatsImpl = async () =>{
+  try {
+    const idToken = await auth.currentUser.getIdToken(false);
+    const { data } = await getReferralStats({idToken: idToken});
+    if (data.error){
+        throw data.error;
+    }
+    return data;
+  }catch (error) {
+      console.log("Failed to get referral stats withe error: ", error);
+      throw error;
   }
 }
 
@@ -152,5 +166,6 @@ export {
     getUserDataImpl,
     updateUserProfileImpl,
     updateUserLeaveTimeImpl,
-    dailyLoginImpl
+    dailyLoginImpl,
+    getReferralStatsImpl
 };
