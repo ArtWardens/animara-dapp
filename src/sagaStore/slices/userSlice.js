@@ -40,6 +40,11 @@ const userInitialState = {
   userLocationsLoading: false,
   userLocations: [],
   upgradeUserLocationErrorCode: '',
+  referralStatLoading: false,
+  referralCount: 0,
+  nftPurchasedReferralCount: 0,
+  basicClaimable: 0,
+  nftClaimable: 0,
 };
 
 export const userSlice = createSlice({
@@ -371,6 +376,20 @@ export const userSlice = createSlice({
       state.upgradeUserLocationErrorCode = payload;
       state.userLocationsLoading = false;
     },
+    getReferralStats: (state, { payload }) => {
+      state.referralStatLoading = true;
+    },
+    getReferralStatsSuccess: (state, { payload }) => {
+      state.referralCount = payload.referralCount;
+      state.nftPurchasedCount = payload.nftPurchasedCount;
+      state.basicClaimable = payload.basicClaimable;
+      state.nftClaimable = payload.nftClaimable;
+      state.referralStatLoading = false;
+    },
+    getReferralStatsError: (state, { payload }) => {
+      state.error = payload;
+      state.referralStatLoading = false;
+    },
   },
 });
 
@@ -438,6 +457,9 @@ export const {
   upgradeUserLocation,
   upgradeUserLocationSuccess,
   upgradeUserLocationError,
+  getReferralStats,
+  getReferralStatsSuccess,
+  getReferralStatsError,
 } = userSlice.actions;
 
 export const useAuthLoading = () => useAppSelector((state) => state.user.authLoading);
@@ -474,6 +496,11 @@ export const useRechargeLoading = () => useAppSelector((state) => state.user.rec
 export const useUserLocation = () => useAppSelector((state) => state.user.userLocations);
 export const useUserLocationLoading = () => useAppSelector((state) => state.user.userLocationsLoading);
 export const useUpgradeUserLocationError = () => useAppSelector((state) => state.user.upgradeUserLocationErrorCode);
+export const useReferralStatLoading = () => useAppSelector((state) => state.user.referralStatLoading);
+export const useReferralCount = () => useAppSelector((state) => state.user.referralCount);
+export const useNFTPurchasedReferralCount = () => useAppSelector((state) => state.user.nftPurchasedReferralCount);
+export const useBasicClaimable = () => useAppSelector((state) => state.user.basicClaimable);
+export const useNftClaimable = () => useAppSelector((state) => state.user.nftClaimable);
 
 const userReducer = userSlice.reducer;
 
