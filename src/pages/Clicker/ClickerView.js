@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Box } from '@mui/material';
 import Modal from '@mui/material/Modal';
 import { useAppDispatch } from '../../hooks/storeHooks';
-import { useUserDetails, useUserDetailsLoading, closeDailyPopup, updateDailyLogin, useIsOpenDailyPopup } from '../../sagaStore/slices';
+import { useUserDetails, useUserDetailsLoading, closeDailyPopup, updateDailyLogin, useUpdatePopupLoading, useIsOpenDailyPopup } from '../../sagaStore/slices';
 import MascotView from '../../components/MascotView';
 import EarnGuide from '../../components/EarnGuide';
 import EnergyRegeneration from '../../components/EnergyRegeneration';
@@ -15,6 +15,7 @@ const ClickerView = () => {
   const dispatch = useAppDispatch();
   const currentUser = useUserDetails();
   const userDetailsLoading = useUserDetailsLoading();
+  const updateLoading = useUpdatePopupLoading();
   const isOpenDailyPopup = useIsOpenDailyPopup();
   const [isLeaderboardOpen, setIsLeaderboardOpen] = useState(false);
   const [isOneTimeTaskOpen, setIsOneTimeTaskOpen] = useState(false);
@@ -36,7 +37,7 @@ const ClickerView = () => {
     dispatch(closeDailyPopup());
   };
 
-  if (userDetailsLoading) {
+  if (userDetailsLoading || updateLoading) {
     return (
       <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-75 flex items-center justify-center z-50">
         <div className="text-center">
