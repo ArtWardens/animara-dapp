@@ -35,6 +35,9 @@ const userInitialState = {
   settleTapSessionLoading: false,
   rechargeStaminaLoading: false,
   rechargeOpType: '',
+  userLocationsLoading: false,
+  userLocations: [],
+  upgradeUserLocationErrorCode: '',
 };
 
 export const userSlice = createSlice({
@@ -193,11 +196,6 @@ export const userSlice = createSlice({
       state.updatePopupLoading = false;
       state.updatePopupSuccess = false;
       state.error = payload;
-      const currentUser = current(state.user);
-      state.user = {
-        ...currentUser,
-        loggedInToday: true,
-      }
     },
     closeDailyPopup: () => {
     },
@@ -282,12 +280,16 @@ export const userSlice = createSlice({
         coins: payload.newCoinAmt,
         stamina: payload.newStamina,
       }
-      console.log(`slice payload.newStamina ${payload.newStamina} state.user.stamina ${state.user.stamina}`);
       state.localStamina = payload.newStamina;
       state.localCoins = payload.newCoinAmt;
       state.settleTapSessionLoading = true;
     },
     settleTapSessionError: (state, { payload }) => {
+      console.log(`failed to settle tap session with error; ${payload}`);
+      // check if is desync error
+      const currentUser = current(state.user);
+      state.localStamina = currentUser.stamina;
+      state.localCoins = currentUser.coins;
       state.error = payload;
       state.settleTapSessionLoading = true;
     },
@@ -301,7 +303,7 @@ export const userSlice = createSlice({
         state.user = {
           ...currentUser,
           stamina: payload.newStamina,
-          energyRechargeRemaining: payload.newRechargeRemaining,
+          staminaRechargeRemaining: payload.newRechargeRemaining,
         }
       }else if (state.rechargeOpType === StaminaRechargeTypeInvite){
         state.user = {
@@ -316,6 +318,42 @@ export const userSlice = createSlice({
     rechargeStaminaError: (state, { payload }) => {
       state.error = payload;
       state.rechargeStaminaLoading = false;
+    },
+    getUserLocations: (state, { payload }) => {
+      state.userLocationsLoading = true;
+    },
+    getUserLocationsSuccess: (state, { payload }) => {
+      state.userLocations = payload;
+      state.userLocationsLoading = false;
+    },
+    getUserLocationsError: (state, { payload }) => {
+      state.userLocations = payload;
+      state.userLocationsLoading = false;
+    },
+    upgradeUserLocation: (state, { payload }) => {
+      state.userLocationsLoading = true;
+    },
+    upgradeUserLocationSuccess: (state, { payload }) => {
+      const locationIndex = state.userLocations.userLocations.findIndex(
+        (location) => location.locationId === payload.data.locationId
+      );
+
+      if (locationIndex !== -1) {
+        // update the location details
+        state.userLocations.userLocations[locationIndex] = {
+          ...state.userLocations.userLocations[locationIndex],
+          level: payload.data.locationLvl,
+          currentExploraPts: payload.data.locationExploraPts,
+          nextLevelUpgradeCost: payload.data.nextLevelUpgradeCost,
+          nextLevelExploraPts: payload.data.nextLevelExploraPts,
+        };
+      }
+      state.localCoins = payload.data.updatedCoins;
+      state.userLocationsLoading = false;
+    },
+    upgradeUserLocationError: (state, { payload }) => {
+      state.upgradeUserLocationErrorCode = payload;
+      state.userLocationsLoading = false;
     },
   },
 });
@@ -377,6 +415,13 @@ export const {
   rechargeStamina,
   rechargeStaminaSuccess,
   rechargeStaminaError,
+  updateCompleteOneTimeTaskSuccess,
+  getUserLocations,
+  getUserLocationsSuccess,
+  getUserLocationsError,
+  upgradeUserLocation,
+  upgradeUserLocationSuccess,
+  upgradeUserLocationError,
 } = userSlice.actions;
 
 export const useAuthLoading = () => useAppSelector((state) => state.user.authLoading);
@@ -409,6 +454,9 @@ export const useUserAuthenticated = () => useAppSelector((state) => state.user.i
 export const useLocalCoins = () => useAppSelector((state) => state.user.localCoins);
 export const useLocalStamina = () => useAppSelector((state) => state.user.localStamina);
 export const useRechargeLoading = () => useAppSelector((state) => state.user.rechargeStaminaLoading);
+export const useUserLocation = () => useAppSelector((state) => state.user.userLocations);
+export const useUserLocationLoading = () => useAppSelector((state) => state.user.userLocationsLoading);
+export const useUpgradeUserLocationError = () => useAppSelector((state) => state.user.upgradeUserLocationErrorCode);
 
 const userReducer = userSlice.reducer;
 

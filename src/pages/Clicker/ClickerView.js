@@ -9,6 +9,7 @@ import EnergyRegeneration from '../../components/EnergyRegeneration';
 import { mascots } from '../../utils/local.db';
 import { dailyLogin } from '../../data/constants';
 import '../../styles/globals.css';
+import ClickerUpgrades from './ClickerUpgrades';
 
 const ClickerView = () => {
   const dispatch = useAppDispatch();
@@ -76,12 +77,12 @@ const ClickerView = () => {
 
   // grant depletion rewards
   useEffect(() => {
-    const shouldGainRewards = currentUser?.stamina === 0;
+    const shouldGainRewards = currentUser && currentUser?.stamina === 0;
 
     if (shouldGainRewards) {
       dispatch(consumeStamina({
         staminaToConsume: 0,
-        coinToGain: 150
+        coinToGain: currentUser.depletionReward
       }));
     }
   }, [dispatch, currentUser, setIsOpenRewardModal]);
@@ -92,7 +93,7 @@ const ClickerView = () => {
     setCurrentMascot(mascots[currentUser?.level]);
 
     // check and popup daily login
-    if (!currentUser.loggedInToday) {
+    if (currentUser && !currentUser?.loggedInToday) {
       dispatch(updateDailyLogin());
     }
   }, [currentUser, dispatch]);
@@ -198,6 +199,14 @@ const ClickerView = () => {
             </div>
           </div>
         </Modal>
+
+        {modalOpen === 'upgrades' && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+            <ClickerUpgrades
+              onClose={() => handleOpenModal(false)} // Close modal when done
+            />
+          </div>
+        )}
       </div>
     </>
   );
