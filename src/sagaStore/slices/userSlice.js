@@ -380,7 +380,7 @@ export const userSlice = createSlice({
       state.referralStatLoading = true;
     },
     getReferralStatsSuccess: (state, { payload }) => {
-      state.referralCount = payload.referralCount;
+      state.referralCount = payload.referredCount;
       state.nftPurchasedCount = payload.nftPurchasedCount;
       state.basicClaimable = payload.basicClaimable;
       state.nftClaimable = payload.nftClaimable;
@@ -483,6 +483,7 @@ export const useLeaderBoardDetails = () => useAppSelector((state) => state.user.
 export const useLeaderBoardLoading = () => useAppSelector((state) => state.user.getLeaderBoardLoading);
 export const useLeaderBoardLoadSuccess = () => useAppSelector((state) => state.user.getLeaderBoardSuccess);
 export const useIsOpenDailyPopup = () => useAppSelector((state) => state.user.isOpenDailyPopup);
+export const useUpdatePopupLoading = () => useAppSelector((state) => state.user.updatePopupLoading);
 export const useOneTimeTaskList = () => useAppSelector((state) => state.user.oneTimeTaskList);
 export const useTaskIdToComplete = () => useAppSelector((state) => state.user.taskIdToComplete);
 export const useOneTimeTaskListSuccess = () => useAppSelector((state) => state.user.getOneTimeTaskListSuccess);
