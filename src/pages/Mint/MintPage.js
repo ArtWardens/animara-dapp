@@ -116,7 +116,7 @@ function ReferralPage() {
                 }}
               >
                 Use your VIP Pass to join the Animara leaderboard event and
-                compete to win prizes worth up to $1,000,000!
+                compete to win prizes worth up to $600,000!
               </p>
             </div>
             <div className="border-2 border-transparent border-t-sky-300 border-dashed py-8 mt-4 font-outfit text-md">
