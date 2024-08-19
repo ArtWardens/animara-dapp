@@ -128,7 +128,7 @@ export function* signupWithEmailSaga({ payload }) {
         break;
       case -3:
         yield put(signupWithEmailError("Error signing up"));
-        toast.error("Failed to link Referral Code");
+        toast.error("Invalid referral code");
         break;
       case -4:
         yield put(signupWithEmailError("Error signing up"));
@@ -136,7 +136,11 @@ export function* signupWithEmailSaga({ payload }) {
         break;
       case -5:
         yield put(signupWithEmailError("Error signing up"));
-        toast.error("Failed to send verification email. Please try again.");
+        toast.error("Failed to send verification email. Please try again later.");
+        break;
+      case -6:
+        yield put(signupWithEmailError("Error signing up"));
+        toast.error("Another user has registered from this address.");
         break;
       default:
         yield put(signupWithEmailError("Error signing up"));

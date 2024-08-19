@@ -14,7 +14,6 @@ import {
   cleanupFailedRegistration,
   loginWithTelegram,
 } from "./firebaseConfig.js";
-import { isReferralCodeValid } from "./user";
 
 const signUpWithEmailImpl = async (email, password, name, referralCode) => {
   try {
@@ -22,18 +21,17 @@ const signUpWithEmailImpl = async (email, password, name, referralCode) => {
     if (!name || !email || !password) {
       return -1;
     }
-    if (!(await isReferralCodeValid(referralCode))) {
-      return -2;
-    }
 
     // create user
     const result = await createUserWithEmailAndPassword(auth, email, password);
 
     // update referral code if any
+    const idToken = await result.user.getIdToken();
     if (referralCode !== "") {
       try {
-        await firstLoginLinkReferral({ referralCode: referralCode });
+        await firstLoginLinkReferral({ idToken: idToken, referralCode: referralCode });
       } catch (err) {
+        await cleanupFailedRegistration({ idToken: idToken });
         return -3;
       }
     }
@@ -67,6 +65,9 @@ const signUpWithEmailImpl = async (email, password, name, referralCode) => {
     // cleanupFailedRegistration
     return 1;
   } catch (error) {
+    if (error.code === 'auth/error-code:-47'){
+      return -6;
+    }
     return 0;
   }
 };
