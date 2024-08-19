@@ -54,10 +54,16 @@ function ReferralPage (){
   };
 
   const getTotalClaimable = useCallback(()=>{
-    if (!currentUser){ return 0; }
+    if (!currentUser){ return `None`; }
     // selectively combine both claimable amt based on if use owns nft
-    return currentUser.ownsNFT? basicClaimable + nftClaimable : basicClaimable;
+    return `${currentUser.ownsNFT? basicClaimable + nftClaimable : basicClaimable} SOL`;
   },[currentUser, basicClaimable, nftClaimable]);
+
+  const getAdditionalClaimable = useCallback(()=>{
+    if (!nftClaimable){ return `0 SOL`; }
+    // selectively combine both claimable amt based on if use owns nft
+    return `${nftClaimable} SOL`;
+  },[nftClaimable]);
 
   return (
     <>
@@ -251,7 +257,7 @@ function ReferralPage (){
                         </div>
                       </div>
                       <div className="justify-start items-center gap-0.5 inline-flex">
-                        <span className="w-[130px] text-white text-xs font-outfit">Get additional<span className="text-white font-LuckiestGuy text-xs tracking-wide">{nftClaimable}</span>, if you own NFT!</span>
+                        <span className="w-[130px] text-white text-xs font-outfit">Get additional <span className="text-white font-LuckiestGuy text-xs tracking-wide">{getAdditionalClaimable()}</span>, if you own NFT!</span>
                         <div className="flex justify-center items-center p-2 rounded-lg bg-[#FFC85A] shadow-[0px_1px_2px_0px_rgba(198,115,1,0.66)] hover:bg-[#FFAA00] hover:shadow-[0px_4px_4px_0px_rgba(255,210,143,0.61)_inset,0px_4px_4px_0px_rgba(232,140,72,0.48)] cursor-pointer hover:scale-105 transition-transform duration-200">
                           <div
                             className="text-orange-50 text-xs"
