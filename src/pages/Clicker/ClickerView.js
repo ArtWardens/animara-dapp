@@ -7,7 +7,7 @@ import MascotView from '../../components/MascotView';
 import EarnGuide from '../../components/EarnGuide';
 import EnergyRegeneration from '../../components/EnergyRegeneration';
 import { mascots } from '../../utils/local.db';
-import { dailyLogin } from '../../data/constants';
+import { dailyLoginRewards } from '../../utils/constants';
 import ClickerUpgrades from './ClickerUpgrades';
 import '../../styles/globals.css';
 
@@ -111,7 +111,7 @@ const ClickerView = () => {
                   </span>
                 </div>
                 <Box className="pt-8 pb-4 w-full grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">
-                  {dailyLogin.map((item, index) => {
+                  {dailyLoginRewards.map((dayReward, index) => {
                     const isSelected = index < currentUser?.loginDays;
                     return (
                       <Box
@@ -119,9 +119,9 @@ const ClickerView = () => {
                         key={index}
                       >
                         <p className="flex flex-1 flex-col items-center justify-center text-xs space-y-1">
-                          <span>Day {item.day}</span>
+                          <span>Day {index + 1}</span>
                           <img className="w-5 h-5" src="assets/images/gem2.png" alt="Star" />
-                          <span>{item.coins}</span>
+                          <span>{dayReward}</span>
                         </p>
                       </Box>
                     );
