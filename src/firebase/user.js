@@ -71,7 +71,10 @@ const updateUserProfileImpl = async (
     }
 
     const currentData = userDoc.data();
-    const updateData = { name: name };
+    const updateData = {};
+    if (name) {
+      updateData.name = name;
+    }
 
     // Only add photoURL if it's provided
     if (photoURL) {
