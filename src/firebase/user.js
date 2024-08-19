@@ -3,22 +3,6 @@ import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { getDownloadURL, ref, uploadString } from "firebase/storage";
 import { getIdTokenResult, updateProfile } from "firebase/auth";
 
-export const isReferralCodeValid = async (referralCode) => {
-  try {
-    if (referralCode === ''){
-      return true;
-    }
-    try {
-      const querySnapshot = await db.collection("users").where("referralCode", "==", referralCode).get();
-      return !querySnapshot.empty;
-    } catch (error) {
-      console.log(error);
-    }
-  } catch (error) {
-    console.log(error);
-    return false;
-  }
-};
 
 // functions that we export for saga
 const getUserDataImpl = async (uid) => {
@@ -59,12 +43,6 @@ const updateUserProfileImpl = async (
   phoneNumber,
   photoString
 ) => {
-  const isReferralValid = await isReferralCodeValid(inviteCode);
-  if (!isReferralValid && inviteCode) {
-    console.log(isReferralValid);
-    console.log(inviteCode);
-    throw new Error("Invalid referral code");
-  }
 
   try {
     // Get the current user
