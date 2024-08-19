@@ -39,25 +39,25 @@ const rechargeEnergyByInviteImpl = async () => {
 };
 
 const getUserLocationImpl = async () => {
-    // get user's updated details for each location from firebase
     try {
-        // obtain the ID token of the currrent logged in user
+        // obtain the ID token of the current logged-in user
         const idToken = await auth.currentUser.getIdToken(false);
-        const { result } = await getUserLocations({
-            idToken: idToken,
-        });
+        const result = await getUserLocations({ idToken: idToken });
+
+        console.log(result.data);
 
         if (result.data.error) {
             throw result.data.error;
         }
 
-        return result;
+        return result.data;
 
     } catch (error) {
         console.log("Error handling get user location details ", error);
         throw error;
     }
 };
+
 
 const upgradeUserLocationImpl = async (locationId) => {
     try {
