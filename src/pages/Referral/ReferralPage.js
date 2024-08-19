@@ -7,6 +7,7 @@ import { useAppDispatch } from "../../hooks/storeHooks.js";
 import gem from "../../assets/images/gem2.png";
 import StyledQRCode from "../../components/StyledQRCode";
 import Header from "../../components/Header.jsx";
+import { PropagateLoader } from "react-spinners"; // Import the loader
 
 function ReferralPage (){
   const dispatch = useAppDispatch();
@@ -139,9 +140,12 @@ function ReferralPage (){
             </div>
           </div>
 
+          {/* bottom panel */}
           <div className="flex w-full">
+            {/* referral stats & cashback */}
             <div className="w-[62%]">
               <div className="flex w-full">
+                {/* Referral stats */}
                 <div className="w-[65%] border-dashed border-r-4 border-transparent">
                   <div
                     className="w-full h-full p-12 items-center"
@@ -152,14 +156,22 @@ function ReferralPage (){
                       backgroundRepeat: 'no-repeat',
                     }}
                   >
+                    {/* Title */}
                     <div className="text-neutral-700 text-xl tracking-wider pb-3">
                       YOUR REFERRAL STATS
                     </div>
+
+                    {/* referral stat content */}
                     <div className="flex w-full gap-8">
-                      <div className="w-1/2">
-                        <div className="justify-start items-start">
-                          {loadingReferralStats?
-                            <p>?</p>:
+                      {loadingReferralStats ?
+                      <div className="w-full flex justify-center items-center my-auto">
+                        <PropagateLoader color={"#FFB23F"} />
+                      </div>
+                      :
+                      <div className="flex">
+                        {/* NFT Purchase */}
+                        <div className="w-1/2">
+                          <div className="justify-start items-start">
                             <p
                               className="text-amber-500 text-5xl lg:text-4xl 2xl:text-5xl"
                               style={{
@@ -170,26 +182,24 @@ function ReferralPage (){
                             >
                               {nftPurchasedReferralCount}
                             </p>
-                          }
-                          <p
-                            className="text-amber-500 text-xl leading-relaxed"
-                            style={{
-                              WebkitTextStrokeWidth: '0.75px',
-                              WebkitTextStrokeColor: 'var(--Color-11, #FFF)',
-                              textShadow: '0px 2px 4px rgba(0, 0, 0, 0.25)',
-                            }}
-                          >
-                            NFT PURCHASE
-                          </p>
-                          <div className="text-neutral-700 text-xs font-semibold font-outfit">
-                            Begin foundational development, core mechanics.
+                            <p
+                              className="text-amber-500 text-xl leading-relaxed"
+                              style={{
+                                WebkitTextStrokeWidth: '0.75px',
+                                WebkitTextStrokeColor: 'var(--Color-11, #FFF)',
+                                textShadow: '0px 2px 4px rgba(0, 0, 0, 0.25)',
+                              }}
+                            >
+                              NFT PURCHASE
+                            </p>
+                            <div className="text-neutral-700 text-xs font-semibold font-outfit">
+                              How many friend you invited have minted an NFT
+                            </div>
                           </div>
                         </div>
-                      </div>
-                      <div className="w-1/2">
-                        <div className="justify-start items-start">
-                          {loadingReferralStats?
-                            <p>?</p>:
+                        {/* Friends invited */}
+                        <div className="w-1/2">
+                          <div className="justify-start items-start">
                             <p
                               className="text-sky-700 text-5xl lg:text-4xl 2xl:text-5xl"
                               style={{
@@ -200,26 +210,27 @@ function ReferralPage (){
                             >
                               {referralCount}
                             </p>
-                          }
-                          <p
-                            className="text-sky-700 text-xl leading-relaxed"
-                            style={{
-                              WebkitTextStrokeWidth: '0.75px',
-                              WebkitTextStrokeColor: 'var(--Color-11, #FFF)',
-                              textShadow: '0px 2px 4px rgba(0, 0, 0, 0.25)',
-                            }}
-                          >
-                            FRIENDS INVITE
-                          </p>
-                          <div className="text-neutral-700 text-xs font-semibold font-outfit">
-                            Begin foundational development, core mechanics.
+                            <p
+                              className="text-sky-700 text-xl leading-relaxed"
+                              style={{
+                                WebkitTextStrokeWidth: '0.75px',
+                                WebkitTextStrokeColor: 'var(--Color-11, #FFF)',
+                                textShadow: '0px 2px 4px rgba(0, 0, 0, 0.25)',
+                              }}
+                            >
+                              FRIENDS INVITED
+                            </p>
+                            <div className="text-neutral-700 text-xs font-semibold font-outfit">
+                              The number of friends who have accepted your invitation to Animara
+                            </div>
                           </div>
                         </div>
-                      </div>
+                      </div>}
                     </div>
                   </div>
                 </div>
 
+                {/* Cashback */}
                 <div className="w-[35%]">
                   <div
                     className="w-full h-full place-content-center"
@@ -230,47 +241,63 @@ function ReferralPage (){
                       backgroundRepeat: 'no-repeat',
                     }}
                   >
-                    <div className="w-full flex-col justify-center items-center gap-2 inline-flex">
-                      <div className="flex-col justify-center items-center gap-1 flex">
-                        <div className="text-center text-white text-sm font-normal leading-none tracking-wide">NFT Cashback</div>
-                        <div
-                          className="text-center text-amber-500 text-4xl leading-8 tracking-wide"
-                          style={{
-                            WebkitTextStrokeWidth: '2px',
-                            WebkitTextStrokeColor: 'var(--Color-11, #FFF)',
-                            textShadow: '0px 2px 4px rgba(0, 0, 0, 0.25)',
-                          }}
-                        >
-                          {getTotalClaimable()}
-                        </div>
+                    {(getTotalClaimable() > `0 sol`) ?
+                      <div className="w-full h-full flex-col place-content-center gap-4 inline-flex">
+                        <span className="text-center w-full">Nothing to claim yet</span>
+                        <span className="text-center w-full text-xs font-outfit">Get your referrals to mint an NFT now!</span>
                       </div>
-                      <div className={`pb-1 justify-center items-center inline-flex transition-transform duration-200
-                          ${(getTotalClaimable() > 0) ? `hover:scale-105` : ``}`}>
-                        <div 
-                          className={`h-[60px] w-[160px] rounded-full border justify-center items-center inline-flex shadow-[0px_4px_4px_0px_#FFFBEF_inset,0px_-4px_4px_0px_rgba(255,249,228,0.48),0px_5px_4px_0px_rgba(232,140,72,0.48)] hover:bg-[#FFB23F] hover:pl-[24px] hover:pr-[20px] hover:border-1 hover:border-[#E59E69] hover:shadow-[0px_4px_4px_0px_rgba(255,210,143,0.61)_inset,0px_4px_4px_0px_rgba(136,136,136,0.48)] ${(getTotalClaimable() > 0) ? `cursor-pointer border-[#E59E69] bg-[#FFDC62]` : ``}`}>
+                    :
+                      <div className="w-full flex-col justify-center items-center gap-3 inline-flex">
+                        {/* Claimable Amount */}
+                        <div className="flex-col justify-center items-center gap-1 flex">
+                          <div className="text-center text-white text-sm font-normal leading-none tracking-wide">NFT Cashback</div>
                           <div
-                            className="text-center text-white text-2xl font-normal"
-                            style={{ textShadow: '0px 2px 0.6px rgba(240, 139, 0, 0.66)'}}
+                            className="text-center text-amber-500 text-4xl leading-8 tracking-wide"
+                            style={{
+                              WebkitTextStrokeWidth: '2px',
+                              WebkitTextStrokeColor: 'var(--Color-11, #FFF)',
+                              textShadow: '0px 2px 4px rgba(0, 0, 0, 0.25)',
+                            }}
                           >
-                            <span className={(getTotalClaimable() > 0) ? `hover:text-shadow-none` : ``}>Claim</span>
+                            {getTotalClaimable()}
                           </div>
                         </div>
-                      </div>
-                      <div className="justify-start items-center gap-0.5 inline-flex">
-                        <span className="w-[130px] text-white text-xs font-outfit">Get additional <span className="text-white font-LuckiestGuy text-xs tracking-wide">{getAdditionalClaimable()}</span>, if you own NFT!</span>
-                        <div className="flex justify-center items-center p-2 rounded-lg bg-[#FFC85A] shadow-[0px_1px_2px_0px_rgba(198,115,1,0.66)] hover:bg-[#FFAA00] hover:shadow-[0px_4px_4px_0px_rgba(255,210,143,0.61)_inset,0px_4px_4px_0px_rgba(232,140,72,0.48)] cursor-pointer hover:scale-105 transition-transform duration-200">
-                          <div
-                            className="text-orange-50 text-xs"
-                            onClick={() => navigate('/mint')}
-                          >
-                            Own Now</div>
+
+                        {/* Claim button */}
+                        <div className={`pb-1 justify-center items-center inline-flex transition-transform duration-200 hover:scale-105`}>
+                          <div 
+                            className={`h-[60px] w-[160px] rounded-full border justify-center items-center inline-flex shadow-[0px_4px_4px_0px_#FFFBEF_inset,0px_-4px_4px_0px_rgba(255,249,228,0.48),0px_5px_4px_0px_rgba(232,140,72,0.48)] hover:bg-[#FFB23F] hover:pl-[24px] hover:pr-[20px] hover:border-1 hover:border-[#E59E69] hover:shadow-[0px_4px_4px_0px_rgba(255,210,143,0.61)_inset,0px_4px_4px_0px_rgba(136,136,136,0.48)] cursor-pointer border-[#E59E69] bg-[#FFDC62]`}>
+                            <div
+                              className="text-center text-white text-2xl font-normal"
+                              style={{ textShadow: '0px 2px 0.6px rgba(240, 139, 0, 0.66)'}}
+                            >
+                              <span className={`hover:text-shadow-none`}>Claim</span>
+                            </div>
+                          </div>
                         </div>
+
+                        {/* NFT Prompt */}
+                        {currentUser?.ownsNFT ? 
+                          <span className="w-[130px] text-white text-xs font-outfit">Claiming full benefits</span>
+                        :
+                        <div className="justify-start items-center gap-0.5 inline-flex">
+                          <span className="w-[130px] text-white text-xs font-outfit">Get additional <span className="text-white font-LuckiestGuy text-xs tracking-wide">{getAdditionalClaimable()}</span>, if you own NFT!</span>
+                          <div className="flex justify-center items-center p-2 rounded-lg bg-[#FFC85A] shadow-[0px_1px_2px_0px_rgba(198,115,1,0.66)] hover:bg-[#FFAA00] hover:shadow-[0px_4px_4px_0px_rgba(255,210,143,0.61)_inset,0px_4px_4px_0px_rgba(232,140,72,0.48)] cursor-pointer hover:scale-105 transition-transform duration-200">
+                            <div
+                              className="text-orange-50 text-xs"
+                              onClick={() => navigate('/mint')}
+                            >
+                              Own Now</div>
+                          </div>
+                        </div>}
                       </div>
-                    </div>
+                    }
                   </div>
                 </div>
               </div>
             </div>
+
+            {/* share panel */}
             <div className="w-[38%]">
               <div
                 className="w-full h-full place-content-center p-6"
