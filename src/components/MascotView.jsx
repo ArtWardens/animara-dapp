@@ -3,8 +3,7 @@ import { PropTypes } from "prop-types";
 import useSound from "use-sound";
 import { useAppDispatch } from "../hooks/storeHooks.js";
 import { useUserDetails, useLocalStamina, consumeStamina } from "../sagaStore/slices";
-import { getImagePath, getAllImagePaths } from "../utils/getImagePath";
-import { preloadImages } from "../utils/preloadImages";
+import { getAllImagePaths } from "../utils/getImagePath";
 import Header from "./Header.jsx";
 
 const MascotView = ({
@@ -17,7 +16,8 @@ const MascotView = ({
   const currentUser = useUserDetails();
   const localStamina = useLocalStamina();
   const [preloadedImage, setPreloadedImage] = useState(false);
-  const [showImage, setShowImage] = useState('');
+  const [imgIndex, setImgIndex] = useState(0);
+  const [mascotImages, setMascotImages] = useState([]);
   const [plusOneEffect, setPlusOneEffect] = useState({ show: false, left: 0, top: 0 });
   const timerRef = useRef(null);
   const plusOneTimerRef = useRef(null);
@@ -44,28 +44,18 @@ const MascotView = ({
 
   // initial setup
   useEffect(() => {
-    // preload images if enter on the first time
     if (!preloadedImage){
-      preloadImages(getAllImagePaths(currentUser));
+      // preload images if enter on the first time
+      setMascotImages(getAllImagePaths(currentUser));
+
+      // set intial image
+      setImgIndex(0);
+
       setPreloadedImage(true);
     }
 
-    // set image
-    setShowImage(getImagePath(currentUser));
-
-    const resetTimer = () => {
-      if (isInteractive && currentUser) {
-        clearTimeout(timerRef.current);
-        timerRef.current = setTimeout(() => {
-          setShowImage(getImagePath(currentUser));
-        }, 3000);
-      }
-    };
-    document.addEventListener("mousedown", resetTimer);
-    return () => {
-      document.removeEventListener("mousedown", resetTimer);
-    };
-  }, [isInteractive, currentUser, preloadedImage]);
+ 
+  }, [currentUser, localStamina, preloadedImage]);
 
   // tap handlers
   const handleMouseDown = () => {
@@ -78,7 +68,10 @@ const MascotView = ({
       return;
     }
 
-    // has stamina to click
+    // has stamina to click, change picture
+    setImgIndex(((currentUser.maxStamina - localStamina) % 2) + 1);
+    
+    // kickstart idle timer
     const restartIdleTimer = () => {
       // reset timer whenever we call this
       if (timerRef.current) {
@@ -86,7 +79,7 @@ const MascotView = ({
       }
       // set a timer to reset mascot after no action for a duration
       timerRef.current = setTimeout(() => {
-        setShowImage(getImagePath(currentUser));
+        setImgIndex(0);
       }, 3000);
     };
     restartIdleTimer();
@@ -114,7 +107,7 @@ const MascotView = ({
     }
     plusOneTimerRef.current = setTimeout(() => {
       setPlusOneEffect({ show: false, left: 0, top: 0 });
-    }, 1000);
+    }, 500);
   };
   const handleMouseUp = () => { };
 
@@ -178,13 +171,31 @@ const MascotView = ({
                 style={{ left: `${plusOneEffect.left}%`, top: `${plusOneEffect.top}%` }}
               />
             )}
-            <img
-              src={showImage}
-              alt="Game mascot"
-              className={`absolute w-3/4 bottom-20 transition-transform duration-1000 ${
-                startSlide ? 'translate-y-0' : 'translate-y-full'
-              }`}
-            />
+            {imgIndex === 0 ?
+              <img
+                src={mascotImages[0]}
+                alt="Game mascot"
+                className={`absolute w-3/4 bottom-20 transition-transform duration-1000 ${
+                  startSlide ? 'translate-y-0' : 'translate-y-full'
+                }`}
+              />
+            : imgIndex === 1 ?
+              <img
+                src={mascotImages[1]}
+                alt="Game mascot"
+                className={`absolute w-3/4 bottom-20 transition-transform duration-1000 ${
+                  startSlide ? 'translate-y-0' : 'translate-y-full'
+                }`}
+              />
+            : 
+              <img
+                src={mascotImages[2]}
+                alt="Game mascot"
+                className={`absolute w-3/4 bottom-20 transition-transform duration-1000 ${
+                  startSlide ? 'translate-y-0' : 'translate-y-full'
+                }`}
+              />
+            }
           </div>
         </div>
       </div>

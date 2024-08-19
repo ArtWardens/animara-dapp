@@ -24,7 +24,9 @@ import {
 import {
   settleTapSessionImpl,
   rechargeEnergyImpl,
-  rechargeEnergyByInviteImpl
+  rechargeEnergyByInviteImpl,
+  getUserLocationImpl,
+  upgradeUserLocationImpl,
 } from '../firebase/clicker';
 import {
   closeDailyPopup,
@@ -78,6 +80,12 @@ import {
   rechargeStamina,
   rechargeStaminaSuccess,
   rechargeStaminaError,
+  getUserLocations,
+  getUserLocationsSuccess,
+  getUserLocationsError,
+  upgradeUserLocation,
+  upgradeUserLocationSuccess,
+  upgradeUserLocationError,
 } from "../sagaStore/slices";
 import {
   StaminaRechargeTypeBasic,
@@ -346,7 +354,7 @@ export function* consumeStaminaSaga(){
 
 export function* settleTapSessionSaga({ payload }) {
   try{
-    const result = yield call(settleTapSessionImpl(payload));
+    const result = yield call(settleTapSessionImpl, payload);
     yield put(settleTapSessionSuccess(result));
   }catch (error){
     yield put(settleTapSessionError(error));
@@ -370,6 +378,43 @@ export function* rechargeStaminaSaga({ payload }) {
   }
 }
 
+export function* upgradeUserLocationsSaga(locationId) {
+  try {
+    const upgradeUserLocation = yield call(upgradeUserLocationImpl, locationId);   
+    yield put(upgradeUserLocationSuccess(upgradeUserLocation));
+    toast.success("Location level upgraded successfully. ");
+  } 
+  catch (error) {
+    if (error === "insufficient-funds") {
+      toast.error(
+        "Insufficient coins owned to upgrade this location. "
+      );
+    } 
+    else if (error === "location-max-level") {
+      toast.error(
+        "Max level reached for this location. "
+      );
+    } 
+    else {
+      toast.error("Failed to upgrade location. Please try again. ");
+    }
+    yield put(upgradeUserLocationError(error));
+  }
+}
+
+export function* getUserLocationsSaga() {
+  try {
+    const userLocation = yield call(getUserLocationImpl);
+    yield put(getUserLocationsSuccess(userLocation));
+    toast.success("Location level loaded successfully. ");
+    return userLocation;
+  } 
+  catch (error) {
+    yield put(getUserLocationsError(error));
+    toast.error("Failed to load location. Please try again. ");
+  }
+}
+
 export function* userSagaWatcher() {
   yield takeLatest(signupWithEmail.type, signupWithEmailSaga);
   yield takeLatest(loginWithEmail.type, loginWithEmailSaga);
@@ -389,4 +434,6 @@ export function* userSagaWatcher() {
   yield takeLatest(consumeStamina.type, consumeStaminaSaga);
   yield takeLatest(settleTapSession.type, settleTapSessionSaga);
   yield takeLatest(rechargeStamina.type, rechargeStaminaSaga);
+  yield takeLatest(getUserLocations.type, getUserLocationsSaga);
+  yield takeLatest(upgradeUserLocation.type, upgradeUserLocationsSaga);
 }
