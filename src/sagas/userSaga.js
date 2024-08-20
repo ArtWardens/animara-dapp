@@ -261,7 +261,7 @@ export function* updateUserProfileSaga({ payload }) {
     toast.success("Profile updated successfully");
 
   } catch (error) {
-    // toast.error("failed to edit profile");
+    toast.error("failed to update profile");
     yield put(updateProfileError(error));
     toast.error("Failed to update profile. Please try again");
     console.log(error);
