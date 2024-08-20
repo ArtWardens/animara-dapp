@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { PropTypes } from "prop-types";
-import { ProgressBar } from "react-progressbar-fancy";
+import ProgressBar from "./FancyProgressBar/ProgressBar.tsx";
 import { useLocalStamina, useUserDetails } from "../sagaStore/slices";
 import { getTimeRemaining } from '../utils/getTimeRemaining';
 import LeaderBoardModal from './LeaderBoardModal';
@@ -108,10 +108,11 @@ function EnergyRegeneration({
 
                 <ProgressBar
                     score={progressBarWidth}
+                    label={"Stamina"}
                     progressColor="#80E8FF"
                     primaryColor="#49DEFF"
                     secondaryColor="#FAFF00"
-                    hideText={true}
+                    darkTheme
                     className={`text-center border-2 border-white border-solid rounded-tl-3xl rounded-tr-md rounded-br-3xl rounded-bl-md pt-1 pb-2 transition-opacity duration-700 ${
                       showProgressBar ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0'
                     }`}

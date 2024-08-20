@@ -121,7 +121,7 @@ function Header() {
 
                 <div className="flex flex-col place-content-center">
                     <div className="font-outfit text-md">
-                        {currentUser?.name}
+                        {currentUser?.name || 'Animara User'}
                     </div>
 
                     <div className="gap-2 flex">
