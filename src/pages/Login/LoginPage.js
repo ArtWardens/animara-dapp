@@ -192,7 +192,7 @@ const LoginPage = () => {
                 </svg>
               </div>
             ) : (
-              <span className="">Sign Up</span>
+              <span className="">Login</span>
             )}
           </button>
           <p className="mt-4 font-outfit text-[0.875rem] leading-[1rem] text-center">
