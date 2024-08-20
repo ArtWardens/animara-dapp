@@ -207,7 +207,7 @@ const LoginPage = () => {
         </div>
         
         {/*  Divider */}
-        <div className="flex items-center mt-12">
+        <div className="flex items-center my-6">
           <hr className="border-t border-[#C5C5C5] flex-grow" />
           <span className="px-8 text-[0.875rem] text-[#C5C5C5] font-outfit">Or</span>
           <hr className="border-t border-[#C5C5C5] flex-grow" />
