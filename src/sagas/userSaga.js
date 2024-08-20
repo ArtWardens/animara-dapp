@@ -421,17 +421,13 @@ export function* upgradeUserLocationsSaga(locationId) {
 export function* getUserLocationsSaga() {
   try {
     const userLocation = yield call(getUserLocationImpl);
-    if (userLocation) {
-      yield put(getUserLocationsSuccess(userLocation));
-    } else {
-      yield put(
-        getUserLocationsError("Failed to get upgrades. Please try again. ")
-      );
-    }
+    yield put(getUserLocationsSuccess(userLocation));
+    toast.success("Location level loaded successfully. ");
     return userLocation;
-  } catch (error) {
-    console.log(error);
+  } 
+  catch (error) {
     yield put(getUserLocationsError(error));
+    toast.error("Failed to load location. Please try again. ");
   }
 }
 
