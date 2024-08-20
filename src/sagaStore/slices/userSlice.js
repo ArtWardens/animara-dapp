@@ -24,6 +24,8 @@ const userInitialState = {
   user: null,
   localCoins: 0,
   localStamina: 0,
+  snapshotCoins: 0,
+  snapshotStamina: 0,
   error: null,
   getOneTimeTaskListLoading: false,
   getOneTimeTaskListSuccess: false,
@@ -38,6 +40,11 @@ const userInitialState = {
   userLocationsLoading: false,
   userLocations: [],
   upgradeUserLocationErrorCode: '',
+  referralStatLoading: false,
+  referralCount: 0,
+  nftPurchasedReferralCount: 0,
+  basicClaimable: 0,
+  nftClaimable: 0,
 };
 
 export const userSlice = createSlice({
@@ -272,16 +279,21 @@ export const userSlice = createSlice({
     },
     settleTapSession: (state) => {
       state.settleTapSessionLoading = true;
+      state.snapshotCoins = state.localCoins;
+      state.snapshotStamina = state.localStamina;
     },
     settleTapSessionSuccess: (state, { payload }) => {
       const currentUser = current(state.user);
+      const coinDiff = state.localCoins - state.snapshotCoins;
+      const staminaDiff = state.localStamina - state.snapshotStamina;
       state.user = {
         ...currentUser,
-        coins: payload.newCoinAmt,
-        stamina: payload.newStamina,
+        coins: payload.newCoins + coinDiff,
+        stamina: payload.newStamina + staminaDiff,
+        canGetDepletionReward: payload.canGetDepletionReward
       }
-      state.localStamina = payload.newStamina;
-      state.localCoins = payload.newCoinAmt;
+      state.localCoins = payload.newCoins + coinDiff;
+      state.localStamina = payload.newStamina + staminaDiff;
       state.settleTapSessionLoading = true;
     },
     settleTapSessionError: (state, { payload }) => {
@@ -304,12 +316,14 @@ export const userSlice = createSlice({
           ...currentUser,
           stamina: payload.newStamina,
           staminaRechargeRemaining: payload.newRechargeRemaining,
+          canGetDepletionReward: payload.canGetDepletionReward
         }
       }else if (state.rechargeOpType === StaminaRechargeTypeInvite){
         state.user = {
           ...currentUser,
           stamina: payload.newStamina,
           inviteRechargeRemaining: payload.newRechargeRemaining,
+          canGetDepletionReward: payload.canGetDepletionReward
         }
       } 
       state.localStamina = payload.newStamina;
@@ -335,25 +349,46 @@ export const userSlice = createSlice({
     },
     upgradeUserLocationSuccess: (state, { payload }) => {
       const locationIndex = state.userLocations.userLocations.findIndex(
-        (location) => location.locationId === payload.data.locationId
+        (location) => location.locationId === payload.locationId
       );
 
       if (locationIndex !== -1) {
         // update the location details
         state.userLocations.userLocations[locationIndex] = {
           ...state.userLocations.userLocations[locationIndex],
-          level: payload.data.locationLvl,
-          currentExploraPts: payload.data.locationExploraPts,
-          nextLevelUpgradeCost: payload.data.nextLevelUpgradeCost,
-          nextLevelExploraPts: payload.data.nextLevelExploraPts,
+          level: payload.locationLvl,
+          currentExploraPts: payload.locationExploraPts,
+          nextLevelUpgradeCost: payload.nextLevelUpgradeCost,
+          nextLevelExploraPts: payload.nextLevelExploraPts,
         };
       }
-      state.localCoins = payload.data.updatedCoins;
+      const currentUser = current(state.user);
+      state.user = {
+        ...currentUser,
+        level: payload.updatedLvl,
+        profitPerHour: payload.updatedExploraPts,
+        coins: payload.updatedCoins,
+      }
+      state.localCoins = payload.updatedCoins;
       state.userLocationsLoading = false;
     },
     upgradeUserLocationError: (state, { payload }) => {
       state.upgradeUserLocationErrorCode = payload;
       state.userLocationsLoading = false;
+    },
+    getReferralStats: (state, { payload }) => {
+      state.referralStatLoading = true;
+    },
+    getReferralStatsSuccess: (state, { payload }) => {
+      state.referralCount = payload.referredCount;
+      state.nftPurchasedCount = payload.nftPurchasedCount;
+      state.basicClaimable = payload.basicClaimable;
+      state.nftClaimable = payload.nftClaimable;
+      state.referralStatLoading = false;
+    },
+    getReferralStatsError: (state, { payload }) => {
+      state.error = payload;
+      state.referralStatLoading = false;
     },
   },
 });
@@ -422,6 +457,9 @@ export const {
   upgradeUserLocation,
   upgradeUserLocationSuccess,
   upgradeUserLocationError,
+  getReferralStats,
+  getReferralStatsSuccess,
+  getReferralStatsError,
 } = userSlice.actions;
 
 export const useAuthLoading = () => useAppSelector((state) => state.user.authLoading);
@@ -445,18 +483,25 @@ export const useLeaderBoardDetails = () => useAppSelector((state) => state.user.
 export const useLeaderBoardLoading = () => useAppSelector((state) => state.user.getLeaderBoardLoading);
 export const useLeaderBoardLoadSuccess = () => useAppSelector((state) => state.user.getLeaderBoardSuccess);
 export const useIsOpenDailyPopup = () => useAppSelector((state) => state.user.isOpenDailyPopup);
+export const useUpdatePopupLoading = () => useAppSelector((state) => state.user.updatePopupLoading);
 export const useOneTimeTaskList = () => useAppSelector((state) => state.user.oneTimeTaskList);
 export const useTaskIdToComplete = () => useAppSelector((state) => state.user.taskIdToComplete);
 export const useOneTimeTaskListSuccess = () => useAppSelector((state) => state.user.getOneTimeTaskListSuccess);
 export const useEarlyBirdOneTimeTaskList = () => useAppSelector((state) => state.user.earlyBirdOneTimeTask);
 export const useEarlyBirdOneTimeTaskListSuccess = () => useAppSelector((state) => state.user.getEarlyBirdOneTimeTaskListSuccess);
 export const useUserAuthenticated = () => useAppSelector((state) => state.user.isAuthenticated);
+export const useSettleTapSessionLoading = () => useAppSelector((state) => state.user.settleTapSessionLoading);
 export const useLocalCoins = () => useAppSelector((state) => state.user.localCoins);
 export const useLocalStamina = () => useAppSelector((state) => state.user.localStamina);
 export const useRechargeLoading = () => useAppSelector((state) => state.user.rechargeStaminaLoading);
 export const useUserLocation = () => useAppSelector((state) => state.user.userLocations);
 export const useUserLocationLoading = () => useAppSelector((state) => state.user.userLocationsLoading);
 export const useUpgradeUserLocationError = () => useAppSelector((state) => state.user.upgradeUserLocationErrorCode);
+export const useReferralStatLoading = () => useAppSelector((state) => state.user.referralStatLoading);
+export const useReferralCount = () => useAppSelector((state) => state.user.referralCount);
+export const useNFTPurchasedReferralCount = () => useAppSelector((state) => state.user.nftPurchasedReferralCount);
+export const useBasicClaimable = () => useAppSelector((state) => state.user.basicClaimable);
+export const useNftClaimable = () => useAppSelector((state) => state.user.nftClaimable);
 
 const userReducer = userSlice.reducer;
 
