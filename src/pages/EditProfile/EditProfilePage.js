@@ -27,7 +27,7 @@ const EditProfilePage = () => {
   const [imageData, setImageData] = useState(null);
   const [hasChanges, setHasChanges] = useState(false);
   const inputFile = useRef(null);
- 
+
   const handleBackClick = () => {
     navigate(-1);
   };
@@ -80,51 +80,49 @@ const EditProfilePage = () => {
   };
 
   return (
-    <>
-      <Header />
-
-      <div
-        className="justify-center items-center place-content-center p-44 min-h-screen"
-        style={{
-          backgroundImage: 'url("../../assets/images/clicker-character/clickerWall.png")',
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          backgroundRepeat: 'no-repeat',
-          backgroundAttachment: 'fixed',
-        }}
-      >
-        <div className="w-full h-full">
-          <div className="header flex justify-start items-center">
+    <div
+      className="justify-center items-center p-[4rem] lg:p-[11rem] w-screen h-screen"
+      style={{
+        backgroundImage:
+          'url("../../assets/images/clicker-character/clickerWall.png")',
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
+      }}
+    >
+      <div>
+        <Header />
+        <div className="w-full h-full mt-[5rem] lg:mt-0">
+          <div className="w-full xl:w-[40%] header flex justify-between items-center space-x-[2rem] lg:space-x-[8rem]">
             <span className="flex gap-2">
-              <span>
+              <div className="flex flex-col">
                 <span
                   onClick={handleBackClick}
                   className="text-white text-sm font-outfit tracking-wide hover:text-amber-500 transition-colors cursor-pointer"
                 >
                   &lt;&nbsp;Back
                 </span>
-                <span className="flex">
+                <div className="flex flex-col xl:flex-row">
                   <div
-                    className="w-[339px] text-left text-amber-500 text-5xl font-normal font-['Luckiest Guy'] uppercase leading-[54px]"
+                    className="w-full text-left text-amber-500 text-5xl font-normal font-['Luckiest Guy'] uppercase leading-[54px]"
                     style={{
                       WebkitTextStrokeWidth: "2px",
                       WebkitTextStrokeColor: "var(--Color-11, #FFF)",
                     }}
                   >
-                    EDIT PROFILE
+                     PROFILE
                   </div>
-                  {user?.isKOL && (
-                    <span className="bg-sky-700 rounded-lg flex items-center m-3 px-2">
-                      <span className="text-white text-xs tracking-wider font-outfit">
-                        Certified KOL
+                  <div className="my-[1rem]">
+                    {user?.isKOL && (
+                      <span className="bg-sky-700 rounded-lg items-center xl:ml-[1rem] p-2">
+                        <span className="text-white text-xs tracking-wider font-outfit whitespace-nowrap">
+                          Certified KOL
+                        </span>
                       </span>
-                    </span>
-                  )}
-                </span>
-                <div className="text-white text-sm font-outfit tracking-wide pb-8">
-                  Settings &nbsp; &gt; &nbsp; Edit Profile
+                    )}
+                  </div>
                 </div>
-              </span>
+              </div>
             </span>
             <span
               className="flex w-24 h-24 items-center justify-center rounded-full border overflow-hidden relative group"
@@ -172,7 +170,7 @@ const EditProfilePage = () => {
             onSubmit={handleUpdateProfile}
           >
             <div className="flex flex-col md:flex-row gap-5 md:gap-10 mt-3 w-full">
-              <div className="flex flex-col gap-2 w-[50%] pb-4">
+              <div className="flex flex-col gap-2 w-full xl:w-[40%] pb-4">
                 <label
                   htmlFor="firstname"
                   className="text-sm font-outfit tracking-wide"
@@ -190,7 +188,7 @@ const EditProfilePage = () => {
               </div>
             </div>
             <div className="flex gap-10 mt-3 w-full">
-              <div className="flex flex-col gap-2 w-[50%] pb-4">
+              <div className="flex flex-col gap-2 w-full xl:w-[40%] pb-4">
                 <label
                   htmlFor="email"
                   className="text-sm font-outfit tracking-wide"
@@ -207,7 +205,7 @@ const EditProfilePage = () => {
                 />
               </div>
             </div>
-            <div className="flex flex-col gap-2 w-[50%] pb-4">
+            <div className="flex flex-col gap-2 w-full xl:w-[40%] pb-4">
               <label
                 htmlFor="phone"
                 className="text-sm font-outfit tracking-wide"
@@ -222,7 +220,7 @@ const EditProfilePage = () => {
                 className="w-full custom-phone-input border-[1px] border-[#245F89] rounded-lg flex p-4 items-center gap-2 text-sm font-semibold font-outfit tracking-wide"
               />
             </div>
-            <div className="flex flex-col gap-2 w-[50%] pb-4 relative">
+            <div className="flex flex-col gap-2 w-full xl:w-[40%] pb-4 relative">
               <label
                 htmlFor="inviteCode"
                 className="text-sm font-outfit tracking-wide"
@@ -274,7 +272,7 @@ const EditProfilePage = () => {
           </form>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 
