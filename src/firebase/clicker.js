@@ -3,57 +3,67 @@ import { auth, getUserLocations, exploreLocation, settleTapSession, rechargeEner
 const settleTapSessionImpl = async ({ newCointAmt, newStamina }) => {
     try {
         const idToken = await auth.currentUser.getIdToken(/* forceRefresh */ false);
-        const { data } = await settleTapSession({
+        const result = await settleTapSession({
             idToken: idToken,
             newCoinAmt: newCointAmt,
             newStamina: newStamina
         });
-        return data;
+        if (result.data.error){
+            throw result.data.error;
+        }
+        return result.data;
     }catch (error) {
-        console.log("Error settling tap session: ", error)
+        console.log("Failed to settle tap session withe error: ", error);
+        throw error;
     }
 };
 
 const rechargeEnergyImpl = async () => {
     try {
         const idToken = await auth.currentUser.getIdToken(/* forceRefresh */ false);
-        const { data } = await rechargeEnergy({
+        const result = await rechargeEnergy({
             idToken: idToken,
         });
-        return data;
+        if (result.data.error){
+            throw result.data.error;
+        }
+        return result.data;
     }catch (error) {
-        console.log("Error handling energy recharge: ", error)
+        console.log("Failed to recharge stamina with error: ", error);
+        throw error;
     }
 };
 
 const rechargeEnergyByInviteImpl = async () => {
     try {
         const idToken = await auth.currentUser.getIdToken(/* forceRefresh */ false);
-        const { data } = await rechargeEnergyByInvite({
+        const result = await rechargeEnergyByInvite({
             idToken: idToken,
         });
-        return data;
+        if (result.data.error){
+            throw result.data.error;
+        }
+        return result.data;
     }catch (error) {
-        console.log("Error handling energy recharge by invite: ", error)
+        console.log("Failed to recharge stamina by invite with error: ", error);
+        throw error;
     }
 };
+
 
 const getUserLocationImpl = async () => {
     try {
         // obtain the ID token of the current logged-in user
         const idToken = await auth.currentUser.getIdToken(false);
-        const result = await getUserLocations({ idToken: idToken });
-
-        console.log(result.data);
-
-        if (result.data.error) {
+        const result = await getUserLocations({
+            idToken: idToken,
+        });
+        if (result.data.error){
             throw result.data.error;
         }
-
         return result.data;
-
-    } catch (error) {
-        console.log("Error handling get user location details ", error);
+    }catch (error) {
+        console.log("Failed to get user location with error: ", error);
         throw error;
     }
 };
@@ -66,15 +76,12 @@ const upgradeUserLocationImpl = async (locationId) => {
             idToken: idToken,
             locationId: locationId.payload
         });
-
-        if (result.data.error) {
+        if (result.data.error){
             throw result.data.error;
         }
-
-        return result;
-
-    } catch (error) {
-        console.log("Error handling get user location details:", error);
+        return result.data;
+    }catch (error) {
+        console.log("Failed to upgrade user location with error: ", error);
         throw error;
     }
 };

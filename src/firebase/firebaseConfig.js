@@ -44,6 +44,7 @@ const rechargeEnergyByInvite = httpsCallable(
 );
 const getUserLocations = httpsCallable(functions, "getUserLocations");
 const exploreLocation = httpsCallable(functions, "exploreLocation");
+const getReferralStats = httpsCallable(functions, "getReferralStats");
 
 export {
   auth,
@@ -61,4 +62,5 @@ export {
   rechargeEnergyByInvite,
   getUserLocations,
   exploreLocation,
+  getReferralStats,
 };
