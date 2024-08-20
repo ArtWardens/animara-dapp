@@ -9,8 +9,8 @@ import {
 import ReferPopup from "./ReferPopup";
 
 function EarnGuide({
-    modalOpen,
-    handleOpenModal,
+    openModal,
+    setOpenModal,
     setIsOneTimeTaskOpen
 }) {
     const dispatch = useAppDispatch();
@@ -20,7 +20,7 @@ function EarnGuide({
     const trigger = useRef(null);
     const modal = useRef(null);
     const [showPopup, setShowPopup] = useState(false);
-    const [enableEnergyRecharge, setEnableEnergyRecharge] = useState(false);
+    const [enableStaminaRecharge, setEnableStaminaRecharge] = useState(false);
     const [enableInviteRecharge, setEnableInviteRecharge] = useState(false);
     const [guideSlideUp, setguideSlideUp] = useState(false);
     const [showBoosts, setShowBoosts] = useState(false);
@@ -40,17 +40,18 @@ function EarnGuide({
     const handleMouseEnterTasks = () => setImageSrcTasks("../assets/images/clicker-character/tasksHover.png");
     const handleMouseLeaveTasks = () => setImageSrcTasks("../assets/images/clicker-character/tasksBtn.png");
 
+
     const handleUserUpgrades = () => {
-        handleOpenModal('upgrades');
+        setOpenModal('upgrades');
         dispatch(getUserLocations());
     };
 
     const closeModal = () => {
-        handleOpenModal("");
+        setOpenModal("");
     };
 
     const handleChargeEnergy = () => {
-        if (currentUser.staminaRechargeRemaining > 0 && enableEnergyRecharge) {
+        if (currentUser.staminaRechargeRemaining > 0 && enableStaminaRecharge) {
             setIsRecharging(true);
             dispatch(rechargeStamina({ opType: StaminaRechargeTypeBasic }));
         }
@@ -63,9 +64,9 @@ function EarnGuide({
     };
 
     const handleReferCompletion = () =>{
-        setShowPopup(false);
         setIsRecharging(true);
         dispatch(rechargeStamina({ opType: StaminaRechargeTypeInvite }));
+        setShowPopup(false);
     }
 
     // intro animation
@@ -99,8 +100,8 @@ function EarnGuide({
     useEffect(() => {
         const clickHandler = ({ target }) => {
             if (!modal.current) return;
-            if (modalOpen === "" || modal.current.contains(target) || trigger.current.contains(target)) return;
-            handleOpenModal("");
+            if (openModal === "" || modal.current.contains(target) || trigger.current.contains(target)) return;
+            setOpenModal("");
         };
         document.addEventListener("click", clickHandler);
         return () => document.removeEventListener("click", clickHandler);
@@ -109,8 +110,8 @@ function EarnGuide({
     // close modal when key donw outside
     useEffect(() => {
         const keyHandler = ({ keyCode }) => {
-            if (modalOpen === "" || keyCode !== 27) return;
-            handleOpenModal("");
+            if (openModal === "" || keyCode !== 27) return;
+            setOpenModal("");
         };
         document.addEventListener("keydown", keyHandler);
         return () => document.removeEventListener("keydown", keyHandler);
@@ -118,19 +119,19 @@ function EarnGuide({
 
     // auto close modal after energy recharge
     useEffect(()=>{
-        if (modalOpen === 'boosts' && isRecharging && !rechargeLoading ){
+        if (openModal === 'boosts' && isRecharging && !rechargeLoading ){
             setIsRecharging(false);
-            handleOpenModal("");
+            setOpenModal("");
         }
-    }, [modalOpen, isRecharging, rechargeLoading, handleOpenModal]);
+    }, [openModal, isRecharging, rechargeLoading, setOpenModal]);
 
     // lock stamina recharge when max stamina
     useEffect(() => {
         if (localStamina !== currentUser?.maxStamina) {
-            setEnableEnergyRecharge(true);
+            setEnableStaminaRecharge(true);
             setEnableInviteRecharge(true);
         } else {
-            setEnableEnergyRecharge(false);
+            setEnableStaminaRecharge(false);
             setEnableInviteRecharge(false);
         }
     }, [currentUser, localStamina]);
@@ -158,7 +159,7 @@ function EarnGuide({
                             onMouseEnter={handleMouseEnterBoosts}
                             onMouseLeave={handleMouseLeaveBoosts}
                             ref={trigger}
-                            onClick={() => handleOpenModal('boosts')}
+                            onClick={() => setOpenModal('boosts')}
                         >
                             <img
                                 src={imageSrcBoosts}
@@ -209,17 +210,17 @@ function EarnGuide({
 
             </div>
 
-            {modalOpen === 'leaderboard' && (
+            {openModal === 'leaderboard' && (
                 <div
-                    className={`fixed left-0 top-0 flex h-full min-h-screen w-full items-center justify-center bg-dark/90 px-4 py-5 ${modalOpen ? "animate-modalOpen" : "animate-modalClose"}`}
+                    className={`fixed left-0 top-0 flex h-full min-h-screen w-full items-center justify-center bg-dark/90 px-4 py-5 ${openModal ? "animate-openModal" : "animate-modalClose"}`}
                     style={{
                         zIndex: 90,
                     }}
                 >
                     <div
                         ref={modal}
-                        onFocus={() => handleOpenModal(true)}
-                        onBlur={() => handleOpenModal(false)}
+                        onFocus={() => setOpenModal('test')}
+                        onBlur={() => setOpenModal('')}
                         className="w-full md:w-2/3 h-full md:h-2/3 px-8 py-12 text-center md:px-[70px] md:py-[60px]"
                         style={{
                             backgroundImage: 'url("../assets/images/leaderboardExp.png")',
@@ -232,14 +233,14 @@ function EarnGuide({
                 </div>
             )}
 
-            {modalOpen === 'boosts' && (
+            {openModal === 'boosts' && (
                 <div
                     className={`fixed left-0 top-0 flex h-full min-h-screen w-full items-center justify-center bg-dark/90 px-4 py-4`}
                     style={{
                         zIndex: 90,
                     }}
                 >
-                    <div className={`w-full max-w-[900px] rounded-[20px] bg-white px-5 py-8 text-center dark:bg-dark-2 md:px-[48px] md:py-[48px] ${modalOpen ? "animate-slideInFromBottom" : "animate-slideOutToBottom"}`}>
+                    <div className={`w-full max-w-[900px] rounded-[20px] bg-white px-5 py-8 text-center dark:bg-dark-2 md:px-[48px] md:py-[48px] ${openModal ? "animate-slideInFromBottom" : "animate-slideOutToBottom"}`}>
                         <ul className="grid w-full gap-4 mb-8">
                             <div className='flex flex-row justify-between items-center'>
                                 <h3 className='text-3xl'>
@@ -250,7 +251,7 @@ function EarnGuide({
                             <li>
                                 <div
                                     className={`
-                                        ${currentUser?.staminaRechargeRemaining > 0 && enableEnergyRecharge ? "dark:hover:bg-gray-700 dark:hover:text-gray-300 hover:text-gray-600 hover:bg-gray-50 cursor-pointer" : "dark:bg-gray-700 pointer-events-none"}
+                                        ${currentUser?.staminaRechargeRemaining > 0 && enableStaminaRecharge ? "dark:hover:bg-gray-700 dark:hover:text-gray-300 hover:text-gray-600 hover:bg-gray-50 cursor-pointer" : "dark:bg-gray-700 pointer-events-none"}
                                         inline-flex items-center justify-between w-full p-2 text-gray-500 bg-white border-2 border-gray-200 rounded-lg dark:border-gray-700 dark:text-gray-400 dark:bg-gray-800
                                     `}
                                 >
@@ -308,8 +309,8 @@ function EarnGuide({
 }
 
 EarnGuide.propTypes = {
-    modalOpen: PropTypes.bool,
-    handleOpenModal: PropTypes.func,
+    openModal: PropTypes.string,
+    setOpenModal: PropTypes.func,
     setIsOneTimeTaskOpen: PropTypes.func
 }
 

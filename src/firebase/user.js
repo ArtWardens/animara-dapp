@@ -1,30 +1,14 @@
-import { auth, db, storage, updateUserLastLogin, dailyLogin } from "../firebase/firebaseConfig";
+import { auth, db, storage, updateUserLastLogin, dailyLogin, getReferralStats } from "../firebase/firebaseConfig";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { getDownloadURL, ref, uploadString } from "firebase/storage";
 import { getIdTokenResult, updateProfile } from "firebase/auth";
 
-export const isReferralCodeValid = async (referralCode) => {
-  try {
-    if (referralCode === ''){
-      return true;
-    }
-    try {
-      const querySnapshot = await db.collection("users").where("referralCode", "==", referralCode).get();
-      return !querySnapshot.empty;
-    } catch (error) {
-      console.log(error);
-    }
-  } catch (error) {
-    console.log(error);
-    return false;
-  }
-};
 
 // functions that we export for saga
 const getUserDataImpl = async (uid) => {
-    try {
-        const docRef = doc(db, 'users', uid);
-        const docSnap = await getDoc(docRef);
+  try {
+    const docRef = doc(db, 'users', uid);
+    const docSnap = await getDoc(docRef);
 
     let canResetPassword = false;
     const token = await getIdTokenResult(auth.currentUser);
@@ -59,12 +43,6 @@ const updateUserProfileImpl = async (
   phoneNumber,
   photoString
 ) => {
-  const isReferralValid = await isReferralCodeValid(inviteCode);
-  if (!isReferralValid && inviteCode) {
-    console.log(isReferralValid);
-    console.log(inviteCode);
-    throw new Error("Invalid referral code");
-  }
 
   try {
     // Get the current user
@@ -93,7 +71,10 @@ const updateUserProfileImpl = async (
     }
 
     const currentData = userDoc.data();
-    const updateData = { name: name };
+    const updateData = {};
+    if (name) {
+      updateData.name = name;
+    }
 
     // Only add photoURL if it's provided
     if (photoURL) {
@@ -138,13 +119,27 @@ const updateUserLeaveTimeImpl = async () => {
   }
 };
 
-const updateDailyLoginImpl = async () => {
+const dailyLoginImpl = async () => {
   try {
     const idToken = await auth.currentUser.getIdToken(/* forceRefresh */ false);
     const { data } = await dailyLogin({idToken: idToken});
     return data;
   }catch (error) {
-      console.log("Error updating daily login: ", error)
+      console.log("Failed to daily login with error: ", error)
+  }
+}
+
+const getReferralStatsImpl = async () =>{
+  try {
+    const idToken = await auth.currentUser.getIdToken(false);
+    const { data } = await getReferralStats({idToken: idToken});
+    if (data.error){
+        throw data.error;
+    }
+    return data;
+  }catch (error) {
+      console.log("Failed to get referral stats withe error: ", error);
+      throw error;
   }
 }
 
@@ -152,5 +147,6 @@ export {
     getUserDataImpl,
     updateUserProfileImpl,
     updateUserLeaveTimeImpl,
-    updateDailyLoginImpl
+    dailyLoginImpl,
+    getReferralStatsImpl
 };
