@@ -289,7 +289,7 @@ const SignupPage = () => {
         {/* T&C checkbox */}
         <div className="flex items-center mt-3 text-[0.875rem]">
           <input id="link-checkbox" type="checkbox" value="" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:accent-[#49DEFF] dark:focus:accent-[#49DEFF] dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
-          <label htmlFor="link-checkbox" className="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">
+          <label htmlFor="link-checkbox" className="ms-2 text-sm font-outfit text-gray-900 dark:text-gray-300">
             By signing up, I agree to Animara&#39;s <Link to="/" className="text-[#49DEFF] dark:text-[#49DEFF] hover:underline">Terms & Condition</Link>
           </label>
         </div>
