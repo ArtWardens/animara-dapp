@@ -206,10 +206,11 @@ const LoginPage = () => {
           </p>
         </div>
         
-        {/* Hr Section */}
-        <div className="inline-flex items-center justify-center w-full">
-          <hr className="w-full h-px my-8 bg-gray-200 border-0 dark:bg-[#C5C5C5]" />
-          <span className="absolute px-8 -translate-x-1/2 bg-white left-1/2 text-[14px] dark:text-[#C5C5C5] dark:bg-[#003459] leading-[1rem]">or</span>
+        {/*  Divider */}
+        <div className="flex items-center mt-12">
+          <hr className="border-t border-[#C5C5C5] flex-grow" />
+          <span className="px-8 text-[0.875rem] text-[#C5C5C5] font-outfit">Or</span>
+          <hr className="border-t border-[#C5C5C5] flex-grow" />
         </div>
 
         {/* Social Login Buttons Section */}
