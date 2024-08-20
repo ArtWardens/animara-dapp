@@ -92,7 +92,7 @@ const SignupPage = () => {
       setEmailError("Email is required");
       setIsEmailValid(false);
     } else if (!emailRegex.test(newEmail)) {
-      setEmailError("Invalid email format");
+      setEmailError("Invalid email");
       setIsEmailValid(false);
     } else {
       setEmailError("");
