@@ -14,7 +14,8 @@ import {
 import {
   updateUserProfileImpl,
   getUserDataImpl,
-  updateDailyLoginImpl,
+  dailyLoginImpl,
+  getReferralStatsImpl,
 } from "../firebase/user";
 import { handleGetLeaderboard } from "../firebase/leaderboard";
 import {
@@ -24,7 +25,9 @@ import {
 import {
   settleTapSessionImpl,
   rechargeEnergyImpl,
-  rechargeEnergyByInviteImpl
+  rechargeEnergyByInviteImpl,
+  getUserLocationImpl,
+  upgradeUserLocationImpl,
 } from '../firebase/clicker';
 import {
   closeDailyPopup,
@@ -78,6 +81,15 @@ import {
   rechargeStamina,
   rechargeStaminaSuccess,
   rechargeStaminaError,
+  getUserLocations,
+  getUserLocationsSuccess,
+  getUserLocationsError,
+  upgradeUserLocation,
+  upgradeUserLocationSuccess,
+  upgradeUserLocationError,
+  getReferralStats,
+  getReferralStatsSuccess,
+  getReferralStatsError,
 } from "../sagaStore/slices";
 import {
   StaminaRechargeTypeBasic,
@@ -116,7 +128,7 @@ export function* signupWithEmailSaga({ payload }) {
         break;
       case -3:
         yield put(signupWithEmailError("Error signing up"));
-        toast.error("Failed to link Referral Code");
+        toast.error("Invalid referral code");
         break;
       case -4:
         yield put(signupWithEmailError("Error signing up"));
@@ -124,7 +136,11 @@ export function* signupWithEmailSaga({ payload }) {
         break;
       case -5:
         yield put(signupWithEmailError("Error signing up"));
-        toast.error("Failed to send verification email. Please try again.");
+        toast.error("Failed to send verification email. Please try again later.");
+        break;
+      case -6:
+        yield put(signupWithEmailError("Error signing up"));
+        toast.error("Another user has registered from this address.");
         break;
       default:
         yield put(signupWithEmailError("Error signing up"));
@@ -264,7 +280,7 @@ export function* getUserSaga() {
 
 export function* updateDailyLoginSaga() {
   try {
-    const dailyLoginResult = yield call(updateDailyLoginImpl);
+    const dailyLoginResult = yield call(dailyLoginImpl);
     yield put(updateDailyLoginSuccess(dailyLoginResult));
   } catch (error) {
     console.log("Failed to daily login with error: ", error);
@@ -346,9 +362,11 @@ export function* consumeStaminaSaga(){
 
 export function* settleTapSessionSaga({ payload }) {
   try{
-    const result = yield call(settleTapSessionImpl(payload));
+    const result = yield call(settleTapSessionImpl, payload);
     yield put(settleTapSessionSuccess(result));
   }catch (error){
+    // to localize
+    toast.error('Failed to sync game progress');
     yield put(settleTapSessionError(error));
   }
 }
@@ -366,7 +384,65 @@ export function* rechargeStaminaSaga({ payload }) {
     }
     yield put(rechargeStaminaSuccess(result));
   }catch (error){
+    // to localize
+    if (error === 'insufficient-recharge'){
+      toast.error('Out of recharge');
+    }else{
+      toast.error('Failed to Recharge Stamina');
+    }
     yield put(rechargeStaminaError(error));
+  }
+}
+
+export function* upgradeUserLocationsSaga(locationId) {
+  try {
+    const upgradeUserLocation = yield call(upgradeUserLocationImpl, locationId);   
+    yield put(upgradeUserLocationSuccess(upgradeUserLocation));
+    toast.success("Location level upgraded successfully. ");
+  } 
+  catch (error) {
+    if (error === "insufficient-funds") {
+      toast.error(
+        "Insufficient coins owned to upgrade this location. "
+      );
+    } 
+    else if (error === "location-max-level") {
+      toast.error(
+        "Max level reached for this location. "
+      );
+    } 
+    else {
+      toast.error("Failed to upgrade location. Please try again. ");
+    }
+    yield put(upgradeUserLocationError(error));
+  }
+}
+
+export function* getUserLocationsSaga() {
+  try {
+    const userLocation = yield call(getUserLocationImpl);
+    yield put(getUserLocationsSuccess(userLocation));
+    toast.success("Location level loaded successfully. ");
+    return userLocation;
+  } 
+  catch (error) {
+    yield put(getUserLocationsError(error));
+    toast.error("Failed to load location. Please try again. ");
+  }
+}
+
+export function* getReferralStatsSaga() {
+  try {
+    const referralStats = yield call(getReferralStatsImpl);
+    if (referralStats) {
+      yield put(getReferralStatsSuccess(referralStats));
+    } else {
+      yield put(
+        getReferralStatsError("Failed to get referral stats. Please try again. ")
+      );
+    }
+  } catch (error) {
+    yield put(getReferralStatsSuccess(error));
   }
 }
 
@@ -389,4 +465,7 @@ export function* userSagaWatcher() {
   yield takeLatest(consumeStamina.type, consumeStaminaSaga);
   yield takeLatest(settleTapSession.type, settleTapSessionSaga);
   yield takeLatest(rechargeStamina.type, rechargeStaminaSaga);
+  yield takeLatest(getUserLocations.type, getUserLocationsSaga);
+  yield takeLatest(upgradeUserLocation.type, upgradeUserLocationsSaga);
+  yield takeLatest(getReferralStats.type, getReferralStatsSaga);
 }
