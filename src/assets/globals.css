@@ -9,6 +9,18 @@
     format("truetype");
 }
 
+@font-face {
+  font-family: "BigNoodleTitling";
+  src: url("../../public/fonts/bignoodletitling/big_noodle_titling.ttf")
+    format("truetype");
+}
+
+@font-face {
+  font-family: "Outfit";
+  src: url("../../public/fonts/outfit/OutfitRegular.ttf")
+    format("truetype");
+}
+
 @layer base {
   :root {
     --background: 0 0% 100%;
