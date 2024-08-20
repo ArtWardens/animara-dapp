@@ -13,7 +13,7 @@ const ReferPopup = ({ onClose }) => {
   const [inviteLink, setInviteLink] = useState('');
 
   useEffect(()=>{
-    setInviteLink(`${window.location.origin}/signup?invite-code=${currentUser.inviteCode}`);
+    setInviteLink(`${window.location.origin}/signup?invite-code=${currentUser.referralCode}`);
   }, [currentUser]);
 
   const handleCopyToClipboard = () => {
@@ -81,11 +81,11 @@ const ReferPopup = ({ onClose }) => {
         </button>
         <h2 className="text-2xl font-bold mb-4">Invite Friends</h2>
         <p className="mb-4">
-          Get <span className="text-purple-300">{currentUser.inviteRechargable}</span> Energy Bar
+          Get <span className="text-purple-300">{currentUser.inviteRechargable}</span> Stamina Recharge
         </p>
         <p>Your Invite Code</p>
         <div className="p-2 rounded text-center flex items-center">
-          <code className="mr-3">{currentUser.inviteCode}</code>
+          <code className="mr-3">{currentUser.referralCode}</code>
           <BsCopy onClick={handleCopyToClipboard} className="cursor-pointer" />
         </div>
         <div>
