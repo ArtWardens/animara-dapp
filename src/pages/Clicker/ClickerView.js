@@ -2,89 +2,25 @@ import React, { useEffect, useState } from 'react';
 import { Box } from '@mui/material';
 import Modal from '@mui/material/Modal';
 import { useAppDispatch } from '../../hooks/storeHooks';
-import { useUserDetails, useUserDetailsLoading, consumeStamina, settleTapSession, closeDailyPopup, updateDailyLogin, useIsOpenDailyPopup, useLocalCoins, useLocalStamina } from '../../sagaStore/slices';
+import { useUserDetails, useUserDetailsLoading, closeDailyPopup, updateDailyLogin, useUpdatePopupLoading, useIsOpenDailyPopup } from '../../sagaStore/slices';
 import MascotView from '../../components/MascotView';
 import EarnGuide from '../../components/EarnGuide';
 import EnergyRegeneration from '../../components/EnergyRegeneration';
 import { mascots } from '../../utils/local.db';
-import { dailyLogin } from '../../data/constants';
+import { dailyLoginRewards } from '../../utils/constants';
+import ClickerUpgrades from './ClickerUpgrades';
 import '../../styles/globals.css';
 
 const ClickerView = () => {
   const dispatch = useAppDispatch();
   const currentUser = useUserDetails();
-  const localCoins = useLocalCoins();
-  const localStamina = useLocalStamina();
   const userDetailsLoading = useUserDetailsLoading();
+  const updateLoading = useUpdatePopupLoading();
   const isOpenDailyPopup = useIsOpenDailyPopup();
-  const [isOpenRewardModal, setIsOpenRewardModal] = useState(false);
   const [isLeaderboardOpen, setIsLeaderboardOpen] = useState(false);
   const [isOneTimeTaskOpen, setIsOneTimeTaskOpen] = useState(false);
-  const [modalOpen, handleOpenModal] = useState(false);
+  const [openModal, setOpenModal] = useState("");
   const [currentMascot, setCurrentMascot] = useState(mascots[0]);
-  const [delay, setDelay] = useState(true);
-
-  // setup event handlers to settle tap sessions
-  useEffect(() => {
-    // Note: setup various conditions in which we attempt to
-    // settle a tap session
-    // we settle tap session by session to prevent backend overload
-    
-    // Condition 1: every 10 seconds when user is actively clicking
-    const interval = setInterval(() => {
-      if (currentUser.coins !== localCoins || currentUser.stamina !== localStamina){
-        dispatch(settleTapSession({
-          newCointAmt: localCoins,
-          newStamina: localStamina,
-        }));
-      }
-    }, 10000);
-
-    // Condition 2: when user's moves away from browser
-    const handleMouseLeave = (event) => {
-      if (event.clientY <= 0) {
-        if (currentUser.coins !== localCoins || currentUser.stamina !== localStamina){
-          dispatch(settleTapSession({
-            newCointAmt: localCoins,
-            newStamina: localStamina,
-          }));
-        }
-      }
-    };
-
-    // Condition 3: when user closes browser
-    const handleVisibilityChange = () => {
-      if (document.visibilityState === 'hidden') {
-        if (currentUser.coins !== localCoins || currentUser.stamina !== localStamina){
-          dispatch(settleTapSession({
-            newCointAmt: localCoins,
-            newStamina: localStamina,
-          }));
-        }
-      }
-    };
-
-    document.addEventListener('mouseleave', handleMouseLeave);
-    document.addEventListener('visibilitychange', handleVisibilityChange);
-
-    return () => {
-      clearInterval(interval);
-      document.removeEventListener('mouseleave', handleMouseLeave);
-      document.removeEventListener('visibilitychange', handleVisibilityChange);
-    };
-  }, [dispatch, currentUser?.coins, currentUser?.stamina, localCoins, localStamina]);
-
-  // grant depletion rewards
-  useEffect(() => {
-    const shouldGainRewards = currentUser?.stamina === 0;
-
-    if (shouldGainRewards) {
-      dispatch(consumeStamina({
-        staminaToConsume: 0,
-        coinToGain: 150
-      }));
-    }
-  }, [dispatch, currentUser, setIsOpenRewardModal]);
 
   // fetch user data
   useEffect(() => {
@@ -92,7 +28,7 @@ const ClickerView = () => {
     setCurrentMascot(mascots[currentUser?.level]);
 
     // check and popup daily login
-    if (!currentUser.loggedInToday) {
+    if (currentUser && !currentUser?.loggedInToday) {
       dispatch(updateDailyLogin());
     }
   }, [currentUser, dispatch]);
@@ -101,7 +37,7 @@ const ClickerView = () => {
     dispatch(closeDailyPopup());
   };
 
-  if (userDetailsLoading) {
+  if (userDetailsLoading || updateLoading) {
     return (
       <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-75 flex items-center justify-center z-50">
         <div className="text-center">
@@ -139,16 +75,13 @@ const ClickerView = () => {
 
         <MascotView
           currentMascot={currentMascot}
-          delay={delay}
-          setDelay={setDelay}
-          isOpenRewardModal={isOpenRewardModal}
-          setIsOpenRewardModal={setIsOpenRewardModal}
-          handleOpenModal={handleOpenModal}
+          openModal={openModal}
+          setOpenModal={setOpenModal}
         />
 
         <EarnGuide
-          modalOpen={modalOpen}
-          handleOpenModal={handleOpenModal}
+          openModal={openModal}
+          setOpenModal={setOpenModal}
           isLeaderboardOpen={isLeaderboardOpen}
           setIsLeaderboardOpen={setIsLeaderboardOpen}
           isOneTimeTaskOpen={isOneTimeTaskOpen}
@@ -178,7 +111,7 @@ const ClickerView = () => {
                   </span>
                 </div>
                 <Box className="pt-8 pb-4 w-full grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">
-                  {dailyLogin.map((item, index) => {
+                  {dailyLoginRewards.map((dayReward, index) => {
                     const isSelected = index < currentUser?.loginDays;
                     return (
                       <Box
@@ -186,9 +119,9 @@ const ClickerView = () => {
                         key={index}
                       >
                         <p className="flex flex-1 flex-col items-center justify-center text-xs space-y-1">
-                          <span>Day {item.day}</span>
+                          <span>Day {index + 1}</span>
                           <img className="w-5 h-5" src="assets/images/gem2.png" alt="Star" />
-                          <span>{item.coins}</span>
+                          <span>{dayReward}</span>
                         </p>
                       </Box>
                     );
@@ -198,6 +131,14 @@ const ClickerView = () => {
             </div>
           </div>
         </Modal>
+
+        {openModal === 'upgrades' && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+            <ClickerUpgrades
+              onClose={() => setOpenModal('')} // Close modal when done
+            />
+          </div>
+        )}
       </div>
     </>
   );

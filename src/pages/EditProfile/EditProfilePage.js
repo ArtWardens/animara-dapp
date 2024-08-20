@@ -54,6 +54,7 @@ const EditProfilePage = () => {
         profilePicture: imageData ? imageData.toString() : null,
       })
     );
+    setHasChanges(false);
   };
 
   const handleInputChange = (setter) => (e) => {
@@ -256,11 +257,11 @@ const EditProfilePage = () => {
                   </button>
                 )}
                 <button
-                  className={`w-[200px] h-[60px] rounded-[26px] justify-between items-center inline-flex ${hasChanges ? "bg-amber-400" : "bg-amber-300"}`}
+                  className={`w-[200px] h-[60px] rounded-[26px] justify-between items-center inline-flex ${hasChanges ? "bg-amber-400" : "bg-slate-300"}`}
                   disabled={updateProfileLoading || !hasChanges}
                   type="submit"
                 >
-                  <div className="w-[200px] h-[60px] px-[30px] py-5 rounded-[26px] border border-orange-300 justify-between items-center flex hover:bg-amber-300">
+                  <div className={`w-[200px] h-[60px] px-[30px] py-5 rounded-[26px] border border-orange-300 justify-between items-center flex ${hasChanges ? "hover:bg-amber-300" : "bg-slate-300"}`}>
                     <div className="text-center text-white text-xl font-bold capitalize leading-tight">
                       {updateProfileLoading
                         ? "Saving changes.."
