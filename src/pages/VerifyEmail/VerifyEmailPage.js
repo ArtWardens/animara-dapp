@@ -28,7 +28,7 @@ const VerifyEmailPage = () => {
 
       {/* Content */}
       <div
-        className="w-auto h-[70dvh] items-center justify-center bg-contain bg-no-repeat"
+        className="w-auto h-[55dvh] xl:h-[70dvh] items-center justify-center bg-contain bg-no-repeat"
         style={{
           backgroundImage: `url("../assets/images/clicker-character/verify-email-content-bg.png")`,
           backgroundPosition: "center",
@@ -38,7 +38,7 @@ const VerifyEmailPage = () => {
           <img
             src={"../assets/images/clicker-character/verify-email-icon.png"}
             alt="verify email"
-            className="w-auto h-[8dvh] xl:h-[15dvh]"
+            className="w-auto h-[8dvh] xl:h-[15dvh] mb-[1rem]"
           />
           <h1 className="w-[70%] text-xl md:text-3xl lg:text-5xl font-semibold text-center text-[#ffa900] mb-[0.5rem] lg:mb-[1rem]">
             please check your email for the verification email
