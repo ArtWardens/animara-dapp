@@ -84,7 +84,9 @@ function Header() {
     return (
         <>
             {/* Desktop Menu */}
-            <div className="hidden sm:flex flex-row absolute top-12 z-10 p-1 pr-4 gap-2 left-24"
+            <div className={`flex flex-row absolute top-[3rem] z-10 p-1 pr-4 gap-2 left-[1rem] xl:left-[4rem] ${
+                    mobileMenuOpen ? 'hidden' : ''
+                }`}
                 style={{
                     border: '3px solid #F4FBFF',
                     borderRadius: '500px 200px 200px 500px',
@@ -97,9 +99,7 @@ function Header() {
                     <button onClick={handleEditProfile}>
                         {loadingImage && (
                             <div className="flex justify-center items-center">
-                            <div className="flex justify-center items-center h-56">
                               <PropagateLoader color={"#FFB23F"} />
-                            </div>
                           </div>
                         )}
                         <img
@@ -146,7 +146,7 @@ function Header() {
                 </div>
             </div>
             <div
-                className="hidden sm:flex absolute top-16 gap-2 right-24 z-96 items-center"
+                className="hidden xl:flex absolute top-16 gap-2 right-[4rem] z-96 items-center"
                 style={{
                     zIndex: 91,
                 }}
@@ -201,7 +201,7 @@ function Header() {
 
             {/* Mobile Menu Button */}
             <button
-                className="transition ease-in-out hover:scale-105 sm:hidden absolute top-8 right-8 z-50"
+                className="transition ease-in-out hover:scale-105 xl:hidden absolute top-[5rem] right-[1rem] xl:right-[4rem] z-50"
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             >
                 <svg className="h-9 w-9 text-amber-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
@@ -237,8 +237,14 @@ function Header() {
                             backgroundRepeat: 'no-repeat',
                         }}
                     >
+                        {loadingImage && (
+                            <div className="flex justify-center items-center">
+                              <PropagateLoader color={"#FFB23F"} />
+                          </div>
+                        )}
+
                         <img
-                            src={"../assets/images/clicker-character/2-initial.png"}
+                            src={currentUser?.photoUrl ? currentUser.photoUrl : "../assets/images/clicker-character/2-initial.png"}
                             alt="profile"
                             className="items-center rounded-full w-32 mx-auto mb-4"
                             style={{
@@ -247,10 +253,15 @@ function Header() {
                                 backgroundSize: 'cover',
                                 backgroundRepeat: 'no-repeat',
                             }}
+                            onClick={handleEditProfile}
                         />
-                        <span className="bg-sky-700 rounded-lg items-center px-2 py-1">
-                            <span className="text-white text-xs font-outfit">Certified KOL</span>
-                        </span>
+                        {currentUser?.isKOL && (
+                            <span className="bg-sky-700 rounded-lg items-center xl:ml-[1rem] p-2">
+                                <span className="text-white text-xs tracking-wider font-outfit whitespace-nowrap">
+                                    Certified KOL
+                                </span>
+                            </span>
+                        )}
                         <p className="text-lg text-[#003459] font-medium font-outfit mt-4 mb-1"> {currentUser?.name}</p>
                         <div className="gap-2 flex place-content-center">
                             <img
@@ -277,7 +288,7 @@ function Header() {
                             <button
                                 key={name}
                                 onClick={() => handleButtonClick(link)}
-                                className="block w-full text-left py-2 text-[#00b8e1] text-4xl font-bold hover:bg-blue-700 leading-9 tracking-wider"
+                                className="block w-full text-left py-2 text-[#00b8e1] hover:text-[#ffc75a] text-4xl font-LuckiestGuy font-bold leading-9 tracking-wider transition-all duration-500"
                             >
                                 {name}
                             </button>

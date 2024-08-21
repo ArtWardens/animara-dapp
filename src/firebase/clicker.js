@@ -55,10 +55,9 @@ const getUserLocationImpl = async () => {
     try {
         // obtain the ID token of the current logged-in user
         const idToken = await auth.currentUser.getIdToken(false);
-        const result = await getUserLocations({
-            idToken: idToken,
-        });
-        if (result.data.error){
+        const result = await getUserLocations({ idToken: idToken });
+
+        if (result.data.error) {
             throw result.data.error;
         }
         return result.data;
