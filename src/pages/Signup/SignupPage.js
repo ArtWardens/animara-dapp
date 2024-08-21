@@ -323,7 +323,7 @@ const SignupPage = () => {
               <div className="flex items-center justify-center">
                 <svg
                   aria-hidden="true"
-                  className="w-8 h-8 text-Fuchsia-200 animate-spin dark:text-Fuchsia-200 fill-indigo-600"
+                  className="w-[1rem] h-[1rem] text-Fuchsia-200 animate-spin dark:text-Fuchsia-200 fill-indigo-600"
                   viewBox="0 0 100 101"
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg"
