@@ -8,7 +8,6 @@ import MascotView from '../../components/MascotView';
 import EarnGuide from '../../components/EarnGuide';
 import EnergyRegeneration from '../../components/EnergyRegeneration';
 import ClickerUpgrades from './ClickerUpgrades';
-import { mascots } from '../../utils/constants';
 import { dailyLoginRewards } from '../../utils/constants';
 
 const ClickerView = () => {
@@ -20,14 +19,9 @@ const ClickerView = () => {
   const [isLeaderboardOpen, setIsLeaderboardOpen] = useState(false);
   const [isOneTimeTaskOpen, setIsOneTimeTaskOpen] = useState(false);
   const [openModal, setOpenModal] = useState("");
-  const [currentMascot, setCurrentMascot] = useState(mascots[0]);
 
-  // fetch user data
+  // Initialize
   useEffect(() => {
-    // set mascot
-    const mascotIndex = mascots.filter((mascot)=> (currentUser?.level || 0) <= mascot.maxLevel);
-    setCurrentMascot(mascots[mascotIndex]);
-
     // check and popup daily login
     if (currentUser && !currentUser?.loggedInToday) {
       dispatch(updateDailyLogin());
@@ -78,7 +72,6 @@ const ClickerView = () => {
         />
 
         <MascotView
-          currentMascot={currentMascot}
           openModal={openModal}
           setOpenModal={setOpenModal}
         />
