@@ -6,10 +6,9 @@ import { useUserDetails, useUserDetailsLoading, closeDailyPopup, updateDailyLogi
 import MascotView from '../../components/MascotView';
 import EarnGuide from '../../components/EarnGuide';
 import EnergyRegeneration from '../../components/EnergyRegeneration';
+import ClickerUpgrades from './ClickerUpgrades';
 import { mascots } from '../../utils/constants';
 import { dailyLoginRewards } from '../../utils/constants';
-import ClickerUpgrades from './ClickerUpgrades';
-import '../../styles/globals.css';
 
 const ClickerView = () => {
   const dispatch = useAppDispatch();

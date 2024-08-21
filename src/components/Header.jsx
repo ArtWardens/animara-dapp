@@ -43,9 +43,9 @@ function Header() {
     };
 
     // setup logout button
-    const [imageSrcLogout, setImageSrcLogout] = useState("../assets/images/clicker-character/logout.png");
-    const handleMouseEnterLogout = () => setImageSrcLogout("../assets/images/clicker-character/logout-hover.png");
-    const handleMouseLeaveLogout = () => setImageSrcLogout("../assets/images/clicker-character/logout.png");
+    const [imageSrcLogout, setImageSrcLogout] = useState("/assets/images/clicker-character/logout.png");
+    const handleMouseEnterLogout = () => setImageSrcLogout("/assets/images/clicker-character/logout-hover.png");
+    const handleMouseLeaveLogout = () => setImageSrcLogout("/assets/images/clicker-character/logout.png");
 
     const handleLogout = () => {
         dispatch(logOut());
@@ -136,7 +136,7 @@ function Header() {
                     <div className="gap-2 flex">
                         <img
                             className="w-8 object-contain"
-                            src={"../assets/images/clicker-character/gem.png"}
+                            src={"/assets/images/clicker-character/gem.png"}
                             alt="gem"
                         />
                         <div className="relative flex items-center justify-center w-44">
@@ -162,7 +162,7 @@ function Header() {
             >
                 <div className="relative">
                 <img
-                  src="../assets/images/clicker-character/locale.png"
+                  src="/assets/images/clicker-character/locale.png"
                   className="w-[3dvw] xl:w-[1.5dvw] cursor-pointer"
                   onClick={() => setLangDropdownOpen(!langDropdownOpen)}
                 />
@@ -231,7 +231,7 @@ function Header() {
                 >
                     <div className="absolute top-12 left-12 flex items-center space-x-4">
                         <img
-                            src="../assets/images/clicker-character/animara-logo.png"
+                            src="/assets/images/clicker-character/animara-logo.png"
                             alt="Animara Logo"
                             className="h-8"
                         />
@@ -253,7 +253,7 @@ function Header() {
                         )}
 
                         <img
-                            src={currentUser?.photoUrl ? currentUser.photoUrl : "../assets/images/clicker-character/2-initial.png"}
+                            src={currentUser?.photoUrl ? currentUser.photoUrl : "/assets/images/clicker-character/2-initial.png"}
                             alt="profile"
                             className="items-center rounded-full w-32 mx-auto mb-4"
                             style={{
@@ -275,7 +275,7 @@ function Header() {
                         <div className="gap-2 flex place-content-center">
                             <img
                                 className="w-8 object-contain"
-                                src={"../assets/images/clicker-character/gem.png"}
+                                src={"/assets/images/clicker-character/gem.png"}
                                 alt="gem"
                             />
                             <div className="items-center justify-center">

@@ -66,7 +66,7 @@ function ReferralPage() {
             <div>
               <div className="flex items-center gap-8 pb-2">
                 <img
-                  src={"../assets/images/clicker-character/gem.png"}
+                  src={"/assets/images/clicker-character/gem.png"}
                   alt="gem"
                   className="ml-2 w-6 h-6"
                 />
@@ -85,7 +85,7 @@ function ReferralPage() {
             <div>
               <div className="flex items-center gap-8 pb-2">
                 <img
-                  src={"../assets/images/clicker-character/gem.png"}
+                  src={"/assets/images/clicker-character/gem.png"}
                   alt="gem"
                   className="ml-2 w-6 h-6"
                 />
@@ -103,7 +103,7 @@ function ReferralPage() {
             <div>
               <div className="flex items-center gap-8 pb-2">
                 <img
-                  src={"../assets/images/clicker-character/gem.png"}
+                  src={"/assets/images/clicker-character/gem.png"}
                   alt="gem"
                   className="ml-2 w-6 h-6"
                 />
@@ -133,17 +133,17 @@ function ReferralPage() {
           >
             <div className="absolute flex w-full justify-between -top-8">
               <img
-                src={"../assets/images/clicker-character/ring01.png"}
+                src={"/assets/images/clicker-character/ring01.png"}
                 alt="ring"
                 className="object-cover w-11 absolute left-2"
               />
               <img
-                src={"../assets/images/clicker-character/ring01.png"}
+                src={"/assets/images/clicker-character/ring01.png"}
                 alt="ring"
                 className="object-cover w-11 opacity-0"
               />
               <img
-                src={"../assets/images/clicker-character/ring02.png"}
+                src={"/assets/images/clicker-character/ring02.png"}
                 alt="ring"
                 className="object-cover w-11 absolute right-8"
               />
@@ -152,7 +152,7 @@ function ReferralPage() {
               className="rounded-2xl place-content-center p-6 grid min-h-[60vh] lg:min-h-[80dvh] 2xl:min-h-[50dvh]"
               style={{
                 backgroundImage:
-                  'url("../assets/images/clicker-character/mintBBG.png")',
+                  'url("/assets/images/clicker-character/mintBBG.png")',
                 backgroundSize: "cover",
                 backgroundPosition: "center",
                 backgroundRepeat: "no-repeat",
@@ -215,7 +215,7 @@ function ReferralPage() {
                 </div>
               )}
               <img
-                src="../assets/images/clicker-character/nft-treasureBox.png"
+                src="/assets/images/clicker-character/nft-treasureBox.png"
                 alt="NFT Treasure Box"
                 className="object-contain w-96 -my-10"
               />
@@ -300,17 +300,17 @@ function ReferralPage() {
           >
             <div className="absolute flex w-full justify-between -top-8">
               <img
-                src={"../assets/images/clicker-character/ring01.png"}
+                src={"/assets/images/clicker-character/ring01.png"}
                 alt="ring"
                 className="object-cover w-11 absolute left-2"
               />
               <img
-                src={"../assets/images/clicker-character/ring01.png"}
+                src={"/assets/images/clicker-character/ring01.png"}
                 alt="ring"
                 className="object-cover w-11 opacity-0"
               />
               <img
-                src={"../assets/images/clicker-character/ring02.png"}
+                src={"/assets/images/clicker-character/ring02.png"}
                 alt="ring"
                 className="object-cover w-11 absolute right-8"
               />
@@ -319,7 +319,7 @@ function ReferralPage() {
               className="rounded-2xl place-content-center p-6 grid min-h-[60vh] lg:min-h-[80dvh] 2xl:min-h-[50dvh]"
               style={{
                 backgroundImage:
-                  'url("../assets/images/clicker-character/mintBBG.png")',
+                  'url("/assets/images/clicker-character/mintBBG.png")',
                 backgroundSize: "cover",
                 backgroundPosition: "center",
                 backgroundRepeat: "no-repeat",
@@ -382,7 +382,7 @@ function ReferralPage() {
                 </div>
               )}
               <img
-                src="../assets/images/clicker-character/nft-treasureBox.png"
+                src="/assets/images/clicker-character/nft-treasureBox.png"
                 alt="NFT Treasure Box"
                 className="object-contain w-96 -my-10"
               />

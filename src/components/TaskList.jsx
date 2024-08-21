@@ -81,7 +81,7 @@ const TaskList = ({ setIsOneTimeTaskOpen }) => {
             <div className="flex flex-col">
               <p>{item.title}</p>
               <div className="flex items-center ">
-                <img src="../assets/images/gem2.png" className="cursor-pointer h-4" alt="gem2" />
+                <img src="/assets/images/gem2.png" className="cursor-pointer h-4" alt="gem2" />
                 <div className="pl-2 flex items-center">
                   <p className="text-blue-200">
                     +{item.coins}
@@ -101,10 +101,10 @@ const TaskList = ({ setIsOneTimeTaskOpen }) => {
       <div className="absolute inset-0 bg-pink-300 z-[100001]">
         <div
           className="absolute inset-0 bg-cover bg-no-repeat z-[100001]"
-          style={{ backgroundImage: 'url(../assets/images/Light.png)' }}
+          style={{ backgroundImage: 'url(/assets/images/Light.png)' }}
         >
           <div className="absolute top-4 left-4">
-            <img src="../assets/images/username.png" className="cursor-pointer h-16" alt="username" />
+            <img src="/assets/images/username.png" className="cursor-pointer h-16" alt="username" />
             <p className="text-white absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/3 w-20 truncate">
               <span>{`${currentUser?.first_name} ${currentUser?.last_name}`}</span>
             </p>
@@ -112,11 +112,11 @@ const TaskList = ({ setIsOneTimeTaskOpen }) => {
           <div className="w-screen h-screen flex ">
             <div className="relative bg-black h-full max-h-[80%] w-full max-w-screen-sm m-auto flex justify-center rounded-2xl">
               <div onClick={handleCloseModal} className="absolute -top-4 -right-6">
-                <img src="../assets/images/x.png" width={50} height={50} className="cursor-pointer" alt="x" />
+                <img src="/assets/images/x.png" width={50} height={50} className="cursor-pointer" alt="x" />
               </div>
               <div className="flex flex-1 flex-col space-y-5 max-w-[80%] py-10">
                 <p className="flex items-center justify-center space-x-3 text-lg">
-                  <img src="../assets/images/gem2.png" className="cursor-pointer h-8" alt="gem2" />
+                  <img src="/assets/images/gem2.png" className="cursor-pointer h-8" alt="gem2" />
                   <span>{currentUser.coins}</span>
                 </p>
                 <p className="text-lg px-3.5">available tasks</p>
