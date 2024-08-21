@@ -380,7 +380,7 @@ export const userSlice = createSlice({
       state.referralStatLoading = true;
     },
     getReferralStatsSuccess: (state, { payload }) => {
-      state.referralCount = payload.referredCount;
+      state.referralCount = payload.referralCount;
       state.nftPurchasedCount = payload.nftPurchasedCount;
       state.basicClaimable = payload.basicClaimable;
       state.nftClaimable = payload.nftClaimable;
