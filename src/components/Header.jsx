@@ -29,8 +29,7 @@ function Header() {
 
     // navigation bar setup
     const navDestinations = [
-        { name: 'AMIPALS', link: '/amipals' },
-        { name: 'EARLY BIRD', link: '/early-bird' },
+        { name: 'ANITAP', link: '/anitap' },
         { name: 'MINT', link: '/mint' },
         { name: 'REFERRAL', link: '/referral' },
     ];
@@ -44,9 +43,9 @@ function Header() {
     };
 
     // setup logout button
-    const [imageSrcLogout, setImageSrcLogout] = useState("../assets/images/clicker-character/logout.png");
-    const handleMouseEnterLogout = () => setImageSrcLogout("../assets/images/clicker-character/logout-hover.png");
-    const handleMouseLeaveLogout = () => setImageSrcLogout("../assets/images/clicker-character/logout.png");
+    const [imageSrcLogout, setImageSrcLogout] = useState("/assets/images/clicker-character/logout.png");
+    const handleMouseEnterLogout = () => setImageSrcLogout("/assets/images/clicker-character/logout-hover.png");
+    const handleMouseLeaveLogout = () => setImageSrcLogout("/assets/images/clicker-character/logout.png");
 
     const handleLogout = () => {
         dispatch(logOut());
@@ -96,26 +95,36 @@ function Header() {
                 }}
             >
                 <div className="p-1 w-20 h-20 relative">
-                    <button onClick={handleEditProfile}>
-                        {loadingImage && (
-                            <div className="flex justify-center items-center">
-                              <PropagateLoader color={"#FFB23F"} />
-                          </div>
-                        )}
-                        <img
-                            src={currentUser?.photoUrl ? currentUser.photoUrl : "../assets/images/clicker-character/2-initial.png"}
-                            alt="profile"
-                            className="justify-self-center rounded-full w-24 cursor-pointer"
-                            style={{
-                                border: '4px solid var(--80E8FF, #80E8FF)',
-                                background: 'lightgray 50%',
-                                backgroundSize: 'cover',
-                                backgroundRepeat: 'no-repeat',
-                                display: loadingImage ? 'none' : 'block'
-                            }}
-                            onLoad={() => setLoadingImage(false)}
-                            onError={() => setLoadingImage(false)}
-                        />
+                <button
+                    onClick={handleEditProfile}
+                    className="group relative"
+                    >
+                    {loadingImage && (
+                        <div className="flex justify-center items-center">
+                            <div className="flex justify-center items-center h-56">
+                                <PropagateLoader color={"#FFB23F"} />
+                            </div>
+                        </div>
+                    )}
+                    <img
+                        src={currentUser?.photoUrl ? currentUser.photoUrl : "/assets/images/clicker-character/2-initial.png"}
+                        alt="profile"
+                        className="justify-self-center rounded-full w-24 cursor-pointer group-hover:brightness-[0.55] transition-all duration-300"
+                        style={{
+                            border: '4px solid var(--80E8FF, #80E8FF)',
+                            background: 'lightgray 50%',
+                            backgroundSize: 'cover',
+                            backgroundRepeat: 'no-repeat',
+                            display: loadingImage ? 'none' : 'block'
+                        }}
+                        onLoad={() => setLoadingImage(false)}
+                        onError={() => setLoadingImage(false)}
+                    />
+                    <img
+                        src="/assets/icons/edit.png"
+                        alt="edit"
+                        className="invisible group-hover:visible absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 text-white fill-white"
+                    />
                     </button>
                 </div>
 
@@ -127,7 +136,7 @@ function Header() {
                     <div className="gap-2 flex">
                         <img
                             className="w-8 object-contain"
-                            src={"../assets/images/clicker-character/gem.png"}
+                            src={"/assets/images/clicker-character/gem.png"}
                             alt="gem"
                         />
                         <div className="relative flex items-center justify-center w-44">
@@ -153,7 +162,7 @@ function Header() {
             >
                 <div className="relative">
                 <img
-                  src="../assets/images/clicker-character/locale.png"
+                  src="/assets/images/clicker-character/locale.png"
                   className="w-[3dvw] xl:w-[1.5dvw] cursor-pointer"
                   onClick={() => setLangDropdownOpen(!langDropdownOpen)}
                 />
@@ -214,7 +223,7 @@ function Header() {
                 <div
                     className="fixed inset-0 z-40 flex flex-col justify-center px-12"
                     style={{
-                        backgroundImage: 'url("../../assets/images/clicker-character/clickerWall.png")',
+                        backgroundImage: 'url("/assets/images/clicker-character/clickerWall.png")',
                         backgroundSize: 'cover',
                         backgroundPosition: 'center',
                         backgroundRepeat: 'no-repeat',
@@ -222,7 +231,7 @@ function Header() {
                 >
                     <div className="absolute top-12 left-12 flex items-center space-x-4">
                         <img
-                            src="../assets/images/clicker-character/animara-logo.png"
+                            src="/assets/images/clicker-character/animara-logo.png"
                             alt="Animara Logo"
                             className="h-8"
                         />
@@ -231,7 +240,7 @@ function Header() {
                     <div
                         className="text-center w-auto h-full place-content-center scale-125 mt-20 -z-50"
                         style={{
-                            backgroundImage: 'url("../../assets/images/clicker-character/sticky-Note.png")',
+                            backgroundImage: 'url("/assets/images/clicker-character/sticky-Note.png")',
                             backgroundSize: 'contain',
                             backgroundPosition: 'center',
                             backgroundRepeat: 'no-repeat',
@@ -244,7 +253,7 @@ function Header() {
                         )}
 
                         <img
-                            src={currentUser?.photoUrl ? currentUser.photoUrl : "../assets/images/clicker-character/2-initial.png"}
+                            src={currentUser?.photoUrl ? currentUser.photoUrl : "/assets/images/clicker-character/2-initial.png"}
                             alt="profile"
                             className="items-center rounded-full w-32 mx-auto mb-4"
                             style={{
@@ -266,7 +275,7 @@ function Header() {
                         <div className="gap-2 flex place-content-center">
                             <img
                                 className="w-8 object-contain"
-                                src={"../assets/images/clicker-character/gem.png"}
+                                src={"/assets/images/clicker-character/gem.png"}
                                 alt="gem"
                             />
                             <div className="items-center justify-center">

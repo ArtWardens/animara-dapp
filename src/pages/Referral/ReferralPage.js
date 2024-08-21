@@ -4,7 +4,6 @@ import { toast } from "react-toastify";
 import { FaCopy, FaShareFromSquare } from "react-icons/fa6";
 import { getReferralStats, useUserDetails, useReferralStatLoading, useReferralCount, useNFTPurchasedReferralCount, useBasicClaimable, useNftClaimable } from "../../sagaStore/slices";
 import { useAppDispatch } from "../../hooks/storeHooks.js";
-import gem from "../../assets/images/gem2.png";
 import StyledQRCode from "../../components/StyledQRCode";
 import Header from "../../components/Header.jsx";
 import { PropagateLoader } from "react-spinners"; // Import the loader
@@ -19,26 +18,55 @@ function ReferralPage (){
   const nftPurchasedReferralCount = useNFTPurchasedReferralCount();
   const basicClaimable = useBasicClaimable();
   const nftClaimable = useNftClaimable();
+  const [isXlScreen, setIsXlScreen] = useState(false);
+  const [showTitle, setShowTitle] = useState(false);
+  const [showRefOne, setShowRefOne] = useState(false);
+  const [showRefTwo, setShowRefTwo] = useState(false);
+  const [showRefThree, setShowRefThree] = useState(false);
+  const [showPanel, setShowPanel] = useState(false);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [carouselFading, setCarouselFading] = useState(false);
+  
+  // screen size handler
+  useEffect(() => {
+    // Tailwind's default breakpoint for 'xl' is 1280px
+    const mediaQuery = window.matchMedia('(min-width: 1280px)');
+  
+    // Function to handle changes to the media query
+    const handleMediaQueryChange = (event) => {
+      setIsXlScreen(event.matches);
+    };
+  
+    // Set the initial value
+    setIsXlScreen(mediaQuery.matches);
+  
+    // Add the listener for subsequent changes
+    mediaQuery.addListener(handleMediaQueryChange);
+  
+    // Clean up the listener when the component unmounts
+    return () => {
+      mediaQuery.removeListener(handleMediaQueryChange);
+    };
+  }, []);
 
   // Mobile view carousel content
-  const [currentIndex, setCurrentIndex] = useState(0);
   const content = [
     {
-      image: "../../assets/images/clicker-character/ref01.png",
+      image: "/assets/images/clicker-character/ref01.png",
       alt: "Invite Rewards",
       title: "Invite Rewards",
       description:
         "Get a boost of currencies to use in our Tap-to-Earn game when anyone signs up with your code.",
     },
     {
-      image: "../../assets/images/clicker-character/ref02.png",
+      image: "/assets/images/clicker-character/ref02.png",
       alt: "NFT Cashback",
       title: "NFT Cashback",
       description:
         "Accumulate USDT rewards when anyone you invite purchases a piece of our NFT! Maybe you can snatch one for yourself too if you invite enough people...",
     },
     {
-      image: "../../assets/images/clicker-character/ref03.png",
+      image: "/assets/images/clicker-character/ref03.png",
       alt: "Rank Up Rewards",
       title: "Rank Up Rewards",
       description:
@@ -46,18 +74,61 @@ function ReferralPage (){
     },
   ];
 
+  // intro anim
+  useEffect(() => {
+    const timerTitle = setTimeout(() => {
+      setShowTitle(true);
+    }, 50);
+
+    const timerRefOne = setTimeout(() => {
+      setShowRefOne(true);
+    }, 50);
+
+    const timerRefTwo = setTimeout(() => {
+      setShowRefTwo(true);
+    }, 50);
+
+    const timerRefThree = setTimeout(() => {
+      setShowRefThree(true);
+    }, 250);
+
+    const timerPanel = setTimeout(() => {
+      setShowPanel(true);
+    }, 250);
+
+    return () => {
+      clearTimeout(timerTitle);
+      clearTimeout(timerRefOne);
+      clearTimeout(timerRefTwo);
+      clearTimeout(timerRefThree);
+      clearTimeout(timerPanel);
+    };
+  }, []);
+
+
+  // Mobile view carousel buttons
   const handlePrev = () => {
-    setCurrentIndex((prevIndex) =>
-      prevIndex === 0 ? content.length - 1 : prevIndex - 1
-    );
+    if (carouselFading) { return; }
+    setCarouselFading(true);
+    setTimeout(()=>{
+      setCurrentIndex((prevIndex) =>
+        prevIndex === 0 ? content.length - 1 : prevIndex - 1
+      );
+      setCarouselFading(false);
+    }, 500);
   };
 
   const handleNext = () => {
-    setCurrentIndex((prevIndex) =>
-      prevIndex === content.length - 1 ? 0 : prevIndex + 1
-    );
+    if (carouselFading) { return; }
+    setCarouselFading(true);
+    setTimeout(()=>{
+      setCurrentIndex((prevIndex) =>
+        prevIndex === content.length - 1 ? 0 : prevIndex + 1
+      );
+      setCarouselFading(false);
+    }, 500);
   };
-
+  
   const getInviteLink = useCallback(()=>{
     if (!currentUser){
       return `${window.location.origin}/signup`;
@@ -112,14 +183,15 @@ function ReferralPage (){
       <div
         className="flex flex-col items-center pb-4 xl:px-[2rem] min-h-screen"
         style={{
-          backgroundImage: 'url("../../assets/images/clicker-character/clickerWall.png")',
+          backgroundImage: 'url("/assets/images/clicker-character/clickerWall.png")',
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat',
           backgroundAttachment: 'fixed',
         }}
       >
-        <div className="container flex flex-col items-center gap-6 pt-40 tracking-wider">
+        <div className={`container flex flex-col items-center gap-6 pt-40 tracking-wider transition-opacity duration-1000
+               ${showTitle ? `opacity-100` : `opacity-0`}`}>
           <div className="text-center text-white text-3xl uppercase">Refer Friends</div>
           <span
             className="text-center text-amber-500 text-6xl uppercase tracking-normal pb-2"
@@ -133,10 +205,11 @@ function ReferralPage (){
 
           {/* Desktop view */}
           <div className="hidden xl:grid grid-cols-3 gap-12">
-            <div className="w-full h-full flex flex-col justify-center items-center">
+            <div className={`w-full h-full flex flex-col justify-center items-center hover:scale-110 transition-all duration-500
+               ${showRefOne ? `opacity-100` : `opacity-0`}`}>
               <img
                 className="w-4/5 h-auto origin-top-left shadow"
-                src="../../assets/images/clicker-character/ref01.png"
+                src="/assets/images/clicker-character/ref01.png"
                 alt="Invite Rewards"
               />
               <div className="flex flex-col justify-start items-center gap-2">
@@ -148,10 +221,11 @@ function ReferralPage (){
                 </div>
               </div>
             </div>
-            <div className="w-full h-full flex flex-col justify-center items-center">
+            <div className={`w-full h-full flex flex-col justify-center items-center hover:scale-110 transition-all duration-500
+               ${showRefThree ? `opacity-100` : `opacity-0`}`}>
               <img
                 className="w-full h-auto origin-top-left shadow"
-                src="../../assets/images/clicker-character/ref02.png"
+                src="/assets/images/clicker-character/ref02.png"
                 alt="NFT Cashback"
               />
               <div className="flex flex-col justify-start items-center gap-2">
@@ -163,10 +237,11 @@ function ReferralPage (){
                 </div>
               </div>
             </div>
-            <div className="w-full h-full flex flex-col justify-center items-center">
+            <div className={`w-full h-full flex flex-col justify-center items-center hover:scale-110 transition-all duration-500
+               ${showRefTwo ? `opacity-100` : `opacity-0`}`}>
               <img
                 className="w-4/5 h-auto origin-top-left shadow"
-                src="../../assets/images/clicker-character/ref03.png"
+                src="/assets/images/clicker-character/ref03.png"
                 alt="Rank Up Rewards"
               />
               <div className="flex flex-col justify-start items-center gap-2">
@@ -182,7 +257,8 @@ function ReferralPage (){
 
           {/* Mobile view */}
           <div className="h-[50dvh] relative flex xl:hidden flex-col justify-center items-center">
-            <div className="w-[70dvw] h-auto flex flex-col justify-center items-center">
+            <div className={`w-[70dvw] h-auto flex flex-col justify-center items-center transition-all duration-500
+               ${carouselFading ? `opacity-0` : `opacity-100`}`}>
               <img
                 className="w-[80%] lg:w-[60%] h-auto origin-top-left shadow"
                 src={content[currentIndex].image}
@@ -197,28 +273,28 @@ function ReferralPage (){
                 </div>
               </div>
             </div>
-
+            
             {/* Navigation Buttons */}
-            <div className="absolute top-1/2 transform -translate-y-1/2 left-[-2rem]">
+            <div className="absolute top-1/2 hover:scale-150 transition-scale duration-500 transform -translate-y-1/2 left-[-2rem]">
               <button
                 onClick={handlePrev}
                 className="text-white p-2 rounded-full shadow-md"
               >
                 <img
                   className="w-full h-full"
-                  src="../../assets/images/clicker-character/arrow-left.png"
+                  src="/assets/images/clicker-character/arrow-left.png"
                   alt="left arrow"
                 />
               </button>
             </div>
-            <div className="absolute top-1/2 transform -translate-y-1/2 right-[-2rem]">
+            <div className="absolute top-1/2 hover:scale-150 transition-scale duration-500 transform -translate-y-1/2 right-[-2rem]">
               <button
                 onClick={handleNext}
                 className="text-white p-2 rounded-full shadow-md"
               >
                 <img
                   className="w-full h-full "
-                  src="../../assets/images/clicker-character/arrow-right.png"
+                  src="/assets/images/clicker-character/arrow-right.png"
                   alt="right arrow"
                 />
               </button>
@@ -226,16 +302,18 @@ function ReferralPage (){
           </div>
 
           {/* Desktop bottom panel */}
-          <div className="hidden xl:flex w-full">
+          <div className={`hidden xl:flex w-full transition-all duration-1000
+               ${showPanel ? `opacity-100 scale-100` : `opacity-0 scale-0`}`}>
             {/* referral stats & cashback */}
-            <div className="w-[62%]">
+            <div className="w-[62%] hover:scale-105 transition-all duration-500"
+            >
               <div className="flex w-full">
                 {/* Referral stats */}
                 <div className="w-[65%] border-dashed border-r-4 border-transparent">
                   <div
                     className="w-full h-full p-12 items-center"
                     style={{
-                      backgroundImage: 'url("../../assets/images/clicker-character/ticketWeb02.png")',
+                      backgroundImage: 'url("/assets/images/clicker-character/ticketWeb02.png")',
                       backgroundSize: 'contain',
                       backgroundPosition: 'center',
                       backgroundRepeat: 'no-repeat',
@@ -247,9 +325,9 @@ function ReferralPage (){
                     </div>
 
                     {/* referral stat content */}
-                    <div className="flex w-full gap-8">
+                    <div className="flex w-full gap-8 min-h-[160px]">
                       {loadingReferralStats ?
-                      <div className="w-full flex justify-center items-center my-auto">
+                      <div className="w-full h-full flex justify-center items-center my-auto">
                         <PropagateLoader color={"#FFB23F"} />
                       </div>
                       :
@@ -320,7 +398,7 @@ function ReferralPage (){
                   <div
                     className="w-full h-full place-content-center"
                     style={{
-                      backgroundImage: 'url("../../assets/images/clicker-character/ticketWeb01.png")',
+                      backgroundImage: 'url("/assets/images/clicker-character/ticketWeb01.png")',
                       backgroundSize: 'contain',
                       backgroundPosition: 'center',
                       backgroundRepeat: 'no-repeat',
@@ -383,23 +461,24 @@ function ReferralPage (){
             </div>
 
             {/* share panel */}
-            <div className="w-[40%]">
+            <div className="w-[40%] hover:scale-105 transition-all duration-500">
               <div
                 className="w-full h-full place-content-center p-[3rem]"
                 style={{
-                  backgroundImage: 'url("../../assets/images/clicker-character/QRBg.png")',
+                  backgroundImage: 'url("/assets/images/clicker-character/QRBg.png")',
                   backgroundSize: 'contain',
                   backgroundPosition: 'center',
                   backgroundRepeat: 'no-repeat',
                 }}
               >
-
                 <div className="flex w-full gap-4 justify-end">
-                  <div className="w-auto bg-white rounded-lg place-content-center">
-                    <StyledQRCode
-                      value={getInviteLink()}
-                      image={gem}
-                    />
+                  <div className="w-[110px] bg-white rounded-lg place-content-center">     
+                    {isXlScreen ? 
+                      <StyledQRCode
+                        value={getInviteLink()}
+                      />:
+                      <></>
+                    }
                   </div>
 
                   <div className="w-2/3 content-center grid gap-2">
@@ -450,14 +529,15 @@ function ReferralPage (){
           {/* Mobile bottom panel */}
           <div className="flex flex-col xl:hidden w-full overflow-x-hidden">
             {/* referral stats & cashback */}
-            <div className="w-full flex flex-col items-center">
+            <div className={`w-full flex flex-col items-center transition-all duration-1000
+               ${showPanel ? `opacity-100 scale-100` : `opacity-0 scale-0`}`}>
               <div className="flex flex-col ">
                 {/* Referral stats */}
                 <div className="w-full flex flex-col border-dashed border-r-4 border-transparent">
                   <div
                     className="w-full h-full items-center p-[4.5rem]"
                     style={{
-                      backgroundImage: 'url("../../assets/images/clicker-character/ticket-mobile-white.png")',
+                      backgroundImage: 'url("/assets/images/clicker-character/ticket-mobile-white.png")',
                       backgroundSize: 'contain',
                       backgroundPosition: 'center',
                       backgroundRepeat: 'no-repeat',
@@ -546,7 +626,7 @@ function ReferralPage (){
                   <div
                     className="w-full place-content-center"
                     style={{
-                      backgroundImage: 'url("../../assets/images/clicker-character/ticket-mobile-orange.png")',
+                      backgroundImage: 'url("/assets/images/clicker-character/ticket-mobile-orange.png")',
                       backgroundSize: 'contain',
                       backgroundPosition: 'center',
                       backgroundRepeat: 'no-repeat',
@@ -613,19 +693,21 @@ function ReferralPage (){
               <div
                 className="w-full h-full place-content-center p-[4.5rem]"
                 style={{
-                  backgroundImage: 'url("../../assets/images/clicker-character/qr-mobile-bg.png")',
+                  backgroundImage: 'url("/assets/images/clicker-character/qr-mobile-bg.png")',
                   backgroundSize: 'contain',
                   backgroundPosition: 'center',
                   backgroundRepeat: 'no-repeat',
                 }}
               >
 
-                <div className="w-full flex flex-col items-center">
+                <div className="w-full flex flex-col gap-4 items-center">
                   <div className="w-auto bg-white rounded-lg place-content-center">
-                    <StyledQRCode
-                      value={getInviteLink()}
-                      image={gem}
-                    />
+                    {!isXlScreen ? 
+                      <StyledQRCode
+                        value={getInviteLink()}
+                      />:
+                      <></>
+                    }
                   </div>
 
                   <div className="w-auto content-center grid gap-2">

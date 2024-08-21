@@ -4,7 +4,6 @@ import { BsCopy } from "react-icons/bs";
 import StyledQRCode from "./StyledQRCode";
 import { toast } from "react-toastify";
 import { useUserDetails } from '../sagaStore/slices';
-import gem from "../assets/images/gem2.png";
 
 const ReferPopup = ({ onClose }) => {
   const currentUser = useUserDetails();
@@ -89,7 +88,7 @@ const ReferPopup = ({ onClose }) => {
           <BsCopy onClick={handleCopyToClipboard} className="cursor-pointer" />
         </div>
         <div>
-          <StyledQRCode value={inviteLink} image={gem} />
+          <StyledQRCode value={inviteLink} />
         </div>
         <button
           onClick={shareInviteLink}

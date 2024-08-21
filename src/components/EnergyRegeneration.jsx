@@ -81,7 +81,7 @@ function EnergyRegeneration({
                         }}
                     >
                         <img
-                            src={"../assets/images/clicker-character/coinTimer.png"}
+                            src={"/assets/images/clicker-character/coinTimer.png"}
                             className="object-contain w-1/3"
                             alt="coinTimer icon"
                         />

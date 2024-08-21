@@ -10,7 +10,15 @@ function ReferralPage() {
     seconds: 0,
   });
   const [isContainerVisible, setIsContainerVisible] = useState(true);
+  const [showTitle, setShowTitle] = useState(false);
+  const [showTextOne, setShowTextOne] = useState(false);
+  const [showTextTwo, setShowTextTwo] = useState(false);
+  const [showTextThree, setShowTextThree] = useState(false);
+  const [showTextSubtext, setShowSubtext] = useState(false);
+  const [slideMintPanel, setSlideMintPanel] = useState(false);
+
   useEffect(() => {
+    // start minting deadline
     const fetchAndStartCountdown = async () => {
       const referralDate = await fetchDate("mint");
       if (referralDate) {
@@ -23,7 +31,42 @@ function ReferralPage() {
       }
     };
     fetchAndStartCountdown();
+
+    // intro animations
+    const timerTitle = setTimeout(() => {
+      setShowTitle(true);
+    }, 500);
+
+    const timerTextOne = setTimeout(() => {
+      setShowTextOne(true);
+    }, 750);
+
+    const timerTextTwo = setTimeout(() => {
+      setShowTextTwo(true);
+    }, 1000);
+
+    const timerTextThree = setTimeout(() => {
+      setShowTextThree(true);
+    }, 1250);
+
+    const timerSubtext = setTimeout(() => {
+      setShowSubtext(true);
+    }, 1750);
+
+    const timerMintPanel = setTimeout(() => {
+      setSlideMintPanel(true);
+    }, 250);
+
+    return () => {
+      clearTimeout(timerTitle);
+      clearTimeout(timerTextOne);
+      clearTimeout(timerTextTwo);
+      clearTimeout(timerTextThree);
+      clearTimeout(timerSubtext);
+      clearTimeout(timerMintPanel);
+    };
   }, []);
+
   return (
     <>
       <Header />
@@ -32,7 +75,7 @@ function ReferralPage() {
         className="flex flex-col items-center pb-8 min-h-screen w-full"
         style={{
           backgroundImage:
-            'url("../../assets/images/clicker-character/clickerWall.png")',
+            'url("/assets/images/clicker-character/clickerWall.png")',
           backgroundSize: "cover",
           backgroundPosition: "center",
           backgroundRepeat: "no-repeat",
@@ -40,7 +83,10 @@ function ReferralPage() {
         }}
       >
         <div className="w-full flex flex-col xl:flex-row justify-between container pt-[12rem] tracking-wider">
-          <div className="xl:w-[30%] text-amber-500 grid gap-8">
+          {/* title */}
+          <div className={`xl:w-[30%] text-amber-500 grid gap-8 transition-all duration-1000
+            ${showTitle ? `opacity-100` : `opacity-0`}`
+          }>
             <div className="py-4 text-center xl:text-left">
               <span
                 className="text-5xl"
@@ -63,10 +109,12 @@ function ReferralPage() {
               </span>
             </div>
 
-            <div>
+            <div className={`transition-all duration-1000
+                ${showTextOne ? `opacity-100` : `opacity-0`}
+              `}>
               <div className="flex items-center gap-8 pb-2">
                 <img
-                  src={"../assets/images/clicker-character/gem.png"}
+                  src={"/assets/images/clicker-character/gem.png"}
                   alt="gem"
                   className="ml-2 w-6 h-6"
                 />
@@ -82,10 +130,12 @@ function ReferralPage() {
               </p>
             </div>
 
-            <div>
+            <div className={`transition-all duration-1000
+                ${showTextTwo ? `opacity-100` : `opacity-0`}
+              `}>
               <div className="flex items-center gap-8 pb-2">
                 <img
-                  src={"../assets/images/clicker-character/gem.png"}
+                  src={"/assets/images/clicker-character/gem.png"}
                   alt="gem"
                   className="ml-2 w-6 h-6"
                 />
@@ -100,10 +150,12 @@ function ReferralPage() {
                 Mint your NFTs and unlock your Anitap VIP Value Pass today!
               </p>
             </div>
-            <div>
+            <div className={`transition-all duration-1000
+                ${showTextThree ? `opacity-100` : `opacity-0`}
+              `}>
               <div className="flex items-center gap-8 pb-2">
                 <img
-                  src={"../assets/images/clicker-character/gem.png"}
+                  src={"/assets/images/clicker-character/gem.png"}
                   alt="gem"
                   className="ml-2 w-6 h-6"
                 />
@@ -122,28 +174,28 @@ function ReferralPage() {
 
             {/* Mobile view */}
             <div
-            className="w-full block xl:hidden rounded-3xl p-3 mt-[2rem] "
-            style={{
-              border: "2px solid var(--Color, #F4FBFF)",
-              background: "rgba(155, 231, 255, 0.58)",
-              boxShadow:
-                "0px 8px 30px 0px rgba(4, 161, 183, 0.40) inset, 0px 8px 30px 0px rgba(32, 0, 99, 0.40)",
-              backdropFilter: "blur(15px)",
-            }}
-          >
+              className="w-full block xl:hidden rounded-3xl p-3 mt-[2rem] "
+              style={{
+                border: "2px solid var(--Color, #F4FBFF)",
+                background: "rgba(155, 231, 255, 0.58)",
+                boxShadow:
+                  "0px 8px 30px 0px rgba(4, 161, 183, 0.40) inset, 0px 8px 30px 0px rgba(32, 0, 99, 0.40)",
+                backdropFilter: "blur(15px)",
+              }}
+            >
             <div className="absolute flex w-full justify-between -top-8">
               <img
-                src={"../assets/images/clicker-character/ring01.png"}
+                src={"/assets/images/clicker-character/ring01.png"}
                 alt="ring"
                 className="object-cover w-11 absolute left-2"
               />
               <img
-                src={"../assets/images/clicker-character/ring01.png"}
+                src={"/assets/images/clicker-character/ring01.png"}
                 alt="ring"
                 className="object-cover w-11 opacity-0"
               />
               <img
-                src={"../assets/images/clicker-character/ring02.png"}
+                src={"/assets/images/clicker-character/ring02.png"}
                 alt="ring"
                 className="object-cover w-11 absolute right-8"
               />
@@ -152,7 +204,7 @@ function ReferralPage() {
               className="rounded-2xl place-content-center p-6 grid min-h-[60vh] lg:min-h-[80dvh] 2xl:min-h-[50dvh]"
               style={{
                 backgroundImage:
-                  'url("../assets/images/clicker-character/mintBBG.png")',
+                  'url("/assets/images/clicker-character/mintBBG.png")',
                 backgroundSize: "cover",
                 backgroundPosition: "center",
                 backgroundRepeat: "no-repeat",
@@ -160,7 +212,7 @@ function ReferralPage() {
             >
               {isContainerVisible && (
                 <div className="p-3 px-6 bg-[#003260] rounded-3xl shadow-inner border border-[#7fc1ff] flex-col justify-self-center items-center gap-2 inline-flex">
-                  <p className="text-md pb-1">Missions Ends In</p>
+                  <p className="text-md pb-1">Minting Ends In</p>
                   <div className="h-[50px] justify-start items-center inline-flex gap-1 pb-3">
                     <div className="w-12 h-1/2 bg-[#003260] shadow-inner flex-col justify-center items-center gap-1 inline-flex">
                       <div className="w-12 h-8 flex-col justify-center items-center gap-4 flex">
@@ -215,7 +267,7 @@ function ReferralPage() {
                 </div>
               )}
               <img
-                src="../assets/images/clicker-character/nft-treasureBox.png"
+                src="/assets/images/clicker-character/nft-treasureBox.png"
                 alt="NFT Treasure Box"
                 className="object-contain w-96 -my-10"
               />
@@ -254,10 +306,11 @@ function ReferralPage() {
                 </div>
               </div>
             </div>
-          </div>
-
-
-            <div className="border-2 border-transparent border-t-sky-300 border-dashed py-8 mt-4 font-outfit text-md">
+            </div>
+          
+            <div className={`border-2 border-transparent border-t-sky-300 border-dashed py-8 mt-4 font-outfit text-md
+              ${showTextSubtext ? `opacity-100` : `opacity-0`}`
+            }>
               <div className="flex flex-col items-center xl:items-start">
                 <div>
                   <span className="cursor-pointer text-amber-500 hover:text-amber-400">
@@ -289,8 +342,9 @@ function ReferralPage() {
 
           {/* Desktop View */}
           <div
-            className="xl:w-[60%] hidden xl:block rounded-3xl p-3 "
-            style={{
+            className={`xl:w-[60%] hidden xl:block rounded-3xl p-3 transition-all duration-1000
+              ${slideMintPanel? `translate-y-0 opacity-100` : `translate-y-60 opacity-0`}`}
+              style={{
               border: "2px solid var(--Color, #F4FBFF)",
               background: "rgba(155, 231, 255, 0.58)",
               boxShadow:
@@ -298,19 +352,20 @@ function ReferralPage() {
               backdropFilter: "blur(15px)",
             }}
           >
+            {/* Mint Panel */}
             <div className="absolute flex w-full justify-between -top-8">
               <img
-                src={"../assets/images/clicker-character/ring01.png"}
+                src={"/assets/images/clicker-character/ring01.png"}
                 alt="ring"
                 className="object-cover w-11 absolute left-2"
               />
               <img
-                src={"../assets/images/clicker-character/ring01.png"}
+                src={"/assets/images/clicker-character/ring01.png"}
                 alt="ring"
                 className="object-cover w-11 opacity-0"
               />
               <img
-                src={"../assets/images/clicker-character/ring02.png"}
+                src={"/assets/images/clicker-character/ring02.png"}
                 alt="ring"
                 className="object-cover w-11 absolute right-8"
               />
@@ -319,7 +374,7 @@ function ReferralPage() {
               className="rounded-2xl place-content-center p-6 grid min-h-[60vh] lg:min-h-[80dvh] 2xl:min-h-[50dvh]"
               style={{
                 backgroundImage:
-                  'url("../assets/images/clicker-character/mintBBG.png")',
+                  'url("/assets/images/clicker-character/mintBBG.png")',
                 backgroundSize: "cover",
                 backgroundPosition: "center",
                 backgroundRepeat: "no-repeat",
@@ -327,7 +382,7 @@ function ReferralPage() {
             >
               {isContainerVisible && (
                 <div className="p-3 px-6 bg-[#003260] rounded-3xl shadow-inner border border-[#7fc1ff] flex-col justify-self-center items-center gap-2 inline-flex">
-                  <p className="text-md pb-1">Missions Ends In</p>
+                  <p className="text-md pb-1">Minting Ends In</p>
                   <div className="h-[50px] justify-start items-center inline-flex gap-1 pb-3">
                     <div className="w-12 h-1/2 bg-[#003260] shadow-inner flex-col justify-center items-center gap-1 inline-flex">
                       <div className="w-12 h-8 flex-col justify-center items-center gap-4 flex">
@@ -382,7 +437,7 @@ function ReferralPage() {
                 </div>
               )}
               <img
-                src="../assets/images/clicker-character/nft-treasureBox.png"
+                src="/assets/images/clicker-character/nft-treasureBox.png"
                 alt="NFT Treasure Box"
                 className="object-contain w-96 -my-10"
               />
