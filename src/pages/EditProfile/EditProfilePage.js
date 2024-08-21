@@ -57,10 +57,20 @@ const EditProfilePage = () => {
     setHasChanges(false);
   };
 
-  const handleInputChange = (setter) => (e) => {
-    setter(e.target.value);
-    setHasChanges(true);
-  };
+  const handleUsernameChange = (e) =>{
+    setUsername(e.target.value);
+    setHasChanges(e.target.value !== user?.name);
+  }
+
+  const handleEmailChange = (e) =>{
+    setEmail(e.target.value);
+    setHasChanges(e.target.value !== user?.email);
+  }
+
+  const handleInviteCodeChange = (e) =>{
+    setInviteCode(e.target.value);
+    setHasChanges(e.target.value !== user?.referredBy);
+  }
 
   const handlePhoneChange = (value) => {
     setPhone(value);
@@ -182,7 +192,7 @@ const EditProfilePage = () => {
                   id="firstname"
                   required
                   value={username}
-                  onChange={handleInputChange(setUsername)}
+                  onChange={handleUsernameChange}
                   className="w-full bg-[rgba(0,52,89,0.80)] border-[1px] border-[#245F89] rounded-lg flex p-4 items-center gap-2 text-sm font-semibold font-outfit tracking-wide"
                 />
               </div>
@@ -200,7 +210,7 @@ const EditProfilePage = () => {
                   id="email"
                   value={email}
                   readOnly={user?.email}
-                  onChange={handleInputChange(setEmail)}
+                  onChange={handleEmailChange}
                   className="w-full bg-[rgba(0,52,89,0.80)] border-[1px] border-[#245F89] rounded-lg flex p-4 items-center gap-2 text-sm font-semibold font-outfit tracking-wide"
                 />
               </div>
@@ -233,7 +243,7 @@ const EditProfilePage = () => {
                   id="inviteCode"
                   value={inviteCode}
                   readOnly={user?.referredBy ? true : false}
-                  onChange={handleInputChange(setInviteCode)}
+                  onChange={handleInviteCodeChange}
                   className="w-full bg-[rgba(0,52,89,0.80)] border-[1px] border-[#245F89] rounded-lg p-4 pr-[90px] text-sm font-semibold font-outfit tracking-wide"
                 />
               </div>
