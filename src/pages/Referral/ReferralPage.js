@@ -552,7 +552,7 @@ function ReferralPage (){
                       backgroundRepeat: 'no-repeat',
                     }}
                   >
-                    {(getTotalClaimable() > `0 sol`) ?
+                    {(getTotalClaimable() <= `0 sol`) ?
                       <div className="w-full h-full flex-col place-content-center gap-4 inline-flex p-[6rem] sm:p-[6.5rem]">
                         <span className="text-center w-full">Nothing to claim yet</span>
                         <span className="text-center w-full text-xs font-outfit">Get your referrals to mint an NFT now!</span>
@@ -570,7 +570,7 @@ function ReferralPage (){
                               textShadow: '0px 2px 4px rgba(0, 0, 0, 0.25)',
                             }}
                           >
-                            99.99999 sol
+                            {getTotalClaimable()}
                           </div>
                         </div>
 
