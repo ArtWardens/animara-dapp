@@ -397,7 +397,6 @@ function ReferralPage (){
                   <div className="w-auto bg-white rounded-lg place-content-center">
                     <StyledQRCode
                       value={getInviteLink()}
-                      image="/assets/images/gem2.png"
                     />
                   </div>
 
@@ -623,7 +622,6 @@ function ReferralPage (){
                   <div className="w-auto bg-white rounded-lg place-content-center">
                     <StyledQRCode
                       value={getInviteLink()}
-                      image="/assets/images/gem2.png"
                     />
                   </div>
 
