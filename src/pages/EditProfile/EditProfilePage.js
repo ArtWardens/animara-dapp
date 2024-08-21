@@ -94,7 +94,7 @@ const EditProfilePage = () => {
       className="justify-center items-center p-[4rem] lg:p-[11rem] w-screen h-screen"
       style={{
         backgroundImage:
-          'url("../../assets/images/clicker-character/clickerWall.png")',
+          'url("/assets/images/clicker-character/clickerWall.png")',
         backgroundSize: "cover",
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",

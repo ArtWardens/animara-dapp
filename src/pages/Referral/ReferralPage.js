@@ -4,7 +4,6 @@ import { toast } from "react-toastify";
 import { FaCopy, FaShareFromSquare } from "react-icons/fa6";
 import { getReferralStats, useUserDetails, useReferralStatLoading, useReferralCount, useNFTPurchasedReferralCount, useBasicClaimable, useNftClaimable } from "../../sagaStore/slices";
 import { useAppDispatch } from "../../hooks/storeHooks.js";
-import gem from "../../assets/images/gem2.png";
 import StyledQRCode from "../../components/StyledQRCode";
 import Header from "../../components/Header.jsx";
 import { PropagateLoader } from "react-spinners"; // Import the loader
@@ -24,21 +23,21 @@ function ReferralPage (){
   const [currentIndex, setCurrentIndex] = useState(0);
   const content = [
     {
-      image: "../../assets/images/clicker-character/ref01.png",
+      image: "/assets/images/clicker-character/ref01.png",
       alt: "Invite Rewards",
       title: "Invite Rewards",
       description:
         "Get a boost of currencies to use in our Tap-to-Earn game when anyone signs up with your code.",
     },
     {
-      image: "../../assets/images/clicker-character/ref02.png",
+      image: "/assets/images/clicker-character/ref02.png",
       alt: "NFT Cashback",
       title: "NFT Cashback",
       description:
         "Accumulate USDT rewards when anyone you invite purchases a piece of our NFT! Maybe you can snatch one for yourself too if you invite enough people...",
     },
     {
-      image: "../../assets/images/clicker-character/ref03.png",
+      image: "/assets/images/clicker-character/ref03.png",
       alt: "Rank Up Rewards",
       title: "Rank Up Rewards",
       description:
@@ -112,7 +111,7 @@ function ReferralPage (){
       <div
         className="flex flex-col items-center pb-4 xl:px-[2rem] min-h-screen"
         style={{
-          backgroundImage: 'url("../../assets/images/clicker-character/clickerWall.png")',
+          backgroundImage: 'url("/assets/images/clicker-character/clickerWall.png")',
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat',
@@ -136,7 +135,7 @@ function ReferralPage (){
             <div className="w-full h-full flex flex-col justify-center items-center">
               <img
                 className="w-4/5 h-auto origin-top-left shadow"
-                src="../../assets/images/clicker-character/ref01.png"
+                src="/assets/images/clicker-character/ref01.png"
                 alt="Invite Rewards"
               />
               <div className="flex flex-col justify-start items-center gap-2">
@@ -151,7 +150,7 @@ function ReferralPage (){
             <div className="w-full h-full flex flex-col justify-center items-center">
               <img
                 className="w-full h-auto origin-top-left shadow"
-                src="../../assets/images/clicker-character/ref02.png"
+                src="/assets/images/clicker-character/ref02.png"
                 alt="NFT Cashback"
               />
               <div className="flex flex-col justify-start items-center gap-2">
@@ -166,7 +165,7 @@ function ReferralPage (){
             <div className="w-full h-full flex flex-col justify-center items-center">
               <img
                 className="w-4/5 h-auto origin-top-left shadow"
-                src="../../assets/images/clicker-character/ref03.png"
+                src="/assets/images/clicker-character/ref03.png"
                 alt="Rank Up Rewards"
               />
               <div className="flex flex-col justify-start items-center gap-2">
@@ -206,7 +205,7 @@ function ReferralPage (){
               >
                 <img
                   className="w-full h-full"
-                  src="../../assets/images/clicker-character/arrow-left.png"
+                  src="/assets/images/clicker-character/arrow-left.png"
                   alt="left arrow"
                 />
               </button>
@@ -218,7 +217,7 @@ function ReferralPage (){
               >
                 <img
                   className="w-full h-full "
-                  src="../../assets/images/clicker-character/arrow-right.png"
+                  src="/assets/images/clicker-character/arrow-right.png"
                   alt="right arrow"
                 />
               </button>
@@ -235,7 +234,7 @@ function ReferralPage (){
                   <div
                     className="w-full h-full p-12 items-center"
                     style={{
-                      backgroundImage: 'url("../../assets/images/clicker-character/ticketWeb02.png")',
+                      backgroundImage: 'url("/assets/images/clicker-character/ticketWeb02.png")',
                       backgroundSize: 'contain',
                       backgroundPosition: 'center',
                       backgroundRepeat: 'no-repeat',
@@ -320,7 +319,7 @@ function ReferralPage (){
                   <div
                     className="w-full h-full place-content-center"
                     style={{
-                      backgroundImage: 'url("../../assets/images/clicker-character/ticketWeb01.png")',
+                      backgroundImage: 'url("/assets/images/clicker-character/ticketWeb01.png")',
                       backgroundSize: 'contain',
                       backgroundPosition: 'center',
                       backgroundRepeat: 'no-repeat',
@@ -387,7 +386,7 @@ function ReferralPage (){
               <div
                 className="w-full h-full place-content-center p-[3rem]"
                 style={{
-                  backgroundImage: 'url("../../assets/images/clicker-character/QRBg.png")',
+                  backgroundImage: 'url("/assets/images/clicker-character/QRBg.png")',
                   backgroundSize: 'contain',
                   backgroundPosition: 'center',
                   backgroundRepeat: 'no-repeat',
@@ -398,7 +397,7 @@ function ReferralPage (){
                   <div className="w-auto bg-white rounded-lg place-content-center">
                     <StyledQRCode
                       value={getInviteLink()}
-                      image={gem}
+                      image="/assets/images/gem2.png"
                     />
                   </div>
 
@@ -457,7 +456,7 @@ function ReferralPage (){
                   <div
                     className="w-full h-full items-center p-[4.5rem]"
                     style={{
-                      backgroundImage: 'url("../../assets/images/clicker-character/ticket-mobile-white.png")',
+                      backgroundImage: 'url("/assets/images/clicker-character/ticket-mobile-white.png")',
                       backgroundSize: 'contain',
                       backgroundPosition: 'center',
                       backgroundRepeat: 'no-repeat',
@@ -546,7 +545,7 @@ function ReferralPage (){
                   <div
                     className="w-full place-content-center"
                     style={{
-                      backgroundImage: 'url("../../assets/images/clicker-character/ticket-mobile-orange.png")',
+                      backgroundImage: 'url("/assets/images/clicker-character/ticket-mobile-orange.png")',
                       backgroundSize: 'contain',
                       backgroundPosition: 'center',
                       backgroundRepeat: 'no-repeat',
@@ -613,7 +612,7 @@ function ReferralPage (){
               <div
                 className="w-full h-full place-content-center p-[4.5rem]"
                 style={{
-                  backgroundImage: 'url("../../assets/images/clicker-character/qr-mobile-bg.png")',
+                  backgroundImage: 'url("/assets/images/clicker-character/qr-mobile-bg.png")',
                   backgroundSize: 'contain',
                   backgroundPosition: 'center',
                   backgroundRepeat: 'no-repeat',
@@ -624,7 +623,7 @@ function ReferralPage (){
                   <div className="w-auto bg-white rounded-lg place-content-center">
                     <StyledQRCode
                       value={getInviteLink()}
-                      image={gem}
+                      image="/assets/images/gem2.png"
                     />
                   </div>
 

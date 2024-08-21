@@ -32,7 +32,7 @@ function ReferralPage() {
         className="flex flex-col items-center pb-8 min-h-screen w-full"
         style={{
           backgroundImage:
-            'url("../../assets/images/clicker-character/clickerWall.png")',
+            'url("/assets/images/clicker-character/clickerWall.png")',
           backgroundSize: "cover",
           backgroundPosition: "center",
           backgroundRepeat: "no-repeat",
