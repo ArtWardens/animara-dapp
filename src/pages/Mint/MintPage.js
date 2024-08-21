@@ -29,7 +29,7 @@ function ReferralPage() {
       <Header />
 
       <div
-        className="flex flex-col items-center pb-8 px-20 min-h-screen"
+        className="flex flex-col items-center pb-8 min-h-screen w-full"
         style={{
           backgroundImage:
             'url("../../assets/images/clicker-character/clickerWall.png")',
@@ -39,9 +39,9 @@ function ReferralPage() {
           backgroundAttachment: "fixed",
         }}
       >
-        <div className="grid grid-cols-5 w-full gap-16 container pt-40 tracking-wider items-center">
-          <div className="col-span-2 text-amber-500 grid gap-8">
-            <div className="py-4">
+        <div className="w-full flex flex-col xl:flex-row justify-between container pt-[12rem] tracking-wider">
+          <div className="xl:w-[30%] text-amber-500 grid gap-8">
+            <div className="py-4 text-center xl:text-left">
               <span
                 className="text-5xl"
                 style={{
@@ -119,33 +119,177 @@ function ReferralPage() {
                 compete to win prizes worth up to $600,000!
               </p>
             </div>
-            <div className="border-2 border-transparent border-t-sky-300 border-dashed py-8 mt-4 font-outfit text-md">
-              <span className="cursor-pointer text-amber-500 hover:text-amber-400">
-                <a
-                  href="https://opensea.io/login"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Opensea Link
-                </a>
-              </span>
-              <span className="text-white">&nbsp;&nbsp;|&nbsp;&nbsp;</span>
-              <span className="cursor-pointer text-amber-500 hover:text-amber-400">
-                <a
-                  href="https://etherscan.io/login"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Etherscan
-                </a>
-              </span>
-              <p className="text-white text-xs">
-                You must be on the Poleygon Mainnet to mint.
-              </p>
+
+            {/* Mobile view */}
+            <div
+            className="w-full block xl:hidden rounded-3xl p-3 mt-[2rem] "
+            style={{
+              border: "2px solid var(--Color, #F4FBFF)",
+              background: "rgba(155, 231, 255, 0.58)",
+              boxShadow:
+                "0px 8px 30px 0px rgba(4, 161, 183, 0.40) inset, 0px 8px 30px 0px rgba(32, 0, 99, 0.40)",
+              backdropFilter: "blur(15px)",
+            }}
+          >
+            <div className="absolute flex w-full justify-between -top-8">
+              <img
+                src={"../assets/images/clicker-character/ring01.png"}
+                alt="ring"
+                className="object-cover w-11 absolute left-2"
+              />
+              <img
+                src={"../assets/images/clicker-character/ring01.png"}
+                alt="ring"
+                className="object-cover w-11 opacity-0"
+              />
+              <img
+                src={"../assets/images/clicker-character/ring02.png"}
+                alt="ring"
+                className="object-cover w-11 absolute right-8"
+              />
+            </div>
+            <div
+              className="rounded-2xl place-content-center p-6 grid min-h-[60vh] lg:min-h-[80dvh] 2xl:min-h-[50dvh]"
+              style={{
+                backgroundImage:
+                  'url("../assets/images/clicker-character/mintBBG.png")',
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+                backgroundRepeat: "no-repeat",
+              }}
+            >
+              {isContainerVisible && (
+                <div className="p-3 px-6 bg-[#003260] rounded-3xl shadow-inner border border-[#7fc1ff] flex-col justify-self-center items-center gap-2 inline-flex">
+                  <p className="text-md pb-1">Missions Ends In</p>
+                  <div className="h-[50px] justify-start items-center inline-flex gap-1 pb-3">
+                    <div className="w-12 h-1/2 bg-[#003260] shadow-inner flex-col justify-center items-center gap-1 inline-flex">
+                      <div className="w-12 h-8 flex-col justify-center items-center gap-4 flex">
+                        <div className="text-center text-white text-[26px] tracking-wide font-outfit">
+                          {timeLeft.days}
+                        </div>
+                      </div>
+                      <div className="text-center text-white text-[7px] font-outfit uppercase">
+                        Days
+                      </div>
+                    </div>
+                    <span className="text-white font-outfit font-semibold text-2xl">
+                      :
+                    </span>
+                    <div className="w-12 h-1/2 bg-[#003260] shadow-inner flex-col justify-center items-center gap-1 inline-flex">
+                      <div className="w-12 h-8 flex-col justify-center items-center gap-4 flex">
+                        <div className="text-center text-white text-[26px] tracking-wide font-outfit">
+                          {timeLeft.hours}
+                        </div>
+                      </div>
+                      <div className="text-center text-white text-[7px] font-outfit uppercase">
+                        Hours
+                      </div>
+                    </div>
+                    <span className="text-white font-outfit font-semibold text-2xl">
+                      :
+                    </span>
+                    <div className="w-12 h-1/2 bg-[#003260] shadow-inner flex-col justify-center items-center gap-1 inline-flex">
+                      <div className="w-12 h-8 flex-col justify-center items-center gap-4 flex">
+                        <div className="text-center text-white text-[26px] tracking-wide font-outfit">
+                          {timeLeft.minutes}
+                        </div>
+                      </div>
+                      <div className="text-center text-white text-[7px] font-outfit uppercase">
+                        Minutes
+                      </div>
+                    </div>
+                    <span className="text-white font-outfit font-semibold text-2xl">
+                      :
+                    </span>
+                    <div className="w-12 h-1/2 bg-[#003260] shadow-inner flex-col justify-center items-center gap-1 inline-flex">
+                      <div className="w-12 h-8 flex-col justify-center items-center gap-4 flex">
+                        <div className="text-center text-white text-[26px] tracking-wide font-outfit">
+                          {timeLeft.seconds}
+                        </div>
+                      </div>
+                      <div className="text-center text-white text-[7px] font-outfit uppercase">
+                        Seconds
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+              <img
+                src="../assets/images/clicker-character/nft-treasureBox.png"
+                alt="NFT Treasure Box"
+                className="object-contain w-96 -my-10"
+              />
+              <div className="w-full flex-col justify-center items-center inline-flex">
+                <div className="flex-col justify-center items-center flex pb-8">
+                  <span className="text-gray-200 text-xl line-through">
+                    0.097 SOL
+                  </span>
+                  <div className="text-center absolute right-0 bottom-[13rem] text-white text-sm border-4 px-3 py-1 border-white rounded-2xl bg-sky-500 rotate-[20deg]">
+                    Early Bird
+                    <br />
+                    Bonus Active!
+                  </div>
+                  <div
+                    className="text-center text-amber-500 text-5xl z-10"
+                    style={{
+                      WebkitTextStrokeWidth: "3.5px",
+                      WebkitTextStrokeColor: "var(--COlor-11, #FFF)",
+                      textShadow: "0px 2px 4px rgba(0, 0, 0, 0.25)",
+                    }}
+                  >
+                    0.073 SOL
+                  </div>
+                </div>
+              </div>
+              <div className="justify-center items-center inline-flex hover:scale-105 transition-transform duration-200">
+                <div className="px-[2rem] py-[1.5rem] bg-[#FFDC62] rounded-full border border-[#E59E69] justify-center items-center inline-flex shadow-[0px_4px_4px_0px_#FFFBEF_inset,0px_-4px_4px_0px_rgba(255,249,228,0.48),0px_5px_4px_0px_rgba(232,140,72,0.48)] hover:bg-[#FFB23F] hover:pl-[24px] hover:pr-[20px] hover:border-1 hover:border-[#E59E69] hover:shadow-[0px_4px_4px_0px_rgba(255,210,143,0.61)_inset,0px_4px_4px_0px_rgba(136,136,136,0.48)] cursor-pointer">
+                  <div
+                    className="text-center text-white text-3xl font-normal"
+                    style={{
+                      textShadow: "0px 2px 0.6px rgba(240, 139, 0, 0.66)",
+                    }}
+                  >
+                    <span className="hover:text-shadow-none">Mint Now</span>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
+
+
+            <div className="border-2 border-transparent border-t-sky-300 border-dashed py-8 mt-4 font-outfit text-md">
+              <div className="flex flex-col items-center xl:items-start">
+                <div>
+                  <span className="cursor-pointer text-amber-500 hover:text-amber-400">
+                    <a
+                      href="https://opensea.io/login"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      Opensea Link
+                    </a>
+                  </span>
+                  <span className="text-white">&nbsp;&nbsp;|&nbsp;&nbsp;</span>
+                  <span className="cursor-pointer text-amber-500 hover:text-amber-400">
+                    <a
+                      href="https://etherscan.io/login"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      Etherscan
+                    </a>
+                  </span>
+                </div>
+                <p className="text-white text-xs">
+                  You must be on the Poleygon Mainnet to mint.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Desktop View */}
           <div
-            className="col-span-3 rounded-3xl p-3 "
+            className="xl:w-[60%] hidden xl:block rounded-3xl p-3 "
             style={{
               border: "2px solid var(--Color, #F4FBFF)",
               background: "rgba(155, 231, 255, 0.58)",
