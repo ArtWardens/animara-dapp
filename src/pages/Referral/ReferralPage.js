@@ -180,7 +180,7 @@ function ReferralPage (){
 
           {/* Desktop view */}
           <div className="hidden xl:grid grid-cols-3 gap-12">
-            <div className={`w-full h-full flex flex-col justify-center items-center transition-opacity duration-500
+            <div className={`w-full h-full flex flex-col justify-center items-center hover:scale-110 transition-all duration-500
                ${showRefOne ? `opacity-100` : `opacity-0`}`}>
               <img
                 className="w-4/5 h-auto origin-top-left shadow"
@@ -196,7 +196,7 @@ function ReferralPage (){
                 </div>
               </div>
             </div>
-            <div className={`w-full h-full flex flex-col justify-center items-center transition-opacity duration-500
+            <div className={`w-full h-full flex flex-col justify-center items-center hover:scale-110 transition-all duration-500
                ${showRefThree ? `opacity-100` : `opacity-0`}`}>
               <img
                 className="w-full h-auto origin-top-left shadow"
@@ -212,7 +212,7 @@ function ReferralPage (){
                 </div>
               </div>
             </div>
-            <div className={`w-full h-full flex flex-col justify-center items-center transition-opacity duration-500
+            <div className={`w-full h-full flex flex-col justify-center items-center hover:scale-110 transition-all duration-500
                ${showRefTwo ? `opacity-100` : `opacity-0`}`}>
               <img
                 className="w-4/5 h-auto origin-top-left shadow"
@@ -280,7 +280,8 @@ function ReferralPage (){
           <div className={`hidden xl:flex w-full transition-all duration-1000
                ${showPanel ? `opacity-100 scale-100` : `opacity-0 scale-0`}`}>
             {/* referral stats & cashback */}
-            <div className="w-[62%]">
+            <div className="w-[62%] hover:scale-105 transition-all duration-500"
+            >
               <div className="flex w-full">
                 {/* Referral stats */}
                 <div className="w-[65%] border-dashed border-r-4 border-transparent">
@@ -299,9 +300,9 @@ function ReferralPage (){
                     </div>
 
                     {/* referral stat content */}
-                    <div className="flex w-full gap-8">
+                    <div className="flex w-full gap-8 min-h-[160px]">
                       {loadingReferralStats ?
-                      <div className="w-full flex justify-center items-center my-auto">
+                      <div className="w-full h-full flex justify-center items-center my-auto">
                         <PropagateLoader color={"#FFB23F"} />
                       </div>
                       :
@@ -435,7 +436,7 @@ function ReferralPage (){
             </div>
 
             {/* share panel */}
-            <div className="w-[40%]">
+            <div className="w-[40%] hover:scale-105 transition-all duration-500">
               <div
                 className="w-full h-full place-content-center p-[3rem]"
                 style={{
@@ -445,9 +446,8 @@ function ReferralPage (){
                   backgroundRepeat: 'no-repeat',
                 }}
               >
-
                 <div className="flex w-full gap-4 justify-end">
-                  <div className="w-auto bg-white rounded-lg place-content-center">
+                  <div className="w-[110px] bg-white rounded-lg place-content-center">
                     <StyledQRCode
                       value={getInviteLink()}
                     />
