@@ -30,7 +30,6 @@ function Header() {
     // navigation bar setup
     const navDestinations = [
         { name: 'AMIPALS', link: '/amipals' },
-        { name: 'EARLY BIRD', link: '/early-bird' },
         { name: 'MINT', link: '/mint' },
         { name: 'REFERRAL', link: '/referral' },
     ];
@@ -224,7 +223,7 @@ function Header() {
                 <div
                     className="fixed inset-0 z-40 flex flex-col justify-center px-12"
                     style={{
-                        backgroundImage: 'url("../../assets/images/clicker-character/clickerWall.png")',
+                        backgroundImage: 'url("/assets/images/clicker-character/clickerWall.png")',
                         backgroundSize: 'cover',
                         backgroundPosition: 'center',
                         backgroundRepeat: 'no-repeat',
@@ -241,7 +240,7 @@ function Header() {
                     <div
                         className="text-center w-auto h-full place-content-center scale-125 mt-20 -z-50"
                         style={{
-                            backgroundImage: 'url("../../assets/images/clicker-character/sticky-Note.png")',
+                            backgroundImage: 'url("/assets/images/clicker-character/sticky-Note.png")',
                             backgroundSize: 'contain',
                             backgroundPosition: 'center',
                             backgroundRepeat: 'no-repeat',
