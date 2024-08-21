@@ -1,6 +1,6 @@
 import React from "react";
 import ClickerView from "./ClickerView";
-import backgroundImageClicker from '../../assets/images/clicker-character/clickerBg.png';
+// import backgroundImageClicker from '';
 import '../../styles/globals.css';
 
 function ClickerPage() {
@@ -8,7 +8,7 @@ function ClickerPage() {
     <div
       className="w-full mx-auto bg-clicker-game bg-no-repeat bg-cover h-screen relative cursor-pointer -z-99"
       style={{
-        backgroundImage: `url(${backgroundImageClicker})`,
+        backgroundImage: `url(/assets/images/clicker-character/clickerBg.png)`,
         backgroundSize: 'cover',
         backgroundRepeat: 'no-repeat',
         backgroundPosition: 'center',

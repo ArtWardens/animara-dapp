@@ -3,13 +3,12 @@ import { Box } from '@mui/material';
 import Modal from '@mui/material/Modal';
 import { useAppDispatch } from '../../hooks/storeHooks';
 import { useUserDetails, useUserDetailsLoading, closeDailyPopup, updateDailyLogin, useUpdatePopupLoading, useIsOpenDailyPopup } from '../../sagaStore/slices';
+import Header from "../../components/Header.jsx";
 import MascotView from '../../components/MascotView';
 import EarnGuide from '../../components/EarnGuide';
 import EnergyRegeneration from '../../components/EnergyRegeneration';
-import { mascots } from '../../utils/local.db';
-import { dailyLoginRewards } from '../../utils/constants';
 import ClickerUpgrades from './ClickerUpgrades';
-import '../../styles/globals.css';
+import { dailyLoginRewards } from '../../utils/constants';
 
 const ClickerView = () => {
   const dispatch = useAppDispatch();
@@ -20,13 +19,9 @@ const ClickerView = () => {
   const [isLeaderboardOpen, setIsLeaderboardOpen] = useState(false);
   const [isOneTimeTaskOpen, setIsOneTimeTaskOpen] = useState(false);
   const [openModal, setOpenModal] = useState("");
-  const [currentMascot, setCurrentMascot] = useState(mascots[0]);
 
-  // fetch user data
+  // Initialize
   useEffect(() => {
-    // set mascot
-    setCurrentMascot(mascots[currentUser?.level]);
-
     // check and popup daily login
     if (currentUser && !currentUser?.loggedInToday) {
       dispatch(updateDailyLogin());
@@ -65,6 +60,9 @@ const ClickerView = () => {
 
   return (
     <>
+    
+      <Header />
+
       <div className="max-w-full flex justify-center items-center relative">
         <EnergyRegeneration 
           isLeaderboardOpen={isLeaderboardOpen}
@@ -74,7 +72,6 @@ const ClickerView = () => {
         />
 
         <MascotView
-          currentMascot={currentMascot}
           openModal={openModal}
           setOpenModal={setOpenModal}
         />
