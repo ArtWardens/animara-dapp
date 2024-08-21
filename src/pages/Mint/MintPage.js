@@ -1,15 +1,25 @@
 import React, { useEffect, useState } from "react";
 import Header from "../../components/Header.jsx";
 import { fetchDate, startCountdown } from "../../firebase/countDown";
+import dynamic from "next/dynamic";
+import styles from "../../styles/Home.module.css";
 
-function ReferralPage() {
+const WalletMultiButtonDynamic = dynamic(
+  async () =>
+    (await import("@solana/wallet-adapter-react-ui")).WalletMultiButton,
+  { ssr: false }
+);
+
+function MintPage() {
   const [timeLeft, setTimeLeft] = useState({
     days: 0,
     hours: 0,
     minutes: 0,
     seconds: 0,
   });
+
   const [isContainerVisible, setIsContainerVisible] = useState(true);
+
   useEffect(() => {
     const fetchAndStartCountdown = async () => {
       const referralDate = await fetchDate("mint");
@@ -27,12 +37,10 @@ function ReferralPage() {
   return (
     <>
       <Header />
-
       <div
-        className="flex flex-col items-center pb-8 px-20 min-h-screen"
+        className="flex flex-col place-content-center items-center pb-8 px-20 min-h-screen"
         style={{
-          backgroundImage:
-            'url("../../assets/images/clicker-character/clickerWall.png")',
+          backgroundImage: 'url("../../assets/images/clicker-character/clickerWall.png")',
           backgroundSize: "cover",
           backgroundPosition: "center",
           backgroundRepeat: "no-repeat",
@@ -276,6 +284,9 @@ function ReferralPage() {
                   </div>
                 </div>
               </div>
+              <div className={styles.wallet}>
+                <WalletMultiButtonDynamic />
+              </div>
             </div>
           </div>
         </div>
@@ -284,4 +295,4 @@ function ReferralPage() {
   );
 }
 
-export default ReferralPage;
+export default MintPage;
