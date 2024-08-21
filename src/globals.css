@@ -1,0 +1,122 @@
+@import url("https://use.typekit.net/xpl1usj.css");
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: "LuckiestGuy";
+  src: url("/public/fonts/luckiestguy/LuckiestGuy-Regular.ttf")
+    format("truetype");
+}
+
+@font-face {
+  font-family: "BigNoodleTitling";
+  src: url("/public/fonts/bignoodletitling/big_noodle_titling.ttf")
+    format("truetype");
+}
+
+@font-face {
+  font-family: "Outfit";
+  src: url("/public/fonts/outfit/OutfitRegular.ttf")
+    format("truetype");
+}
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+
+    --primary: 222.2 47.4% 11.2%;
+    --primary-foreground: 210 40% 98%;
+
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+
+    --accent: 210 40% 96.1%;
+    --accent-foreground: ;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --ring: 215 20.2% 65.1%;
+
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+
+    --primary: 210 40% 98%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: ;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 85.7% 97.3%;
+
+    --ring: 217.2 32.6% 17.5%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+  .gradient-blue-transparent-fuschia-bottomRight {
+    background: linear-gradient(
+      to bottom right,
+      rgba(14, 165, 233, 0.3),
+      transparent 50%,
+      rgba(217, 70, 239, 0.3)
+    );
+  }
+}
+
+@layer utilities {
+  .cut-left-corner {
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 100% 100%, 5% 100%, 0 85%);
+  }
+  .cut-topleft-bottomright-corner {
+    clip-path: polygon(10% 0, 100% 0, 100% 80%, 90% 100%, 0 100%, 0 20%);
+  }
+  .cut-topleft-corner {
+    clip-path: polygon(80% 0, 100% 20%, 100% 100%, 0 100%, 0 0);
+  }
+}
+
+body {
+  font-family: "LuckiestGuy", sans-serif;
+  font-weight: 300;
+}

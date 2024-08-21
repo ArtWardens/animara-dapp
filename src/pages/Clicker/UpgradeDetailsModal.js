@@ -21,30 +21,30 @@ const UpgradeDetailsModal = ({ upgrade, isMaxLevel, onClose }) => {
   const logoList = [
     {
       region: "mountain",
-      logo: "../assets/images/clicker-character/icon-1.png",
+      logo: "/assets/images/clicker-character/icon-1.png",
     },
-    { region: "forest", logo: "../assets/images/clicker-character/icon-2.png" },
+    { region: "forest", logo: "/assets/images/clicker-character/icon-2.png" },
     {
       region: "deserts",
-      logo: "../assets/images/clicker-character/desert-icon.png",
+      logo: "/assets/images/clicker-character/desert-icon.png",
     },
     {
       region: "cave",
-      logo: "../assets/images/clicker-character/cave-icon.png",
+      logo: "/assets/images/clicker-character/cave-icon.png",
     },
     {
       region: "iceland",
-      logo: "../assets/images/clicker-character/iceland-icon.png",
+      logo: "/assets/images/clicker-character/iceland-icon.png",
     },
     {
       region: "valley",
-      logo: "../assets/images/clicker-character/valley-icon.png",
+      logo: "/assets/images/clicker-character/valley-icon.png",
     },
   ];
 
   const logo =
     logoList.find((item) => item.region === upgrade.region)?.logo ||
-    "../assets/images/clicker-character/default-icon.png";
+    "/assets/images/clicker-character/default-icon.png";
 
   useEffect(() => {
     if (hasStartedUpgrade && !isUserLocationLoading) {
@@ -104,7 +104,7 @@ const UpgradeDetailsModal = ({ upgrade, isMaxLevel, onClose }) => {
           <div
             className="relative px-[4rem] py-[8rem] rounded-xl w-[90%] max-w-[800px] bg-no-repeat bg-contain"
             style={{
-              backgroundImage: `url("../assets/images/clicker-character/upgrades-details-bg.png")`,
+              backgroundImage: `url("/assets/images/clicker-character/upgrades-details-bg.png")`,
               backgroundPosition: "center",
             }}
             onClick={(e) => e.stopPropagation()}
@@ -133,7 +133,7 @@ const UpgradeDetailsModal = ({ upgrade, isMaxLevel, onClose }) => {
               <div className="flex flex-row items-center justify-between">
                 <p className="text-sm font-sans mr-[1rem]">with</p>
                 <img
-                  src={"../assets/images/clicker-character/gem.png"}
+                  src={"/assets/images/clicker-character/gem.png"}
                   alt="gem"
                   className="w-6 h-6 mr-2"
                 />
@@ -150,7 +150,7 @@ const UpgradeDetailsModal = ({ upgrade, isMaxLevel, onClose }) => {
                     Explora Points
                   </p>
                   <img
-                    src={"../assets/images/clicker-character/icon-2.png"}
+                    src={"/assets/images/clicker-character/icon-2.png"}
                     alt="icon2"
                     className="w-6 h-6 mr-1"
                   />
@@ -162,7 +162,7 @@ const UpgradeDetailsModal = ({ upgrade, isMaxLevel, onClose }) => {
                     <>
                       <p className="text-white">&nbsp; → &nbsp;</p>
                       <img
-                        src={"../assets/images/clicker-character/icon-2.png"}
+                        src={"/assets/images/clicker-character/icon-2.png"}
                         alt="icon2"
                         className="w-6 h-6 mr-1"
                       />
