@@ -35,23 +35,23 @@ function ReferralPage() {
     // intro animations
     const timerTitle = setTimeout(() => {
       setShowTitle(true);
-    }, 50);
+    }, 500);
 
     const timerTextOne = setTimeout(() => {
       setShowTextOne(true);
-    }, 250);
+    }, 750);
 
     const timerTextTwo = setTimeout(() => {
       setShowTextTwo(true);
-    }, 350);
+    }, 1000);
 
     const timerTextThree = setTimeout(() => {
       setShowTextThree(true);
-    }, 450);
+    }, 1250);
 
     const timerSubtext = setTimeout(() => {
       setShowSubtext(true);
-    }, 650);
+    }, 1750);
 
     const timerMintPanel = setTimeout(() => {
       setSlideMintPanel(true);
@@ -109,10 +109,10 @@ function ReferralPage() {
               </span>
             </div>
 
-            <div>
-              <div className={`flex items-center gap-8 pb-2 transition-all duration-1000
-                ${showTextOne ? `opacity-100` : `opacity-0`}`
-              }>
+            <div className={`transition-all duration-1000
+                ${showTextOne ? `opacity-100` : `opacity-0`}
+              `}>
+              <div className="flex items-center gap-8 pb-2">
                 <img
                   src={"/assets/images/clicker-character/gem.png"}
                   alt="gem"
@@ -130,10 +130,10 @@ function ReferralPage() {
               </p>
             </div>
 
-            <div>
-              <div className={`flex items-center gap-8 pb-2 transition-all duration-1000
-                  ${showTextTwo ? `opacity-100` : `opacity-0`}`
-                }>
+            <div className={`transition-all duration-1000
+                ${showTextTwo ? `opacity-100` : `opacity-0`}
+              `}>
+              <div className="flex items-center gap-8 pb-2">
                 <img
                   src={"/assets/images/clicker-character/gem.png"}
                   alt="gem"
@@ -150,10 +150,10 @@ function ReferralPage() {
                 Mint your NFTs and unlock your Anitap VIP Value Pass today!
               </p>
             </div>
-            <div>
-              <div className={`flex items-center gap-8 pb-2 transition-all duration-1000
-                  ${showTextThree ? `opacity-100` : `opacity-0`}`
-                }>
+            <div className={`transition-all duration-1000
+                ${showTextThree ? `opacity-100` : `opacity-0`}
+              `}>
+              <div className="flex items-center gap-8 pb-2">
                 <img
                   src={"/assets/images/clicker-character/gem.png"}
                   alt="gem"
