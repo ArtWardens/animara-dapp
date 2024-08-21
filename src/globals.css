@@ -120,3 +120,22 @@ body {
   font-family: "LuckiestGuy", sans-serif;
   font-weight: 300;
 }
+
+/* React Transition Group Animation */
+.fade-enter {
+  transform: translateX(0%);
+}
+.fade-enter-active {
+  transform: translateX(100%);
+  transition: transform 300ms ease-in-out;
+}
+.fade-mask-layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: linear-gradient(to right, transparent, black 50%);
+  z-index: 2;
+  pointer-events:none;
+}
