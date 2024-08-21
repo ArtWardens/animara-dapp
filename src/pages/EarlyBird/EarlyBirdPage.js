@@ -98,7 +98,7 @@ const EarlyBirdPage = () => {
                                 </div>:
                                 <img
                                     className={isTaskCompleted ? "w-10" : "w-9"}
-                                    src={isTaskCompleted ? "../../assets/images/clicker-character/checkedBox.png" : "../../assets/images/clicker-character/checkBox.png"}
+                                    src={isTaskCompleted ? "/assets/images/clicker-character/checkedBox.png" : "/assets/images/clicker-character/checkBox.png"}
                                     alt={isTaskCompleted ? "Checked Checkbox" : "Unchecked Checkbox"}
                                 />}
                         </div>
@@ -113,7 +113,7 @@ const EarlyBirdPage = () => {
             <div
                 className="flex-grow flex flex-col place-content-center items-center px-24 pb-4 min-h-screen"
                 style={{
-                    backgroundImage: 'url("../../assets/images/clicker-character/clickerWall.png")',
+                    backgroundImage: 'url("/assets/images/clicker-character/clickerWall.png")',
                     backgroundSize: 'cover',
                     backgroundPosition: 'center',
                     backgroundRepeat: 'no-repeat',
