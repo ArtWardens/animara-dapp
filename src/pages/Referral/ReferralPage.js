@@ -18,11 +18,61 @@ function ReferralPage (){
   const nftPurchasedReferralCount = useNFTPurchasedReferralCount();
   const basicClaimable = useBasicClaimable();
   const nftClaimable = useNftClaimable();
+  const [isXlScreen, setIsXlScreen] = useState(false);
   const [showTitle, setShowTitle] = useState(false);
   const [showRefOne, setShowRefOne] = useState(false);
   const [showRefTwo, setShowRefTwo] = useState(false);
   const [showRefThree, setShowRefThree] = useState(false);
   const [showPanel, setShowPanel] = useState(false);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [carouselFading, setCarouselFading] = useState(false);
+  
+  // screen size handler
+  useEffect(() => {
+    // Tailwind's default breakpoint for 'xl' is 1280px
+    const mediaQuery = window.matchMedia('(min-width: 1280px)');
+  
+    // Function to handle changes to the media query
+    const handleMediaQueryChange = (event) => {
+      setIsXlScreen(event.matches);
+    };
+  
+    // Set the initial value
+    setIsXlScreen(mediaQuery.matches);
+  
+    // Add the listener for subsequent changes
+    mediaQuery.addListener(handleMediaQueryChange);
+  
+    // Clean up the listener when the component unmounts
+    return () => {
+      mediaQuery.removeListener(handleMediaQueryChange);
+    };
+  }, []);
+
+  // Mobile view carousel content
+  const content = [
+    {
+      image: "/assets/images/clicker-character/ref01.png",
+      alt: "Invite Rewards",
+      title: "Invite Rewards",
+      description:
+        "Get a boost of currencies to use in our Tap-to-Earn game when anyone signs up with your code.",
+    },
+    {
+      image: "/assets/images/clicker-character/ref02.png",
+      alt: "NFT Cashback",
+      title: "NFT Cashback",
+      description:
+        "Accumulate USDT rewards when anyone you invite purchases a piece of our NFT! Maybe you can snatch one for yourself too if you invite enough people...",
+    },
+    {
+      image: "/assets/images/clicker-character/ref03.png",
+      alt: "Rank Up Rewards",
+      title: "Rank Up Rewards",
+      description:
+        "Earn MORE currencies in our Tap-to-Earn game when friends you invite hit certain level milestones in our Tap-to-Earn game.",
+    },
+  ];
 
   // intro anim
   useEffect(() => {
@@ -55,33 +105,8 @@ function ReferralPage (){
     };
   }, []);
 
-  // Mobile view carousel content
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [carouselFading, setCarouselFading] = useState(false);
-  const content = [
-    {
-      image: "/assets/images/clicker-character/ref01.png",
-      alt: "Invite Rewards",
-      title: "Invite Rewards",
-      description:
-        "Get a boost of currencies to use in our Tap-to-Earn game when anyone signs up with your code.",
-    },
-    {
-      image: "/assets/images/clicker-character/ref02.png",
-      alt: "NFT Cashback",
-      title: "NFT Cashback",
-      description:
-        "Accumulate USDT rewards when anyone you invite purchases a piece of our NFT! Maybe you can snatch one for yourself too if you invite enough people...",
-    },
-    {
-      image: "/assets/images/clicker-character/ref03.png",
-      alt: "Rank Up Rewards",
-      title: "Rank Up Rewards",
-      description:
-        "Earn MORE currencies in our Tap-to-Earn game when friends you invite hit certain level milestones in our Tap-to-Earn game.",
-    },
-  ];
 
+  // Mobile view carousel buttons
   const handlePrev = () => {
     if (carouselFading) { return; }
     setCarouselFading(true);
@@ -103,7 +128,7 @@ function ReferralPage (){
       setCarouselFading(false);
     }, 500);
   };
-
+  
   const getInviteLink = useCallback(()=>{
     if (!currentUser){
       return `${window.location.origin}/signup`;
@@ -447,10 +472,13 @@ function ReferralPage (){
                 }}
               >
                 <div className="flex w-full gap-4 justify-end">
-                  <div className="w-[110px] bg-white rounded-lg place-content-center">
-                    <StyledQRCode
-                      value={getInviteLink()}
-                    />
+                  <div className="w-[110px] bg-white rounded-lg place-content-center">     
+                    {isXlScreen ? 
+                      <StyledQRCode
+                        value={getInviteLink()}
+                      />:
+                      <></>
+                    }
                   </div>
 
                   <div className="w-2/3 content-center grid gap-2">
@@ -672,11 +700,14 @@ function ReferralPage (){
                 }}
               >
 
-                <div className="w-full flex flex-col items-center">
+                <div className="w-full flex flex-col gap-4 items-center">
                   <div className="w-auto bg-white rounded-lg place-content-center">
-                    <StyledQRCode
-                      value={getInviteLink()}
-                    />
+                    {!isXlScreen ? 
+                      <StyledQRCode
+                        value={getInviteLink()}
+                      />:
+                      <></>
+                    }
                   </div>
 
                   <div className="w-auto content-center grid gap-2">
