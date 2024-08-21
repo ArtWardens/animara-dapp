@@ -5,19 +5,19 @@
 
 @font-face {
   font-family: "LuckiestGuy";
-  src: url("../../public/fonts/luckiestguy/LuckiestGuy-Regular.ttf")
+  src: url("/public/fonts/luckiestguy/LuckiestGuy-Regular.ttf")
     format("truetype");
 }
 
 @font-face {
   font-family: "BigNoodleTitling";
-  src: url("../../public/fonts/bignoodletitling/big_noodle_titling.ttf")
+  src: url("/public/fonts/bignoodletitling/big_noodle_titling.ttf")
     format("truetype");
 }
 
 @font-face {
   font-family: "Outfit";
-  src: url("../../public/fonts/outfit/OutfitRegular.ttf")
+  src: url("/public/fonts/outfit/OutfitRegular.ttf")
     format("truetype");
 }
 
