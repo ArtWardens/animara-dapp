@@ -29,7 +29,7 @@ function Header() {
 
     // navigation bar setup
     const navDestinations = [
-        { name: 'AMIPALS', link: '/amipals' },
+        { name: 'ANITAP', link: '/anitap' },
         { name: 'MINT', link: '/mint' },
         { name: 'REFERRAL', link: '/referral' },
     ];
