@@ -87,8 +87,6 @@
   );
 }
 
-
-
 .passed-quest1{
 font-style: normal;
 font-weight: 400;
@@ -118,9 +116,6 @@ radial-gradient(216.94% 86.89% at 35.75% 19.38%, #E7B3FF 0%, rgba(197, 122, 255,
 -webkit-background-clip: text;
 background-clip: text;
 }
-
-
-
 
 .lb{
   background: linear-gradient(90deg, rgba(142, 142, 142, 0) 0%, #EBD176 16.5%, rgba(208, 178, 20, 0.575165) 79.77%, rgba(142, 142, 142, 0) 100%);
@@ -297,4 +292,80 @@ text-shadow: 6px 5px 4px rgba(145, 69, 0, 0.4);
 
 .ease-in {
   animation: easeIn 0.5s ease forwards;
+}
+
+:root {
+  --max-width: 1100px;
+  --border-radius: 12px;
+  --font-mono: ui-monospace, Menlo, Monaco, 'Cascadia Mono', 'Segoe UI Mono',
+    'Roboto Mono', 'Oxygen Mono', 'Ubuntu Monospace', 'Source Code Pro',
+    'Fira Mono', 'Droid Sans Mono', 'Courier New', monospace;
+
+    --accent-rgb: 52, 211, 153;
+    --darker-accent-rgb: 0, 204, 150;
+    --on-accent-rgb: 0, 0, 0;
+
+    --foreground-rgb: 16, 24, 39;
+    --secondary-foreground-rgb: 107, 114, 128;
+
+    --background-rgb: 243, 244, 246;
+    --secondary-background-rgb: 249, 250, 251;
+    --tertiary-background-rgb: 209, 213, 219;
+    --hover-background-rgb: 243, 244, 246;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --accent-rgb: 3, 255, 189;
+    --darker-accent-rgb: 0, 204, 150;
+    --on-accent-rgb: 0, 0, 0;
+
+    --foreground-rgb: 255, 255, 255;
+    --secondary-foreground-rgb: 143, 143, 143;
+
+    --background-rgb: 18, 18, 18;
+    --secondary-background-rgb: 27, 27, 27;
+    --tertiary-background-rgb: 42, 42, 42;
+    --hover-background-rgb: 42, 42, 42;
+  }
+}
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+html,
+body {
+  max-width: 100vw;
+  overflow-x: hidden;
+}
+
+body {
+  color: rgb(var(--foreground-rgb));
+  background: rgb(var(--background-rgb));
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+@media (prefers-color-scheme: dark) {
+  html {
+    color-scheme: dark;
+  }
+}
+
+button.wallet-adapter-button-trigger {
+  cursor: pointer;
+  color: rgb(var(--foreground-rgb)) !important;
+  border: 1px solid rgb(var(--tertiary-background-rgb)) !important;
+  border-radius: var(--border-radius) !important;
+  background-color: rgb(var(--secondary-background-rgb)) !important;
+}
+
+button.wallet-adapter-button-trigger:hover {
+  background-color: rgb(var(--hover-background-rgb)) !important;
 }
