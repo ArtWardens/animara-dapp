@@ -326,7 +326,7 @@ function ReferralPage (){
                       backgroundRepeat: 'no-repeat',
                     }}
                   >
-                    {(getTotalClaimable() > `0 sol`) ?
+                    {(getTotalClaimable() <= `0 sol`) ?
                       <div className="w-full h-full flex-col place-content-center gap-4 inline-flex">
                         <span className="text-center w-full">Nothing to claim yet</span>
                         <span className="text-center w-full text-xs font-outfit">Get your referrals to mint an NFT now!</span>
@@ -464,7 +464,7 @@ function ReferralPage (){
                     }}
                   >
                     {/* Title */}
-                    <div className="text-neutral-700 text-xl tracking-wider pb-3">
+                    <div className="text-neutral-700 text-xl tracking-wider pb-3 ml-0 sm:ml-[1rem]">
                       YOUR REFERRAL STATS
                     </div>
 
@@ -481,7 +481,7 @@ function ReferralPage (){
                           <div className="justify-start items-start">
                             <div className="flex flex-row items-end">
                               <p
-                                className="text-amber-500 text-5xl lg:text-4xl 2xl:text-5xl"
+                                className="text-amber-500 text-5xl lg:text-4xl 2xl:text-5xl ml-0 sm:ml-[1rem]"
                                 style={{
                                   WebkitTextStrokeWidth: '2px',
                                   WebkitTextStrokeColor: 'var(--Color-11, #FFF)',
@@ -491,7 +491,7 @@ function ReferralPage (){
                                 {nftPurchasedReferralCount}
                               </p>
                               <p
-                                className="text-amber-500 text-xl leading-relaxed ml-[1rem]"
+                                className="text-amber-500 text-xl leading-relaxed ml-0 sm:ml-[1rem]"
                                 style={{
                                   WebkitTextStrokeWidth: '0.75px',
                                   WebkitTextStrokeColor: 'var(--Color-11, #FFF)',
@@ -501,7 +501,7 @@ function ReferralPage (){
                                 NFT PURCHASE
                               </p>
                             </div>
-                            <div className="text-neutral-700 text-xs font-semibold font-outfit">
+                            <div className="text-neutral-700 text-xs font-semibold font-outfit ml-0 sm:ml-[1rem]">
                               How many friend you <br/> invited have minted an NFT
                             </div>
                           </div>
@@ -511,7 +511,7 @@ function ReferralPage (){
                           <div className="justify-start items-start">
                             <div className="flex flex-row items-end">
                               <p
-                                className="text-sky-700 text-5xl lg:text-4xl 2xl:text-5xl"
+                                className="text-sky-700 text-5xl lg:text-4xl 2xl:text-5xl ml-0 sm:ml-[1rem]"
                                 style={{
                                   WebkitTextStrokeWidth: '2px',
                                   WebkitTextStrokeColor: 'var(--Color-11, #FFF)',
@@ -521,7 +521,7 @@ function ReferralPage (){
                                 {referralCount}
                               </p>
                               <p
-                                className="text-sky-700 text-xl leading-relaxed"
+                                className="text-sky-700 text-xl leading-relaxed ml-0 sm:ml-[1rem]"
                                 style={{
                                   WebkitTextStrokeWidth: '0.75px',
                                   WebkitTextStrokeColor: 'var(--Color-11, #FFF)',
@@ -531,7 +531,7 @@ function ReferralPage (){
                                 FRIENDS INVITED
                               </p>
                             </div>
-                            <div className="text-neutral-700 text-xs font-semibold font-outfit">
+                            <div className="text-neutral-700 text-xs font-semibold font-outfit ml-0 sm:ml-[1rem]">
                               The number of friends who have <br/> accepted your invitation to Animara
                             </div>
                           </div>
@@ -544,7 +544,7 @@ function ReferralPage (){
                 {/* Cashback */}
                 <div className="w-full mt-[0.2rem]">
                   <div
-                    className="w-full h-full place-content-center p-[6rem]"
+                    className="w-full place-content-center"
                     style={{
                       backgroundImage: 'url("../../assets/images/clicker-character/ticket-mobile-orange.png")',
                       backgroundSize: 'contain',
@@ -553,12 +553,12 @@ function ReferralPage (){
                     }}
                   >
                     {(getTotalClaimable() > `0 sol`) ?
-                      <div className="w-full h-full flex-col place-content-center gap-4 inline-flex">
+                      <div className="w-full h-full flex-col place-content-center gap-4 inline-flex p-[6rem] sm:p-[6.5rem]">
                         <span className="text-center w-full">Nothing to claim yet</span>
                         <span className="text-center w-full text-xs font-outfit">Get your referrals to mint an NFT now!</span>
                       </div>
                     :
-                      <div className="w-full flex-col justify-center items-center gap-3 inline-flex">
+                      <div className="w-full flex-col justify-center items-center gap-3 inline-flex p-[3rem]">
                         {/* Claimable Amount */}
                         <div className="flex-col justify-center items-center gap-1 flex">
                           <div className="text-center text-white text-sm font-normal leading-none tracking-wide">NFT Cashback</div>
@@ -570,7 +570,7 @@ function ReferralPage (){
                               textShadow: '0px 2px 4px rgba(0, 0, 0, 0.25)',
                             }}
                           >
-                            {getTotalClaimable()}
+                            99.99999 sol
                           </div>
                         </div>
 
