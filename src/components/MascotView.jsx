@@ -4,7 +4,6 @@ import useSound from "use-sound";
 import { useAppDispatch } from "../hooks/storeHooks.js";
 import { useUserDetails, useLocalStamina, useLocalCoins, useSettleTapSessionLoading, consumeStamina, settleTapSession } from "../sagaStore/slices";
 import { getAllImagePaths } from "../utils/getImagePath";
-import Header from "./Header.jsx";
 
 const MascotView = ({
   currentMascot,
@@ -222,9 +221,6 @@ const MascotView = ({
     <div
       className="flex justify-center items-end h-screen w-screen pb-16"
     >
-
-      <Header />
-
       <div
         onMouseDown={handleTap}
         onMouseUp={handleTapUp}
@@ -241,17 +237,17 @@ const MascotView = ({
           className="absolute flex w-full justify-between -top-9"
         >
           <img
-            src={"../assets/images/clicker-character/ring01.png"}
+            src={"/assets/images/clicker-character/ring01.png"}
             alt="ring"
             className="object-cover w-12 absolute left-2"
           />
           <img
-            src={"../assets/images/clicker-character/ring01.png"}
+            src={"/assets/images/clicker-character/ring01.png"}
             alt="ring"
             className="object-cover w-12 opacity-0"
           />
           <img
-            src={"../assets/images/clicker-character/ring02.png"}
+            src={"/assets/images/clicker-character/ring02.png"}
             alt="ring"
             className="object-cover w-12 absolute right-8"
           />
@@ -259,7 +255,7 @@ const MascotView = ({
         <div
           className="grid w-full h-full rounded-2xl"
           style={{
-            backgroundImage: 'url("../assets/images/clicker-character/mascotBg.png")',
+            backgroundImage: 'url("/assets/images/clicker-character/mascotBg.png")',
             backgroundSize: 'cover',
             backgroundPosition: 'center',
             backgroundRepeat: 'no-repeat',
@@ -268,7 +264,7 @@ const MascotView = ({
           <div className="relative flex justify-center items-center h-full w-full">
             {plusOneEffect.show && (
               <img
-                src={"../assets/images/clicker-character/plusOne.png"}
+                src={"/assets/images/clicker-character/plusOne.png"}
                 alt="+1"
                 className="absolute w-40 h-40 animate-fadeInOut z-10"
                 style={{ left: `${plusOneEffect.left}%`, top: `${plusOneEffect.top}%` }}
@@ -311,7 +307,7 @@ const MascotView = ({
           }}
         >
           <video
-            src="../assets/images/clicker-character/depletion-rewardBox.webm"
+            src="/assets/images/clicker-character/depletion-rewardBox.webm"
             autoPlay
             loop={false}
             muted
