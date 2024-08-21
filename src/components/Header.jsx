@@ -94,28 +94,36 @@ function Header() {
                 }}
             >
                 <div className="p-1 w-20 h-20 relative">
-                    <button onClick={handleEditProfile}>
-                        {loadingImage && (
-                            <div className="flex justify-center items-center">
+                <button
+                    onClick={handleEditProfile}
+                    className="group relative"
+                    >
+                    {loadingImage && (
+                        <div className="flex justify-center items-center">
                             <div className="flex justify-center items-center h-56">
-                              <PropagateLoader color={"#FFB23F"} />
+                                <PropagateLoader color={"#FFB23F"} />
                             </div>
-                          </div>
-                        )}
-                        <img
-                            src={currentUser?.photoUrl ? currentUser.photoUrl : "../assets/images/clicker-character/2-initial.png"}
-                            alt="profile"
-                            className="justify-self-center rounded-full w-24 cursor-pointer"
-                            style={{
-                                border: '4px solid var(--80E8FF, #80E8FF)',
-                                background: 'lightgray 50%',
-                                backgroundSize: 'cover',
-                                backgroundRepeat: 'no-repeat',
-                                display: loadingImage ? 'none' : 'block'
-                            }}
-                            onLoad={() => setLoadingImage(false)}
-                            onError={() => setLoadingImage(false)}
-                        />
+                        </div>
+                    )}
+                    <img
+                        src={currentUser?.photoUrl ? currentUser.photoUrl : "/assets/images/clicker-character/2-initial.png"}
+                        alt="profile"
+                        className="justify-self-center rounded-full w-24 cursor-pointer group-hover:brightness-[0.55] transition-all duration-300"
+                        style={{
+                            border: '4px solid var(--80E8FF, #80E8FF)',
+                            background: 'lightgray 50%',
+                            backgroundSize: 'cover',
+                            backgroundRepeat: 'no-repeat',
+                            display: loadingImage ? 'none' : 'block'
+                        }}
+                        onLoad={() => setLoadingImage(false)}
+                        onError={() => setLoadingImage(false)}
+                    />
+                    <img
+                        src="/assets/icons/edit.png"
+                        alt="edit"
+                        className="invisible group-hover:visible absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 text-white fill-white"
+                    />
                     </button>
                 </div>
 
