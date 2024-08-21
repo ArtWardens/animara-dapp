@@ -139,7 +139,8 @@ const tailwinConfig = {
         "LuckiestGuy": ['var(--LuckiestGuy)'],
         "inter": ['var(--inter)'],
         outfit: ['Outfit', 'sans-serif'],
-        LuckiestGuy: ['LuckiestGuy'],
+        LuckiestGuy: ['LuckiestGuy'], 
+        bignoodle: ['BigNoodleTitling', 'sans-serif'],
       },
       cursor: {
         "360deg": "url('./public/assets/icons/360deg.svg'), pointer",

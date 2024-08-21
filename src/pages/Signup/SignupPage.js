@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { LoginButton } from "@telegram-auth/react";
 import { useAppDispatch } from "../../hooks/storeHooks.js";
@@ -17,7 +17,7 @@ const SignupPage = () => {
   const location = useLocation();
   const isAuthLoading = useAuthLoading();
   const isAuthenticated = useUserAuthenticated();
-  const [name, setName] = useState("");
+  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState(""); 
@@ -49,9 +49,9 @@ const SignupPage = () => {
 
   useEffect(() => {
     setHasInput(
-      name !== "" && email !== "" && password !== "" && confirmPassword !== ""
+      username !== "" && email !== "" && password !== "" && confirmPassword !== ""
     );
-  }, [name, email, password, confirmPassword]);
+  }, [username, email, password, confirmPassword]);
 
   const togglePassword = () => {
     setShowPassword(!showPassword);
@@ -63,7 +63,7 @@ const SignupPage = () => {
       return;
     }
     setDoPasswordsMatch(true);
-    dispatch(signupWithEmail({ email, password, name, referralCode }));
+    dispatch(signupWithEmail({ email, password, username, referralCode }));
   };
 
   const handleLoginWithGoogle = async () => {
@@ -139,63 +139,95 @@ const SignupPage = () => {
 
   const getEmailInputBorderClass = () => {
     if (email === "") {
-      return "border-white";
+      return "border-[#245F89]";
     }
     return isEmailValid ? "border-green-500" : "border-red-500";
   };
 
   const getPasswordInputBorderClass = () => {
     if (password === "") {
-      return "border-white";
+      return "border-[#245F89]";
     }
     return isPasswordValid ? "border-green-500" : "border-red-500";
   };
 
   const getConfirmPasswordInputBorderClass = () => {
     if (confirmPassword === "") {
-      return "border-white";
+      return "border-[#245F89]";
     }
     return doPasswordsMatch ? "border-green-500" : "border-red-500";
   };
 
+  // Loop icon video after random seconds
+  const videoRef = useRef(null);
+  useEffect(() => {
+    const handleVideoEnd = () => {
+      const randomDelay = Math.floor(Math.random() * 15000) + 5000;
+
+      // Set a timeout to restart the video after the random delay
+      setTimeout(() => {
+        if (videoRef.current) {
+          videoRef.current.play();
+        }
+      }, randomDelay);
+    };
+
+    const videoElement = videoRef.current;
+
+    if (videoElement) {
+      videoElement.addEventListener('ended', handleVideoEnd);
+    }
+
+    // Cleanup the event listener on component unmount
+    return () => {
+      if (videoElement) {
+        videoElement.removeEventListener('ended', handleVideoEnd);
+      }
+    };
+  }, []);  
+
   return (
-    <div className="min-h-screen relative flex justify-around pt-0 md-pt-24">
-      {/* Background */}
-      <video
-        autoPlay
-        loop
-        muted
-        className="w-[100%] h-full absolute top-0 -z-40 opacity-75 object-cover hidden md:block"
-      >
-        <source src="./assets/images/login-bg.mp4" type="video/mp4" />
-      </video>
+    <div className="min-h-screen relative flex">
+      {/* Background Image */}
+      <img 
+        src="../backgrounds/BG_login.png" alt="background"
+        className="w-full h-full absolute top-0 -z-40 opacity-75 object-cover"
+      />
 
-      {/* Login Card */}
-      <div
-        id="login-card"
-        className="relative backdrop-blur-xl p-8 pt-12 mr-10 ml-auto self-center rounded-[1.5rem] md:w-[25%]"
-      >
-        {/*  Card Background */}
-        <div
-          style={{
-            background:
-              "linear-gradient(180deg, rgba(83, 0, 97, 0.50) 0%, rgba(13, 10, 48, 0.50) 100%)",
-          }}
-          className="absolute -z-10 -top-24 -left-20 w-[302px] h-[302px] rounded-[50%]"
-        ></div>
+      {/* Header */}
+      <header className="absolute py-[2rem] px-[12rem] h-[6rem] w-full hidden lg:block">
+        <img 
+          src="/assets/icons/logo.png" alt="logo"
+          className="max-h-[2rem]"
+        />
+      </header>
 
-        {/*  Title */}
-        <h2 className="uppercase text-6xl">SignUp</h2>
-        <p className="font-outfit text-white">Welcome to Animara!</p>
+      {/* Sign up Card Latest */}
+      <div className="relative left-[50%] -translate-x-1/2 lg:left-[75%] self-center sm:max-h-[59.5rem] max-w-[25rem] sm:max-w-[27.5rem] rounded-[2.5rem] p-[2.5rem] gap-[1.25rem] bg-[#003459] shadow-[0.5rem_0.375rem_0.625rem_0_rgba(0,0,0,0.2)] font-bignoodle">
+        {/* Upper Section */}
+        <div className="relative self-center gap-[1.25rem] flex">
+          <div className="flex-none">
+            <video 
+              ref={videoRef}
+              className="h-[5rem] w-[5rem]"
+              autoPlay>
+                <source src="../assets/icons/AnimaraLogoAnimated.webm" type="video/webm" />
+            </video>
+          </div>
+          <div className="grow">
+            <p className="text-[2.5rem] leading-[2.75rem] text-[#FFC85A]">Sign up</p>
+            <p className="text-[#C5C5C5] font-outfit">Begin your adventure in Animara</p>
+          </div>
+        </div>
 
-        {/* Full Name */}
+        {/* Username */}
         <input
           type="text"
-          placeholder="Full Name"
-          value={name}
+          placeholder="Username"
+          value={username}
           required
-          onChange={(e) => setName(e.target.value)}
-          className="w-[100%] outline-none rounded-xl bg-transparent border border-white p-3 font-outfit mt-3 placeholder-white text-white"
+          onChange={(e) => setUsername(e.target.value)}
+          className="mt-6 w-full outline-none bg-transparent rounded-[0.625rem] border border-[#245F89] py-[0.875rem] px-[1rem] font-outfit text-[#C5C5C5]"
         />
 
         {/* Email */}
@@ -205,19 +237,19 @@ const SignupPage = () => {
           value={email}
           required
           onChange={handleEmailChange}
-          className={`w-[100%] outline-none rounded-xl bg-transparent p-3 font-outfit mt-3 placeholder-white text-white border ${getEmailInputBorderClass()}`}
+          className={`mt-2 w-full outline-none bg-transparent rounded-[0.625rem] border py-[0.875rem] px-[1rem] font-outfit text-[#C5C5C5] ${getEmailInputBorderClass()}`}
         />
         {!isEmailValid && <p className="text-red-500">{emailError}</p>}
 
         {/* Password */}
-        <div className="relative mt-5">
+        <div className="relative mt-2">
           <div className="flex flex-row">
             <input
               type={showPassword ? "text" : "password"}
               placeholder="Password"
               value={password}
               onChange={handlePasswordChange}
-              className={`w-[100%] outline-none rounded-xl bg-transparent p-3 font-outfit placeholder-white text-white border ${getPasswordInputBorderClass()}`}
+              className={`w-full outline-none bg-transparent rounded-[0.625rem] border py-[0.875rem] px-[1rem] font-outfit text-[#C5C5C5] ${getPasswordInputBorderClass()}`}
               required
             />
             <img
@@ -231,13 +263,13 @@ const SignupPage = () => {
         </div>
 
         {/* Confirm Password */}
-        <div className="relative mt-5">
+        <div className="relative mt-2">
           <input
             type={showPassword ? "text" : "password"}
             placeholder="Confirm Password"
             value={confirmPassword}
             onChange={handleConfirmPasswordChange}
-            className={`w-[100%] outline-none rounded-xl bg-transparent p-3 font-outfit placeholder-white text-white border ${getConfirmPasswordInputBorderClass()}`}
+            className={`w-full outline-none bg-transparent rounded-[0.625rem] border py-[0.875rem] px-[1rem] font-outfit text-[#C5C5C5] ${getConfirmPasswordInputBorderClass()}`}
             required
           />
           {!doPasswordsMatch && (
@@ -251,15 +283,24 @@ const SignupPage = () => {
           placeholder="Invite code (Optional)"
           value={referralCode}
           onChange={(e) => setReferralCode(e.target.value)}
-          className="w-[100%] outline-none rounded-xl bg-transparent border border-white p-3 font-outfit mt-3 placeholder-white text-white"
+          className="mt-2 w-full outline-none bg-transparent rounded-[0.625rem] border border-[#245F89] py-[0.875rem] px-[1rem] font-outfit text-[#C5C5C5]"
         />
+
+        {/* T&C checkbox */}
+        <div className="flex items-center mt-3 text-[0.875rem]">
+          <input id="link-checkbox" type="checkbox" value="" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:accent-[#49DEFF] dark:focus:accent-[#49DEFF] dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
+          <label htmlFor="link-checkbox" className="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">
+            By signing up, I agree to Animara&#39;s <Link to="/" className="text-[#49DEFF] dark:text-[#49DEFF] hover:underline">Terms & Condition</Link>
+          </label>
+        </div>
+
 
         {/* signup button */}
         <button
           id="signup-button"
           disabled={isAuthLoading || !hasInput}
           onClick={handleSignUpWithEmail}
-          className="mt-3 font-outfit font-semibold w-[100%] bg-gray-700 p-4 rounded-xl"
+          className="mt-3 font-outfit font-bold text-[1rem] leading-[1rem] text-[#FFF5F5] w-full bg-[#FFB23F] rounded-[1.25rem] border-[0.4px] border-[#E59E69] py-[1.25rem] px-[2rem] hover:brightness-75"
         >
           {isAuthLoading ? (
             <div className="flex items-center justify-center">
@@ -284,29 +325,46 @@ const SignupPage = () => {
             <span className="">Sign Up</span>
           )}
         </button>
+        <p className="mt-4 font-outfit text-[0.875rem] leading-[1rem] text-center">
+            Already have an account? &nbsp;
+            <Link
+              to="/login"
+              className="font-semibold hover:brightness-75 text-[#FFB23F]"
+            >
+              Login
+            </Link>
+          </p>
 
         {/*  Divider */}
-        <div className="flex items-center mt-12">
-          <hr className="border-t border-gray-600 flex-grow" />
-          <span className="px-4 font-outfit">Or</span>
-          <hr className="border-t border-gray-600 flex-grow" />
+        <div className="flex items-center my-6">
+          <hr className="border-t border-[#C5C5C5] flex-grow" />
+          <span className="px-8 text-[0.875rem] text-[#C5C5C5] font-outfit">Or</span>
+          <hr className="border-t border-[#C5C5C5] flex-grow" />
         </div>
 
-        {/* SSO */}
-        <div className="flex gap-4 justify-center my-[2.5rem]">
-          <img
-            src="/socials/google.svg"
-            alt=""
-            onClick={handleLoginWithGoogle}
+        {/* Social Login Buttons Section */}
+        <button 
+          type="button" 
+          className="w-full max-h-[4rem] font-outfit text-[1rem] leading-[1rem] text-[#C5C5C5] rounded-[0.625rem] py-[0.875rem] px-[1rem] gap-[1.25rem] bg-[#0A4169] hover:brightness-75 text-center inline-flex items-center justify-center"
+          onClick={handleLoginWithGoogle} 
+        >
+          <img 
+            src="/socials/devicon_google.png" alt="" 
+            className="max-h-[2.5rem] max-w-[2.5rem]"
           />
-          <img
-            className="w-12 hover:brightness-75"
-            src="/socials/twitter.svg"
-            alt=""
-            onClick={handleLoginWithTwitter}
+          Continue With Google
+        </button>
+        <button 
+          type="button" 
+          className="mt-1 max-h-[4rem] w-full font-outfit text-[1rem] leading-[1rem] text-[#C5C5C5] rounded-[0.625rem] py-[0.875rem] px-[1rem] gap-[1.25rem] bg-[#0A4169] hover:brightness-75 text-center inline-flex items-center justify-center"
+          onClick={handleLoginWithTwitter} 
+        >
+          <img 
+            src="/socials/devicon_x.png" alt="" 
+            className="max-h-[2.5rem] max-w-[2.5rem]"
           />
-        </div>
-        {/* Telegram */}
+          Continue With X
+        </button>
         <div className="flex items-center justify-center">
           <LoginButton
             botUsername="ReactTonBot"
@@ -314,21 +372,12 @@ const SignupPage = () => {
           />
         </div>
 
-        {/* Login redirection */}
-        <p className="font-outfit mt-20 mb-8 text-center block">
-          Already have an account? &nbsp;
-          <Link
-            to="/login"
-            className="underline underline-offset-4 hover:brightness-75"
-          >
-            Login
-          </Link>
-        </p>
 
         {/* Policies */}
-        <div className="flex gap-8 font-outfit text-center justify-center mt-2 mb-3">
-          <Link to="/">Terms & Conditions</Link>
-          <Link to="/">Privacy Policy</Link>
+        <div className="mt-3 flex gap-8 font-outfit text-[#C5C5C5] text-[1rem] text-center justify-center">
+          <Link to="/" className="hover:brightness-75">Privacy Policy</Link>
+          <span>|</span>
+          <Link to="/" className="hover:brightness-75">Terms & Conditions</Link>
         </div>
       </div>
     </div>
