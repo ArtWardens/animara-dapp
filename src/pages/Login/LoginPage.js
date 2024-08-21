@@ -162,7 +162,7 @@ const LoginPage = () => {
             />
           </div>
           {/* Forgot Password */}
-          <div className="mt-2 text-right font-semibold text-[0.875rem] leading-[1rem] text-[#49DEFF] hover:brightness-75">
+          <div className="mt-2 text-right font-semibold font-outfit text-[0.875rem] leading-[1rem] text-[#49DEFF] hover:brightness-75">
             <Link to="/forgotpassword">Forgot password ?</Link>
           </div>
           {/* Login Button */}
