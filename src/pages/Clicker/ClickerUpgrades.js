@@ -3,10 +3,13 @@ import { useTranslation } from "react-i18next";
 import PropTypes from "prop-types";
 import { useUserLocation } from "../../sagaStore/slices";
 import UpgradeDetailsModal from "./UpgradeDetailsModal";
-import { PropagateLoader } from "react-spinners"; // Import the loader
+import { PropagateLoader } from "react-spinners"; 
+import LeaderBoardModal from "../../components/LeaderBoardModal";
 
 const ClickerUpgrades = ({ onClose }) => {
   const { t } = useTranslation();
+  const [isLeaderboardOpen, setIsLeaderboardOpen] = useState(false);
+
   const menuOptions = [
     { name: "mountain", label: "Mountain" },
     { name: "forest", label: "Forest" },
@@ -27,6 +30,14 @@ const ClickerUpgrades = ({ onClose }) => {
       setLoading(false);
     }
   }, [userLocations]);
+
+  const handleLeaderboardClick = () => {
+    setIsLeaderboardOpen(true);
+  };
+
+  const handleCloseLeaderboard = () => {
+    setIsLeaderboardOpen(false); 
+  };
 
   return (
     <div
@@ -64,6 +75,19 @@ const ClickerUpgrades = ({ onClose }) => {
         }}
       >
         <div className="flex flex-col">
+          {/* Leaderboard Button */}
+          <button
+            className="absolute top-[4rem] right-[4rem] flex items-center bg-[#49DEFF] rounded-full shadow-md text-white text-xl font-outfit font-bold tracking-wider p-[1.5rem] py-[1rem]"
+            onClick={handleLeaderboardClick}
+          >
+            <img
+              src="../assets/images/clicker-character/trophy.png"
+              alt="trophy"
+              className="w-8 h-auto mr-[1rem]"
+            />
+            LeaderBoard
+          </button>
+
           <div className="flex items-center justify-center">
             <img
               src={"../assets/images/clicker-character/explore-animara.png"}
@@ -246,6 +270,9 @@ const ClickerUpgrades = ({ onClose }) => {
           )}
         </div>
       </div>
+
+      {/* Render the LeaderBoard pop-up if isLeaderboardOpen is true */}
+      {isLeaderboardOpen && <LeaderBoardModal onClose={handleCloseLeaderboard} />}
 
       {/* Render UpgradeDetailsModal if an upgrade is selected */}
       {selectedUpgrade && (
