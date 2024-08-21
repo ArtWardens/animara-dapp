@@ -29,8 +29,7 @@ function Header() {
 
     // navigation bar setup
     const navDestinations = [
-        { name: 'AMIPALS', link: '/amipals' },
-        { name: 'EARLY BIRD', link: '/early-bird' },
+        { name: 'ANITAP', link: '/anitap' },
         { name: 'MINT', link: '/mint' },
         { name: 'REFERRAL', link: '/referral' },
     ];
@@ -44,9 +43,9 @@ function Header() {
     };
 
     // setup logout button
-    const [imageSrcLogout, setImageSrcLogout] = useState("../assets/images/clicker-character/logout.png");
-    const handleMouseEnterLogout = () => setImageSrcLogout("../assets/images/clicker-character/logout-hover.png");
-    const handleMouseLeaveLogout = () => setImageSrcLogout("../assets/images/clicker-character/logout.png");
+    const [imageSrcLogout, setImageSrcLogout] = useState("/assets/images/clicker-character/logout.png");
+    const handleMouseEnterLogout = () => setImageSrcLogout("/assets/images/clicker-character/logout-hover.png");
+    const handleMouseLeaveLogout = () => setImageSrcLogout("/assets/images/clicker-character/logout.png");
 
     const handleLogout = () => {
         dispatch(logOut());
@@ -84,7 +83,9 @@ function Header() {
     return (
         <>
             {/* Desktop Menu */}
-            <div className="hidden sm:flex flex-row absolute top-12 z-10 p-1 pr-4 gap-2 left-24"
+            <div className={`flex flex-row absolute top-[3rem] z-10 p-1 pr-4 gap-2 left-[1rem] xl:left-[4rem] ${
+                    mobileMenuOpen ? 'hidden' : ''
+                }`}
                 style={{
                     border: '3px solid #F4FBFF',
                     borderRadius: '500px 200px 200px 500px',
@@ -94,28 +95,36 @@ function Header() {
                 }}
             >
                 <div className="p-1 w-20 h-20 relative">
-                    <button onClick={handleEditProfile}>
-                        {loadingImage && (
-                            <div className="flex justify-center items-center">
+                <button
+                    onClick={handleEditProfile}
+                    className="group relative"
+                    >
+                    {loadingImage && (
+                        <div className="flex justify-center items-center">
                             <div className="flex justify-center items-center h-56">
-                              <PropagateLoader color={"#FFB23F"} />
+                                <PropagateLoader color={"#FFB23F"} />
                             </div>
-                          </div>
-                        )}
-                        <img
-                            src={currentUser?.photoUrl ? currentUser.photoUrl : "../assets/images/clicker-character/2-initial.png"}
-                            alt="profile"
-                            className="justify-self-center rounded-full w-24 cursor-pointer"
-                            style={{
-                                border: '4px solid var(--80E8FF, #80E8FF)',
-                                background: 'lightgray 50%',
-                                backgroundSize: 'cover',
-                                backgroundRepeat: 'no-repeat',
-                                display: loadingImage ? 'none' : 'block'
-                            }}
-                            onLoad={() => setLoadingImage(false)}
-                            onError={() => setLoadingImage(false)}
-                        />
+                        </div>
+                    )}
+                    <img
+                        src={currentUser?.photoUrl ? currentUser.photoUrl : "/assets/images/clicker-character/2-initial.png"}
+                        alt="profile"
+                        className="justify-self-center rounded-full w-24 cursor-pointer group-hover:brightness-[0.55] transition-all duration-300"
+                        style={{
+                            border: '4px solid var(--80E8FF, #80E8FF)',
+                            background: 'lightgray 50%',
+                            backgroundSize: 'cover',
+                            backgroundRepeat: 'no-repeat',
+                            display: loadingImage ? 'none' : 'block'
+                        }}
+                        onLoad={() => setLoadingImage(false)}
+                        onError={() => setLoadingImage(false)}
+                    />
+                    <img
+                        src="/assets/icons/edit.png"
+                        alt="edit"
+                        className="invisible group-hover:visible absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 text-white fill-white"
+                    />
                     </button>
                 </div>
 
@@ -127,7 +136,7 @@ function Header() {
                     <div className="gap-2 flex">
                         <img
                             className="w-8 object-contain"
-                            src={"../assets/images/clicker-character/gem.png"}
+                            src={"/assets/images/clicker-character/gem.png"}
                             alt="gem"
                         />
                         <div className="relative flex items-center justify-center w-44">
@@ -146,14 +155,14 @@ function Header() {
                 </div>
             </div>
             <div
-                className="hidden sm:flex absolute top-16 gap-2 right-24 z-96 items-center"
+                className="hidden xl:flex absolute top-16 gap-2 right-[4rem] z-96 items-center"
                 style={{
                     zIndex: 91,
                 }}
             >
                 <div className="relative">
                 <img
-                  src="../assets/images/clicker-character/locale.png"
+                  src="/assets/images/clicker-character/locale.png"
                   className="w-[3dvw] xl:w-[1.5dvw] cursor-pointer"
                   onClick={() => setLangDropdownOpen(!langDropdownOpen)}
                 />
@@ -201,7 +210,7 @@ function Header() {
 
             {/* Mobile Menu Button */}
             <button
-                className="transition ease-in-out hover:scale-105 sm:hidden absolute top-8 right-8 z-50"
+                className="transition ease-in-out hover:scale-105 xl:hidden absolute top-[5rem] right-[1rem] xl:right-[4rem] z-50"
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             >
                 <svg className="h-9 w-9 text-amber-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
@@ -214,7 +223,7 @@ function Header() {
                 <div
                     className="fixed inset-0 z-40 flex flex-col justify-center px-12"
                     style={{
-                        backgroundImage: 'url("../../assets/images/clicker-character/clickerWall.png")',
+                        backgroundImage: 'url("/assets/images/clicker-character/clickerWall.png")',
                         backgroundSize: 'cover',
                         backgroundPosition: 'center',
                         backgroundRepeat: 'no-repeat',
@@ -222,7 +231,7 @@ function Header() {
                 >
                     <div className="absolute top-12 left-12 flex items-center space-x-4">
                         <img
-                            src="../assets/images/clicker-character/animara-logo.png"
+                            src="/assets/images/clicker-character/animara-logo.png"
                             alt="Animara Logo"
                             className="h-8"
                         />
@@ -231,14 +240,20 @@ function Header() {
                     <div
                         className="text-center w-auto h-full place-content-center scale-125 mt-20 -z-50"
                         style={{
-                            backgroundImage: 'url("../../assets/images/clicker-character/sticky-Note.png")',
+                            backgroundImage: 'url("/assets/images/clicker-character/sticky-Note.png")',
                             backgroundSize: 'contain',
                             backgroundPosition: 'center',
                             backgroundRepeat: 'no-repeat',
                         }}
                     >
+                        {loadingImage && (
+                            <div className="flex justify-center items-center">
+                              <PropagateLoader color={"#FFB23F"} />
+                          </div>
+                        )}
+
                         <img
-                            src={"../assets/images/clicker-character/2-initial.png"}
+                            src={currentUser?.photoUrl ? currentUser.photoUrl : "/assets/images/clicker-character/2-initial.png"}
                             alt="profile"
                             className="items-center rounded-full w-32 mx-auto mb-4"
                             style={{
@@ -247,15 +262,20 @@ function Header() {
                                 backgroundSize: 'cover',
                                 backgroundRepeat: 'no-repeat',
                             }}
+                            onClick={handleEditProfile}
                         />
-                        <span className="bg-sky-700 rounded-lg items-center px-2 py-1">
-                            <span className="text-white text-xs font-outfit">Certified KOL</span>
-                        </span>
+                        {currentUser?.isKOL && (
+                            <span className="bg-sky-700 rounded-lg items-center xl:ml-[1rem] p-2">
+                                <span className="text-white text-xs tracking-wider font-outfit whitespace-nowrap">
+                                    Certified KOL
+                                </span>
+                            </span>
+                        )}
                         <p className="text-lg text-[#003459] font-medium font-outfit mt-4 mb-1"> {currentUser?.name}</p>
                         <div className="gap-2 flex place-content-center">
                             <img
                                 className="w-8 object-contain"
-                                src={"../assets/images/clicker-character/gem.png"}
+                                src={"/assets/images/clicker-character/gem.png"}
                                 alt="gem"
                             />
                             <div className="items-center justify-center">
@@ -277,7 +297,7 @@ function Header() {
                             <button
                                 key={name}
                                 onClick={() => handleButtonClick(link)}
-                                className="block w-full text-left py-2 text-[#00b8e1] text-4xl font-bold hover:bg-blue-700 leading-9 tracking-wider"
+                                className="block w-full text-left py-2 text-[#00b8e1] hover:text-[#ffc75a] text-4xl font-LuckiestGuy font-bold leading-9 tracking-wider transition-all duration-500"
                             >
                                 {name}
                             </button>

@@ -28,17 +28,17 @@ function EarnGuide({
     const [showTasks, setShowTasks] = useState(false);
     const [isRecharging, setIsRecharging] = useState(false);
 
-    const [imageSrcBoosts, setImageSrcBoosts] = useState("../assets/images/clicker-character/boostsBtn.png");
-    const handleMouseEnterBoosts = () => setImageSrcBoosts("../assets/images/clicker-character/boostsHover.png");
-    const handleMouseLeaveBoosts = () => setImageSrcBoosts("../assets/images/clicker-character/boostsBtn.png");
+    const [imageSrcBoosts, setImageSrcBoosts] = useState("/assets/images/clicker-character/boostsBtn.png");
+    const handleMouseEnterBoosts = () => setImageSrcBoosts("/assets/images/clicker-character/boostsHover.png");
+    const handleMouseLeaveBoosts = () => setImageSrcBoosts("/assets/images/clicker-character/boostsBtn.png");
 
-    const [imageSrcUpgrades, setImageSrcUpgrades] = useState("../assets/images/clicker-character/upgradesBtn.png");
-    const handleMouseEnterUpgrades = () => setImageSrcUpgrades("../assets/images/clicker-character/upgradesHover.png");
-    const handleMouseLeaveUpgrades = () => setImageSrcUpgrades("../assets/images/clicker-character/upgradesBtn.png");
+    const [imageSrcUpgrades, setImageSrcUpgrades] = useState("/assets/images/clicker-character/upgradesBtn.png");
+    const handleMouseEnterUpgrades = () => setImageSrcUpgrades("/assets/images/clicker-character/upgradesHover.png");
+    const handleMouseLeaveUpgrades = () => setImageSrcUpgrades("/assets/images/clicker-character/upgradesBtn.png");
 
-    const [imageSrcTasks, setImageSrcTasks] = useState("../assets/images/clicker-character/tasksBtn.png");
-    const handleMouseEnterTasks = () => setImageSrcTasks("../assets/images/clicker-character/tasksHover.png");
-    const handleMouseLeaveTasks = () => setImageSrcTasks("../assets/images/clicker-character/tasksBtn.png");
+    const [imageSrcTasks, setImageSrcTasks] = useState("/assets/images/clicker-character/tasksBtn.png");
+    const handleMouseEnterTasks = () => setImageSrcTasks("/assets/images/clicker-character/tasksHover.png");
+    const handleMouseLeaveTasks = () => setImageSrcTasks("/assets/images/clicker-character/tasksBtn.png");
 
 
     const handleUserUpgrades = () => {
@@ -141,7 +141,7 @@ function EarnGuide({
             <div className="absolute bottom-24 flex justify-center place-content-center w-[80%] h-44 pb-8" >
                 
                 <img
-                    src={"../assets/images/clicker-character/button-footerBg.png"}
+                    src={"/assets/images/clicker-character/button-footerBg.png"}
                     alt="ring"
                     className={`absolute inset-0 w-full h-full object-cover rounded-b-3xl transition-opacity duration-500 ${
                         guideSlideUp ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0'
@@ -223,7 +223,7 @@ function EarnGuide({
                         onBlur={() => setOpenModal('')}
                         className="w-full md:w-2/3 h-full md:h-2/3 px-8 py-12 text-center md:px-[70px] md:py-[60px]"
                         style={{
-                            backgroundImage: 'url("../assets/images/leaderboardExp.png")',
+                            backgroundImage: 'url("/assets/images/leaderboardExp.png")',
                             backgroundSize: 'contain',
                             backgroundPosition: 'center',
                             backgroundRepeat: 'no-repeat',
