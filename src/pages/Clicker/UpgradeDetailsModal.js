@@ -23,30 +23,30 @@ const UpgradeDetailsModal = ({ upgrade, isMaxLevel, onClose }) => {
   const logoList = [
     {
       region: "mountain",
-      logo: "../assets/images/clicker-character/icon-1.png",
+      logo: "/assets/images/clicker-character/icon-1.png",
     },
-    { region: "forest", logo: "../assets/images/clicker-character/icon-2.png" },
+    { region: "forest", logo: "/assets/images/clicker-character/icon-2.png" },
     {
       region: "deserts",
-      logo: "../assets/images/clicker-character/desert-icon.png",
+      logo: "/assets/images/clicker-character/desert-icon.png",
     },
     {
       region: "cave",
-      logo: "../assets/images/clicker-character/cave-icon.png",
+      logo: "/assets/images/clicker-character/cave-icon.png",
     },
     {
       region: "iceland",
-      logo: "../assets/images/clicker-character/iceland-icon.png",
+      logo: "/assets/images/clicker-character/iceland-icon.png",
     },
     {
       region: "valley",
-      logo: "../assets/images/clicker-character/valley-icon.png",
+      logo: "/assets/images/clicker-character/valley-icon.png",
     },
   ];
 
   const logo =
     logoList.find((item) => item.region === upgrade.region)?.logo ||
-    "../assets/images/clicker-character/default-icon.png";
+    "/assets/images/clicker-character/default-icon.png";
 
   useEffect(() => {
     if (hasStartedUpgrade && !isUserLocationLoading) {
