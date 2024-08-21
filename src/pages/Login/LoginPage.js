@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { LoginButton } from "@telegram-auth/react";
@@ -77,163 +77,176 @@ const LoginPage = () => {
     dispatch(loginWithTelegram(telegramUser));
   };
 
+  // Loop icon video after random seconds
+  const videoRef = useRef(null);
+  useEffect(() => {
+    const handleVideoEnd = () => {
+      const randomDelay = Math.floor(Math.random() * 15000) + 5000;
+
+      // Set a timeout to restart the video after the random delay
+      setTimeout(() => {
+        if (videoRef.current) {
+          videoRef.current.play();
+        }
+      }, randomDelay);
+    };
+
+    const videoElement = videoRef.current;
+
+    if (videoElement) {
+      videoElement.addEventListener('ended', handleVideoEnd);
+    }
+
+    // Cleanup the event listener on component unmount
+    return () => {
+      if (videoElement) {
+        videoElement.removeEventListener('ended', handleVideoEnd);
+      }
+    };
+  }, []);
+
   return (
-    <div className="min-h-screen relative flex justify-around pt-0 md:pt-24">
-      {/* Background video */}
-      <video
-        autoPlay
-        loop
-        muted
-        className="w-[100%] h-full absolute top-0 -z-40 opacity-75 object-cover hidden md:block"
-      >
-        <source src="../assets/images/login-bg.mp4" type="video/mp4" />
-      </video>
+    <div className="min-h-screen relative flex">
+      {/* Background Image */}
+      <img 
+        src="../backgrounds/BG_login.png" alt="background"
+        className="w-full h-full absolute top-0 -z-40 opacity-75 object-cover"
+      />
 
-      {/* Login Hint */}
-      {/* <div className="mt-20 hidden md:block">
-        <h3 className="text-6xl"> {tLogin('dontHaveAnAccount')} </h3>
-        <p className="font-outfit mt-2">
-          Aenean non vulputate quam, eu dictum est. Aliquam erat volutpat. <br />
-          Suspendisse bibendum felis ullamcorper mauris ullamcorper
-        </p>
-      </div> */}
-
-      {/* Login Card */}
-      <div
-        id="login-card"
-        className="relative backdrop-blur-xl p-8 pt-12 self-center rounded-[1.5rem] md:w-[25%]"
-      >
-        <div
-          style={{
-            background:
-              "linear-gradient(180deg, rgba(83, 0, 97, 0.50) 0%, rgba(13, 10, 48, 0.50) 100%)",
-          }}
-          className="absolute -z-10 -top-24 -left-20 w-[302px] h-[302px] rounded-[50%]"
-        ></div>
-
-        {/* Title */}
-        <h2 className="uppercase text-6xl">{tLogin("login")}</h2>
-        <p className="font-outfit text-white">{tLogin("gladYouAreBack")}</p>
-
-        {/* Email */}
-        <input
-          type="email"
-          placeholder={tLogin("email")}
-          value={email}
-          required
-          onChange={(e) => setEmail(e.target.value)}
-          className="w-[100%] outline-none rounded-xl bg-transparent border border-white p-3 font-outfit mt-3 placeholder-white text-white"
+      {/* Header */}
+      <header className="absolute py-[2rem] px-[12rem] h-[6rem] w-full hidden lg:block">
+        <img 
+          src="/assets/icons/logo.png" alt="logo"
+          className="max-h-[2rem]"
         />
+      </header>
 
-        {/* Password */}
-        <div className="relative mt-5">
-          <input
-            type={showPassword ? "text" : "password"}
-            placeholder={tLogin("password")}
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="w-[100%] outline-none rounded-xl bg-transparent p-3 border border-white font-outfit placeholder-white text-white"
-            required
-          />
-          <img
-            onClick={togglePasswordVisiblity}
-            src="../assets/images/eye.svg"
-            alt="show password"
-            className="absolute top-1/2 right-3 -translate-y-1/2 -translate-x-3 cursor-pointer"
-          />
-        </div>
-
-        {/* Remember Me */}
-        <div className="mt-3 pl-2 hidden">
-          <div className="relative mt-1">
-            <input
-              className="appearance-none bg-transparent z-10 opacity-0 absolute w-6 h-6"
-              type="checkbox"
-              name="rememberme"
-              id="rememberme"
-            />
-            <label
-              htmlFor="rememberme"
-              className="block w-4 h-4 rounded-sm cursor-pointer absolute top-0 left-0 border border-white"
-            />
-            <label
-              htmlFor="rememberme"
-              className="block w-4 h-4 rounded-sm cursor-pointer absolute top-0 left-0 text-center text-white"
-            >
-              ✓
-            </label>
+      {/* Login Card Latest */}
+      <div className="relative left-[50%] -translate-x-1/2 lg:left-[75%] self-center sm:max-h-[50.5rem] max-w-[25rem] sm:max-w-[27.5rem] rounded-[2.5rem] p-[2.5rem] gap-[1.25rem] bg-[#003459] shadow-[0.5rem_0.375rem_0.625rem_0_rgba(0,0,0,0.2)] font-bignoodle">
+        {/* Upper Section */}
+        <div className="relative self-center gap-[1.25rem]">
+          <div className="flex justify-center items-center">
+            <video 
+              ref={videoRef}
+              className="h-[5rem] w-[5rem]"
+              autoPlay>
+                <source src="../assets/icons/AnimaraLogoAnimated.webm" type="video/webm" />
+            </video>
           </div>
-          <span className="font-outfit block ml-5 mb-5">&nbsp;Remember Me</span>
+          <p className="mt-6 text-center text-[2.5rem] leading-[2.75rem] text-[#FFC85A]">Welcome back to ANIMARA</p>
+          <p className="text-center text-[#C5C5C5] font-outfit">Please enter your details to login</p>
+          {/* Email */}
+          <input
+            type="email"
+            placeholder={tLogin("email")}
+            value={email}
+            required
+            onChange={(e) => setEmail(e.target.value)}
+            className="mt-3 w-full outline-none bg-transparent rounded-[0.625rem] border border-[#245F89] py-[0.875rem] px-[1rem] font-outfit text-[#C5C5C5]"
+          />
+          {/* Password */}
+          <div className="relative mt-2">
+            <input
+              type={showPassword ? "text" : "password"}
+              placeholder={tLogin("password")}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="w-full outline-none bg-transparent rounded-[0.625rem] border border-[#245F89] py-[0.875rem] px-[1rem] font-outfit text-[#C5C5C5]"
+              required
+            />
+            <img
+              onClick={togglePasswordVisiblity}
+              src="../assets/images/eye.svg"
+              alt="show password"
+              className="absolute top-1/2 right-3 -translate-y-1/2 -translate-x-3 cursor-pointer"
+            />
+          </div>
+          {/* Forgot Password */}
+          <div className="mt-2 text-right font-semibold text-[0.875rem] leading-[1rem] text-[#49DEFF] hover:brightness-75">
+            <Link to="/forgotpassword">Forgot password ?</Link>
+          </div>
+          {/* Login Button */}
+          <button
+            id="login-button"
+            disabled={isAuthLoading || !hasInput}
+            className="mt-3 font-outfit font-bold text-[1rem] leading-[1rem] text-[#FFF5F5] w-full bg-[#FFB23F] rounded-[1.25rem] border-[0.4px] border-[#E59E69] py-[1.25rem] px-[2rem] hover:brightness-75"
+            onClick={handleLoginWithEmail}
+          >
+            {isAuthLoading ? (
+              <div className="flex items-center justify-center">
+                <svg
+                  aria-hidden="true"
+                  className="w-8 h-8 text-Fuchsia-200 animate-spin dark:text-Fuchsia-200 fill-indigo-600"
+                  viewBox="0 0 100 101"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+                    fill="currentColor"
+                  />
+                  <path
+                    d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+                    fill="currentFill"
+                  />
+                </svg>
+              </div>
+            ) : (
+              <span className="">Login</span>
+            )}
+          </button>
+          <p className="mt-4 font-outfit text-[0.875rem] leading-[1rem] text-center">
+            Don&#39;t have an account? &nbsp;
+            <Link
+              to="/signup"
+              className="font-semibold hover:brightness-75 text-[#FFB23F]"
+            >
+              Sign Up
+            </Link>
+          </p>
+        </div>
+        
+        {/*  Divider */}
+        <div className="flex items-center my-6">
+          <hr className="border-t border-[#C5C5C5] flex-grow" />
+          <span className="px-8 text-[0.875rem] text-[#C5C5C5] font-outfit">Or</span>
+          <hr className="border-t border-[#C5C5C5] flex-grow" />
         </div>
 
-        {/* Login Button */}
-        <button
-          id="login-button"
-          disabled={isAuthLoading || !hasInput}
-          className="mt-3 font-outfit font-semibold w-[100%] bg-gray-700 p-4 rounded-xl"
-          onClick={handleLoginWithEmail}
+        {/* Social Login Buttons Section */}
+        <button 
+          type="button" 
+          className="w-full max-h-[4rem] font-outfit text-[1rem] leading-[1rem] text-[#C5C5C5] rounded-[0.625rem] py-[0.875rem] px-[1rem] gap-[1.25rem] bg-[#0A4169] hover:brightness-75 text-center inline-flex items-center justify-center"
+          onClick={handleLoginWithGoogle} 
         >
-          {isAuthLoading ? (
-            <div className="flex items-center justify-center">
-              <svg
-                aria-hidden="true"
-                className="w-8 h-8 text-Fuchsia-200 animate-spin dark:text-Fuchsia-200 fill-indigo-600"
-                viewBox="0 0 100 101"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
-                  fill="currentColor"
-                />
-                <path
-                  d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
-                  fill="currentFill"
-                />
-              </svg>
-            </div>
-          ) : (
-            <span className="">Sign Up</span>
-          )}
+          <img 
+            src="/socials/devicon_google.png" alt="" 
+            className="max-h-[2.5rem] max-w-[2.5rem]"
+          />
+          Login With Google
         </button>
-
-        <div className="flex items-center mt-12">
-          <hr className="border-t border-gray-600 flex-grow" />
-          <span className="px-4 font-outfit">Or</span>
-          <hr className="border-t border-gray-600 flex-grow" />
-        </div>
-        {/* <hr className="mt-12 bg-gray-600 w-[100%]" /> */}
-        <div className="flex gap-4 justify-center my-[2.5rem]">
-          <img
-            src="/socials/google.svg"
-            alt=""
-            onClick={handleLoginWithGoogle}
+        <button 
+          type="button" 
+          className="mt-1 max-h-[4rem] w-full font-outfit text-[1rem] leading-[1rem] text-[#C5C5C5] rounded-[0.625rem] py-[0.875rem] px-[1rem] gap-[1.25rem] bg-[#0A4169] hover:brightness-75 text-center inline-flex items-center justify-center"
+          onClick={handleLoginWithTwitter} 
+        >
+          <img 
+            src="/socials/devicon_x.png" alt="" 
+            className="max-h-[2.5rem] max-w-[2.5rem]"
           />
-          <img
-            className="w-12 hover:brightness-75"
-            src="/socials/twitter.svg"
-            alt=""
-            onClick={handleLoginWithTwitter}
-          />
-        </div>
+          Login With X
+        </button>
         <div className="flex items-center justify-center">
           <LoginButton
             botUsername="ReactTonBot"
             onAuthCallback={handleTelegramAuth}
           />
         </div>
-        <p className="font-outfit mt-20 mb-8 text-center block">
-          Don&#39;t have an account? &nbsp;
-          <Link
-            to="/signup"
-            className="underline underline-offset-4 hover:brightness-75"
-          >
-            Signup
-          </Link>
-        </p>
-        <div className="flex gap-8 font-outfit text-center justify-center mt-2 mb-3">
-          <Link to="/">Terms & Conditions</Link>
-          <Link to="/">Privacy Policy</Link>
+
+        <div className="mt-3 flex gap-8 font-outfit text-[#C5C5C5] text-[1rem] text-center justify-center">
+          <Link to="/" className="hover:brightness-75">Privacy Policy</Link>
+          <span>|</span>
+          <Link to="/" className="hover:brightness-75">Terms & Conditions</Link>
         </div>
       </div>
     </div>
