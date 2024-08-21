@@ -18,9 +18,46 @@ function ReferralPage (){
   const nftPurchasedReferralCount = useNFTPurchasedReferralCount();
   const basicClaimable = useBasicClaimable();
   const nftClaimable = useNftClaimable();
+  const [showTitle, setShowTitle] = useState(false);
+  const [showRefOne, setShowRefOne] = useState(false);
+  const [showRefTwo, setShowRefTwo] = useState(false);
+  const [showRefThree, setShowRefThree] = useState(false);
+  const [showPanel, setShowPanel] = useState(false);
+
+  // intro anim
+  useEffect(() => {
+    const timerTitle = setTimeout(() => {
+      setShowTitle(true);
+    }, 50);
+
+    const timerRefOne = setTimeout(() => {
+      setShowRefOne(true);
+    }, 50);
+
+    const timerRefTwo = setTimeout(() => {
+      setShowRefTwo(true);
+    }, 50);
+
+    const timerRefThree = setTimeout(() => {
+      setShowRefThree(true);
+    }, 250);
+
+    const timerPanel = setTimeout(() => {
+      setShowPanel(true);
+    }, 500);
+
+    return () => {
+      clearTimeout(timerTitle);
+      clearTimeout(timerRefOne);
+      clearTimeout(timerRefTwo);
+      clearTimeout(timerRefThree);
+      clearTimeout(timerPanel);
+    };
+  }, []);
 
   // Mobile view carousel content
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [carouselFading, setCarouselFading] = useState(false);
   const content = [
     {
       image: "/assets/images/clicker-character/ref01.png",
@@ -46,15 +83,25 @@ function ReferralPage (){
   ];
 
   const handlePrev = () => {
-    setCurrentIndex((prevIndex) =>
-      prevIndex === 0 ? content.length - 1 : prevIndex - 1
-    );
+    if (carouselFading) { return; }
+    setCarouselFading(true);
+    setTimeout(()=>{
+      setCurrentIndex((prevIndex) =>
+        prevIndex === 0 ? content.length - 1 : prevIndex - 1
+      );
+      setCarouselFading(false);
+    }, 500);
   };
 
   const handleNext = () => {
-    setCurrentIndex((prevIndex) =>
-      prevIndex === content.length - 1 ? 0 : prevIndex + 1
-    );
+    if (carouselFading) { return; }
+    setCarouselFading(true);
+    setTimeout(()=>{
+      setCurrentIndex((prevIndex) =>
+        prevIndex === content.length - 1 ? 0 : prevIndex + 1
+      );
+      setCarouselFading(false);
+    }, 500);
   };
 
   const getInviteLink = useCallback(()=>{
@@ -118,7 +165,8 @@ function ReferralPage (){
           backgroundAttachment: 'fixed',
         }}
       >
-        <div className="container flex flex-col items-center gap-6 pt-40 tracking-wider">
+        <div className={`container flex flex-col items-center gap-6 pt-40 tracking-wider transition-opacity duration-1000
+               ${showTitle ? `opacity-100` : `opacity-0`}`}>
           <div className="text-center text-white text-3xl uppercase">Refer Friends</div>
           <span
             className="text-center text-amber-500 text-6xl uppercase tracking-normal pb-2"
@@ -132,7 +180,8 @@ function ReferralPage (){
 
           {/* Desktop view */}
           <div className="hidden xl:grid grid-cols-3 gap-12">
-            <div className="w-full h-full flex flex-col justify-center items-center">
+            <div className={`w-full h-full flex flex-col justify-center items-center transition-opacity duration-500
+               ${showRefOne ? `opacity-100` : `opacity-0`}`}>
               <img
                 className="w-4/5 h-auto origin-top-left shadow"
                 src="/assets/images/clicker-character/ref01.png"
@@ -147,7 +196,8 @@ function ReferralPage (){
                 </div>
               </div>
             </div>
-            <div className="w-full h-full flex flex-col justify-center items-center">
+            <div className={`w-full h-full flex flex-col justify-center items-center transition-opacity duration-500
+               ${showRefThree ? `opacity-100` : `opacity-0`}`}>
               <img
                 className="w-full h-auto origin-top-left shadow"
                 src="/assets/images/clicker-character/ref02.png"
@@ -162,7 +212,8 @@ function ReferralPage (){
                 </div>
               </div>
             </div>
-            <div className="w-full h-full flex flex-col justify-center items-center">
+            <div className={`w-full h-full flex flex-col justify-center items-center transition-opacity duration-500
+               ${showRefTwo ? `opacity-100` : `opacity-0`}`}>
               <img
                 className="w-4/5 h-auto origin-top-left shadow"
                 src="/assets/images/clicker-character/ref03.png"
@@ -181,7 +232,8 @@ function ReferralPage (){
 
           {/* Mobile view */}
           <div className="h-[50dvh] relative flex xl:hidden flex-col justify-center items-center">
-            <div className="w-[70dvw] h-auto flex flex-col justify-center items-center">
+            <div className={`w-[70dvw] h-auto flex flex-col justify-center items-center transition-all duration-500
+               ${carouselFading ? `opacity-0` : `opacity-100`}`}>
               <img
                 className="w-[80%] lg:w-[60%] h-auto origin-top-left shadow"
                 src={content[currentIndex].image}
@@ -196,9 +248,9 @@ function ReferralPage (){
                 </div>
               </div>
             </div>
-
+            
             {/* Navigation Buttons */}
-            <div className="absolute top-1/2 transform -translate-y-1/2 left-[-2rem]">
+            <div className="absolute top-1/2 hover:scale-150 transition-scale duration-500 transform -translate-y-1/2 left-[-2rem]">
               <button
                 onClick={handlePrev}
                 className="text-white p-2 rounded-full shadow-md"
@@ -210,7 +262,7 @@ function ReferralPage (){
                 />
               </button>
             </div>
-            <div className="absolute top-1/2 transform -translate-y-1/2 right-[-2rem]">
+            <div className="absolute top-1/2 hover:scale-150 transition-scale duration-500 transform -translate-y-1/2 right-[-2rem]">
               <button
                 onClick={handleNext}
                 className="text-white p-2 rounded-full shadow-md"
@@ -225,7 +277,8 @@ function ReferralPage (){
           </div>
 
           {/* Desktop bottom panel */}
-          <div className="hidden xl:flex w-full">
+          <div className={`hidden xl:flex w-full transition-all duration-1000
+               ${showPanel ? `opacity-100 scale-100` : `opacity-0 scale-0`}`}>
             {/* referral stats & cashback */}
             <div className="w-[62%]">
               <div className="flex w-full">
@@ -448,7 +501,8 @@ function ReferralPage (){
           {/* Mobile bottom panel */}
           <div className="flex flex-col xl:hidden w-full overflow-x-hidden">
             {/* referral stats & cashback */}
-            <div className="w-full flex flex-col items-center">
+            <div className={`w-full flex flex-col items-center transition-all duration-1000
+               ${showPanel ? `opacity-100 scale-100` : `opacity-0 scale-0`}`}>
               <div className="flex flex-col ">
                 {/* Referral stats */}
                 <div className="w-full flex flex-col border-dashed border-r-4 border-transparent">
