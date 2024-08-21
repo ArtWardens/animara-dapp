@@ -90,11 +90,11 @@ const UpgradeDetailsModal = ({ upgrade, isMaxLevel, onClose }) => {
 
           <div className="text-center tracking-wider">
             {upgradeUserLocationError === "location-max-level" ? (
-              <p className="text-4xl text-red-500 font-bold">
+              <p className="text-4xl text-red-500 font-bold my-[5rem]">
                 Failed to upgrade location. Max level reached
               </p>
             ) : upgradeUserLocationError === "insufficient-funds" ? (
-              <p className="text-4xl text-red-500 font-bold">
+              <p className="text-4xl text-red-500 font-bold my-[5rem]">
                 Failed to upgrade location level. Insufficient coins.
               </p>
             ) : (
