@@ -46,7 +46,7 @@ const LockPage = () => {
             <Header />
 
             <div
-                className="relative flex-grow flex flex-col place-content-center items-center px-24 pb-4 min-h-screen bg-cover bg-center bg-no-repeat bg-fixed"
+                className="relative flex-grow flex flex-col place-content-center items-center xl:px-[6rem] pb-4 min-h-screen bg-cover bg-center bg-no-repeat bg-fixed"
                 style={{
                     backgroundImage: 'url("../../assets/images/clicker-character/clickerBg.png")',
                 }}
@@ -74,7 +74,7 @@ const LockPage = () => {
                 <img
                     src="../../assets/images/clicker-character/padlock.png"
                     alt="Lock"
-                    className={`origin-center ml-3 mb-36 transition-transform duration-500 delay-150 transform ${showLock ? (reverse ? "scale-0 opacity-0" : "scale-110 opacity-100") : "scale-0 opacity-0"
+                    className={`origin-center mb-[7rem] transition-transform duration-500 delay-150 transform ${showLock ? (reverse ? "scale-0 opacity-0" : "scale-110 opacity-100") : "scale-0 opacity-0"
                         } z-10`}
                 />
             </div>
