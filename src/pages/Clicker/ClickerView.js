@@ -6,7 +6,7 @@ import { useUserDetails, useUserDetailsLoading, closeDailyPopup, updateDailyLogi
 import MascotView from '../../components/MascotView';
 import EarnGuide from '../../components/EarnGuide';
 import EnergyRegeneration from '../../components/EnergyRegeneration';
-import { mascots } from '../../utils/local.db';
+import { mascots } from '../../utils/constants';
 import { dailyLoginRewards } from '../../utils/constants';
 import ClickerUpgrades from './ClickerUpgrades';
 import '../../styles/globals.css';
@@ -25,7 +25,8 @@ const ClickerView = () => {
   // fetch user data
   useEffect(() => {
     // set mascot
-    setCurrentMascot(mascots[currentUser?.level]);
+    const mascotIndex = mascots.filter((mascot)=> (currentUser?.level || 0) <= mascot.maxLevel);
+    setCurrentMascot(mascots[mascotIndex]);
 
     // check and popup daily login
     if (currentUser && !currentUser?.loggedInToday) {
