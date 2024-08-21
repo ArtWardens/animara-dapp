@@ -133,17 +133,17 @@ const EarlyBirdPage = () => {
                         >
                             <div className="absolute flex w-full justify-between -top-8">
                                 <img
-                                    src={"../assets/images/clicker-character/ring01.png"}
+                                    src={"/assets/images/clicker-character/ring01.png"}
                                     alt="ring"
                                     className="object-cover w-11 absolute left-2"
                                 />
                                 <img
-                                    src={"../assets/images/clicker-character/ring01.png"}
+                                    src={"/assets/images/clicker-character/ring01.png"}
                                     alt="ring"
                                     className="object-cover w-11 opacity-0"
                                 />
                                 <img
-                                    src={"../assets/images/clicker-character/ring02.png"}
+                                    src={"/assets/images/clicker-character/ring02.png"}
                                     alt="ring"
                                     className="object-cover w-11 absolute right-8"
                                 />
@@ -153,7 +153,7 @@ const EarlyBirdPage = () => {
 
                                 className="rounded-2xl place-content-center p-8 grid gap-4 min-h-[60dvh] lg:min-h-[90dvh] 2xl:min-h-[60dvh]"
                                 style={{
-                                    backgroundImage: 'url("../assets/images/clicker-character/earlyBBG.png")',
+                                    backgroundImage: 'url("/assets/images/clicker-character/earlyBBG.png")',
                                     backgroundSize: 'cover',
                                     backgroundPosition: 'center',
                                     backgroundRepeat: 'no-repeat',
@@ -249,7 +249,7 @@ const EarlyBirdPage = () => {
                     <div className="w-[32%] lg:w-[35%] 2xl:w-[32%] z-10 scale-150 justify-start items-center origin-bottom relative">
                         <img
 
-                            src={"../assets/images/clicker-character/noticeBoard.png"}
+                            src={"/assets/images/clicker-character/noticeBoard.png"}
                             className="w-full absolute bottom-0"
                             alt=""
                         />

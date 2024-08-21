@@ -211,7 +211,7 @@ const SignupPage = () => {
               ref={videoRef}
               className="h-[5rem] w-[5rem]"
               autoPlay>
-                <source src="../assets/icons/AnimaraLogoAnimated.webm" type="video/webm" />
+                <source src="/assets/icons/AnimaraLogoAnimated.webm" type="video/webm" />
             </video>
           </div>
           <div className="grow">
@@ -254,7 +254,7 @@ const SignupPage = () => {
             />
             <img
               onClick={togglePassword}
-              src="../assets/images/eye.svg"
+              src="/assets/images/eye.svg"
               alt="show password"
               className={`absolute top-1/2 right-3 -translate-y-1/2 -translate-x-3 ${isPasswordValid ? 'mt-0' : 'mt-[-1.5rem]'} cursor-pointer`}
             />
