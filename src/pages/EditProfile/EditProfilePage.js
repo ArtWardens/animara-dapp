@@ -94,7 +94,7 @@ const EditProfilePage = () => {
       className="justify-center items-center p-[4rem] lg:p-[11rem] w-screen h-screen"
       style={{
         backgroundImage:
-          'url("../../assets/images/clicker-character/clickerWall.png")',
+          'url("/assets/images/clicker-character/clickerWall.png")',
         backgroundSize: "cover",
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
@@ -154,13 +154,13 @@ const EditProfilePage = () => {
                 />
               ) : (
                 <img
-                  src="../../assets/images/lock.png"
+                  src="..//assets/images/lock.png"
                   alt="pfp"
                   className="group-hover:brightness-75 h-full w-full object-cover"
                 />
               )}
               <img
-                src="./../assets/icons/edit.png"
+                src=".//assets/icons/edit.png"
                 alt="edit"
                 className="invisible group-hover:visible absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 text-white fill-white"
               />
