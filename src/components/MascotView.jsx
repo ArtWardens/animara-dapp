@@ -4,9 +4,9 @@ import useSound from "use-sound";
 import { useAppDispatch } from "../hooks/storeHooks.js";
 import { useUserDetails, useLocalStamina, useLocalCoins, useSettleTapSessionLoading, consumeStamina, settleTapSession } from "../sagaStore/slices";
 import { getAllImagePaths } from "../utils/getImagePath";
+import { mascots } from '../utils/constants';
 
 const MascotView = ({
-  currentMascot,
   openModal,
   setOpenModal
 }) => {
@@ -15,10 +15,11 @@ const MascotView = ({
   const localCoins = useLocalCoins();
   const localStamina = useLocalStamina();
   const settlingTapSession = useSettleTapSessionLoading();
-  const [preloadedImage, setPreloadedImage] = useState(false);
+  const [isIinitialized, setIsIinitialized] = useState(false);
   const [imgIndex, setImgIndex] = useState(0);
   const [mascotImages, setMascotImages] = useState([]);
   const [plusOneEffect, setPlusOneEffect] = useState({ show: false, left: 0, top: 0 });
+  const [currentMascot, setCurrentMascot] = useState(mascots[0]);
   const [mascotSound] = useSound(currentMascot?.sound);
   const [isOpenRewardModal, setIsOpenRewardModal] = useState(false);
   const [rewardModalFading, setRewardModalFading] = useState(false);
@@ -49,16 +50,18 @@ const MascotView = ({
 
   // initial setup
   useEffect(() => {
-    if (preloadedImage){
-      return;
-    }
+    //  skip init if already done once
+    if (isIinitialized){ return; }
+
+    // set mascot
+    const mascotIndex = mascots.filter((mascot)=> (currentUser?.level || 0) <= mascot.maxLevel);
+    setCurrentMascot(mascots[mascotIndex]);
+
     // preload images if enter on the first time
     setMascotImages(getAllImagePaths(currentUser));
 
     // set intial image
     setImgIndex(0);
-
-    setPreloadedImage(true);
 
     // Note: setup various conditions in which we attempt to
     // settle a tap session
@@ -90,11 +93,13 @@ const MascotView = ({
     document.addEventListener('mouseleave', handleMouseLeave);
     document.addEventListener('visibilitychange', handleVisibilityChange);
  
+    // remember that we have initialized
+    setIsIinitialized(true);
     return () => {
       document.removeEventListener('mouseleave', handleMouseLeave);
       document.removeEventListener('visibilitychange', handleVisibilityChange);
     };
-  }, [dispatch, currentUser, localCoins, localStamina, preloadedImage, settlingTapSession]);
+  }, [dispatch, currentUser, localCoins, localStamina, isIinitialized, settlingTapSession]);
 
   // periodic tap session settler
   const setupSettler = useCallback(() =>{
@@ -323,7 +328,6 @@ const MascotView = ({
 };
 
 MascotView.propTypes = {
-  currentMascot: PropTypes.object,
   openModal: PropTypes.string,
   setOpenModal: PropTypes.func
 }
