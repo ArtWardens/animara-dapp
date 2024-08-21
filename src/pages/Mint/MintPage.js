@@ -1,14 +1,23 @@
 import React, { useEffect, useState } from "react";
 import Header from "../../components/Header.jsx";
 import { fetchDate, startCountdown } from "../../firebase/countDown";
+import dynamic from "next/dynamic";
+import styles from "../../styles/Home.module.css";
 
-function ReferralPage() {
+const WalletMultiButtonDynamic = dynamic(
+  async () =>
+    (await import("@solana/wallet-adapter-react-ui")).WalletMultiButton,
+  { ssr: false }
+);
+
+function MintPage() {
   const [timeLeft, setTimeLeft] = useState({
     days: 0,
     hours: 0,
     minutes: 0,
     seconds: 0,
   });
+
   const [isContainerVisible, setIsContainerVisible] = useState(true);
   const [showTitle, setShowTitle] = useState(false);
   const [showTextOne, setShowTextOne] = useState(false);
@@ -70,7 +79,6 @@ function ReferralPage() {
   return (
     <>
       <Header />
-
       <div
         className="flex flex-col items-center pb-8 min-h-screen w-full"
         style={{
@@ -475,6 +483,9 @@ function ReferralPage() {
                   </div>
                 </div>
               </div>
+              <div className={styles.wallet}>
+                <WalletMultiButtonDynamic />
+              </div>
             </div>
           </div>
         </div>
@@ -483,4 +494,4 @@ function ReferralPage() {
   );
 }
 
-export default ReferralPage;
+export default MintPage;

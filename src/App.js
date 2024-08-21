@@ -18,13 +18,19 @@ import { useAppDispatch } from './hooks/storeHooks';
 import { appInit, systemUpdateNetworkConnection } from './sagaStore/slices';
 import { runSaga } from './sagaStore/store';
 
+// Import Solana wallet packages
+import { ConnectionProvider, WalletProvider } from '@solana/wallet-adapter-react';
+import { WalletModalProvider } from '@solana/wallet-adapter-react-ui';
+import { PhantomWalletAdapter } from '@solana/wallet-adapter-wallets';
+import { clusterApiUrl } from '@solana/web3.js';
+
 import './i18n';
 import ClickerController from './components/ClickerController';
 
 export const App = () => {
   const dispatch = useAppDispatch();
-
   const { isOnline, isOffline, backOnline, backOffline } = useNavigatorOnline();
+  const endpoint = clusterApiUrl('mainnet-beta');
 
   useEffect(() => {
     runSaga(rootSaga);
@@ -49,25 +55,30 @@ export const App = () => {
   }, [backOnline, backOffline, dispatch, isOnline, isOffline]);
 
   return (
-    <BrowserRouter>
-      <GlobalProvider>
-        <Routes>
-          <Route element={<AppLayout />}>
-            <Route path="/" element={<LoginPage />}/>
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/signup" element={<SignupPage />} />
-            <Route path="/limited-access" element={<LimitedAccessPage />} />
-            <Route path="/verify-email" element={<VerifyEmailPage />} />
-            <Route path="/edit-profile" element={<ClickerController Children={EditProfilePage}/>} />
-            <Route path="/anitap" element={<ClickerController Children={ClickerPage}/>} />
-            <Route path="/referral" element={<ClickerController Children={ReferralPage} />} />
-            <Route path="/early-bird" element={<ClickerController Children={EarlyBirdPage} />} />
-            <Route path="/clicker-lock" element={<ClickerController Children={LockPage} />} />
-            <Route path="/mint" element={<ClickerController Children={MintPage} />} />
-            
-          </Route>
-        </Routes>
-      </GlobalProvider>
-    </BrowserRouter>
+    <ConnectionProvider endpoint={endpoint}>
+      <WalletProvider wallets={[new PhantomWalletAdapter()]} autoConnect>
+        <WalletModalProvider>
+          <BrowserRouter>
+            <GlobalProvider>
+              <Routes>
+                <Route element={<AppLayout />}>
+                  <Route path="/" element={<LoginPage />} />
+                  <Route path="/login" element={<LoginPage />} />
+                  <Route path="/signup" element={<SignupPage />} />
+                  <Route path="/limited-access" element={<LimitedAccessPage />} />
+                  <Route path="/verify-email" element={<VerifyEmailPage />} />
+                  <Route path="/edit-profile" element={<ClickerController Children={EditProfilePage} />} />
+                  <Route path="/amipals" element={<ClickerController Children={ClickerPage} />} />
+                  <Route path="/referral" element={<ClickerController Children={ReferralPage} />} />
+                  <Route path="/early-bird" element={<ClickerController Children={EarlyBirdPage} />} />
+                  <Route path="/clicker-lock" element={<ClickerController Children={LockPage} />} />
+                  <Route path="/mint" element={<ClickerController Children={MintPage} />} />
+                </Route>
+              </Routes>
+            </GlobalProvider>
+          </BrowserRouter>
+        </WalletModalProvider>
+      </WalletProvider>
+    </ConnectionProvider>
   );
 };
