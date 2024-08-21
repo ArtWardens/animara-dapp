@@ -94,7 +94,7 @@ function ReferralPage (){
 
     const timerPanel = setTimeout(() => {
       setShowPanel(true);
-    }, 500);
+    }, 250);
 
     return () => {
       clearTimeout(timerTitle);
