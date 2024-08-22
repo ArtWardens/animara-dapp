@@ -3,20 +3,45 @@ import { useTranslation } from "react-i18next";
 import PropTypes from "prop-types";
 import { useUserLocation } from "../../sagaStore/slices";
 import UpgradeDetailsModal from "./UpgradeDetailsModal";
-import { PropagateLoader } from "react-spinners"; 
+import { PropagateLoader } from "react-spinners";
 import LeaderBoardModal from "../../components/LeaderBoardModal";
 
 const ClickerUpgrades = ({ onClose }) => {
   const { t } = useTranslation();
   const [isLeaderboardOpen, setIsLeaderboardOpen] = useState(false);
+  const [slideUpgrades, setSlideUpgrades] = useState(false);
 
   const menuOptions = [
-    { name: "mountain", label: "Mountain" },
-    { name: "forest", label: "Forest" },
-    { name: "deserts", label: "Deserts" },
-    { name: "cave", label: "Cave" },
-    { name: "iceland", label: "Iceland" },
-    { name: "valley", label: "Valley" },
+    {
+      name: "mountain",
+      label: "Mountain",
+      icon: "/assets/images/clicker-character/mountain-icon.png",
+    },
+    {
+      name: "forest",
+      label: "Forest",
+      icon: "/assets/images/clicker-character/forest-icon.png",
+    },
+    {
+      name: "deserts",
+      label: "Deserts",
+      icon: "/assets/images/clicker-character/deserts-icon.png",
+    },
+    {
+      name: "cave",
+      label: "Cave",
+      icon: "/assets/images/clicker-character/cave-icon.png",
+    },
+    {
+      name: "iceland",
+      label: "Iceland",
+      icon: "/assets/images/clicker-character/iceland-icon.png",
+    },
+    {
+      name: "valley",
+      label: "Valley",
+      icon: "/assets/images/clicker-character/valley-icon.png",
+    },
   ];
 
   const [selectedOption, setSelectedOption] = useState("forest");
@@ -29,6 +54,16 @@ const ClickerUpgrades = ({ onClose }) => {
     if (userLocations) {
       setLoading(false);
     }
+
+    // intro animations
+    const timerUpgrades = setTimeout(() => {
+      setSlideUpgrades(true);
+    }, 250);
+
+    return () => {
+      clearTimeout(timerUpgrades);
+    };
+
   }, [userLocations]);
 
   const handleLeaderboardClick = () => {
@@ -36,12 +71,12 @@ const ClickerUpgrades = ({ onClose }) => {
   };
 
   const handleCloseLeaderboard = () => {
-    setIsLeaderboardOpen(false); 
+    setIsLeaderboardOpen(false);
   };
 
   return (
     <div
-      className="relative w-5/6 h-4/5 rounded-3xl p-3 mt-[10rem] transition-opacity duration-500 z-[100]"
+      className={`relative w-5/6 h-4/5 rounded-3xl p-3 mt-[10rem] transition-all duration-1000 z-[100] ${slideUpgrades? `translate-y-0 opacity-100` : `translate-y-60 opacity-0`}`}
       style={{
         border: "2px solid var(--Color, #F4FBFF)",
         background: "rgba(155, 231, 255, 0.58)",
@@ -116,29 +151,27 @@ const ClickerUpgrades = ({ onClose }) => {
           ) : (
             <div className="flex flex-row justify-start mt-[4rem] gap-[6rem]">
               {/* Menu bar */}
-              <div className="flex flex-col space-y-[2rem]">
+              <div className="w-[12dvw] flex flex-col space-y-[2rem]">
                 <p className="ml-[4rem] cursor-pointer" onClick={onClose}>
                   &lt;&nbsp; Back
                 </p>
                 {menuOptions.map((option, index) => (
                   <div
                     key={index}
-                    className="flex justify-center items-center text-lg font-bold py-2 px-4 rounded-lg cursor-pointer"
-                    style={{
-                      background:
-                        option.name === selectedOption ? "#FFB100" : "#146CFC",
-                      borderRadius: "12px",
-                      padding: "15px 30px",
-                      color: "#FFF",
-                      boxShadow: "2px 2px 10px rgba(0, 0, 0, 0.1)",
-                      textTransform: "uppercase",
-                      letterSpacing: "1px",
-                      border: "6px solid #FFFFFF",
-                      transform: `rotate(${index % 2 === 0 ? "-3deg" : "3deg"})`,
-                    }}
                     onClick={() => setSelectedOption(option.name)}
+                    className={`flex justify-center items-center gap-1.5 p-5 rounded-[10px] shadow-[0px_4px_4px_0px_rgba(255,210,143,0.61)_inset,0px_4px_4px_0px_rgba(136,136,136,0.48)] ${
+                      selectedOption === option.name ? 'bg-[#FFB100] transform rotate-6' : 'bg-[#146CFC]'
+                    } hover:pl-[24px] hover:pr-[20px] hover:border-1 hover:border-[#E59E69] hover:shadow-[0px_4px_4px_0px_#FFFBEF_inset,0px_-4px_4px_0px_rgba(255,249,228,0.48),0px_5px_4px_0px_rgba(232,140,72,0.48)] hover:rotate-6 hover:scale-105 transition-transform duration-300 ease-in-out`}
+                    
                   >
-                    {option.name}
+                    <img
+                      src={option.icon}
+                      alt={`${option.name} icon`}
+                      className="w-6 h-6 mr-4"
+                    />
+                    <span className="text-white text-xl font-normal font-['Luckiest_Guy'] capitalize leading-[18px]">
+                      {option.name}
+                    </span>
                   </div>
                 ))}
               </div>
@@ -162,7 +195,7 @@ const ClickerUpgrades = ({ onClose }) => {
                           return (
                             <div
                               key={index}
-                              className={`rounded-lg text-white flex flex-col items-center ${
+                              className={`rounded-lg text-white flex flex-col items-center transition-all duration-200 hover:scale-105 ${
                                 location.level === -1 ? "" : "cursor-pointer"
                               }`}
                               style={{
@@ -272,7 +305,9 @@ const ClickerUpgrades = ({ onClose }) => {
       </div>
 
       {/* Render the LeaderBoard pop-up if isLeaderboardOpen is true */}
-      {isLeaderboardOpen && <LeaderBoardModal onClose={handleCloseLeaderboard} />}
+      {isLeaderboardOpen && (
+        <LeaderBoardModal onClose={handleCloseLeaderboard} />
+      )}
 
       {/* Render UpgradeDetailsModal if an upgrade is selected */}
       {selectedUpgrade && (
