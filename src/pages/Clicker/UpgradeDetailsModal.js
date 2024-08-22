@@ -92,13 +92,6 @@ const UpgradeDetailsModal = ({ upgrade, isMaxLevel, onClose }) => {
             backgroundRepeat: "no-repeat",
           }}
         >
-          {/* Close Button */}
-          <button
-            className="w-full items-end justify-end text-white text-4xl text-right"
-            onClick={onClose}
-          >
-            &times;
-          </button>
 
           <div className="text-center tracking-wider">
             {upgradeUserLocationError === "location-max-level" ? (

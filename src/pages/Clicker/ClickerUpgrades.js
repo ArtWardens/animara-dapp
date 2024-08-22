@@ -195,13 +195,13 @@ const ClickerUpgrades = ({ onClose }) => {
                           return (
                             <div
                               key={index}
-                              className={`rounded-lg text-white flex flex-col items-center transition-all duration-200 hover:scale-105 ${
+                              className={`rounded-[36px] text-white flex flex-col items-center transition-all duration-200 hover:scale-105 ${
                                 location.level === -1 ? "" : "cursor-pointer"
                               }`}
                               style={{
                                 position: "relative",
                                 backgroundImage: `url("/assets/images/clicker-character/upgrades-bg.png")`,
-                                backgroundSize: "contain",
+                                backgroundSize: "cover",
                                 backgroundPosition: "center",
                                 backgroundRepeat: "no-repeat",
                               }}
@@ -270,15 +270,19 @@ const ClickerUpgrades = ({ onClose }) => {
                               </div>
 
                               {location.level === -1 && (
-                                <div className="absolute inset-0 flex justify-center items-center">
+                                <>
+                                  <div className="absolute inset-0 bg-gradient-to-b from-[rgba(0,0,0,0.5)] to-[rgba(0,0,0,0.8)] flex justify-center items-center opacity-70 rounded-[36px] backdrop-blur-lg" ></div>
                                   <img
-                                    src={
-                                      "/assets/images/clicker-character/lock-chain.png"
-                                    }
-                                    alt="Locked"
-                                    className="w-full"
-                                  />
-                                </div>
+                                      src="/assets/images/clicker-character/lock-chain-only.png"
+                                      style={{
+                                        backgroundSize: "cover",
+                                        backgroundPosition: "center",
+                                        backgroundRepeat: "no-repeat",
+                                      }}
+                                      alt="Locked"
+                                      className="w-full h-full absolute inset-0"
+                                    />
+                                </>
                               )}
                             </div>
                           );
