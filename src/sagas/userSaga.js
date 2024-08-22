@@ -104,12 +104,12 @@ import {
 
 export function* signupWithEmailSaga({ payload }) {
   try {
-    const { email, password, name, referralCode } = payload;
+    const { email, password, username, referralCode } = payload;
     const result = yield call(
       signUpWithEmailImpl,
       email,
       password,
-      name,
+      username,
       referralCode
     );
     switch (result) {
