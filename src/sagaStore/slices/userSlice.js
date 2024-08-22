@@ -41,6 +41,7 @@ const userInitialState = {
   userLocations: [],
   upgradeUserLocationErrorCode: '',
   newlyUnlockedLocations: [],
+  dailyComboMatched: [],
   referralStatLoading: false,
   referralCount: 0,
   nftPurchasedReferralCount: 0,
@@ -384,6 +385,8 @@ export const userSlice = createSlice({
         });
       }
 
+      state.dailyComboMatched = payload.completedDailyCombos || [];
+
       // Update user details
       const currentUser = current(state.user);
       state.user = {
@@ -521,6 +524,7 @@ export const useUserLocation = () => useAppSelector((state) => state.user.userLo
 export const useUserLocationLoading = () => useAppSelector((state) => state.user.userLocationsLoading);
 export const useUpgradeUserLocationError = () => useAppSelector((state) => state.user.upgradeUserLocationErrorCode);
 export const useNewlyUnlockedLocations = () => useAppSelector((state) => state.user.newlyUnlockedLocations);
+export const useDailyComboMatched = () => useAppSelector((state) => state.user.dailyComboMatched);
 export const useReferralStatLoading = () => useAppSelector((state) => state.user.referralStatLoading);
 export const useReferralCount = () => useAppSelector((state) => state.user.referralCount);
 export const useNFTPurchasedReferralCount = () => useAppSelector((state) => state.user.nftPurchasedReferralCount);
