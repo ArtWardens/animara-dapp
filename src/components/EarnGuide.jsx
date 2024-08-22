@@ -28,19 +28,6 @@ function EarnGuide({
     const [showTasks, setShowTasks] = useState(false);
     const [isRecharging, setIsRecharging] = useState(false);
 
-    const [imageSrcBoosts, setImageSrcBoosts] = useState("/assets/images/clicker-character/boostsBtn.png");
-    const handleMouseEnterBoosts = () => setImageSrcBoosts("/assets/images/clicker-character/boostsHover.png");
-    const handleMouseLeaveBoosts = () => setImageSrcBoosts("/assets/images/clicker-character/boostsBtn.png");
-
-    const [imageSrcUpgrades, setImageSrcUpgrades] = useState("/assets/images/clicker-character/upgradesBtn.png");
-    const handleMouseEnterUpgrades = () => setImageSrcUpgrades("/assets/images/clicker-character/upgradesHover.png");
-    const handleMouseLeaveUpgrades = () => setImageSrcUpgrades("/assets/images/clicker-character/upgradesBtn.png");
-
-    const [imageSrcTasks, setImageSrcTasks] = useState("/assets/images/clicker-character/tasksBtn.png");
-    const handleMouseEnterTasks = () => setImageSrcTasks("/assets/images/clicker-character/tasksHover.png");
-    const handleMouseLeaveTasks = () => setImageSrcTasks("/assets/images/clicker-character/tasksBtn.png");
-
-
     const handleUserUpgrades = () => {
         setOpenModal('upgrades');
         dispatch(getUserLocations());
@@ -154,18 +141,16 @@ function EarnGuide({
                             showBoosts ? 'translate-y-0 opacity-100' : 'translate-y-full opacity-0'
                         }`}
                     >
-                        <button
-                            className="transition ease-in-out hover:-translate-y-1 hover:scale-110 duration-200"
-                            onMouseEnter={handleMouseEnterBoosts}
-                            onMouseLeave={handleMouseLeaveBoosts}
-                            ref={trigger}
+                       <button
+                            className="px-[3rem] py-[1rem] mb-5 tracking-wider bg-[#49DEFF] shadow-[0px_4px_4px_0px_rgba(255,210,143,0.61)_inset] rounded-full border-orange-300 justify-center items-center gap-2 flex hover:bg-[#80E8FF] hover:shadow-[0px_1px_2px_0px_rgba(198,115,1,0.66)] hover:border-[#FFC85A] cursor-pointer hover:scale-105 transition-transform duration-200 text-xl font-bold font-outfit whitespace-nowrap"
                             onClick={() => setOpenModal('boosts')}
                         >
                             <img
-                                src={imageSrcBoosts}
-                                className="h-full w-full"
-                                alt="boosts"
+                                src="/assets/images/clicker-character/boosts-icon.png"
+                                className="h-auto w-[2dvw]"
+                                alt="boosts-icon"
                             />
+                            Boosts
                         </button>
                     </div>
 
@@ -175,16 +160,15 @@ function EarnGuide({
                         }`}
                     >
                         <button
-                            className="transition ease-in-out hover:-translate-y-1 hover:scale-110 duration-200"
-                            onMouseEnter={handleMouseEnterUpgrades}
-                            onMouseLeave={handleMouseLeaveUpgrades}
+                            className="px-[2rem] py-[1rem] mb-5 tracking-wider bg-[#FFB23F] shadow-[0px_4px_4px_0px_rgba(255,210,143,0.61)_inset] rounded-full border-orange-300 justify-center items-center gap-2 flex hover:bg-[#FFDC62] hover:shadow-[0px_1px_2px_0px_rgba(198,115,1,0.66)] hover:border-[#FFC85A] cursor-pointer hover:scale-105 transition-transform duration-200 text-xl font-bold font-outfit whitespace-nowrap"
                             onClick={handleUserUpgrades}
                         >
                             <img
-                                src={imageSrcUpgrades}
-                                className="h-full w-full"
-                                alt="upgrades"
+                                src="/assets/images/clicker-character/star-icon.png"
+                                className="h-auto w-[2dvw]"
+                                alt="star-icon"
                             />
+                            Upgrades & Explore Animara
                         </button>
                     </div>
                     <div
@@ -193,17 +177,15 @@ function EarnGuide({
                         }`}
                     >
                         <button
-                            className="transition ease-in-out hover:-translate-y-1 hover:scale-110 duration-200"
-                            onMouseEnter={handleMouseEnterTasks}
-                            onMouseLeave={handleMouseLeaveTasks}
-                            ref={trigger}
-                            onClick={() => setIsOneTimeTaskOpen(true)}
+                            className="px-[2.5rem] py-[1rem] mb-5 tracking-wider bg-[#49DEFF] shadow-[0px_4px_4px_0px_rgba(255,210,143,0.61)_inset] rounded-full border-orange-300 justify-center items-center gap-2 flex hover:bg-[#80E8FF] hover:shadow-[0px_1px_2px_0px_rgba(198,115,1,0.66)] hover:border-[#FFC85A] cursor-pointer hover:scale-105 transition-transform duration-200 text-xl font-bold font-outfit whitespace-nowrap"
+                            onClick={() => setIsOneTimeTaskOpen('true')}
                         >
                             <img
-                                src={imageSrcTasks}
-                                className="h-full w-full"
-                                alt="tasks"
+                                src="/assets/images/clicker-character/tasks-icon.png"
+                                className="h-auto w-[2dvw]"
+                                alt="tasks-icon"
                             />
+                            Tasks
                         </button>
                     </div>
                 </div>
