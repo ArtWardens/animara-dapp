@@ -177,7 +177,12 @@ const ClickerUpgrades = ({ onClose }) => {
               </div>
 
               <div className="w-full flex flex-col mr-[2rem]">
-                <div className="w-full flex justify-between items-center">
+                <div className="w-full flex justify- items-center">
+                <img
+                      src={`/assets/images/clicker-character/${selectedOption}-icon.png`}
+                      alt={`${selectedOption} icon`}
+                      className="w-10 h-10 mr-4"
+                    />
                   <div className="text-[#FFFFFF] text-4xl text-center font-LuckiestGuy font-normal tracking-widest">
                     {selectedOption.charAt(0).toUpperCase() +
                       selectedOption.slice(1)}
