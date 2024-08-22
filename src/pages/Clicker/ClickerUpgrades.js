@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import PropTypes from "prop-types";
-import { useUserLocation } from "../../sagaStore/slices";
+import { useDailyComboMatched, useUserLocation } from "../../sagaStore/slices";
 import UpgradeDetailsModal from "./UpgradeDetailsModal";
 import { PropagateLoader } from "react-spinners";
 import LeaderBoardModal from "../../components/LeaderBoardModal";
@@ -48,7 +48,9 @@ const ClickerUpgrades = ({ onClose }) => {
   const [selectedUpgrade, setSelectedUpgrade] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  let dailyComboMatched = [];
   const { userLocations } = useUserLocation();
+  dailyComboMatched = useDailyComboMatched();
 
   useEffect(() => {
     if (userLocations) {
@@ -177,15 +179,51 @@ const ClickerUpgrades = ({ onClose }) => {
               </div>
 
               <div className="w-full flex flex-col mr-[2rem]">
-                <div className="w-full flex justify- items-center">
-                <img
-                      src={`/assets/images/clicker-character/${selectedOption}-icon.png`}
-                      alt={`${selectedOption} icon`}
-                      className="w-10 h-10 mr-4"
-                    />
-                  <div className="text-[#FFFFFF] text-4xl text-center font-LuckiestGuy font-normal tracking-widest">
-                    {selectedOption.charAt(0).toUpperCase() +
-                      selectedOption.slice(1)}
+                <div className="w-full flex justify-between items-center">
+                  <div className="flex flex-row">
+                    <img
+                        src={`/assets/images/clicker-character/${selectedOption}-icon.png`}
+                        alt={`${selectedOption} icon`}
+                        className="w-10 h-10 mr-4"
+                      />
+                    <div className="text-[#FFFFFF] text-4xl text-center font-LuckiestGuy font-normal tracking-widest">
+                      {selectedOption.charAt(0).toUpperCase() +
+                        selectedOption.slice(1)}
+                    </div>
+                  </div>
+
+                  <div className="flex flex-row items-center space-x-4">
+                    {/* Daily Combo Section */}
+                    <div className="flex items-center bg-[#ffa900] rounded-3xl px-[2rem] py-[1rem] shadow-[0px_4px_4px_rgba(0,0,0,0.25)]">
+                      <div className="flex flex-col">
+                        <div className="text-white text-2xl font-LuckiestGuy font-normal tracking-wider ">
+                          DAILY COMBO
+                        </div>
+                        <div className="flex flex-row items-center text-white text-lg ">
+                          <img src="/assets/images/clicker-character/gem.png" alt="currency icon" className="w-6 h-6" />
+                          <span className="mx-2">9,000,000,000</span>
+                          <img src={`/assets/images/clicker-character/${dailyComboMatched.length === 3 ? "checked" : "unchecked"}.png`} alt={`/assets/images/clicker-character/${dailyComboMatched.length === 3 ? "checked" : "unchecked"}.png`} className="w-6 h-6 ml-2" />
+                        </div>
+                      </div>
+                      <div className="flex ml-4">
+                        <img src={`/assets/images/clicker-character/treasure-${dailyComboMatched.length > 0 ? "unlocked" : "locked"}.png`} alt="reward 1" title={dailyComboMatched.length > 0 ? t(dailyComboMatched[0]) : ""} className="w-full h-full" />
+                        <img src={`/assets/images/clicker-character/treasure-${dailyComboMatched.length > 1 ? "unlocked" : "locked"}.png`} alt="reward 2" title={dailyComboMatched.length > 1 ? t(dailyComboMatched[1]) : ""} className="w-full h-full ml-2" />
+                        <img src={`/assets/images/clicker-character/treasure-${dailyComboMatched.length > 2 ? "unlocked" : "locked"}.png`} alt="reward 2" title={dailyComboMatched.length > 2 ? t(dailyComboMatched[2]) : ""} className="w-full h-full ml-2" />
+                      </div>
+                    </div>
+
+                    {/* Profit Per 12h Section */}
+                    <div className="flex flex-row items-center bg-[#11365F] rounded-3xl px-[2rem] py-[1.3rem] shadow-[0px_4px_4px_rgba(0,0,0,0.25)]">
+                      <img src="/assets/images/clicker-character/explora-point.png" alt="profit icon" className="w-10 h-10 mr-2" />
+                      <div className="flex flex-col mr-[5rem]">
+                        <div className="text-[#56ff4d] text-2xl font-LuckiestGuy font-normal tracking-wider">
+                          +102,100,100K
+                        </div>
+                        <div className="text-white text-sm font-outfit ml-2">
+                          Profit Per 12h
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
 
@@ -238,7 +276,7 @@ const ClickerUpgrades = ({ onClose }) => {
                                       alt="icon2"
                                       className="w-6 h-6 mr-1"
                                     />
-                                    <p className="text-[#80e8ff]">
+                                    <p className="text-[#56ff4d]">
                                       +
                                       {location.level === 0 &&
                                       location.level !== -1
