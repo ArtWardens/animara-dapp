@@ -31,21 +31,21 @@ function ReferralPage (){
   useEffect(() => {
     // Tailwind's default breakpoint for 'xl' is 1280px
     const mediaQuery = window.matchMedia('(min-width: 1280px)');
-  
+    
     // Function to handle changes to the media query
     const handleMediaQueryChange = (event) => {
       setIsXlScreen(event.matches);
     };
-  
+    
     // Set the initial value
     setIsXlScreen(mediaQuery.matches);
-  
-    // Add the listener for subsequent changes
-    mediaQuery.addListener(handleMediaQueryChange);
-  
+    
+    // Add the listener for subsequent changes using the updated approach
+    mediaQuery.addEventListener('change', handleMediaQueryChange);
+    
     // Clean up the listener when the component unmounts
     return () => {
-      mediaQuery.removeListener(handleMediaQueryChange);
+      mediaQuery.removeEventListener('change', handleMediaQueryChange);
     };
   }, []);
 
