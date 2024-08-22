@@ -19,16 +19,20 @@ const UpgradeDetailsModal = ({ upgrade, isMaxLevel, onClose }) => {
   const [isExploredSuccessfully, setIsExploredSuccessfully] = useState(false);
   const [hasStartedUpgrade, setHasStartedUpgrade] = useState(false);
   const [showMaxLevelMessage, setShowMaxLevelMessage] = useState(false);
+  const [showModal, setShowModal] = useState(false);
 
   const logoList = [
     {
       region: "mountain",
-      logo: "/assets/images/clicker-character/icon-1.png",
+      logo: "/assets/images/clicker-character/mountain-icon.png",
     },
-    { region: "forest", logo: "/assets/images/clicker-character/icon-2.png" },
+    {
+      region: "forest",
+      logo: "/assets/images/clicker-character/forest-icon.png",
+    },
     {
       region: "deserts",
-      logo: "/assets/images/clicker-character/desert-icon.png",
+      logo: "/assets/images/clicker-character/deserts-icon-icon.png",
     },
     {
       region: "cave",
@@ -50,7 +54,7 @@ const UpgradeDetailsModal = ({ upgrade, isMaxLevel, onClose }) => {
 
   useEffect(() => {
     if (hasStartedUpgrade && !isUserLocationLoading) {
-      if (upgrade.level === upgrade.maxLevel) {
+      if (isMaxLevel) {
         setShowMaxLevelMessage(true);
         setIsExploredSuccessfully(false);
       } else {
@@ -58,7 +62,15 @@ const UpgradeDetailsModal = ({ upgrade, isMaxLevel, onClose }) => {
         setShowMaxLevelMessage(false);
       }
     }
-  }, [isUserLocationLoading, hasStartedUpgrade]);
+
+    const timerModal = setTimeout(() => {
+      setShowModal(true);
+    }, 250);
+
+    return () => {
+      clearTimeout(timerModal);
+    };
+  }, [isUserLocationLoading, hasStartedUpgrade, isMaxLevel]);
 
   const handleUpgrade = () => {
     setIsExploredSuccessfully(false);
@@ -72,7 +84,7 @@ const UpgradeDetailsModal = ({ upgrade, isMaxLevel, onClose }) => {
       {!isUserLocationLoading &&
       (showMaxLevelMessage || isExploredSuccessfully) ? (
         <div
-          className="flex flex-col px-[4rem] py-[8rem] rounded-xl w-[45%] "
+          className={`flex flex-col px-[4rem] py-[8rem] rounded-xl w-[45%] transition-all duration-1000 ${showModal ? `opacity-100 scale-100` : `opacity-0 scale-0`}`}
           style={{
             backgroundImage: `url("../assets/images/clicker-character/upgrades-details-bg.png")`,
             backgroundSize: "contain",
@@ -140,7 +152,7 @@ const UpgradeDetailsModal = ({ upgrade, isMaxLevel, onClose }) => {
         </div>
       ) : (
         <div
-          className="relative px-[4rem] py-[8rem] rounded-xl w-[90%] max-w-[800px] bg-no-repeat bg-contain"
+          className={`relative px-[4rem] py-[8rem] rounded-xl w-[90%] max-w-[800px] bg-no-repeat bg-contain transition-all duration-1000 ${showModal ? `opacity-100 scale-100` : `opacity-0 scale-0`}`}
           style={{
             backgroundImage: `url("../assets/images/clicker-character/upgrades-details-bg.png")`,
             backgroundPosition: "center",
@@ -160,7 +172,7 @@ const UpgradeDetailsModal = ({ upgrade, isMaxLevel, onClose }) => {
           <div className="flex flex-col items-center text-center space-y-4">
             <p className="text-2xl text-yellow-300 mt-2 font-semibold">
               <span className="inline-flex items-center">
-                <img src={logo} alt="region logo" className="w-6 h-6 mr-2" />
+                <img src={logo} alt="region logo" className="w-[3dvw] h-auto mr-2" />
               </span>
             </p>
 
@@ -200,7 +212,9 @@ const UpgradeDetailsModal = ({ upgrade, isMaxLevel, onClose }) => {
                   <>
                     <p className="text-white">&nbsp; → &nbsp;</p>
                     <img
-                      src={"../assets/images/clicker-character/explora-point.png"}
+                      src={
+                        "../assets/images/clicker-character/explora-point.png"
+                      }
                       alt="icon2"
                       className="w-6 h-6 mr-1"
                     />
