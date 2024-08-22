@@ -56,6 +56,9 @@ importers:
       '@solana/wallet-adapter-base':
         specifier: ^0.9.23
         version: 0.9.23(@solana/web3.js@1.95.3(bufferutil@4.0.8)(encoding@0.1.13)(utf-8-validate@5.0.10))
+      '@solana/wallet-adapter-base-ui':
+        specifier: ^0.1.2
+        version: 0.1.2(@solana/web3.js@1.95.3(bufferutil@4.0.8)(encoding@0.1.13)(utf-8-validate@5.0.10))(bs58@5.0.0)(react-native@0.75.2(@babel/core@7.25.2)(@babel/preset-env@7.25.3(@babel/core@7.25.2))(@types/react@18.3.4)(bufferutil@4.0.8)(encoding@0.1.13)(react@18.3.1)(typescript@4.9.5)(utf-8-validate@5.0.10))(react@18.3.1)
       '@solana/wallet-adapter-react':
         specifier: ^0.15.35
         version: 0.15.35(@solana/web3.js@1.95.3(bufferutil@4.0.8)(encoding@0.1.13)(utf-8-validate@5.0.10))(bs58@5.0.0)(react-native@0.75.2(@babel/core@7.25.2)(@babel/preset-env@7.25.3(@babel/core@7.25.2))(@types/react@18.3.4)(bufferutil@4.0.8)(encoding@0.1.13)(react@18.3.1)(typescript@4.9.5)(utf-8-validate@5.0.10))(react@18.3.1)
@@ -197,9 +200,6 @@ importers:
       tw-elements:
         specifier: ^2.0.0
         version: 2.0.0
-      typescript:
-        specifier: 4.9.5
-        version: 4.9.5
       url:
         specifier: ^0.11.4
         version: 0.11.4
@@ -219,6 +219,9 @@ importers:
         specifier: ^4.5.5
         version: 4.5.5(@types/react@18.3.4)(immer@10.1.1)(react@18.3.1)
     devDependencies:
+      '@types/react':
+        specifier: ^18.3.4
+        version: 18.3.4
       autoprefixer:
         specifier: ^10.4.20
         version: 10.4.20(postcss@8.4.41)
@@ -246,6 +249,9 @@ importers:
       tailwindcss:
         specifier: ^3.4.10
         version: 3.4.10
+      typescript:
+        specifier: 4.9.5
+        version: 4.9.5
 
 packages:
 
