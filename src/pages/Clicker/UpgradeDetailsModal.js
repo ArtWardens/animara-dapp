@@ -6,9 +6,13 @@ import {
   upgradeUserLocation,
   useNewlyUnlockedLocations,
   useUpgradeUserLocationError,
+  useUserDetails,
   useUserLocationLoading,
 } from "../../sagaStore/slices/userSlice.js";
 import { MoonLoader } from "react-spinners";
+import LevelUpModal from "./LevelUpModal.js";
+import { db } from "../../firebase/firebaseConfig";
+import { doc, getDoc, updateDoc } from "firebase/firestore";
 
 const UpgradeDetailsModal = ({ upgrade, isMaxLevel, onClose }) => {
   const { t } = useTranslation();
@@ -20,6 +24,9 @@ const UpgradeDetailsModal = ({ upgrade, isMaxLevel, onClose }) => {
   const [hasStartedUpgrade, setHasStartedUpgrade] = useState(false);
   const [showMaxLevelMessage, setShowMaxLevelMessage] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  const currentUser = useUserDetails();
+  const [userLevel, setUserLevel] = useState(currentUser?.level);
+  const [showLevelUpMessage, setShowLevelUpMessage] = useState(false);
 
   const logoList = [
     {
@@ -79,7 +86,38 @@ const UpgradeDetailsModal = ({ upgrade, isMaxLevel, onClose }) => {
     dispatch(upgradeUserLocation(upgrade.locationId));
   };
 
+  const handleLevelUp = () => {
+    if (currentUser?.level !== userLevel) {
+      setUserLevel(currentUser?.level);
+      setShowLevelUpMessage(true);
+      getLevelingSystemData();
+    } else {
+      onClose();
+    }
+  }
+
+  const getLevelingSystemData = async () => {
+    // Get the leveling system milestone document from the "levelingSystemData" collection
+    const levelingSystemDataRef = doc(db, "levelingSystemData", "9MrEEGAWyyr4Y6mSD7U3");
+    const levelingSystemDataDoc = await getDoc(levelingSystemDataRef);
+
+    if (!levelingSystemDataDoc.exists()) {
+      console.log("No such document!");
+      // return error
+    }
+    const levelingSystemData = levelingSystemDataDoc.data();
+
+    // Update user exploraPointsToNextLvl and coins
+    const userRef = doc(db, "users", currentUser.uid);
+    await updateDoc(userRef, {
+      "exploraPointsToNextLvl": levelingSystemData.levelMilestone[currentUser?.level].xp,
+      "coins": currentUser.coins + levelingSystemData.levelMilestone[currentUser?.level].coinReward,
+      "expLeftToNextLvl": levelingSystemData.levelMilestone[currentUser?.level].xp - currentUser.profitPerHour
+    });
+  }
+
   return (
+    <>
     <div className="fixed inset-0 bg-transparent backdrop-blur-xl rounded-xl flex justify-center items-center z-[200]">
       {!isUserLocationLoading &&
       (showMaxLevelMessage || isExploredSuccessfully) ? (
@@ -95,7 +133,9 @@ const UpgradeDetailsModal = ({ upgrade, isMaxLevel, onClose }) => {
           {/* Close Button */}
           <button
             className="w-full items-end justify-end text-white text-4xl text-right"
-            onClick={onClose}
+            onClick={() => {
+              handleLevelUp();
+            }}
           >
             &times;
           </button>
@@ -143,7 +183,9 @@ const UpgradeDetailsModal = ({ upgrade, isMaxLevel, onClose }) => {
           <div className="w-full flex items-center justify-center">
             <button
               className="bg-[#ffdc61] text-white mt-[1rem] px-8 py-2 rounded-full text-lg uppercase flex items-center justify-center"
-              onClick={onClose}
+              onClick={() => {
+                handleLevelUp();
+              }}
               disabled={isUserLocationLoading}
             >
               Continue
@@ -245,6 +287,16 @@ const UpgradeDetailsModal = ({ upgrade, isMaxLevel, onClose }) => {
         </div>
       )}
     </div>
+
+    {/* Render LevelUpModal when level up */}
+    {showLevelUpMessage && (
+      <LevelUpModal onClose={() => {
+        setShowLevelUpMessage(false);
+        onClose();
+      }
+    }/>
+    )}
+    </>
   );
 };
 
