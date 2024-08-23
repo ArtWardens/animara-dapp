@@ -118,7 +118,7 @@ const LoginPage = () => {
     <CSSTransition
       nodeRef={nodeRef} 
       in={inProp}
-      timeout={300}
+      timeout={500}
       classNames="fade"
       unmountOnExit
     >
