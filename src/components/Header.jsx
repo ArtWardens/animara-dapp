@@ -118,7 +118,11 @@ function Header() {
                             display: loadingImage ? 'none' : 'block'
                         }}
                         onLoad={() => setLoadingImage(false)}
-                        onError={() => setLoadingImage(false)}
+                        onError={(e) => {
+                            e.target.onerror = null;
+                            e.target.src = "/assets/images/clicker-character/2-initial.png";
+                            setLoadingImage(false);
+                        }}
                     />
                     <img
                         src="/assets/icons/edit.png"
@@ -211,7 +215,7 @@ function Header() {
 
             {/* Mobile Menu Button */}
             <button
-                className="transition ease-in-out hover:scale-105 xl:hidden absolute top-[5rem] right-[1rem] xl:right-[4rem] z-50"
+                className="transition ease-in-out hover:scale-105 xl:hidden absolute top-[5rem] right-[4rem] xl:right-[4rem] z-50"
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             >
                 <svg className="h-9 w-9 text-amber-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
@@ -307,6 +311,7 @@ function Header() {
                             className="transition ease-in-out hover:scale-105 flex items-center"
                             onMouseEnter={handleMouseEnterLogout}
                             onMouseLeave={handleMouseLeaveLogout}
+                            onClick={handleLogout}
                             ref={trigger}
                         >
                             <img

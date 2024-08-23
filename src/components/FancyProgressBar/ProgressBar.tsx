@@ -14,7 +14,7 @@ const ProgressBar: React.FC<IProgressBarProps> = (props) => {
 
   useEffect(() => {
     setProgressAnimation(true);
-  });
+  }, [setProgressAnimation]);
 
   const renderProgressFiller = (glow: boolean) => (
     <>
