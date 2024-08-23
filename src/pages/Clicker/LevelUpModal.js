@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { useUserDetails } from "../../sagaStore/slices/userSlice.js";
 
-const LevelUpModal = ({ onClose }) => {
+const LevelUpModal = ({ onClose, coinReward }) => {
   const currentUser = useUserDetails();
 
   return (
@@ -36,8 +36,11 @@ const LevelUpModal = ({ onClose }) => {
             LEVEL UP!
           </p>
           <div className="mt-[2rem]">
-            <p className="text-[1.25rem] text-white font-bold tracking-wider mb-[1rem]">
+            <p className="text-[2rem] text-white font-bold tracking-wider mb-[1rem]">
               LV{currentUser.level - 1} -&gt; LV{currentUser.level}
+            </p>
+            <p className="text-[1.25rem] text-white font-bold tracking-wider">
+              YOU GAINED
             </p>
           </div>
           <div className="gap-2 flex items-center justify-center">
@@ -47,13 +50,13 @@ const LevelUpModal = ({ onClose }) => {
               alt="gem"
             />
             <p
-              className="text-[2.25rem] text-[#FFAA00] tracking-normal overflow-hidden text-left"
+              className="text-[2.25rem] text-[#FFAA00] tracking-normal overflow-hidden text-left ml-3"
               style={{
                 WebkitTextStrokeWidth: "1.75px",
                 WebkitTextStrokeColor: "var(--Color-11, #FFF)",
               }}
             >
-              {currentUser.coins.toLocaleString()}
+              {coinReward}
             </p>
           </div>
         </div>
@@ -73,6 +76,7 @@ const LevelUpModal = ({ onClose }) => {
 
 LevelUpModal.propTypes = {
   onClose: PropTypes.func.isRequired,
+  coinReward: PropTypes.number.isRequired,
 };
 
 export default LevelUpModal;
