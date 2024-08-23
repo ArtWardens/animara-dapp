@@ -45,6 +45,8 @@ const rechargeEnergyByInvite = httpsCallable(
 const getUserLocations = httpsCallable(functions, "getUserLocations");
 const exploreLocation = httpsCallable(functions, "exploreLocation");
 const getReferralStats = httpsCallable(functions, "getReferralStats");
+const bindWallet = httpsCallable(functions, "bindWallet");
+const unbindWallet = httpsCallable(functions, "unbindWallet");
 
 export {
   auth,
@@ -63,4 +65,6 @@ export {
   getUserLocations,
   exploreLocation,
   getReferralStats,
+  bindWallet,
+  unbindWallet,
 };
