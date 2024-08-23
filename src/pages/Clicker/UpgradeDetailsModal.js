@@ -86,7 +86,7 @@ const UpgradeDetailsModal = ({ upgrade, isMaxLevel, onClose }) => {
         <div
           className={`flex flex-col px-[4rem] py-[8rem] rounded-xl w-[45%] transition-all duration-1000 ${showModal ? `opacity-100 scale-100` : `opacity-0 scale-0`}`}
           style={{
-            backgroundImage: `url("../assets/images/clicker-character/upgrades-details-bg.png")`,
+            backgroundImage: `url("/assets/images/clicker-character/upgrades-details-bg.png")`,
             backgroundSize: "contain",
             backgroundPosition: "center",
             backgroundRepeat: "no-repeat",
@@ -147,7 +147,7 @@ const UpgradeDetailsModal = ({ upgrade, isMaxLevel, onClose }) => {
         <div
           className={`relative px-[4rem] py-[8rem] rounded-xl w-[90%] max-w-[800px] bg-no-repeat bg-contain transition-all duration-1000 ${showModal ? `opacity-100 scale-100` : `opacity-0 scale-0`}`}
           style={{
-            backgroundImage: `url("../assets/images/clicker-character/upgrades-details-bg.png")`,
+            backgroundImage: `url("/assets/images/clicker-character/upgrades-details-bg.png")`,
             backgroundPosition: "center",
           }}
           onClick={(e) => e.stopPropagation()}
@@ -176,7 +176,7 @@ const UpgradeDetailsModal = ({ upgrade, isMaxLevel, onClose }) => {
             <div className="flex flex-row items-center justify-between">
               <p className="text-sm font-sans mr-[1rem]">with</p>
               <img
-                src={"../assets/images/clicker-character/gem.png"}
+                src={"/assets/images/clicker-character/gem.png"}
                 alt="gem"
                 className="w-6 h-6 mr-2"
               />
@@ -193,7 +193,7 @@ const UpgradeDetailsModal = ({ upgrade, isMaxLevel, onClose }) => {
                   Explora Points
                 </p>
                 <img
-                  src={"../assets/images/clicker-character/explora-point.png"}
+                  src={"/assets/images/clicker-character/explora-point.png"}
                   alt="icon2"
                   className="w-6 h-6 mr-1"
                 />
@@ -205,9 +205,7 @@ const UpgradeDetailsModal = ({ upgrade, isMaxLevel, onClose }) => {
                   <>
                     <p className="text-white">&nbsp; → &nbsp;</p>
                     <img
-                      src={
-                        "../assets/images/clicker-character/explora-point.png"
-                      }
+                      src={"/assets/images/clicker-character/explora-point.png"}
                       alt="icon2"
                       className="w-6 h-6 mr-1"
                     />

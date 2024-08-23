@@ -47,6 +47,7 @@ const userInitialState = {
   nftPurchasedReferralCount: 0,
   basicClaimable: 0,
   nftClaimable: 0,
+  bindWalletLoading: false,
 };
 
 export const userSlice = createSlice({
@@ -416,6 +417,34 @@ export const userSlice = createSlice({
       state.error = payload;
       state.referralStatLoading = false;
     },
+    bindWallet: (state, { payload }) => {
+      state.bindWalletLoading = true;
+    },
+    bindWalletSuccess: (state, { payload }) => {
+      const currentUser = current(state.user);
+      state.user = {
+        ...currentUser,
+        walletAddr: payload.walletAddr
+      }
+      state.bindWalletLoading = false;
+    },
+    bindWalletError: (state, { payload }) => {
+      state.bindWalletLoading = false;
+    },
+    unbindWallet: (state, { payload }) => {
+      state.bindWalletLoading = true;
+    },
+    unbindWalletSuccess: (state, { payload }) => {
+      const currentUser = current(state.user);
+      state.user = {
+        ...currentUser,
+        walletAddr: ''
+      }
+      state.bindWalletLoading = false;
+    },
+    unbindWalletError: (state, { payload }) => {
+      state.bindWalletLoading = false;
+    },
   },
 });
 
@@ -486,6 +515,12 @@ export const {
   getReferralStats,
   getReferralStatsSuccess,
   getReferralStatsError,
+  bindWallet,
+  bindWalletSuccess,
+  bindWalletError,
+  unbindWallet,
+  unbindWalletSuccess,
+  unbindWalletError,
 } = userSlice.actions;
 
 export const useAuthLoading = () => useAppSelector((state) => state.user.authLoading);
@@ -530,6 +565,7 @@ export const useReferralCount = () => useAppSelector((state) => state.user.refer
 export const useNFTPurchasedReferralCount = () => useAppSelector((state) => state.user.nftPurchasedReferralCount);
 export const useBasicClaimable = () => useAppSelector((state) => state.user.basicClaimable);
 export const useNftClaimable = () => useAppSelector((state) => state.user.nftClaimable);
+export const useBindWalletLoading = () => useAppSelector((state) => state.user.bindWalletLoading);
 
 const userReducer = userSlice.reducer;
 

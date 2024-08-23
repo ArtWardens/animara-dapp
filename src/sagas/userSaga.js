@@ -28,6 +28,8 @@ import {
   rechargeEnergyByInviteImpl,
   getUserLocationImpl,
   upgradeUserLocationImpl,
+  bindWalletImpl,
+  unbindWalletImpl,
 } from '../firebase/clicker';
 import {
   closeDailyPopup,
@@ -90,6 +92,12 @@ import {
   getReferralStats,
   getReferralStatsSuccess,
   getReferralStatsError,
+  bindWallet,
+  bindWalletSuccess,
+  bindWalletError,
+  unbindWallet,
+  unbindWalletSuccess,
+  unbindWalletError,
 } from "../sagaStore/slices";
 import {
   StaminaRechargeTypeBasic,
@@ -104,12 +112,12 @@ import {
 
 export function* signupWithEmailSaga({ payload }) {
   try {
-    const { email, password, name, referralCode } = payload;
+    const { email, password, username, referralCode } = payload;
     const result = yield call(
       signUpWithEmailImpl,
       email,
       password,
-      name,
+      username,
       referralCode
     );
     switch (result) {
@@ -442,7 +450,37 @@ export function* getReferralStatsSaga() {
       );
     }
   } catch (error) {
-    yield put(getReferralStatsSuccess(error));
+    yield put(getReferralStatsError(error));
+  }
+}
+
+export function* bindWalletSaga({ payload }) {
+  try {
+    const result = yield call(bindWalletImpl, payload);
+    if (result) {
+      yield put(bindWalletSuccess(result));
+    } else {
+      yield put(
+        bindWalletError("Failed to connect wallet. Please try again.")
+      );
+    }
+  } catch (error) {
+    yield put(bindWalletError(error));
+  }
+}
+
+export function* unbindWalletSaga() {
+  try {
+    const result = yield call(unbindWalletImpl);
+    if (result) {
+      yield put(unbindWalletSuccess(result));
+    } else {
+      yield put(
+        unbindWalletError("Failed to connect wallet. Please try again.")
+      );
+    }
+  } catch (error) {
+    yield put(unbindWalletError(error));
   }
 }
 
@@ -468,4 +506,6 @@ export function* userSagaWatcher() {
   yield takeLatest(getUserLocations.type, getUserLocationsSaga);
   yield takeLatest(upgradeUserLocation.type, upgradeUserLocationsSaga);
   yield takeLatest(getReferralStats.type, getReferralStatsSaga);
+  yield takeLatest(bindWallet.type, bindWalletSaga);
+  yield takeLatest(unbindWallet.type, unbindWalletSaga);
 }
