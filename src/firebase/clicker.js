@@ -1,4 +1,4 @@
-import { auth, getUserLocations, exploreLocation, settleTapSession, rechargeEnergyByInvite, rechargeEnergy } from "./firebaseConfig";
+import { auth, getUserLocations, exploreLocation, settleTapSession, rechargeEnergyByInvite, rechargeEnergy, bindWallet, unbindWallet } from "./firebaseConfig";
 
 const settleTapSessionImpl = async ({ newCointAmt, newStamina }) => {
     try {
@@ -85,11 +85,45 @@ const upgradeUserLocationImpl = async (locationId) => {
     }
 };
 
+const bindWalletImpl = async (walletAddr) => {
+    try {
+        const idToken = await auth.currentUser.getIdToken(/* forceRefresh */ false);
+        const result = await bindWallet({
+            idToken: idToken,
+            walletAddr: `${walletAddr}`
+        });
+        if (result.data.error){
+            throw result.data.error;
+        }
+        return result.data;
+    }catch (error) {
+        console.log("Failed to connect wallet with error: ", error);
+        throw error;
+    }
+};
+
+const unbindWalletImpl = async () => {
+    try {
+        const idToken = await auth.currentUser.getIdToken(/* forceRefresh */ false);
+        const result = await unbindWallet({
+            idToken: idToken,
+        });
+        if (result.data.error){
+            throw result.data.error;
+        }
+        return result.data;
+    }catch (error) {
+        console.log("Failed to disconnect wallet with error: ", error);
+        throw error;
+    }
+};
 
 export {
     settleTapSessionImpl,
     rechargeEnergyImpl,
     rechargeEnergyByInviteImpl,
     getUserLocationImpl,
-    upgradeUserLocationImpl
+    upgradeUserLocationImpl,
+    bindWalletImpl,
+    unbindWalletImpl
 };

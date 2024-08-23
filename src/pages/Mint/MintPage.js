@@ -1,23 +1,9 @@
 import React, { useEffect, useState } from "react";
-import Header from "../../components/Header.jsx";
 import { fetchDate, startCountdown } from "../../firebase/countDown";
-import dynamic from "next/dynamic";
-import styles from "../../styles/Home.module.css";
-
-const WalletMultiButtonDynamic = dynamic(
-  async () =>
-    (await import("@solana/wallet-adapter-react-ui")).WalletMultiButton,
-  { ssr: false }
-);
+import Header from "../../components/Header.jsx";
+import WalletInfo from "../../components/SolanaWallet/WalletInfo.jsx";
 
 function MintPage() {
-  const [timeLeft, setTimeLeft] = useState({
-    days: 0,
-    hours: 0,
-    minutes: 0,
-    seconds: 0,
-  });
-
   const [isContainerVisible, setIsContainerVisible] = useState(true);
   const [showTitle, setShowTitle] = useState(false);
   const [showTextOne, setShowTextOne] = useState(false);
@@ -25,6 +11,12 @@ function MintPage() {
   const [showTextThree, setShowTextThree] = useState(false);
   const [showTextSubtext, setShowSubtext] = useState(false);
   const [slideMintPanel, setSlideMintPanel] = useState(false);
+  const [timeLeft, setTimeLeft] = useState({
+    days: 0,
+    hours: 0,
+    minutes: 0,
+    seconds: 0,
+  });
 
   useEffect(() => {
     // start minting deadline
@@ -79,6 +71,8 @@ function MintPage() {
   return (
     <>
       <Header />
+
+      {/* page background */}
       <div
         className="flex flex-col items-center pb-8 min-h-screen w-full"
         style={{
@@ -90,11 +84,14 @@ function MintPage() {
           backgroundAttachment: "fixed",
         }}
       >
+        {/* Page Content */}
         <div className="w-full flex flex-col xl:flex-row justify-between container pt-[12rem] tracking-wider">
-          {/* title */}
+          
+          {/* Mint info section */}
           <div className={`xl:w-[30%] text-amber-500 grid gap-8 transition-all duration-1000
             ${showTitle ? `opacity-100` : `opacity-0`}`
           }>
+            {/* title */}
             <div className="py-4 text-center xl:text-left">
               <span
                 className="text-5xl"
@@ -117,6 +114,7 @@ function MintPage() {
               </span>
             </div>
 
+            {/* step 1 text */}
             <div className={`transition-all duration-1000
                 ${showTextOne ? `opacity-100` : `opacity-0`}
               `}>
@@ -138,6 +136,7 @@ function MintPage() {
               </p>
             </div>
 
+            {/* step 2 text */}
             <div className={`transition-all duration-1000
                 ${showTextTwo ? `opacity-100` : `opacity-0`}
               `}>
@@ -158,6 +157,8 @@ function MintPage() {
                 Mint your NFTs and unlock your Anitap VIP Value Pass today!
               </p>
             </div>
+
+            {/* step 3 text */}
             <div className={`transition-all duration-1000
                 ${showTextThree ? `opacity-100` : `opacity-0`}
               `}>
@@ -180,9 +181,9 @@ function MintPage() {
               </p>
             </div>
 
-            {/* Mobile view */}
+            {/* Mobile view mint card */}
             <div
-              className="w-full block xl:hidden rounded-3xl p-3 mt-[2rem] "
+              className="w-full block xl:hidden rounded-3xl p-3 mt-[2rem] text-white"
               style={{
                 border: "2px solid var(--Color, #F4FBFF)",
                 background: "rgba(155, 231, 255, 0.58)",
@@ -191,137 +192,150 @@ function MintPage() {
                 backdropFilter: "blur(15px)",
               }}
             >
-            <div className="absolute flex w-full justify-between -top-8">
-              <img
-                src={"/assets/images/clicker-character/ring01.png"}
-                alt="ring"
-                className="object-cover w-11 absolute left-2"
-              />
-              <img
-                src={"/assets/images/clicker-character/ring01.png"}
-                alt="ring"
-                className="object-cover w-11 opacity-0"
-              />
-              <img
-                src={"/assets/images/clicker-character/ring02.png"}
-                alt="ring"
-                className="object-cover w-11 absolute right-8"
-              />
-            </div>
-            <div
-              className="rounded-2xl place-content-center p-6 grid min-h-[60vh] lg:min-h-[80dvh] 2xl:min-h-[50dvh]"
-              style={{
-                backgroundImage:
-                  'url("/assets/images/clicker-character/mintBBG.png")',
-                backgroundSize: "cover",
-                backgroundPosition: "center",
-                backgroundRepeat: "no-repeat",
-              }}
-            >
-              {isContainerVisible && (
-                <div className="p-3 px-6 bg-[#003260] rounded-3xl shadow-inner border border-[#7fc1ff] flex-col justify-self-center items-center gap-2 inline-flex">
-                  <p className="text-md pb-1">Minting Ends In</p>
-                  <div className="h-[50px] justify-start items-center inline-flex gap-1 pb-3">
-                    <div className="w-12 h-1/2 bg-[#003260] shadow-inner flex-col justify-center items-center gap-1 inline-flex">
-                      <div className="w-12 h-8 flex-col justify-center items-center gap-4 flex">
-                        <div className="text-center text-white text-[26px] tracking-wide font-outfit">
-                          {timeLeft.days}
-                        </div>
-                      </div>
-                      <div className="text-center text-white text-[7px] font-outfit uppercase">
-                        Days
-                      </div>
-                    </div>
-                    <span className="text-white font-outfit font-semibold text-2xl">
-                      :
-                    </span>
-                    <div className="w-12 h-1/2 bg-[#003260] shadow-inner flex-col justify-center items-center gap-1 inline-flex">
-                      <div className="w-12 h-8 flex-col justify-center items-center gap-4 flex">
-                        <div className="text-center text-white text-[26px] tracking-wide font-outfit">
-                          {timeLeft.hours}
-                        </div>
-                      </div>
-                      <div className="text-center text-white text-[7px] font-outfit uppercase">
-                        Hours
-                      </div>
-                    </div>
-                    <span className="text-white font-outfit font-semibold text-2xl">
-                      :
-                    </span>
-                    <div className="w-12 h-1/2 bg-[#003260] shadow-inner flex-col justify-center items-center gap-1 inline-flex">
-                      <div className="w-12 h-8 flex-col justify-center items-center gap-4 flex">
-                        <div className="text-center text-white text-[26px] tracking-wide font-outfit">
-                          {timeLeft.minutes}
-                        </div>
-                      </div>
-                      <div className="text-center text-white text-[7px] font-outfit uppercase">
-                        Minutes
-                      </div>
-                    </div>
-                    <span className="text-white font-outfit font-semibold text-2xl">
-                      :
-                    </span>
-                    <div className="w-12 h-1/2 bg-[#003260] shadow-inner flex-col justify-center items-center gap-1 inline-flex">
-                      <div className="w-12 h-8 flex-col justify-center items-center gap-4 flex">
-                        <div className="text-center text-white text-[26px] tracking-wide font-outfit">
-                          {timeLeft.seconds}
-                        </div>
-                      </div>
-                      <div className="text-center text-white text-[7px] font-outfit uppercase">
-                        Seconds
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              )}
-              <img
-                src="/assets/images/clicker-character/nft-treasureBox.png"
-                alt="NFT Treasure Box"
-                className="object-contain w-96 -my-10"
-              />
-              <div className="w-full flex-col justify-center items-center inline-flex">
-                <div className="flex-col justify-center items-center flex pb-8">
-                  <span className="text-gray-200 text-xl line-through">
-                    0.097 SOL
-                  </span>
-                  <div className="text-center absolute right-0 bottom-[13rem] text-white text-sm border-4 px-3 py-1 border-white rounded-2xl bg-sky-500 rotate-[20deg]">
-                    Early Bird
-                    <br />
-                    Bonus Active!
-                  </div>
-                  <div
-                    className="text-center text-amber-500 text-5xl z-10"
-                    style={{
-                      WebkitTextStrokeWidth: "3.5px",
-                      WebkitTextStrokeColor: "var(--COlor-11, #FFF)",
-                      textShadow: "0px 2px 4px rgba(0, 0, 0, 0.25)",
-                    }}
-                  >
-                    0.073 SOL
-                  </div>
-                </div>
+              {/* mint card background */}
+              <div className="absolute flex w-full justify-between -top-8">
+                <img
+                  src={"/assets/images/clicker-character/ring01.png"}
+                  alt="ring"
+                  className="object-cover w-11 absolute left-2"
+                />
+                <img
+                  src={"/assets/images/clicker-character/ring01.png"}
+                  alt="ring"
+                  className="object-cover w-11 opacity-0"
+                />
+                <img
+                  src={"/assets/images/clicker-character/ring02.png"}
+                  alt="ring"
+                  className="object-cover w-11 absolute right-8"
+                />
               </div>
-              <div className="justify-center items-center inline-flex hover:scale-105 transition-transform duration-200">
-                <div className="px-[2rem] py-[1.5rem] bg-[#FFDC62] rounded-full border border-[#E59E69] justify-center items-center inline-flex shadow-[0px_4px_4px_0px_#FFFBEF_inset,0px_-4px_4px_0px_rgba(255,249,228,0.48),0px_5px_4px_0px_rgba(232,140,72,0.48)] hover:bg-[#FFB23F] hover:pl-[24px] hover:pr-[20px] hover:border-1 hover:border-[#E59E69] hover:shadow-[0px_4px_4px_0px_rgba(255,210,143,0.61)_inset,0px_4px_4px_0px_rgba(136,136,136,0.48)] cursor-pointer">
-                  <div
-                    className="text-center text-white text-3xl font-normal"
-                    style={{
-                      textShadow: "0px 2px 0.6px rgba(240, 139, 0, 0.66)",
-                    }}
-                  >
-                    <span className="hover:text-shadow-none">Mint Now</span>
+
+              {/* card content */}
+              <div
+                className="rounded-2xl place-content-center p-6 grid min-h-[60vh] lg:min-h-[80dvh] 2xl:min-h-[50dvh]"
+                style={{
+                  backgroundImage:
+                    'url("/assets/images/clicker-character/mintBBG.png")',
+                  backgroundSize: "cover",
+                  backgroundPosition: "center",
+                  backgroundRepeat: "no-repeat",
+                }}
+              >
+                {/* mint countdown */}
+                {isContainerVisible && (
+                  <div className="p-3 px-6 bg-[#003260] rounded-3xl shadow-inner border border-[#7fc1ff] flex-col justify-self-center items-center gap-2 inline-flex">
+                    <p className="text-md pb-1">Minting Ends In</p>
+                    <div className="h-[50px] justify-start items-center inline-flex gap-1 pb-3">
+                      <div className="w-12 h-1/2 bg-[#003260] shadow-inner flex-col justify-center items-center gap-1 inline-flex">
+                        <div className="w-12 h-8 flex-col justify-center items-center gap-4 flex">
+                          <div className="text-center text-white text-[26px] tracking-wide font-outfit">
+                            {timeLeft.days}
+                          </div>
+                        </div>
+                        <div className="text-center text-white text-[7px] font-outfit uppercase">
+                          Days
+                        </div>
+                      </div>
+                      <span className="text-white font-outfit font-semibold text-2xl">
+                        :
+                      </span>
+                      <div className="w-12 h-1/2 bg-[#003260] shadow-inner flex-col justify-center items-center gap-1 inline-flex">
+                        <div className="w-12 h-8 flex-col justify-center items-center gap-4 flex">
+                          <div className="text-center text-white text-[26px] tracking-wide font-outfit">
+                            {timeLeft.hours}
+                          </div>
+                        </div>
+                        <div className="text-center text-white text-[7px] font-outfit uppercase">
+                          Hours
+                        </div>
+                      </div>
+                      <span className="text-white font-outfit font-semibold text-2xl">
+                        :
+                      </span>
+                      <div className="w-12 h-1/2 bg-[#003260] shadow-inner flex-col justify-center items-center gap-1 inline-flex">
+                        <div className="w-12 h-8 flex-col justify-center items-center gap-4 flex">
+                          <div className="text-center text-white text-[26px] tracking-wide font-outfit">
+                            {timeLeft.minutes}
+                          </div>
+                        </div>
+                        <div className="text-center text-white text-[7px] font-outfit uppercase">
+                          Minutes
+                        </div>
+                      </div>
+                      <span className="text-white font-outfit font-semibold text-2xl">
+                        :
+                      </span>
+                      <div className="w-12 h-1/2 bg-[#003260] shadow-inner flex-col justify-center items-center gap-1 inline-flex">
+                        <div className="w-12 h-8 flex-col justify-center items-center gap-4 flex">
+                          <div className="text-center text-white text-[26px] tracking-wide font-outfit">
+                            {timeLeft.seconds}
+                          </div>
+                        </div>
+                        <div className="text-center text-white text-[7px] font-outfit uppercase">
+                          Seconds
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* treasure box */}
+                <img
+                  src="/assets/images/clicker-character/nft-treasureBox.png"
+                  alt="NFT Treasure Box"
+                  className="object-contain w-96 -my-10"
+                />
+
+                {/* mint price */}
+                <div className="w-full flex-col justify-center items-center inline-flex">
+                  <div className="flex-col justify-center items-center flex pb-8">
+                    <span className="text-gray-200 text-xl line-through">
+                      0.097 SOL
+                    </span>
+                    <div className="text-center absolute right-0 bottom-[13rem] text-white text-sm border-4 px-3 py-1 border-white rounded-2xl bg-sky-500 rotate-[20deg]">
+                      Early Bird
+                      <br />
+                      Bonus Active!
+                    </div>
+                    <div
+                      className="text-center text-amber-500 text-5xl z-10"
+                      style={{
+                        WebkitTextStrokeWidth: "3.5px",
+                        WebkitTextStrokeColor: "var(--COlor-11, #FFF)",
+                        textShadow: "0px 2px 4px rgba(0, 0, 0, 0.25)",
+                      }}
+                    >
+                      0.073 SOL
+                    </div>
                   </div>
                 </div>
+
+                {/* mint button */}
+                <div className="justify-center items-center inline-flex hover:scale-105 transition-transform duration-200">
+                  <div className="px-[2rem] py-[1.5rem] bg-[#FFDC62] rounded-full border border-[#E59E69] justify-center items-center inline-flex shadow-[0px_4px_4px_0px_#FFFBEF_inset,0px_-4px_4px_0px_rgba(255,249,228,0.48),0px_5px_4px_0px_rgba(232,140,72,0.48)] hover:bg-[#FFB23F] hover:pl-[24px] hover:pr-[20px] hover:border-1 hover:border-[#E59E69] hover:shadow-[0px_4px_4px_0px_rgba(255,210,143,0.61)_inset,0px_4px_4px_0px_rgba(136,136,136,0.48)] cursor-pointer">
+                    <div
+                      className="text-center text-white text-3xl font-normal"
+                      style={{
+                        textShadow: "0px 2px 0.6px rgba(240, 139, 0, 0.66)",
+                      }}
+                    >
+                      <span className="hover:text-shadow-none">Mint Now</span>
+                    </div>
+                  </div>
+                </div>
+                
+                <WalletInfo label="Using Wallet"/>
               </div>
-            </div>
             </div>
           
+            {/* footer */}
             <div className={`border-2 border-transparent border-t-sky-300 border-dashed py-8 mt-4 font-outfit text-md
               ${showTextSubtext ? `opacity-100` : `opacity-0`}`
             }>
               <div className="flex flex-col items-center xl:items-start">
                 <div>
-                  <span className="cursor-pointer text-amber-500 hover:text-amber-400">
+                  <span className="cursor-pointer text-amber-500 hover:text-amber-500">
                     <a
                       href="https://opensea.io/login"
                       target="_blank"
@@ -331,7 +345,7 @@ function MintPage() {
                     </a>
                   </span>
                   <span className="text-white">&nbsp;&nbsp;|&nbsp;&nbsp;</span>
-                  <span className="cursor-pointer text-amber-500 hover:text-amber-400">
+                  <span className="cursor-pointer text-amber-500 hover:text-amber-500">
                     <a
                       href="https://etherscan.io/login"
                       target="_blank"
@@ -360,7 +374,7 @@ function MintPage() {
               backdropFilter: "blur(15px)",
             }}
           >
-            {/* Mint Panel */}
+            {/* Mint Panel background */}
             <div className="absolute flex w-full justify-between -top-8">
               <img
                 src={"/assets/images/clicker-character/ring01.png"}
@@ -378,6 +392,8 @@ function MintPage() {
                 className="object-cover w-11 absolute right-8"
               />
             </div>
+
+            {/* mint panel content */}
             <div
               className="rounded-2xl place-content-center p-6 grid min-h-[60vh] lg:min-h-[80dvh] 2xl:min-h-[50dvh]"
               style={{
@@ -388,6 +404,7 @@ function MintPage() {
                 backgroundRepeat: "no-repeat",
               }}
             >
+              {/* mint countdown */}
               {isContainerVisible && (
                 <div className="p-3 px-6 bg-[#003260] rounded-3xl shadow-inner border border-[#7fc1ff] flex-col justify-self-center items-center gap-2 inline-flex">
                   <p className="text-md pb-1">Minting Ends In</p>
@@ -444,35 +461,17 @@ function MintPage() {
                   </div>
                 </div>
               )}
+
+              {/* treasure chest */}
               <img
                 src="/assets/images/clicker-character/nft-treasureBox.png"
                 alt="NFT Treasure Box"
                 className="object-contain w-96 -my-10"
               />
-              <div className="w-full flex-col justify-center items-center inline-flex">
-                <div className="flex-col justify-center items-center flex pb-8">
-                  <span className="text-gray-200 text-xl line-through">
-                    0.097 SOL
-                  </span>
-                  <div className="text-center absolute right-36 bottom-52 text-white text-sm border-4 px-3 py-1 border-white rounded-2xl bg-sky-500 rotate-[20deg]">
-                    Early Bird
-                    <br />
-                    Bonus Active!
-                  </div>
-                  <div
-                    className="text-center text-amber-500 text-6xl z-10"
-                    style={{
-                      WebkitTextStrokeWidth: "3.5px",
-                      WebkitTextStrokeColor: "var(--COlor-11, #FFF)",
-                      textShadow: "0px 2px 4px rgba(0, 0, 0, 0.25)",
-                    }}
-                  >
-                    0.073 SOL
-                  </div>
-                </div>
-              </div>
+
+              {/* mint button */}
               <div className="justify-center items-center inline-flex hover:scale-105 transition-transform duration-200">
-                <div className="h-[90px] w-[270px] bg-[#FFDC62] rounded-full border border-[#E59E69] justify-center items-center inline-flex shadow-[0px_4px_4px_0px_#FFFBEF_inset,0px_-4px_4px_0px_rgba(255,249,228,0.48),0px_5px_4px_0px_rgba(232,140,72,0.48)] hover:bg-[#FFB23F] hover:pl-[24px] hover:pr-[20px] hover:border-1 hover:border-[#E59E69] hover:shadow-[0px_4px_4px_0px_rgba(255,210,143,0.61)_inset,0px_4px_4px_0px_rgba(136,136,136,0.48)] cursor-pointer">
+                <div className="h-[80px] w-[250px] bg-[#FFDC62] rounded-full border border-[#E59E69] justify-center items-center inline-flex shadow-[0px_4px_4px_0px_#FFFBEF_inset,0px_-4px_4px_0px_rgba(255,249,228,0.48),0px_5px_4px_0px_rgba(232,140,72,0.48)] hover:bg-[#FFB23F] hover:pl-[24px] hover:pr-[20px] hover:border-1 hover:border-[#E59E69] hover:shadow-[0px_4px_4px_0px_rgba(255,210,143,0.61)_inset,0px_4px_4px_0px_rgba(136,136,136,0.48)] cursor-pointer">
                   <div
                     className="text-center text-white text-3xl font-normal"
                     style={{
@@ -483,9 +482,9 @@ function MintPage() {
                   </div>
                 </div>
               </div>
-              <div className={styles.wallet}>
-                <WalletMultiButtonDynamic />
-              </div>
+
+              {/* wallet info */}
+              <WalletInfo label="Using Wallet"/>
             </div>
           </div>
         </div>
