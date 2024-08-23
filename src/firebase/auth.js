@@ -15,10 +15,10 @@ import {
   loginWithTelegram,
 } from "./firebaseConfig.js";
 
-const signUpWithEmailImpl = async (email, password, name, referralCode) => {
+const signUpWithEmailImpl = async (email, password, username, referralCode) => {
   try {
     // validate input before proceeding
-    if (!name || !email || !password) {
+    if (!username || !email || !password) {
       return -1;
     }
 
@@ -44,12 +44,10 @@ const signUpWithEmailImpl = async (email, password, name, referralCode) => {
         dynamicLinkDomain: `${process.env.REACT_APP_DOMAIN}`,
       };
 
-      const verifyEmailResult = await sendEmailVerification(
+      await sendEmailVerification(
         result.user,
         actionCodeSettings
       );
-
-      console.log(verifyEmailResult);
 
       //redirect user to verify email page
       window.location.href = "/verify-email";
