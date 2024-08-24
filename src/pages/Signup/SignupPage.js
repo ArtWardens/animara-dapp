@@ -310,7 +310,7 @@ const SignupPage = () => {
               id="link-checkbox"
               type="checkbox"
               value={agreeTNC}
-              onChange={(e) => setAgreeTNC(e.target.value)}
+              onChange={(e) => setAgreeTNC(e.target.checked)}
               className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:accent-[#49DEFF] dark:focus:accent-[#49DEFF] dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
             <label htmlFor="link-checkbox" className="ms-2 text-sm font-outfit text-gray-900 dark:text-gray-300">
               By signing up, I agree to Animara&#39;s <Link to="/" className="text-[#49DEFF] dark:text-[#49DEFF] hover:underline">Terms & Condition</Link>
@@ -323,7 +323,11 @@ const SignupPage = () => {
             id="signup-button"
             disabled={isAuthLoading || !hasInput}
             onClick={handleSignUpWithEmail}
-            className="mt-3 font-outfit font-bold text-[1rem] leading-[1rem] text-[#FFF5F5] w-full bg-[#FFB23F] rounded-[1.25rem] border-[0.4px] border-[#E59E69] py-[1.25rem] px-[2rem] hover:brightness-75"
+            className={`mt-3 font-outfit font-bold text-[1rem] leading-[1rem] w-full rounded-[1.25rem] border-[0.4px] py-[1.25rem] px-[2rem] ${
+              isAuthLoading || !hasInput
+                ? 'bg-gray-400 border-gray-300 text-gray-200'
+                : 'bg-[#FFB23F] border-[#E59E69] text-[#FFF5F5] hover:brightness-75'
+            }`}
           >
             {isAuthLoading ? (
               <div className="flex items-center justify-center">

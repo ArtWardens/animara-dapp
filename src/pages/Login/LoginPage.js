@@ -182,7 +182,11 @@ const LoginPage = () => {
             <button
               id="login-button"
               disabled={isAuthLoading || !hasInput}
-              className="mt-3 font-outfit font-bold text-[1rem] leading-[1rem] text-[#FFF5F5] w-full bg-[#FFB23F] rounded-[1.25rem] border-[0.4px] border-[#E59E69] py-[1.25rem] px-[2rem] hover:brightness-75"
+              className={`mt-3 font-outfit font-bold text-[1rem] leading-[1rem] w-full rounded-[1.25rem] border-[0.4px] py-[1.25rem] px-[2rem] ${
+                isAuthLoading || !hasInput
+                  ? 'bg-gray-400 border-gray-300 text-gray-200'
+                  : 'bg-[#FFB23F] border-[#E59E69] text-[#FFF5F5] hover:brightness-75'
+              }`}
               onClick={handleLoginWithEmail}
             >
               {isAuthLoading ? (
