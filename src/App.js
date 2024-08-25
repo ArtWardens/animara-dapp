@@ -11,6 +11,7 @@ import LockPage from "./pages/Lock/LockPage";
 import VerifyEmailPage from "./pages/VerifyEmail/VerifyEmailPage";
 import LimitedAccessPage from "./pages/VerifyEmail/LimitedAccessPage";
 import MintPage from "./pages/Mint/MintPage";
+import FakeMint from "./pages/FakeMint/FakeMint.tsx";
 import AppLayout from './components/AppLayout';
 import { GlobalProvider } from './context/ContextProvider';
 import rootSaga from './sagas';
@@ -20,8 +21,9 @@ import { runSaga } from './sagaStore/store';
 import "@solana/wallet-adapter-react-ui/styles.css";
 
 // Import Solana wallet packages
-import { ConnectionProvider, WalletProvider } from '@solana/wallet-adapter-react';
+import { WalletProvider } from '@solana/wallet-adapter-react';
 import { WalletModalProvider } from '@solana/wallet-adapter-react-ui';
+import { UmiProvider } from "./utils/UmiProvider.tsx";
 
 import './i18n';
 import ClickerController from './components/ClickerController';
@@ -31,8 +33,8 @@ export const App = () => {
   const { isOnline, isOffline, backOnline, backOffline } = useNavigatorOnline();
 
   let endpoint = "https://api.devnet.solana.com";
-  if (process.env.NEXT_PUBLIC_RPC) {
-    endpoint = process.env.NEXT_PUBLIC_RPC;
+  if (process.env.REACT_APP__RPC) {
+    endpoint = process.env.REACT_APP__RPC;
   }
   const wallets = useMemo(
     () => [
@@ -63,8 +65,8 @@ export const App = () => {
   }, [backOnline, backOffline, dispatch, isOnline, isOffline]);
 
   return (
-    <ConnectionProvider endpoint={endpoint}>
-      <WalletProvider wallets={wallets} autoConnect>
+    <WalletProvider wallets={wallets} autoConnect>
+      <UmiProvider endpoint={endpoint}>
         <WalletModalProvider>
           <BrowserRouter>
             <GlobalProvider>
@@ -81,12 +83,13 @@ export const App = () => {
                   <Route path="/early-bird" element={<ClickerController Children={EarlyBirdPage} />} />
                   <Route path="/clicker-lock" element={<ClickerController Children={LockPage} />} />
                   <Route path="/mint" element={<ClickerController Children={MintPage} />} />
+                  <Route path="/fake-mint" element={<FakeMint />} />
                 </Route>
               </Routes>
             </GlobalProvider>
           </BrowserRouter>
         </WalletModalProvider>
-      </WalletProvider>
-    </ConnectionProvider>
+      </UmiProvider>
+    </WalletProvider>
   );
 };
