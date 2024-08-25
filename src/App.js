@@ -11,7 +11,6 @@ import LockPage from "./pages/Lock/LockPage";
 import VerifyEmailPage from "./pages/VerifyEmail/VerifyEmailPage";
 import LimitedAccessPage from "./pages/VerifyEmail/LimitedAccessPage";
 import MintPage from "./pages/Mint/MintPage";
-import FakeMint from "./pages/FakeMint/FakeMint.tsx";
 import AppLayout from './components/AppLayout';
 import { GlobalProvider } from './context/ContextProvider';
 import rootSaga from './sagas';
@@ -23,7 +22,7 @@ import "@solana/wallet-adapter-react-ui/styles.css";
 // Import Solana wallet packages
 import { WalletProvider } from '@solana/wallet-adapter-react';
 import { WalletModalProvider } from '@solana/wallet-adapter-react-ui';
-import { UmiProvider } from "./utils/UmiProvider.tsx";
+import { UmiProvider } from "./web3/UmiProvider.tsx";
 
 import './i18n';
 import ClickerController from './components/ClickerController';
@@ -83,7 +82,6 @@ export const App = () => {
                   <Route path="/early-bird" element={<ClickerController Children={EarlyBirdPage} />} />
                   <Route path="/clicker-lock" element={<ClickerController Children={LockPage} />} />
                   <Route path="/mint" element={<ClickerController Children={MintPage} />} />
-                  <Route path="/fake-mint" element={<FakeMint />} />
                 </Route>
               </Routes>
             </GlobalProvider>
