@@ -35,7 +35,6 @@ import {
   allocationChecker,
   calculateMintable,
 } from "./checkerHelper.ts";
-import { allowLists } from "./../allowlist.tsx";
 import {
   DigitalAssetWithToken,
   fetchAllDigitalAssetWithTokenByOwner,
@@ -147,7 +146,7 @@ export const guardChecker = async (
     }
 
     if (singleGuard.allowList.__option === "Some") {
-      if (!allowlistChecker(allowLists, umi, eachGuard.label)) {
+      if (!allowlistChecker(new Map<string, string[]>(), umi, eachGuard.label)) {
         guardReturn.push({
           label: eachGuard.label,
           allowed: false,
