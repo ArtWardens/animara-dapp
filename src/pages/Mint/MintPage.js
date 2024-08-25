@@ -1,9 +1,99 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import { fetchDate, startCountdown } from "../../firebase/countDown";
 import Header from "../../components/Header.jsx";
 import WalletInfo from "../../components/SolanaWallet/WalletInfo.jsx";
+import { useUmi } from "../../web3/useUmi.ts";
+import { publicKey } from "@metaplex-foundation/umi";
+import { fetchCandyMachine, safeFetchCandyGuard, AccountVersion } from "@metaplex-foundation/mpl-candy-machine"
+import { mintClick } from "../../utils/mintButton.tsx";
+import { guardChecker } from "../../web3/checkAllowed.ts";
+import { useSolanaTime } from "../../utils/SolanaTimeContext.tsx";
+import { ShowNft } from "../../components/showNft.tsx";
+import { toast } from "react-toastify";
+
+const useCandyMachine = (
+  umi,
+  candyMachineId,
+  checkEligibility,
+  firstRun,
+  setfirstRun
+) => {
+  const [candyMachine, setCandyMachine] = useState();
+  const [candyGuard, setCandyGuard] = useState();
+
+  useEffect(() => {
+    (async () => {
+      if (checkEligibility) {
+        if (!candyMachineId) {
+          console.error("No candy machine in .env!");
+          toast("No candy machine in .env!");
+          return;
+        }
+
+        let candyMachine;
+        try {
+          candyMachine = await fetchCandyMachine(umi, publicKey(candyMachineId));
+          //verify CM Version
+          if (candyMachine.version !==AccountVersion.V2) {
+            toast("Wrong candy machine account version!");
+            return;
+          }
+        } catch (e) {
+          console.error(e);
+          toast("The CM from .env is invalid");
+        }
+        setCandyMachine(candyMachine);
+        if (!candyMachine) {
+          return;
+        }
+        let candyGuard;
+        try {
+          candyGuard = await safeFetchCandyGuard(umi, candyMachine.mintAuthority);
+        } catch (e) {
+          console.error(e);
+          toast("No Candy Guard found!");
+        }
+        if (!candyGuard) {
+          return;
+        }
+        setCandyGuard(candyGuard);
+        if (firstRun) {
+          setfirstRun(false)
+        }
+      }
+    })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [umi, checkEligibility]);
+
+  return { candyMachine, candyGuard };
+};
 
 function MintPage() {
+  const umi = useUmi();
+  const solanaTime = useSolanaTime();
+  const [guards, setGuards] = useState([
+    { label: "startDefault", allowed: false, maxAmount: 0 },
+  ]);
+  const [ownedTokens, setOwnedTokens] = useState();
+  const candyMachineId = useMemo(() => {
+    if (process.env.REACT_APP__CANDY_MACHINE_ID) {
+      return publicKey(process.env.REACT_APP__CANDY_MACHINE_ID);
+    } else {
+      console.error(`failed to get candy machien id cuz No REACT_APP__CANDY_MACHINE_ID in .env!`);
+      toast('failed to get candy machien id cuz No REACT_APP__CANDY_MACHINE_ID in .env!');
+      return publicKey("11111111111111111111111111111111");
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  const [checkEligibility, setCheckEligibility] = useState(true);
+  const [firstRun, setFirstRun] = useState(true);
+  const {candyMachine, candyGuard} = useCandyMachine(umi, candyMachineId, checkEligibility, firstRun, setFirstRun);
+  const [mintsCreated, setMintsCreated] = useState(null);
+  const [isShowNftOpen, setIsShowNftOpen] = useState(false);
+  const [isAllowed, setIsAllowed] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [minting, setMinting] = useState(false);
+  
   const [isContainerVisible, setIsContainerVisible] = useState(true);
   const [showTitle, setShowTitle] = useState(false);
   const [showTextOne, setShowTextOne] = useState(false);
@@ -18,6 +108,7 @@ function MintPage() {
     seconds: 0,
   });
 
+  // intro animation & fetch countdown
   useEffect(() => {
     // start minting deadline
     const fetchAndStartCountdown = async () => {
@@ -68,6 +159,88 @@ function MintPage() {
     };
   }, []);
 
+  // minting setup
+  useEffect(() => {
+    const checkEligibilityFunc = async () => {
+      if (!candyMachine || !candyGuard || !checkEligibility || isShowNftOpen) {
+        return;
+      }
+      setFirstRun(false);
+
+      const { guardReturn, ownedTokens } = await guardChecker(
+        umi, candyGuard, candyMachine, solanaTime
+      );
+
+      setOwnedTokens(ownedTokens);
+      setGuards(guardReturn);
+      setIsAllowed(false);
+
+      let allowed = false;
+      for (const guard of guardReturn) {
+        if (guard.allowed) {
+          allowed = true;
+          break;
+        }
+      }
+
+      setIsAllowed(allowed);
+      setLoading(false);
+    };
+
+    checkEligibilityFunc();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [umi, checkEligibility, firstRun]);
+
+  const handleMint = () =>{
+    console.log('mint');
+    setMinting(true);
+
+    // filter guards list
+    let filteredGuardlist = guards.filter(
+      (elem, index, self) =>
+        index === self.findIndex((t) => t.label === elem.label)
+    );
+    if (filteredGuardlist.length === 0) {
+      console.log(`no guards`);
+      return;
+    }
+    if (filteredGuardlist.length > 1) {
+      filteredGuardlist = guards.filter((elem) => elem.label !=="default");
+    }
+    filteredGuardlist = filteredGuardlist.slice(-1); //additional add for showing the latest Mint
+    const buttonGuard = {
+      label: filteredGuardlist[0] ? filteredGuardlist[0].label : "default",
+      allowed: filteredGuardlist[0].allowed,
+      startTime: 0n,
+      endTime: 0n,
+      tooltip: filteredGuardlist[0].reason,
+      maxAmount: filteredGuardlist[0].maxAmount,
+    };
+
+    // initiate mint
+    mintClick(
+      umi,
+      buttonGuard,
+      candyMachine,
+      candyGuard,
+      ownedTokens,
+      mintsCreated,
+      setMintsCreated,
+      guards,
+      setGuards,
+      onShowNftOpen,
+      setCheckEligibility
+    )
+  }
+
+  const onShowNftOpen = () =>{
+    setIsShowNftOpen(true);
+  }
+
+  const onShowNftClose = () =>{
+    setIsShowNftOpen(false);
+  }
+  
   return (
     <>
       <Header />
@@ -313,16 +486,23 @@ function MintPage() {
 
                 {/* mint button */}
                 <div className="justify-center items-center inline-flex hover:scale-105 transition-transform duration-200">
-                  <div className="px-[2rem] py-[1.5rem] bg-[#FFDC62] rounded-full border border-[#E59E69] justify-center items-center inline-flex shadow-[0px_4px_4px_0px_#FFFBEF_inset,0px_-4px_4px_0px_rgba(255,249,228,0.48),0px_5px_4px_0px_rgba(232,140,72,0.48)] hover:bg-[#FFB23F] hover:pl-[24px] hover:pr-[20px] hover:border-1 hover:border-[#E59E69] hover:shadow-[0px_4px_4px_0px_rgba(255,210,143,0.61)_inset,0px_4px_4px_0px_rgba(136,136,136,0.48)] cursor-pointer">
+                  {!loading ? 
                     <div
-                      className="text-center text-white text-3xl font-normal"
-                      style={{
-                        textShadow: "0px 2px 0.6px rgba(240, 139, 0, 0.66)",
-                      }}
-                    >
-                      <span className="hover:text-shadow-none">Mint Now</span>
+                      className="px-[2rem] py-[1.5rem] bg-[#FFDC62] rounded-full border border-[#E59E69] justify-center items-center inline-flex shadow-[0px_4px_4px_0px_#FFFBEF_inset,0px_-4px_4px_0px_rgba(255,249,228,0.48),0px_5px_4px_0px_rgba(232,140,72,0.48)] hover:bg-[#FFB23F] hover:pl-[24px] hover:pr-[20px] hover:border-1 hover:border-[#E59E69] hover:shadow-[0px_4px_4px_0px_rgba(255,210,143,0.61)_inset,0px_4px_4px_0px_rgba(136,136,136,0.48)] cursor-pointer"
+                      disabled={!isAllowed}
+                      onClick={handleMint}>
+                      <div
+                        className="text-center text-white text-3xl font-normal"
+                        style={{
+                          textShadow: "0px 2px 0.6px rgba(240, 139, 0, 0.66)",
+                        }}
+                      >
+                        <span className="hover:text-shadow-none">Mint Now</span>
+                      </div>
                     </div>
-                  </div>
+                    : 
+                    <></>  
+                  }
                 </div>
                 
                 <WalletInfo label="Using Wallet"/>
@@ -471,16 +651,23 @@ function MintPage() {
 
               {/* mint button */}
               <div className="justify-center items-center inline-flex hover:scale-105 transition-transform duration-200">
-                <div className="h-[80px] w-[250px] bg-[#FFDC62] rounded-full border border-[#E59E69] justify-center items-center inline-flex shadow-[0px_4px_4px_0px_#FFFBEF_inset,0px_-4px_4px_0px_rgba(255,249,228,0.48),0px_5px_4px_0px_rgba(232,140,72,0.48)] hover:bg-[#FFB23F] hover:pl-[24px] hover:pr-[20px] hover:border-1 hover:border-[#E59E69] hover:shadow-[0px_4px_4px_0px_rgba(255,210,143,0.61)_inset,0px_4px_4px_0px_rgba(136,136,136,0.48)] cursor-pointer">
+                {!loading ? 
                   <div
-                    className="text-center text-white text-3xl font-normal"
-                    style={{
-                      textShadow: "0px 2px 0.6px rgba(240, 139, 0, 0.66)",
-                    }}
-                  >
-                    <span className="hover:text-shadow-none">Mint Now</span>
+                    className="h-[80px] w-[250px] bg-[#FFDC62] rounded-full border border-[#E59E69] justify-center items-center inline-flex shadow-[0px_4px_4px_0px_#FFFBEF_inset,0px_-4px_4px_0px_rgba(255,249,228,0.48),0px_5px_4px_0px_rgba(232,140,72,0.48)] hover:bg-[#FFB23F] hover:pl-[24px] hover:pr-[20px] hover:border-1 hover:border-[#E59E69] hover:shadow-[0px_4px_4px_0px_rgba(255,210,143,0.61)_inset,0px_4px_4px_0px_rgba(136,136,136,0.48)] cursor-pointer"
+                    disabled={!isAllowed}
+                    onClick={handleMint}>
+                    <div
+                      className="text-center text-white text-3xl font-normal"
+                      style={{
+                        textShadow: "0px 2px 0.6px rgba(240, 139, 0, 0.66)",
+                      }}
+                    >
+                      <span className="hover:text-shadow-none">Mint Now</span>
+                    </div>
                   </div>
-                </div>
+                  : 
+                  <></>  
+                }
               </div>
 
               {/* wallet info */}
@@ -488,6 +675,22 @@ function MintPage() {
             </div>
           </div>
         </div>
+
+        {/* NFT modal */}
+        {isShowNftOpen?
+          <div>
+            <button onClick={onShowNftClose}>close</button>
+            <div />
+            <div>
+              <div />
+              <div>
+                <ShowNft nfts={mintsCreated} />
+              </div>
+            </div>
+          </div>
+          :
+          <></>
+        }
       </div>
     </>
   );

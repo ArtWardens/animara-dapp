@@ -47,6 +47,8 @@ const userInitialState = {
   basicClaimable: 0,
   nftClaimable: 0,
   bindWalletLoading: false,
+  mintingNFT: false,
+  nftMinted: []
 };
 
 export const userSlice = createSlice({
@@ -442,6 +444,16 @@ export const userSlice = createSlice({
     unbindWalletError: (state, { payload }) => {
       state.bindWalletLoading = false;
     },
+    mintNFT: (state, { payload }) => {
+      state.mintingNFT = true;
+    },
+    mintNFTSuccess: (state, { payload }) => {
+      state.nftMinted = payload.nftMinted
+      state.mintingNFT = false;
+    },
+    mintNFTError: (state, { payload }) => {
+      state.mintingNFT = false;
+    },
   },
 });
 
@@ -562,6 +574,8 @@ export const useNFTPurchasedReferralCount = () => useAppSelector((state) => stat
 export const useBasicClaimable = () => useAppSelector((state) => state.user.basicClaimable);
 export const useNftClaimable = () => useAppSelector((state) => state.user.nftClaimable);
 export const useBindWalletLoading = () => useAppSelector((state) => state.user.bindWalletLoading);
+export const useMintingNFT = () => useAppSelector((state) => state.user.mintingNFT);
+export const useNFTMinted = () => useAppSelector((state) => state.user.nftMinted);
 
 const userReducer = userSlice.reducer;
 
