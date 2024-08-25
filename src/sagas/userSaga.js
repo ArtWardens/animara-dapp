@@ -98,6 +98,9 @@ import {
   unbindWallet,
   unbindWalletSuccess,
   unbindWalletError,
+  mintNFT,
+  mintNFTSuccess,
+  mintNFTError,
 } from "../sagaStore/slices";
 import {
   StaminaRechargeTypeBasic,
@@ -109,6 +112,7 @@ import {
   setCooldownTime,
   setDashboardData,
 } from "../utils/getTimeRemaining";
+import { mintImpl, fetchMintedNFTImpl } from "../web3/mintNFT.tsx";
 
 export function* signupWithEmailSaga({ payload }) {
   try {
@@ -484,6 +488,54 @@ export function* unbindWalletSaga() {
   }
 }
 
+export function* mintNFTSaga({ payload }) {
+  try {
+    const successfulMints = yield call(mintImpl, 
+      payload.umi,
+      payload.buttonGuard,
+      payload.candyMachine,
+      payload.candyGuard,
+      payload.ownedTokens,
+      payload.guards
+    );
+    console.log(`fetching minted nft`);
+    const result = yield call(fetchMintedNFTImpl, payload.umi, successfulMints);
+    // const result = [
+    //   {
+    //     "mint":"HqCnQZrEM8gNtLJ4azavUp4kHfMX46mHeiUxeGoQ5aMH",
+    //     "offChainMetadata":{
+    //       "name":"NFT Name #{ID}",
+    //       "symbol":"NFT",
+    //       "description":"NFT collection description",
+    //       "image":"https://pentajeucms-bucket.s3.ap-southeast-1.amazonaws.com/test/animara/images/0.png",
+    //       "attributes":[
+    //         {
+    //           "trait_type":"Background",
+    //           "value":"Black"
+    //         },
+    //         {
+    //           "trait_type":"Rarity",
+    //           "value":"Normal"
+    //         }
+    //       ],
+    //       "properties":{
+    //         "files":[
+    //           {
+    //             "uri":"https://pentajeucms-bucket.s3.ap-southeast-1.amazonaws.com/test/animara/images/0.png",
+    //             "type":"image/png"
+    //           }
+    //         ],
+    //         "category":null
+    //       }
+    //     }
+    //   }
+    // ]
+    yield put(mintNFTSuccess(result[0]));
+  } catch (error) {
+    yield put(mintNFTError(error));
+  }
+}
+
 export function* userSagaWatcher() {
   yield takeLatest(signupWithEmail.type, signupWithEmailSaga);
   yield takeLatest(loginWithEmail.type, loginWithEmailSaga);
@@ -508,4 +560,5 @@ export function* userSagaWatcher() {
   yield takeLatest(getReferralStats.type, getReferralStatsSaga);
   yield takeLatest(bindWallet.type, bindWalletSaga);
   yield takeLatest(unbindWallet.type, unbindWalletSaga);
+  yield takeLatest(mintNFT.type, mintNFTSaga);
 }
