@@ -165,27 +165,28 @@ function Header() {
                 }}
             >
                 <div className="relative">
-                <img
-                  src="/assets/images/clicker-character/locale.png"
-                  className="w-[3dvw] xl:w-[1.5dvw] cursor-pointer"
-                  onClick={() => setLangDropdownOpen(!langDropdownOpen)}
-                />
-                {langDropdownOpen && (
-                  <div className="absolute right-0 mt-2 w-[150px] bg-white shadow-lg rounded-md z-10">
-                    {Object.keys(lngs).map((lng) => (
-                      <button
-                        className="block w-full px-4 py-2 text-left hover:bg-gray-200"
-                        type="submit"
-                        key={lng}
-                        onClick={() => handleLangChange(lng)}
-                        disabled={i18n.resolvedLanguage === lng}
-                      >
-                        {lngs[lng].nativeName}
-                      </button>
-                    ))}
-                  </div>
-                )}
-              </div>
+                    <img
+                    src="/assets/images/clicker-character/locale.png"
+                    className="w-[3dvw] xl:w-[1.5dvw] cursor-pointer"
+                    onClick={() => setLangDropdownOpen(!langDropdownOpen)}
+                    alt="change locale"
+                    />
+                    {langDropdownOpen && (
+                    <div className="absolute right-0 mt-2 w-[150px] bg-white shadow-lg rounded-md z-10">
+                        {Object.keys(lngs).map((lng) => (
+                        <button
+                            className="block w-full px-4 py-2 text-left hover:bg-gray-200"
+                            type="submit"
+                            key={lng}
+                            onClick={() => handleLangChange(lng)}
+                            disabled={i18n.resolvedLanguage === lng}
+                        >
+                            {lngs[lng].nativeName}
+                        </button>
+                        ))}
+                    </div>
+                    )}
+                </div>
               
                 {navDestinations.map(({ name, link }) => (
                     <button

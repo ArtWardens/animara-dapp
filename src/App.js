@@ -20,8 +20,9 @@ import { runSaga } from './sagaStore/store';
 import "@solana/wallet-adapter-react-ui/styles.css";
 
 // Import Solana wallet packages
-import { ConnectionProvider, WalletProvider } from '@solana/wallet-adapter-react';
+import { WalletProvider } from '@solana/wallet-adapter-react';
 import { WalletModalProvider } from '@solana/wallet-adapter-react-ui';
+import { UmiProvider } from "./web3/UmiProvider.tsx";
 
 import './i18n';
 import ClickerController from './components/ClickerController';
@@ -31,8 +32,8 @@ export const App = () => {
   const { isOnline, isOffline, backOnline, backOffline } = useNavigatorOnline();
 
   let endpoint = "https://api.devnet.solana.com";
-  if (process.env.NEXT_PUBLIC_RPC) {
-    endpoint = process.env.NEXT_PUBLIC_RPC;
+  if (process.env.REACT_APP__RPC) {
+    endpoint = process.env.REACT_APP__RPC;
   }
   const wallets = useMemo(
     () => [
@@ -63,8 +64,8 @@ export const App = () => {
   }, [backOnline, backOffline, dispatch, isOnline, isOffline]);
 
   return (
-    <ConnectionProvider endpoint={endpoint}>
-      <WalletProvider wallets={wallets} autoConnect>
+    <WalletProvider wallets={wallets} autoConnect>
+      <UmiProvider endpoint={endpoint}>
         <WalletModalProvider>
           <BrowserRouter>
             <GlobalProvider>
@@ -86,7 +87,7 @@ export const App = () => {
             </GlobalProvider>
           </BrowserRouter>
         </WalletModalProvider>
-      </WalletProvider>
-    </ConnectionProvider>
+      </UmiProvider>
+    </WalletProvider>
   );
 };
