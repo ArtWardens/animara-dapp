@@ -8,9 +8,6 @@ import { some, Umi, transactionBuilder, publicKey, TransactionBuilder, none, Add
 import { GuardReturn } from "./checkerHelper.ts";
 
 export interface GuardButtonList extends GuardReturn {
-  header: string;
-  mintText: string;
-  buttonLabel: string;
   startTime: bigint;
   endTime: bigint;
   tooltip?: string;

@@ -87,7 +87,7 @@ type Props = {
     | undefined;
 };
 
-export const ShowNft = ({ nfts }: Props) => {
+export const NFTPopup = ({ nfts }: Props) => {
   if (nfts === undefined) {
     return <></>;
   }

@@ -1,14 +1,14 @@
 import React, { useEffect, useState, useMemo } from "react";
 import { fetchDate, startCountdown } from "../../firebase/countDown";
 import Header from "../../components/Header.jsx";
-import WalletInfo from "../../components/SolanaWallet/WalletInfo.jsx";
-import { useUmi } from "../../web3/useUmi.ts";
 import { publicKey } from "@metaplex-foundation/umi";
-import { fetchCandyMachine, safeFetchCandyGuard, AccountVersion } from "@metaplex-foundation/mpl-candy-machine"
-import { mintClick } from "../../utils/mintButton.tsx";
+import { fetchCandyMachine, safeFetchCandyGuard, AccountVersion } from "@metaplex-foundation/mpl-candy-machine";
+import { useUmi } from "../../web3/useUmi.ts";
+import { mintClick } from "../../web3/mintButton.tsx";
 import { guardChecker } from "../../web3/checkAllowed.ts";
-import { useSolanaTime } from "../../utils/SolanaTimeContext.tsx";
-import { ShowNft } from "../../components/showNft.tsx";
+import { useSolanaTime } from "../../web3/SolanaTimeContext.tsx";
+import { NFTPopup } from "../../components/SolanaWallet/NFTPopup.tsx";
+import WalletInfo from "../../components/SolanaWallet/WalletInfo.jsx";
 import { toast } from "react-toastify";
 
 const useCandyMachine = (
@@ -92,7 +92,7 @@ function MintPage() {
   const [isShowNftOpen, setIsShowNftOpen] = useState(false);
   const [isAllowed, setIsAllowed] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [minting, setMinting] = useState(false);
+  // const [minting, setMinting] = useState(false);
   
   const [isContainerVisible, setIsContainerVisible] = useState(true);
   const [showTitle, setShowTitle] = useState(false);
@@ -193,7 +193,7 @@ function MintPage() {
 
   const handleMint = () =>{
     console.log('mint');
-    setMinting(true);
+    // setMinting(true);
 
     // filter guards list
     let filteredGuardlist = guards.filter(
@@ -681,12 +681,7 @@ function MintPage() {
           <div>
             <button onClick={onShowNftClose}>close</button>
             <div />
-            <div>
-              <div />
-              <div>
-                <ShowNft nfts={mintsCreated} />
-              </div>
-            </div>
+            <NFTPopup nfts={mintsCreated} />
           </div>
           :
           <></>

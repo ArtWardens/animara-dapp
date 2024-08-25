@@ -10,7 +10,6 @@ import { toast } from "react-toastify";
 import { useSolanaTime } from "./SolanaTimeContext.tsx";
 import { GuardReturn } from "./checkerHelper.ts";
 import { verifyTx } from "./verifyTx.ts";
-import { mintText } from "../settings.tsx";
 
 
 const updateLoadingText = (
@@ -405,14 +404,10 @@ export function ButtonList({
   let buttonGuardList: GuardButtonList[] = [];
   console.log(`guards`);
   for (const guard of filteredGuardlist) {
-    const text = mintText.find((elem) => elem.label === guard.label);
 
     let buttonElement: GuardButtonList = {
       label: guard ? guard.label : "default",
       allowed: guard.allowed,
-      header: text ? text.header : "header missing in settings.tsx",
-      mintText: text ? text.mintText : "mintText missing in settings.tsx",
-      buttonLabel: text ? text.buttonLabel : "buttonLabel missing in settings.tsx",
       startTime: 0n,
       endTime: 0n,
       tooltip: guard.reason,
