@@ -1,15 +1,17 @@
 import React, { useEffect, useState, useMemo, useRef } from "react";
 import { publicKey } from "@metaplex-foundation/umi";
+import { useWalletMultiButton } from '@solana/wallet-adapter-base-ui';
 import { fetchCandyMachine, safeFetchCandyGuard, AccountVersion } from "@metaplex-foundation/mpl-candy-machine";
 import { toast } from "react-toastify";
 import { MoonLoader } from "react-spinners";
 import { useUmi } from "../../web3/useUmi.ts";
 import { guardChecker } from "../../web3/checkAllowed.ts";
 import { useSolanaTime } from "../../web3/SolanaTimeContext.tsx";
-import WalletInfo from "../../components/SolanaWallet/WalletInfo.jsx";
 import Header from "../../components/Header.jsx";
+import WalletInfo from "../../components/SolanaWallet/WalletInfo.jsx";
+import WalletBindingPanel from "../../components/SolanaWallet/WalletBindingPanel.jsx";
 import { useAppDispatch } from "../../hooks/storeHooks.js";
-import { mintNFT, useMintingNFT, useNFTMinted, resetMintedNFT } from "../../sagaStore/slices/userSlice.js";
+import { mintNFT, useMintingNFT, useNFTMinted, resetMintedNFT, useBindWalletLoading } from "../../sagaStore/slices/userSlice.js";
 import { fetchDate, startCountdown } from "../../firebase/countDown";
 
 const useCandyMachine = (
@@ -72,10 +74,15 @@ const useCandyMachine = (
 
 function MintPage() {
   const dispatch = useAppDispatch();
+  const bindingWallet = useBindWalletLoading();
   const mintingNFT = useMintingNFT();
   const nftMinted = useNFTMinted();
   const umi = useUmi();
   const solanaTime = useSolanaTime();
+  const { publicKey: walletAddr } = useWalletMultiButton({
+    onSelectWallet() {
+    },
+  });
   const [guards, setGuards] = useState([
     { label: "startDefault", allowed: false, maxAmount: 0 },
   ]);
@@ -112,6 +119,8 @@ function MintPage() {
   const [isVideoEnded, setIsVideoEnded] = useState(false);
   const [mintVideoAnim, setMintVideoAnim] = useState(false);
   const [mintFadeOut, setMintFadeOut] = useState(false);
+  const [showWalletBindingPanel, setShowWalletBindingPanel] = useState(false);
+  const [walletBindingAnim, setWalletBindingAnim] = useState(false);
   const videoRef = useRef(null);
 
   // intro animation & fetch countdown
@@ -181,16 +190,14 @@ function MintPage() {
       setGuards(guardReturn);
       setIsAllowed(false);
 
-      // let allowed = false;
-      // for (const guard of guardReturn) {
-      //   if (guard.allowed) {
-      //     allowed = true;
-      //     break;
-      //   }
-      // }
-      // setIsAllowed(allowed);
-      // todo: force to be true in dev net
-      setIsAllowed(true);
+      let allowed = false;
+      for (const guard of guardReturn) {
+        if (guard.allowed) {
+          allowed = true;
+          break;
+        }
+      }
+      setIsAllowed(allowed);
 
       setLoadingCandyMachine(false);
     };
@@ -199,7 +206,15 @@ function MintPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [umi, checkEligibility, firstRun]);
 
-  const handleMint = () =>{
+  const handleMintOrConnect = () =>{
+    if (!walletAddr){
+      setShowWalletBindingPanel(true);
+      setWalletBindingAnim(true);
+      setTimeout(()=>{
+        setWalletBindingAnim(false);
+      }, 300);
+      return;
+    }
     // filter guards list
     let filteredGuardlist = guards.filter(
       (elem, index, self) =>
@@ -231,6 +246,14 @@ function MintPage() {
       ownedTokens,
       guards,
     }));
+  }
+
+  const handleBackToMint = () =>{
+    setWalletBindingAnim(true);
+    setTimeout(()=>{
+      setWalletBindingAnim(false);
+      setShowWalletBindingPanel(false);
+    }, 300);
   }
 
   const onShowNftClose = () =>{
@@ -503,31 +526,31 @@ function MintPage() {
                 {/* mint button */}
                 <div
                   className={`justify-center items-center inline-flex transition-transform duration-200 
-                    ${isAllowed && !mintingNFT ? `hover:scale-105` : ``}`}>
+                    ${(isAllowed && !mintingNFT) || !walletAddr ? `hover:scale-105` : ``}`}>
                   {loadingCandyMachine ? 
                   <></>
                   : 
                   <button
                     className={`h-[80px] w-[250px] rounded-full border justify-center items-center inline-flex shadow-[0px_4px_4px_0px_#FFFBEF_inset,0px_-4px_4px_0px_rgba(255,249,228,0.48),0px_5px_4px_0px_rgba(232,140,72,0.48)] 
-                      ${isAllowed ?
+                      ${isAllowed || !walletAddr ?
                         `bg-[#FFDC62] border-[#E59E69] cursor-pointer`
                         :
                         `bg-slate-400 border-slate-400`}`}
-                    disabled={!isAllowed || mintingNFT}
-                    onClick={handleMint}>
+                    disabled={(!isAllowed || mintingNFT) && walletAddr}
+                    onClick={handleMintOrConnect}>
                       {mintingNFT? 
                         <MoonLoader color={"#E59E69"} size={40} />
                         :
                         <div
-                          className="text-center text-white text-3xl font-normal"
+                          className="text-center text-white text-2xl font-normal"
                           style={{
                             textShadow: "0px 2px 0.6px rgba(240, 139, 0, 0.66)",
                           }}
                         >
-                          <span className="">{isAllowed ? `Mint Now` : `Mint Disabled`}</span>
+                          <span className="">{!walletAddr ? `Connect Wallet` : isAllowed ? `Mint Now` : `Mint Disabled`}</span>
                         </div>
                       }
-                  </button>  
+                  </button>    
                 }
               </div>
                 
@@ -675,31 +698,31 @@ function MintPage() {
                 className="object-contain w-96 -my-10"
               />
 
-              {/* mint button */}
+              {/* Mint button */}
               <div
                   className={`justify-center items-center inline-flex transition-transform duration-200 
-                    ${isAllowed && !mintingNFT ? `hover:scale-105` : ``}`}>
+                    ${(isAllowed && !mintingNFT) || !walletAddr ? `hover:scale-105` : ``}`}>
                   {loadingCandyMachine ? 
                   <></>
                   : 
                   <button
                     className={`h-[80px] w-[250px] rounded-full border justify-center items-center inline-flex shadow-[0px_4px_4px_0px_#FFFBEF_inset,0px_-4px_4px_0px_rgba(255,249,228,0.48),0px_5px_4px_0px_rgba(232,140,72,0.48)] 
-                      ${isAllowed ?
+                      ${isAllowed || !walletAddr ?
                         `bg-[#FFDC62] border-[#E59E69] cursor-pointer`
                         :
                         `bg-slate-400 border-slate-400`}`}
-                    disabled={!isAllowed || mintingNFT}
-                    onClick={handleMint}>
+                    disabled={(!isAllowed || mintingNFT) && walletAddr}
+                    onClick={handleMintOrConnect}>
                       {mintingNFT? 
                         <MoonLoader color={"#E59E69"} size={40} />
                         :
                         <div
-                          className="text-center text-white text-3xl font-normal"
+                          className="text-center text-white text-2xl font-normal"
                           style={{
                             textShadow: "0px 2px 0.6px rgba(240, 139, 0, 0.66)",
                           }}
                         >
-                          <span className="">{isAllowed ? `Mint Now` : `Mint Disabled`}</span>
+                          <span className="">{!walletAddr ? `Connect Wallet` : isAllowed ? `Mint Now` : `Mint Disabled`}</span>
                         </div>
                       }
                   </button>  
@@ -712,6 +735,32 @@ function MintPage() {
           </div>
         </div>
       </div>
+      
+      {/* Bind Wallet Modal */}
+      {showWalletBindingPanel? 
+        <div className={`fixed z-[100] inset-0 w-screen h-screen flex flex-col items-center justify-center bg-black/50 backdrop-blur-lg transition-all duration-300 
+          ${walletBindingAnim ? `opacity-0` : `opacity-100`}`}>
+          {/* wallet binding panel */}
+          <div className="flex">
+            <WalletBindingPanel className="w-full lx:w-1/2 my-auto p-12" />
+          </div>
+
+          {!bindingWallet?
+            <button
+              className={`text-2xl rounded-lg m-4 mt-8 py-2 px-8 hover:scale-110 transition-all duration-300
+                ${walletAddr && !bindingWallet ? `bg-amber-400` : `bg-red-400 `}`}
+              onClick={handleBackToMint}
+            >
+              {walletAddr && !bindingWallet ? `Back to Mint` : `Close`}
+            </button>
+            :
+            <></>
+          }
+        </div>
+        :
+        <></>
+      }
+
       {/* NFT modal */}
       {isShowNftOpen?
         <div className="fixed z-[100] inset-0 w-screen h-screen flex items-center justify-center bg-black/50 backdrop-blur-lg">
@@ -731,14 +780,15 @@ function MintPage() {
           {isVideoEnded && (
             <div className="fixed z-[100] inset-0 w-screen h-screen flex">
               <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-lg">
-                <div className="flex flex-col p-4 bg-slate-600 rounded-md shadow-lg gap-4">
-                  <span className="mx-auto text-3xl">You minted</span>
+                <div className="flex flex-col p-8 bg-slate-600 rounded-xl shadow-lg">
+                  <span className="mx-auto mb-8 text-5xl">You minted</span>
                   <img 
-                    className="max-w-full h-auto"
+                    className="w-96 h-96 mb-4"
                     src={nftMinted.offChainMetadata.image}
                     alt="NFT Minted"/>
+                  <span classNAme="mr-auto text-4xl">{nftMinted.offChainMetadata.name}</span>
                   <button
-                    className={`flex mx-auto w-24 h-12 p-5 justify-center items-center rounded-[10px] border border-[#E59E69] shadow-[0px_4px_4px_0px_rgba(255,210,143,0.61)_inset,0px_4px_4px_0px_rgba(136,136,136,0.48)] bg-amber-400 hover:bg-amber-300 hover:scale-105 transition-transform duration-300 ease-in-out`}
+                    className={`flex mx-auto w-24 h-12 mt-6 p-5 justify-center items-center rounded-[10px] border border-[#E59E69] shadow-[0px_4px_4px_0px_rgba(255,210,143,0.61)_inset,0px_4px_4px_0px_rgba(136,136,136,0.48)] bg-amber-400 hover:bg-amber-300 hover:scale-105 transition-transform duration-300 ease-in-out`}
                     onClick={onShowNftClose}>Yay!</button>
                 </div>
               </div>
