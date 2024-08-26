@@ -60,6 +60,7 @@ const ClickerController = ({ Children }) => {
     } else {
       console.log(`account not bound to any wallet yet`);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   },[currentUser?.walletAddr, publicKey, connectingWallet, walletConnected, isModalVisible]);
 
   useEffect(()=>{

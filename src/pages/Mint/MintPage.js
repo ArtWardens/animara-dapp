@@ -1,9 +1,100 @@
-import React, { useEffect, useState } from "react";
-import { fetchDate, startCountdown } from "../../firebase/countDown";
-import Header from "../../components/Header.jsx";
+import React, { useEffect, useState, useMemo, useRef } from "react";
+import { publicKey } from "@metaplex-foundation/umi";
+import { fetchCandyMachine, safeFetchCandyGuard, AccountVersion } from "@metaplex-foundation/mpl-candy-machine";
+import { toast } from "react-toastify";
+import { MoonLoader } from "react-spinners";
+import { useUmi } from "../../web3/useUmi.ts";
+import { guardChecker } from "../../web3/checkAllowed.ts";
+import { useSolanaTime } from "../../web3/SolanaTimeContext.tsx";
 import WalletInfo from "../../components/SolanaWallet/WalletInfo.jsx";
+import Header from "../../components/Header.jsx";
+import { useAppDispatch } from "../../hooks/storeHooks.js";
+import { mintNFT, useMintingNFT, useNFTMinted, resetMintedNFT } from "../../sagaStore/slices/userSlice.js";
+import { fetchDate, startCountdown } from "../../firebase/countDown";
+
+const useCandyMachine = (
+  umi,
+  candyMachineId,
+  checkEligibility,
+  firstRun,
+  setfirstRun
+) => {
+  const [candyMachine, setCandyMachine] = useState();
+  const [candyGuard, setCandyGuard] = useState();
+
+  // candy machine initialization
+  useEffect(() => {
+    (async () => {
+      if (checkEligibility) {
+        if (!candyMachineId) {
+          console.error("No candy machine in .env!");
+          toast("No candy machine in .env!");
+          return;
+        }
+
+        let candyMachine;
+        try {
+          candyMachine = await fetchCandyMachine(umi, publicKey(candyMachineId));
+          //verify CM Version
+          if (candyMachine.version !==AccountVersion.V2) {
+            toast("Wrong candy machine account version!");
+            return;
+          }
+        } catch (e) {
+          console.error(e);
+          toast("The CM from .env is invalid");
+        }
+        setCandyMachine(candyMachine);
+        if (!candyMachine) {
+          return;
+        }
+        let candyGuard;
+        try {
+          candyGuard = await safeFetchCandyGuard(umi, candyMachine.mintAuthority);
+        } catch (e) {
+          console.error(e);
+          toast("No Candy Guard found!");
+        }
+        if (!candyGuard) {
+          return;
+        }
+        setCandyGuard(candyGuard);
+        if (firstRun) {
+          setfirstRun(false)
+        }
+      }
+    })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [umi, checkEligibility]);
+
+  return { candyMachine, candyGuard };
+};
 
 function MintPage() {
+  const dispatch = useAppDispatch();
+  const mintingNFT = useMintingNFT();
+  const nftMinted = useNFTMinted();
+  const umi = useUmi();
+  const solanaTime = useSolanaTime();
+  const [guards, setGuards] = useState([
+    { label: "startDefault", allowed: false, maxAmount: 0 },
+  ]);
+  const [ownedTokens, setOwnedTokens] = useState();
+  const candyMachineId = useMemo(() => {
+    if (process.env.REACT_APP__CANDY_MACHINE_ID) {
+      return publicKey(process.env.REACT_APP__CANDY_MACHINE_ID);
+    } else {
+      console.error(`failed to get candy machien id cuz No REACT_APP__CANDY_MACHINE_ID in .env!`);
+      toast('failed to get candy machien id cuz No REACT_APP__CANDY_MACHINE_ID in .env!');
+      return publicKey("11111111111111111111111111111111");
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  const [checkEligibility] = useState(true);
+  const [firstRun, setFirstRun] = useState(true);
+  const {candyMachine, candyGuard} = useCandyMachine(umi, candyMachineId, checkEligibility, firstRun, setFirstRun);
+  const [isAllowed, setIsAllowed] = useState(false);
+  const [loadingCandyMachine, setLoadingCandyMachine] = useState(true);
   const [isContainerVisible, setIsContainerVisible] = useState(true);
   const [showTitle, setShowTitle] = useState(false);
   const [showTextOne, setShowTextOne] = useState(false);
@@ -17,7 +108,13 @@ function MintPage() {
     minutes: 0,
     seconds: 0,
   });
+  const [isShowNftOpen, setIsShowNftOpen] = useState(false);
+  const [isVideoEnded, setIsVideoEnded] = useState(false);
+  const [mintVideoAnim, setMintVideoAnim] = useState(false);
+  const [mintFadeOut, setMintFadeOut] = useState(false);
+  const videoRef = useRef(null);
 
+  // intro animation & fetch countdown
   useEffect(() => {
     // start minting deadline
     const fetchAndStartCountdown = async () => {
@@ -68,6 +165,98 @@ function MintPage() {
     };
   }, []);
 
+  // minting setup
+  useEffect(() => {
+    const checkEligibilityFunc = async () => {
+      if (!candyMachine || !candyGuard || !checkEligibility || isShowNftOpen) {
+        return;
+      }
+      setFirstRun(false);
+
+      const { guardReturn, ownedTokens } = await guardChecker(
+        umi, candyGuard, candyMachine, solanaTime
+      );
+
+      setOwnedTokens(ownedTokens);
+      setGuards(guardReturn);
+      setIsAllowed(false);
+
+      // let allowed = false;
+      // for (const guard of guardReturn) {
+      //   if (guard.allowed) {
+      //     allowed = true;
+      //     break;
+      //   }
+      // }
+      // setIsAllowed(allowed);
+      // todo: force to be true in dev net
+      setIsAllowed(true);
+
+      setLoadingCandyMachine(false);
+    };
+
+    checkEligibilityFunc();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [umi, checkEligibility, firstRun]);
+
+  const handleMint = () =>{
+    // filter guards list
+    let filteredGuardlist = guards.filter(
+      (elem, index, self) =>
+        index === self.findIndex((t) => t.label === elem.label)
+    );
+    if (filteredGuardlist.length === 0) {
+      console.log(`no guards`);
+      return;
+    }
+    if (filteredGuardlist.length > 1) {
+      filteredGuardlist = guards.filter((elem) => elem.label !=="default");
+    }
+    filteredGuardlist = filteredGuardlist.slice(-1); //additional add for showing the latest Mint
+    const buttonGuard = {
+      label: filteredGuardlist[0] ? filteredGuardlist[0].label : "default",
+      allowed: filteredGuardlist[0].allowed,
+      startTime: 0n,
+      endTime: 0n,
+      tooltip: filteredGuardlist[0].reason,
+      maxAmount: filteredGuardlist[0].maxAmount,
+    };
+
+    // start minting
+    dispatch(mintNFT({
+      umi,
+      buttonGuard,
+      candyMachine,
+      candyGuard,
+      ownedTokens,
+      guards,
+    }));
+  }
+
+  const onShowNftClose = () =>{
+    setIsShowNftOpen(false);
+    dispatch(resetMintedNFT());
+  }
+
+  useEffect(()=>{
+    if (!nftMinted && !mintingNFT){
+      return;
+    }
+    setIsVideoEnded(false);
+    setIsShowNftOpen(true);
+    setTimeout(()=>{
+      setMintVideoAnim(true);
+    },300);
+  }, [nftMinted, mintingNFT]);
+  
+  const handleVideoEnd = () => {
+    setIsVideoEnded(true);
+    setMintFadeOut(false);
+    setTimeout(()=>{
+      setMintFadeOut(true);
+    },500);
+  };
+  
   return (
     <>
       <Header />
@@ -312,18 +501,35 @@ function MintPage() {
                 </div>
 
                 {/* mint button */}
-                <div className="justify-center items-center inline-flex hover:scale-105 transition-transform duration-200">
-                  <div className="px-[2rem] py-[1.5rem] bg-[#FFDC62] rounded-full border border-[#E59E69] justify-center items-center inline-flex shadow-[0px_4px_4px_0px_#FFFBEF_inset,0px_-4px_4px_0px_rgba(255,249,228,0.48),0px_5px_4px_0px_rgba(232,140,72,0.48)] hover:bg-[#FFB23F] hover:pl-[24px] hover:pr-[20px] hover:border-1 hover:border-[#E59E69] hover:shadow-[0px_4px_4px_0px_rgba(255,210,143,0.61)_inset,0px_4px_4px_0px_rgba(136,136,136,0.48)] cursor-pointer">
-                    <div
-                      className="text-center text-white text-3xl font-normal"
-                      style={{
-                        textShadow: "0px 2px 0.6px rgba(240, 139, 0, 0.66)",
-                      }}
-                    >
-                      <span className="hover:text-shadow-none">Mint Now</span>
-                    </div>
-                  </div>
-                </div>
+                <div
+                  className={`justify-center items-center inline-flex transition-transform duration-200 
+                    ${isAllowed && !mintingNFT ? `hover:scale-105` : ``}`}>
+                  {loadingCandyMachine ? 
+                  <></>
+                  : 
+                  <button
+                    className={`h-[80px] w-[250px] rounded-full border justify-center items-center inline-flex shadow-[0px_4px_4px_0px_#FFFBEF_inset,0px_-4px_4px_0px_rgba(255,249,228,0.48),0px_5px_4px_0px_rgba(232,140,72,0.48)] 
+                      ${isAllowed ?
+                        `bg-[#FFDC62] border-[#E59E69] cursor-pointer`
+                        :
+                        `bg-slate-400 border-slate-400`}`}
+                    disabled={!isAllowed || mintingNFT}
+                    onClick={handleMint}>
+                      {mintingNFT? 
+                        <MoonLoader color={"#E59E69"} size={40} />
+                        :
+                        <div
+                          className="text-center text-white text-3xl font-normal"
+                          style={{
+                            textShadow: "0px 2px 0.6px rgba(240, 139, 0, 0.66)",
+                          }}
+                        >
+                          <span className="">{isAllowed ? `Mint Now` : `Mint Disabled`}</span>
+                        </div>
+                      }
+                  </button>  
+                }
+              </div>
                 
                 <WalletInfo label="Using Wallet"/>
               </div>
@@ -470,17 +676,34 @@ function MintPage() {
               />
 
               {/* mint button */}
-              <div className="justify-center items-center inline-flex hover:scale-105 transition-transform duration-200">
-                <div className="h-[80px] w-[250px] bg-[#FFDC62] rounded-full border border-[#E59E69] justify-center items-center inline-flex shadow-[0px_4px_4px_0px_#FFFBEF_inset,0px_-4px_4px_0px_rgba(255,249,228,0.48),0px_5px_4px_0px_rgba(232,140,72,0.48)] hover:bg-[#FFB23F] hover:pl-[24px] hover:pr-[20px] hover:border-1 hover:border-[#E59E69] hover:shadow-[0px_4px_4px_0px_rgba(255,210,143,0.61)_inset,0px_4px_4px_0px_rgba(136,136,136,0.48)] cursor-pointer">
-                  <div
-                    className="text-center text-white text-3xl font-normal"
-                    style={{
-                      textShadow: "0px 2px 0.6px rgba(240, 139, 0, 0.66)",
-                    }}
-                  >
-                    <span className="hover:text-shadow-none">Mint Now</span>
-                  </div>
-                </div>
+              <div
+                  className={`justify-center items-center inline-flex transition-transform duration-200 
+                    ${isAllowed && !mintingNFT ? `hover:scale-105` : ``}`}>
+                  {loadingCandyMachine ? 
+                  <></>
+                  : 
+                  <button
+                    className={`h-[80px] w-[250px] rounded-full border justify-center items-center inline-flex shadow-[0px_4px_4px_0px_#FFFBEF_inset,0px_-4px_4px_0px_rgba(255,249,228,0.48),0px_5px_4px_0px_rgba(232,140,72,0.48)] 
+                      ${isAllowed ?
+                        `bg-[#FFDC62] border-[#E59E69] cursor-pointer`
+                        :
+                        `bg-slate-400 border-slate-400`}`}
+                    disabled={!isAllowed || mintingNFT}
+                    onClick={handleMint}>
+                      {mintingNFT? 
+                        <MoonLoader color={"#E59E69"} size={40} />
+                        :
+                        <div
+                          className="text-center text-white text-3xl font-normal"
+                          style={{
+                            textShadow: "0px 2px 0.6px rgba(240, 139, 0, 0.66)",
+                          }}
+                        >
+                          <span className="">{isAllowed ? `Mint Now` : `Mint Disabled`}</span>
+                        </div>
+                      }
+                  </button>  
+                }
               </div>
 
               {/* wallet info */}
@@ -489,6 +712,43 @@ function MintPage() {
           </div>
         </div>
       </div>
+      {/* NFT modal */}
+      {isShowNftOpen?
+        <div className="fixed z-[100] inset-0 w-screen h-screen flex items-center justify-center bg-black/50 backdrop-blur-lg">
+          {!isVideoEnded && (
+            <video
+              ref={videoRef}
+              className={`w-full h-full object-cover transition-all duration-300 ${mintVideoAnim ? `scale-100` : `scale-0`}`}
+              onEnded={handleVideoEnd}
+              autoPlay
+              controls={false}
+            >
+              <source src="/assets/videos/Lootbox_Open Anim.mp4" type="video/mp4" />
+              Your browser does not support the video tag.
+            </video>
+          )}
+  
+          {isVideoEnded && (
+            <div className="fixed z-[100] inset-0 w-screen h-screen flex">
+              <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-lg">
+                <div className="flex flex-col p-4 bg-slate-600 rounded-md shadow-lg gap-4">
+                  <span className="mx-auto text-3xl">You minted</span>
+                  <img 
+                    className="max-w-full h-auto"
+                    src={nftMinted.offChainMetadata.image}
+                    alt="NFT Minted"/>
+                  <button
+                    className={`flex mx-auto w-24 h-12 p-5 justify-center items-center rounded-[10px] border border-[#E59E69] shadow-[0px_4px_4px_0px_rgba(255,210,143,0.61)_inset,0px_4px_4px_0px_rgba(136,136,136,0.48)] bg-amber-400 hover:bg-amber-300 hover:scale-105 transition-transform duration-300 ease-in-out`}
+                    onClick={onShowNftClose}>Yay!</button>
+                </div>
+              </div>
+              <div className={`bg-white z-[101] inset-0 w-screen h-screen pointer-events-none transition-all duration-500 ${mintFadeOut ? `opacity-0` : `opacity-100`}`}></div>
+            </div>
+          )}
+        </div>
+        :
+        <></>
+      }
     </>
   );
 }
