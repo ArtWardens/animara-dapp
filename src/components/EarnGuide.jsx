@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { PropTypes } from "prop-types";
-import { useUserDetails, useLocalStamina, useRechargeLoading, rechargeStamina, getUserLocations } from '../sagaStore/slices';
+import { useUserDetails, useLocalStamina, useRechargeLoading, rechargeStamina } from '../sagaStore/slices';
 import { useAppDispatch } from "../hooks/storeHooks.js";
 import {
     StaminaRechargeTypeBasic,
@@ -30,7 +30,6 @@ function EarnGuide({
 
     const handleUserUpgrades = () => {
         setOpenModal('upgrades');
-        dispatch(getUserLocations());
     };
 
     const closeModal = () => {
