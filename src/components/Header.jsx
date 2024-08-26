@@ -214,7 +214,7 @@ function Header() {
 
             {/* Mobile Menu Button */}
             <button
-                className="transition ease-in-out hover:scale-105 xl:hidden absolute top-[5rem] right-[4rem] xl:right-[4rem] z-50"
+                className="transition ease-in-out hover:scale-105 xl:hidden absolute top-[5rem] right-[2rem] xl:right-[4rem] z-50"
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             >
                 <svg className="h-9 w-9 text-amber-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">

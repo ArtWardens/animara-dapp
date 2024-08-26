@@ -8,6 +8,7 @@ import LeaderBoardModal from "../../components/LeaderBoardModal";
 
 const ClickerUpgrades = ({ onClose }) => {
   const { t } = useTranslation();
+  const totalProfit = "9,000,000,000";
   const [isLeaderboardOpen, setIsLeaderboardOpen] = useState(false);
   const [slideUpgrades, setSlideUpgrades] = useState(false);
 
@@ -48,9 +49,8 @@ const ClickerUpgrades = ({ onClose }) => {
   const [selectedUpgrade, setSelectedUpgrade] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  let dailyComboMatched = [];
   const { userLocations } = useUserLocation();
-  dailyComboMatched = useDailyComboMatched();
+  const { dailyComboMatched } = useDailyComboMatched();
 
   useEffect(() => {
     if (userLocations) {
@@ -78,7 +78,7 @@ const ClickerUpgrades = ({ onClose }) => {
 
   return (
     <div
-      className={`relative w-5/6 h-4/5 rounded-3xl p-3 mt-[10rem] transition-all duration-1000 z-[100] ${slideUpgrades? `translate-y-0 opacity-100` : `translate-y-60 opacity-0`}`}
+      className={`relative w-full xl:w-5/6 h-4/5 rounded-3xl p-3 mt-[10rem] transition-all duration-1000 z-[100] ${slideUpgrades? `translate-y-0 opacity-100` : `translate-y-60 opacity-0`}`}
       style={{
         border: "2px solid var(--Color, #F4FBFF)",
         background: "rgba(155, 231, 255, 0.58)",
@@ -111,10 +111,10 @@ const ClickerUpgrades = ({ onClose }) => {
           backgroundRepeat: "no-repeat",
         }}
       >
-        <div className="flex flex-col">
+        <div className="flex flex-col overflow-y-auto 2xl:overflow-visible">
           {/* Leaderboard Button */}
           <button
-            className="absolute top-[4rem] right-[4rem] flex items-center bg-[#49DEFF] rounded-full shadow-md text-white text-xl font-outfit font-bold tracking-wider p-[1.5rem] py-[1rem]"
+            className="absolute top-[4rem] right-[4rem] hidden 2xl:flex items-center bg-[#49DEFF] rounded-full shadow-md text-white text-xl font-outfit font-bold tracking-wider p-[1.5rem] py-[1rem]"
             onClick={handleLeaderboardClick}
           >
             <img
@@ -151,19 +151,20 @@ const ClickerUpgrades = ({ onClose }) => {
               </div>
             </div>
           ) : (
-            <div className="flex flex-row justify-start mt-[4rem] gap-[6rem]">
+            <div className="flex flex-col 2xl:flex-row justify-start mt-[4rem] xl:gap-[6rem] overflow-auto">
               {/* Menu bar */}
-              <div className="w-[12dvw] flex flex-col space-y-[2rem]">
+              <div className="w-full 2xl:w-[13dvw] h-full flex flex-col xl:overflow-hidden">
                 <p className="ml-[4rem] cursor-pointer" onClick={onClose}>
                   &lt;&nbsp; Back
                 </p>
+                <div className="flex flex-row 2xl:flex-col mt-[2.5rem] p-[2rem] xl:p-2 overflow-auto xl:overflow-hidden mb-[1rem] xl:mb-0">
                 {menuOptions.map((option, index) => (
                   <div
                     key={index}
                     onClick={() => setSelectedOption(option.name)}
-                    className={`flex justify-center items-center gap-1.5 p-5 rounded-[10px] shadow-[0px_4px_4px_0px_rgba(255,210,143,0.61)_inset,0px_4px_4px_0px_rgba(136,136,136,0.48)] ${
+                    className={`min-w-[8dvw] w-auto flex justify-center items-center gap-1.5 p-5 mt-0 2xl:mt-[1rem] ml-[1rem] 2xl:ml-0 rounded-[10px] border-8 border-white ${
                       selectedOption === option.name ? 'bg-[#FFB100] transform rotate-6' : 'bg-[#146CFC]'
-                    } hover:pl-[24px] hover:pr-[20px] hover:border-1 hover:border-[#E59E69] hover:shadow-[0px_4px_4px_0px_#FFFBEF_inset,0px_-4px_4px_0px_rgba(255,249,228,0.48),0px_5px_4px_0px_rgba(232,140,72,0.48)] hover:rotate-6 hover:scale-105 transition-transform duration-300 ease-in-out`}
+                    } hover:pl-[24px] hover:pr-[20px] hover:rotate-6 hover:scale-105 transition-transform duration-300 ease-in-out`}
                     
                   >
                     <img
@@ -176,11 +177,12 @@ const ClickerUpgrades = ({ onClose }) => {
                     </span>
                   </div>
                 ))}
+                </div>
               </div>
 
-              <div className="w-full flex flex-col mr-[2rem]">
-                <div className="w-full flex justify-between items-center">
-                  <div className="flex flex-row">
+              <div className="w-full flex flex-col mr-0 2xl:mr-[2rem]">
+                <div className="w-full flex flex-row justify-center 2xl:justify-between items-center ">
+                  <div className="hidden 2xl:flex flex-row">
                     <img
                         src={`/assets/images/clicker-character/${selectedOption}-icon.png`}
                         alt={`${selectedOption} icon`}
@@ -192,16 +194,16 @@ const ClickerUpgrades = ({ onClose }) => {
                     </div>
                   </div>
 
-                  <div className="flex flex-row items-center space-x-4">
+                  <div className="flex flex-col 2xl:flex-row items-center gap-[1rem]">
                     {/* Daily Combo Section */}
-                    <div className="flex items-center bg-[#ffa900] rounded-3xl px-[2rem] py-[1rem] shadow-[0px_4px_4px_rgba(0,0,0,0.25)]">
+                    <div className="flex flex-col 2xl:flex-row items-center bg-[#ffa900] rounded-3xl px-[2rem] py-[1rem] shadow-[0px_4px_4px_rgba(0,0,0,0.25)]">
                       <div className="flex flex-col">
                         <div className="text-white text-2xl font-LuckiestGuy font-normal tracking-wider ">
                           DAILY COMBO
                         </div>
                         <div className="flex flex-row items-center text-white text-lg ">
                           <img src="/assets/images/clicker-character/gem.png" alt="currency icon" className="w-6 h-6" />
-                          <span className="mx-2">9,000,000,000</span>
+                          <span className="mx-2">{totalProfit}</span>
                           <img src={`/assets/images/clicker-character/${dailyComboMatched.length === 3 ? "checked" : "unchecked"}.png`} alt={`/assets/images/clicker-character/${dailyComboMatched.length === 3 ? "checked" : "unchecked"}.png`} className="w-6 h-6 ml-2" />
                         </div>
                       </div>
@@ -216,7 +218,7 @@ const ClickerUpgrades = ({ onClose }) => {
                     <div className="flex flex-row items-center bg-[#11365F] rounded-3xl px-[2rem] py-[1.3rem] shadow-[0px_4px_4px_rgba(0,0,0,0.25)]">
                       <img src="/assets/images/clicker-character/explora-point.png" alt="profit icon" className="w-10 h-10 mr-2" />
                       <div className="flex flex-col mr-[5rem]">
-                        <div className="text-[#56ff4d] text-2xl font-LuckiestGuy font-normal tracking-wider">
+                        <div className="text-[#00E0FF] text-2xl font-LuckiestGuy font-normal tracking-wider">
                           +102,100,100K
                         </div>
                         <div className="text-white text-sm font-outfit ml-2">
@@ -232,7 +234,7 @@ const ClickerUpgrades = ({ onClose }) => {
                   userLocations.filter(
                     (location) => location.region === selectedOption
                   ).length > 0 ? (
-                    <div className="grid grid-cols-4 gap-4 mt-4 p-4">
+                    <div className="grid grid-cols-1 xl:grid-cols-4 gap-4 mt-4 p-4 overflow-y-auto">
                       {userLocations.map((location, index) => {
                         if (location.region === selectedOption) {
                           return (
@@ -276,7 +278,7 @@ const ClickerUpgrades = ({ onClose }) => {
                                       alt="icon2"
                                       className="w-6 h-6 mr-1"
                                     />
-                                    <p className="text-[#56ff4d]">
+                                    <p className="text-[#00E0FF]">
                                       +
                                       {location.level === 0 &&
                                       location.level !== -1
@@ -334,8 +336,8 @@ const ClickerUpgrades = ({ onClose }) => {
                       })}
                     </div>
                   ) : (
-                    <div className="flex justify-center items-center h-full">
-                      <p className="text-white text-center text-2xl">
+                    <div className="flex justify-center items-end xl:items-center h-full">
+                      <p className="text-white text-center text-2xl mt-[4rem] 2xl:mt-0">
                         No upgrades available for this region
                       </p>
                     </div>
