@@ -224,13 +224,13 @@ const MascotView = ({
 
   return (
     <div
-      className="flex justify-center items-end h-screen w-screen pb-16"
+      className="flex justify-center items-end h-screen w-screen xl:pb-16"
     >
       <div
         onMouseDown={handleTap}
         onMouseUp={handleTapUp}
         onMouseLeave={handleTapUp}
-        className={`cursor-pointer w-5/6 h-4/5 rounded-3xl p-3`}
+        className={`cursor-pointer w-full xl:w-5/6 h-4/5 rounded-3xl p-3 `}
         style={{
           border: '2px solid var(--Color, #F4FBFF)',
           background: 'rgba(155, 231, 255, 0.58)',
@@ -258,7 +258,7 @@ const MascotView = ({
           />
         </div>
         <div
-          className="grid w-full h-full rounded-2xl"
+          className="flex w-full h-full rounded-2xl"
           style={{
             backgroundImage: 'url("/assets/images/clicker-character/mascotBg.png")',
             backgroundSize: 'cover',
@@ -266,7 +266,7 @@ const MascotView = ({
             backgroundRepeat: 'no-repeat',
           }}
         >
-          <div className="relative flex justify-center items-center h-full w-full">
+          <div className="flex justify-center items-center h-full w-full">
             {plusOneEffect.show && (
               <img
                 src={"/assets/images/clicker-character/plusOne.png"}
@@ -279,7 +279,7 @@ const MascotView = ({
               <img
                 src={mascotImages[0]}
                 alt="Game mascot"
-                className={`absolute w-3/4 bottom-20 transition-transform duration-1000 ${
+                className={`absolute w-full xl:w-3/4 bottom-[12rem] xl:bottom-20 transition-transform duration-1000 overflow-visible ${
                   startSlide ? 'translate-y-0' : 'translate-y-full'
                 }`}
               />
@@ -287,7 +287,7 @@ const MascotView = ({
               <img
                 src={mascotImages[1]}
                 alt="Game mascot"
-                className={`absolute w-3/4 bottom-20 transition-transform duration-1000 ${
+                className={`absolute w-full xl:w-3/4 bottom-[12rem] xl:bottom-20 transition-transform duration-1000 ${
                   startSlide ? 'translate-y-0' : 'translate-y-full'
                 }`}
               />
@@ -295,7 +295,7 @@ const MascotView = ({
               <img
                 src={mascotImages[2]}
                 alt="Game mascot"
-                className={`absolute w-3/4 bottom-20 transition-transform duration-1000 ${
+                className={`absolute w-full xl:w-3/4 bottom-[12rem] xl:bottom-20 transition-transform duration-1000 ${
                   startSlide ? 'translate-y-0' : 'translate-y-full'
                 }`}
               />
