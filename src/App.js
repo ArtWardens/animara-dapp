@@ -26,6 +26,7 @@ import { UmiProvider } from "./web3/UmiProvider.tsx";
 
 import './i18n';
 import ClickerController from './components/ClickerController';
+import Error404Page from './pages/Error404/Error404.js';
 
 export const App = () => {
   const dispatch = useAppDispatch();
@@ -82,6 +83,7 @@ export const App = () => {
                   <Route path="/early-bird" element={<ClickerController Children={EarlyBirdPage} />} />
                   <Route path="/clicker-lock" element={<ClickerController Children={LockPage} />} />
                   <Route path="/mint" element={<ClickerController Children={MintPage} />} />
+                  <Route path="*" element={<Error404Page />} />
                 </Route>
               </Routes>
             </GlobalProvider>
