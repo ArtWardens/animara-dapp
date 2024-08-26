@@ -139,3 +139,17 @@ body {
   z-index: 2;
   pointer-events:none;
 }
+
+/* Looping Custom Animation w/o React Transition Group (RTG) as RTG dont work well with looping */
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+.rotate-image {
+  animation: rotate 6s linear infinite;
+  transform-origin: center;
+}
