@@ -292,7 +292,7 @@ export const buildTx = (
   umi: Umi,
   candyMachine: CandyMachine,
   candyGuard: CandyGuard,
-  nftMint: Signer,
+  signer: Signer,
   guardToUse:
     | GuardGroup<DefaultGuardSet>
     | {
@@ -309,7 +309,7 @@ export const buildTx = (
       candyMachine: candyMachine.publicKey,
       collectionMint: candyMachine.collectionMint,
       collectionUpdateAuthority: candyMachine.authority,
-      nftMint,
+      nftMint: signer,
       group: guardToUse.label === "default" ? none() : some(guardToUse.label),
       candyGuard: candyGuard.publicKey,
       mintArgs,
