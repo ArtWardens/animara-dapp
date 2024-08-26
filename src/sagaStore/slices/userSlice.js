@@ -48,7 +48,7 @@ const userInitialState = {
   nftClaimable: 0,
   bindWalletLoading: false,
   mintingNFT: false,
-  nftMinted: []
+  nftMinted: null
 };
 
 export const userSlice = createSlice({
@@ -391,7 +391,7 @@ export const userSlice = createSlice({
       const currentUser = current(state.user);
       state.user = {
         ...currentUser,
-        level: payload.updatedLvl,
+        level: payload.updatedUserLvl,
         profitPerHour: payload.updatedExploraPts,
         coins: payload.updatedCoins,
       }
@@ -446,12 +446,17 @@ export const userSlice = createSlice({
     },
     mintNFT: (state, { payload }) => {
       state.mintingNFT = true;
+      state.nftMinted = null;
     },
     mintNFTSuccess: (state, { payload }) => {
-      state.nftMinted = payload.nftMinted
-      state.mintingNFT = false;
+      console.log(`mint success ${Object.keys(payload)}`);
+      state.nftMinted = payload;
     },
     mintNFTError: (state, { payload }) => {
+      state.mintingNFT = false;
+    },
+    resetMintedNFT: (state, { payload }) => {
+      state.nftMinted = null;
       state.mintingNFT = false;
     },
   },
@@ -530,6 +535,10 @@ export const {
   unbindWallet,
   unbindWalletSuccess,
   unbindWalletError,
+  mintNFT,
+  mintNFTSuccess,
+  mintNFTError,
+  resetMintedNFT,
 } = userSlice.actions;
 
 export const useAuthLoading = () => useAppSelector((state) => state.user.authLoading);
