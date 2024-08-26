@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import PropTypes from "prop-types";
-import { useUserLocation } from "../../sagaStore/slices";
+import { useAppDispatch } from "../../hooks/storeHooks.js";
+import { useUserLocation, useUserLocationLoading, getUserLocations } from "../../sagaStore/slices";
 import UpgradeDetailsModal from "./UpgradeDetailsModal";
 import { PropagateLoader } from "react-spinners";
 import LeaderBoardModal from "../../components/LeaderBoardModal";
 
 const ClickerUpgrades = ({ onClose }) => {
+  const dispatch = useAppDispatch();
   const { t } = useTranslation();
   const [isLeaderboardOpen, setIsLeaderboardOpen] = useState(false);
   const [slideUpgrades, setSlideUpgrades] = useState(false);
@@ -46,13 +48,13 @@ const ClickerUpgrades = ({ onClose }) => {
 
   const [selectedOption, setSelectedOption] = useState("forest");
   const [selectedUpgrade, setSelectedUpgrade] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const userLocationLoading = useUserLocationLoading();
 
   const { userLocations } = useUserLocation();
 
   useEffect(() => {
-    if (userLocations) {
-      setLoading(false);
+    if (!userLocations && !userLocationLoading) {
+      dispatch(getUserLocations());
     }
 
     // intro animations
@@ -137,7 +139,7 @@ const ClickerUpgrades = ({ onClose }) => {
           </div>
 
           {/* Show loader if loading is true, otherwise display the content */}
-          {loading ? (
+          {userLocationLoading ? (
             <div className="h-full flex flex-row">
               <div className="w-[10%] items-start justify-start mt-[4rem]">
                 <p className="ml-[4rem] cursor-pointer" onClick={onClose}>
@@ -185,7 +187,7 @@ const ClickerUpgrades = ({ onClose }) => {
                 </div>
 
                 {/* Display Upgrades */}
-                {userLocations.length > 0 ? (
+                {userLocations && userLocations.length > 0 ? (
                   userLocations.filter(
                     (location) => location.region === selectedOption
                   ).length > 0 ? (

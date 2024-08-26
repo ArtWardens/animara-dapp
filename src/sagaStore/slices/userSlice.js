@@ -389,7 +389,7 @@ export const userSlice = createSlice({
       const currentUser = current(state.user);
       state.user = {
         ...currentUser,
-        level: payload.updatedLvl,
+        level: payload.updatedUserLvl,
         profitPerHour: payload.updatedExploraPts,
         coins: payload.updatedCoins,
       }
