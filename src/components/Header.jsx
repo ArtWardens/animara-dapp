@@ -133,8 +133,9 @@ function Header() {
                 </div>
 
                 <div className="flex flex-col place-content-center">
-                    <div className="font-outfit text-md">
-                        {currentUser?.name || 'Animara User'}
+                    <div className="font-outfit text-md flex">
+                        <p>{currentUser?.name || 'Animara User'}</p>
+                        <p className="ml-4 font-LuckiestGuy text-[#F46700]">LV.{currentUser?.level}</p>
                     </div>
 
                     <div className="gap-2 flex">
