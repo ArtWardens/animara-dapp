@@ -778,22 +778,50 @@ function MintPage() {
           )}
   
           {isVideoEnded && (
-            <div className="fixed z-[100] inset-0 w-screen h-screen flex">
-              <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-lg">
-                <div className="flex flex-col p-8 bg-slate-600 rounded-xl shadow-lg">
-                  <span className="mx-auto mb-8 text-5xl">You minted</span>
-                  <img 
-                    className="w-96 h-96 mb-4"
-                    src={nftMinted.offChainMetadata.image}
-                    alt="NFT Minted"/>
-                  <span classNAme="mr-auto text-4xl">{nftMinted.offChainMetadata.name}</span>
-                  <button
-                    className={`flex mx-auto w-24 h-12 mt-6 p-5 justify-center items-center rounded-[10px] border border-[#E59E69] shadow-[0px_4px_4px_0px_rgba(255,210,143,0.61)_inset,0px_4px_4px_0px_rgba(136,136,136,0.48)] bg-amber-400 hover:bg-amber-300 hover:scale-105 transition-transform duration-300 ease-in-out`}
-                    onClick={onShowNftClose}>Yay!</button>
+            <div className="fixed inset-0 bg-transparent backdrop-blur-xl rounded-xl flex justify-center items-center z-[200] overflow-hidden">
+            {/* Background Image with spinning animation */}
+            <div
+              className={`absolute w-[2000px] h-[2000px] rotate-image`}
+              style={{
+                backgroundImage: `url("/assets/images/clicker-character/light-element.webp")`,
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+                backgroundRepeat: "no-repeat",
+              }}
+            ></div>
+
+          
+            {/* Static Content */}
+            <div className="relative z-[101] flex flex-col items-center justify-center p-[1rem]">
+              <div className="w-full bg-gradient-to-t from-[#78BFF2] to-[#7ADFFF] flex flex-col items-start p-[1rem] xl:p-[2rem] rounded-xl shadow-lg">
+                <div className="w-full flex justify-center">
+                  <span className="text-2xl xl:text-4xl text-center font-normal tracking-widest uppercase mb-[1rem] xl:mb-[2rem]">You minted</span>
                 </div>
+                <div className="w-full flex justify-center">
+                  <img 
+                    className="w-[20rem] xl:w-[26rem] h-[20rem] xl:h-[26rem] mb-4"
+                    src={nftMinted.offChainMetadata.image}
+                    alt="NFT Minted"
+                  />
+                </div>
+                <span className="text-2xl xl:text-4xl text-left font-normal uppercase">{nftMinted.offChainMetadata.name}</span>
               </div>
-              <div className={`bg-white z-[101] inset-0 w-screen h-screen pointer-events-none transition-all duration-500 ${mintFadeOut ? `opacity-0` : `opacity-100`}`}></div>
+
+              <div>
+                <button
+                  className="mt-[4rem] text-base xl:text-xl px-[3rem] py-[1rem] flex justify-center items-center rounded-full border border-[#E59E69] shadow-[0px_4px_4px_0px_rgba(255,210,143,0.61)_inset,0px_4px_4px_0px_rgba(136,136,136,0.48)] bg-amber-400 hover:bg-amber-300 hover:scale-105 uppercase transition-transform duration-300 ease-in-out"
+                  onClick={onShowNftClose}
+                >
+                  awesome!
+                </button>
+              </div>
             </div>
+
+          
+            {/* Fade Out Overlay */}
+            <div className={`bg-white absolute z-[101] inset-0 w-screen h-screen pointer-events-none transition-all duration-500 ${mintFadeOut ? `opacity-0` : `opacity-100`}`}></div>
+          </div>
+          
           )}
         </div>
         :
