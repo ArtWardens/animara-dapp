@@ -149,7 +149,7 @@ body {
   }
 }
 .rotate-image {
-  animation: rotate 180s linear infinite;
+  animation: rotate 6s linear infinite;
   transform-origin: center;
 }
 

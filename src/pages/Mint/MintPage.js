@@ -11,7 +11,7 @@ import Header from "../../components/Header.jsx";
 import WalletInfo from "../../components/SolanaWallet/WalletInfo.jsx";
 import WalletBindingPanel from "../../components/SolanaWallet/WalletBindingPanel.jsx";
 import { useAppDispatch } from "../../hooks/storeHooks.js";
-import { mintNFT, useMintingNFT, useNFTMinted, resetMintedNFT, useBindWalletLoading, useUserDetails } from "../../sagaStore/slices/userSlice.js";
+import { mintNFT, useMintingNFT, useNFTMinted, resetMintedNFT, useBindWalletLoading } from "../../sagaStore/slices/userSlice.js";
 import { fetchDate, startCountdown } from "../../firebase/countDown";
 
 const useCandyMachine = (
@@ -74,7 +74,6 @@ const useCandyMachine = (
 
 function MintPage() {
   const dispatch = useAppDispatch();
-  const currentUser = useUserDetails();
   const bindingWallet = useBindWalletLoading();
   const mintingNFT = useMintingNFT();
   const nftMinted = useNFTMinted();
@@ -205,14 +204,14 @@ function MintPage() {
           break;
         }
       }
-      setIsAllowed(allowed && currentUser?.walletAddr && `${walletAddr}` === currentUser?.walletAddr);
+      setIsAllowed(allowed);
 
       setLoadingCandyMachine(false);
     };
 
     checkEligibilityFunc();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [umi, checkEligibility, firstRun, currentUser]);
+  }, [umi, checkEligibility, firstRun]);
 
   const handleMintOrConnect = () =>{
     if (!walletAddr){
@@ -229,7 +228,6 @@ function MintPage() {
         index === self.findIndex((t) => t.label === elem.label)
     );
     if (filteredGuardlist.length === 0) {
-      console.log(`no guards`);
       return;
     }
     if (filteredGuardlist.length > 1) {
@@ -270,7 +268,7 @@ function MintPage() {
   }
 
   useEffect(()=>{
-    if (!mintingNFT || !nftMinted){
+    if (!nftMinted && !mintingNFT){
       return;
     }
     setIsVideoEnded(false);
@@ -805,7 +803,7 @@ function MintPage() {
       {/* NFT modal */}
       {isShowNftOpen?
         <div className="fixed z-[100] inset-0 w-screen h-screen flex items-center justify-center bg-black/50 backdrop-blur-lg">
-          {!isVideoEnded && nftMinted && (
+          {!isVideoEnded && (
             <video
               ref={videoRef}
               className={`w-full h-full object-cover transition-all duration-300 ${mintVideoAnim ? `scale-100` : `scale-0`}`}
@@ -834,7 +832,7 @@ function MintPage() {
           
             {/* Static Content */}
             <div className="relative z-[101] flex flex-col items-center justify-center p-[1rem]">
-              <div className="w-full bg-gradient-to-t from-[#78BFF2] to-[#7ADFFF] flex flex-col items-start p-[1rem] xl:p-[2rem] rounded-xl shadow-lg transition-all duration-300 hover:scale-105">
+              <div className="w-full bg-gradient-to-t from-[#78BFF2] to-[#7ADFFF] flex flex-col items-start p-[1rem] xl:p-[2rem] rounded-xl shadow-lg">
                 <div className="w-full flex justify-center">
                   <span className="text-2xl xl:text-4xl text-center font-normal tracking-widest uppercase mb-[1rem] xl:mb-[2rem]">You minted</span>
                 </div>
@@ -850,7 +848,7 @@ function MintPage() {
 
               <div>
                 <button
-                  className="mt-[4rem] text-base xl:text-xl px-[3rem] py-[1rem] flex justify-center items-center rounded-full border border-[#E59E69] shadow-[0px_4px_4px_0px_rgba(255,210,143,0.61)_inset,0px_4px_4px_0px_rgba(136,136,136,0.48)] bg-amber-400 hover:bg-amber-300 hover:scale-110 uppercase transition-transform duration-300 ease-in-out"
+                  className="mt-[4rem] text-base xl:text-xl px-[3rem] py-[1rem] flex justify-center items-center rounded-full border border-[#E59E69] shadow-[0px_4px_4px_0px_rgba(255,210,143,0.61)_inset,0px_4px_4px_0px_rgba(136,136,136,0.48)] bg-amber-400 hover:bg-amber-300 hover:scale-105 uppercase transition-transform duration-300 ease-in-out"
                   onClick={onShowNftClose}
                 >
                   awesome!

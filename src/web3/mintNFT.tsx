@@ -72,7 +72,6 @@ export async function mintImpl(
     let tables: AddressLookupTableInput[] = [];
 
     const latestBlockhash = (await umi.rpc.getLatestBlockhash({ commitment: "finalized" }));
-    console.log(`latestBlockhash.lastValidBlockHeight ${latestBlockhash.lastValidBlockHeight}`);
 
     const mintArgs = mintArgsBuilder(candyMachine, guardToUse, ownedTokens);
     const simSigner = generateSigner(umi);
@@ -129,7 +128,6 @@ export async function mintImpl(
     });
 
     await Promise.allSettled(sendPromises);
-    console.log(`all settled`);
     if (!(await sendPromises[0]).status === true) {
       // throw error that no tx was created
       throw new Error("no tx was created");
