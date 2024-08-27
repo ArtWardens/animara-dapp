@@ -66,7 +66,7 @@ function ReferralPage (){
         "Accumulate USDT rewards when anyone you invite purchases a piece of our NFT! Maybe you can snatch one for yourself too if you invite enough people...",
     },
     {
-      image: "/assets/images/clicker-character/ref03.png",
+      image: "/assets/images/clicker-character/ref03.webp",
       alt: "Rank Up Rewards",
       title: "Rank Up Rewards",
       description:
@@ -241,7 +241,7 @@ function ReferralPage (){
                ${showRefTwo ? `opacity-100` : `opacity-0`}`}>
               <img
                 className="w-4/5 h-auto origin-top-left shadow"
-                src="/assets/images/clicker-character/ref03.png"
+                src="/assets/images/clicker-character/ref03.webp"
                 alt="Rank Up Rewards"
               />
               <div className="flex flex-col justify-start items-center gap-2">
