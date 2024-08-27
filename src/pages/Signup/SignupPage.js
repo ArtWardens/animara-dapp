@@ -82,7 +82,7 @@ const SignupPage = () => {
 
   useEffect(() => {
     if (!isAuthLoading && isAuthenticated) {
-      navigate("/clicker-lock");
+      navigate("/anitap");
     }
   }, [isAuthLoading, isAuthenticated, navigate]);
 

@@ -54,7 +54,7 @@ const LoginPage = () => {
 
   useEffect(() => {
     if (currentUser) {
-      navigate("/clicker-lock");
+      navigate("/anitap");
     }
   }, [navigate, currentUser]);
 
