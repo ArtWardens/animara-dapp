@@ -26,13 +26,6 @@ const WalletBindingPanel = () => {
   const [disconnectingWallet, setDisconnectingWallet] = useState(false);
   const [showDisconnectPrompt, setShowDisconnectPrompt] = useState(false);
 
-  const getWalletAddr = useCallback(()=>{
-    if (!user){
-      return `${window.location.origin}/signup`;
-    }
-    return user?.walletAddr;
-  },[user]);
-
   // wallet button logic
   const handleConnectWallet = ()=>{
     setConnectingWallet(true);
@@ -54,10 +47,15 @@ const WalletBindingPanel = () => {
   }
 
   // Copy wallet address
-  const copyWalletAddr = () => {
-    navigator.clipboard.writeText(getWalletAddr());
-    toast.success('User wallet address copied to clipboard!');
-  };
+  const copyWalletAddr = useCallback(() => {
+    if (user && user.walletAddr) {
+      navigator.clipboard.writeText(user.walletAddr);
+      toast.success('User wallet address copied to clipboard!');
+    } else {
+      navigator.clipboard.writeText('');
+      toast.error('Error copying wallet address.');
+    }
+  }, [user]);
 
   // handle wallet connection state changes
   useEffect(()=>{
@@ -197,7 +195,7 @@ const WalletBindingPanel = () => {
                   className="bg-[#8f8f8f] rounded-3xl px-[2rem] py-[1rem] hover:scale-110 transition-all duration-300"
                   onClick={handleDisbindWallet}
                 >
-                  Disconnect
+                  Unbind
                 </button>
               :
               bindingWallet || connectingWallet ? 
