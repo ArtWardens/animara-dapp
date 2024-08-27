@@ -428,15 +428,7 @@ function ReferralPage (){
 
                         {/* Claim button */}
                         <div className={`pb-1 justify-center items-center inline-flex transition-transform duration-200 hover:scale-105`}>
-                          <div 
-                            className={`h-[60px] w-[160px] rounded-full border justify-center items-center inline-flex shadow-[0px_4px_4px_0px_#FFFBEF_inset,0px_-4px_4px_0px_rgba(255,249,228,0.48),0px_5px_4px_0px_rgba(232,140,72,0.48)] hover:bg-[#FFB23F] hover:pl-[24px] hover:pr-[20px] hover:border-1 hover:border-[#E59E69] hover:shadow-[0px_4px_4px_0px_rgba(255,210,143,0.61)_inset,0px_4px_4px_0px_rgba(136,136,136,0.48)] cursor-pointer border-[#E59E69] bg-[#FFDC62]`}>
-                            <div
-                              className="text-center text-white text-2xl font-normal"
-                              style={{ textShadow: '0px 2px 0.6px rgba(240, 139, 0, 0.66)'}}
-                            >
-                              <span className={`hover:text-shadow-none`}>Claim</span>
-                            </div>
-                          </div>
+                          <p className="text-lg text-center">Cashback claim available soon!</p>
                         </div>
 
                         {/* NFT Prompt */}
@@ -656,15 +648,7 @@ function ReferralPage (){
 
                         {/* Claim button */}
                         <div className={`pb-1 justify-center items-center inline-flex transition-transform duration-200 hover:scale-105`}>
-                          <div 
-                            className={`h-[60px] w-[160px] rounded-full border justify-center items-center inline-flex shadow-[0px_4px_4px_0px_#FFFBEF_inset,0px_-4px_4px_0px_rgba(255,249,228,0.48),0px_5px_4px_0px_rgba(232,140,72,0.48)] hover:bg-[#FFB23F] hover:pl-[24px] hover:pr-[20px] hover:border-1 hover:border-[#E59E69] hover:shadow-[0px_4px_4px_0px_rgba(255,210,143,0.61)_inset,0px_4px_4px_0px_rgba(136,136,136,0.48)] cursor-pointer border-[#E59E69] bg-[#FFDC62]`}>
-                            <div
-                              className="text-center text-white text-2xl font-normal"
-                              style={{ textShadow: '0px 2px 0.6px rgba(240, 139, 0, 0.66)'}}
-                            >
-                              <span className={`hover:text-shadow-none`}>Claim</span>
-                            </div>
-                          </div>
+                          <p className="w-[70%] text-lg text-center">Cashback claim available soon!</p>
                         </div>
 
                         {/* NFT Prompt */}
