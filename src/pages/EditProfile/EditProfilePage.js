@@ -43,7 +43,6 @@ const EditProfilePage = () => {
   }, [user, updateProfileLoading]);
 
   const handleResetPassword = () => {
-    console.log(email);
     dispatch(resetPassword(email));
   };
 

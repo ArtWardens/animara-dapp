@@ -228,7 +228,6 @@ function MintPage() {
         index === self.findIndex((t) => t.label === elem.label)
     );
     if (filteredGuardlist.length === 0) {
-      console.log(`no guards`);
       return;
     }
     if (filteredGuardlist.length > 1) {

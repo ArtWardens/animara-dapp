@@ -1,4 +1,4 @@
-import { auth, db, storage, updateUserLastLogin, dailyLogin, getReferralStats } from "../firebase/firebaseConfig";
+import { auth, db, storage, updateUserLastLogin, dailyLogin, getReferralStats, registerNFT } from "../firebase/firebaseConfig";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { getDownloadURL, ref, uploadString } from "firebase/storage";
 import { getIdTokenResult, updateProfile } from "firebase/auth";
@@ -112,7 +112,6 @@ const updateUserProfileImpl = async (
 const updateUserLeaveTimeImpl = async () => {
   try {
     const idToken = await auth.currentUser.getIdToken(/* forceRefresh */ false);
-    console.log(`idToken ${idToken}`);
     await updateUserLastLogin({ idToken: idToken });
   } catch (error) {
     console.log("Error setting user data: ", error);
@@ -143,10 +142,25 @@ const getReferralStatsImpl = async () =>{
   }
 }
 
+const registerNFTImpl = async () =>{
+  try {
+    const idToken = await auth.currentUser.getIdToken(false);
+    const { data } = await registerNFT({idToken: idToken});
+    if (data.error){
+        throw data.error;
+    }
+    return data;
+  }catch (error) {
+      console.log("Failed to register NFT: ", error);
+      throw error;
+  }
+}
+
 export {
     getUserDataImpl,
     updateUserProfileImpl,
     updateUserLeaveTimeImpl,
     dailyLoginImpl,
-    getReferralStatsImpl
+    getReferralStatsImpl,
+    registerNFTImpl
 };

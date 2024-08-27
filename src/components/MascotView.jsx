@@ -108,7 +108,6 @@ const MascotView = ({
 
     // try to settle tap session if there are any changes
     if (!settlingTapSession && (currentUser?.coins !== localCoins || currentUser?.stamina !== localStamina)){
-      console.log('dispatch');
       dispatch(settleTapSession({
         newCointAmt: localCoins,
         newStamina: localStamina,
@@ -146,14 +145,12 @@ const MascotView = ({
         }
         // set a timer to reset mascot after no action for a duration
         idleTimerRef.current = setTimeout(() => {
-          console.log('idle!');
           setImgIndex(0);
           clearInterval(periodicSettlerTimerRef.current);
           periodicSettlerTimerRef.current = null;
           // Note: if reward modal is opened, then skip idle handling
           // because usually we are waiting for server to update back depletion rewards
           if (!settlingTapSession && !isOpenRewardModal && (currentUser?.coins !== localCoins || currentUser?.stamina !== localStamina)){
-            console.log('settle');
             dispatch(settleTapSession({
               newCointAmt: localCoins,
               newStamina: localStamina,
