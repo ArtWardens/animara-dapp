@@ -81,12 +81,7 @@ const EditProfilePage = () => {
 
   const handleFileChange = (e) => {
     const file = e.target.files?.[0];
-    const maxSize = 2 * 1024 * 1024; // 2MB in bytes
     if (file) {
-      if (file.size > maxSize) {
-        alert("File size exceeds 2MB. Please select a smaller file.");
-        return;
-      }
       const reader = new FileReader();
       reader.onload = () => {
         setImageData(reader.result);
