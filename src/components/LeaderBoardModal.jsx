@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { PropTypes } from "prop-types";
+import { PropTypes } from 'prop-types';
 import { useAppDispatch } from '../hooks/storeHooks';
 import {
   getLeaderBoard,
@@ -41,10 +41,10 @@ const LeaderBoardModal = ({ setIsLeaderBoardOpen, countdown, timeRemaining }) =>
       <div className="absolute inset-0 bg-pink-300 z-[100001]">
         <div
           className="absolute inset-0 bg-cover bg-no-repeat z-[100001]"
-          style={{ backgroundImage: 'url(/assets/images/Light.png)' }}
+          style={{ backgroundImage: 'url(/assets/images/Light.webp)' }}
         >
           <div className="absolute top-4 left-4">
-            <img src="/assets/images/username.png" className="cursor-pointer h-16" alt="username" />{' '}
+            <img src="/assets/images/username.webp" className="cursor-pointer h-16" alt="username" />{' '}
             <p className="text-white absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/3 w-20 truncate">
               <span>{`${userDetails?.first_name} ${userDetails?.last_name}`}</span>
             </p>
@@ -54,14 +54,14 @@ const LeaderBoardModal = ({ setIsLeaderBoardOpen, countdown, timeRemaining }) =>
               <img
                 className="select-none h-full min-w-[800px] min-h-[500px]"
                 draggable={false}
-                src="/assets/images/LeaderboardBg.png"
+                src="/assets/images/LeaderboardBg.webp"
                 alt="leaderboard"
               />
               <div onClick={handleCloseModal} className="absolute top-4 -right-10">
-                <img src="/assets/images/x.png" width={50} height={50} className="cursor-pointer" alt="x" />
+                <img src="/assets/images/x.webp" width={50} height={50} className="cursor-pointer" alt="x" />
               </div>
 
-              {leaderBoardData?.length > 0 ?
+              {leaderBoardData?.length > 0 ? (
                 <div className="absolute top-1/4 w-[100%] ">
                   <ul className="grid gap-2 max-h-[230px] overflow-y-auto px-8">
                     {leaderBoardData?.map((el, index) => (
@@ -73,11 +73,11 @@ const LeaderBoardModal = ({ setIsLeaderBoardOpen, countdown, timeRemaining }) =>
                       >
                         <div className="flex items-center space-x-3">
                           {index === 0 ? (
-                            <img src="/assets/images/gold.png" className=" w-[35px] h-[35px]" alt="gold" />
+                            <img src="/assets/images/gold.webp" className=" w-[35px] h-[35px]" alt="gold" />
                           ) : index === 1 ? (
-                            <img src="/assets/images/silvar.png" className=" w-[35px] h-[35px]" alt="silvar" />
+                            <img src="/assets/images/silvar.webp" className=" w-[35px] h-[35px]" alt="silvar" />
                           ) : index === 2 ? (
-                            <img src="/assets/images/platinum.png" className=" w-[35px] h-[35px]" alt="platinium" />
+                            <img src="/assets/images/platinum.webp" className=" w-[35px] h-[35px]" alt="platinium" />
                           ) : (
                             <div className=" w-[35px] h-[35px]"></div>
                           )}
@@ -87,7 +87,7 @@ const LeaderBoardModal = ({ setIsLeaderBoardOpen, countdown, timeRemaining }) =>
                         <div className="flex items-center">
                           <span className="mr-2 lb-text text-xl">{el.numberOfClicks}</span>
                           <img
-                            src="/assets/images/hamar2.png"
+                            src="/assets/images/hamar2.webp"
                             width={50}
                             height={50}
                             className="cursor-pointer w-[25px] h-[25px]"
@@ -97,7 +97,7 @@ const LeaderBoardModal = ({ setIsLeaderBoardOpen, countdown, timeRemaining }) =>
                         <div className="flex items-center">
                           <span className="lb-point text-xl">{el.coins}</span>
                           <img
-                            src="/assets/images/gem3.png"
+                            src="/assets/images/gem3.webp"
                             width={50}
                             height={50}
                             className="cursor-pointer w-[20px] h-[20px]"
@@ -108,11 +108,11 @@ const LeaderBoardModal = ({ setIsLeaderBoardOpen, countdown, timeRemaining }) =>
                     ))}
                   </ul>
                 </div>
-                :
+              ) : (
                 <div className="absolute">
                   <span className="text-xl">NO RECORDS YET</span>
                 </div>
-              }
+              )}
 
               <div className="absolute -bottom-9 -right-24">
                 <div className="max-w-48 w-full h-8 bg-purple-900 opacity-80 rounded-[602px] flex justify-between items-center pl-3">
@@ -121,7 +121,7 @@ const LeaderBoardModal = ({ setIsLeaderBoardOpen, countdown, timeRemaining }) =>
                     <span className="text-white">until reset</span>
                   </h3>
                   <div>
-                    <img src="/assets/images/timer.png" width={50} height={50} className="cursor-pointer" alt="x" />
+                    <img src="/assets/images/timer.webp" width={50} height={50} className="cursor-pointer" alt="x" />
                   </div>
                 </div>
                 <h4 className="text-white font-light pt-1.5">Leaderboard refreshes in {countdown} seconds</h4>
@@ -137,7 +137,7 @@ const LeaderBoardModal = ({ setIsLeaderBoardOpen, countdown, timeRemaining }) =>
 LeaderBoardModal.propTypes = {
   setIsLeaderBoardOpen: PropTypes.func,
   countdown: PropTypes.number,
-  timeRemaining: PropTypes.number
-}
+  timeRemaining: PropTypes.number,
+};
 
 export default LeaderBoardModal;

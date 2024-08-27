@@ -52,21 +52,21 @@ function ReferralPage (){
   // Mobile view carousel content
   const content = [
     {
-      image: "/assets/images/clicker-character/ref01.png",
+      image: "/assets/images/clicker-character/ref01.webp",
       alt: "Invite Rewards",
       title: "Invite Rewards",
       description:
         "Get a boost of currencies to use in our Tap-to-Earn game when anyone signs up with your code.",
     },
     {
-      image: "/assets/images/clicker-character/ref02.png",
+      image: "/assets/images/clicker-character/ref02.webp",
       alt: "NFT Cashback",
       title: "NFT Cashback",
       description:
         "Accumulate USDT rewards when anyone you invite purchases a piece of our NFT! Maybe you can snatch one for yourself too if you invite enough people...",
     },
     {
-      image: "/assets/images/clicker-character/ref03.png",
+      image: "/assets/images/clicker-character/ref03.webp",
       alt: "Rank Up Rewards",
       title: "Rank Up Rewards",
       description:
@@ -183,7 +183,7 @@ function ReferralPage (){
       <div
         className="flex flex-col items-center pb-4 xl:px-[2rem] min-h-screen"
         style={{
-          backgroundImage: 'url("/assets/images/clicker-character/clickerWall.png")',
+          backgroundImage: 'url("/assets/images/clicker-character/clickerWall.webp")',
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat',
@@ -209,7 +209,7 @@ function ReferralPage (){
                ${showRefOne ? `opacity-100` : `opacity-0`}`}>
               <img
                 className="w-4/5 h-auto origin-top-left shadow"
-                src="/assets/images/clicker-character/ref01.png"
+                src="/assets/images/clicker-character/ref01.webp"
                 alt="Invite Rewards"
               />
               <div className="flex flex-col justify-start items-center gap-2">
@@ -225,7 +225,7 @@ function ReferralPage (){
                ${showRefThree ? `opacity-100` : `opacity-0`}`}>
               <img
                 className="w-full h-auto origin-top-left shadow"
-                src="/assets/images/clicker-character/ref02.png"
+                src="/assets/images/clicker-character/ref02.webp"
                 alt="NFT Cashback"
               />
               <div className="flex flex-col justify-start items-center gap-2">
@@ -241,7 +241,7 @@ function ReferralPage (){
                ${showRefTwo ? `opacity-100` : `opacity-0`}`}>
               <img
                 className="w-4/5 h-auto origin-top-left shadow"
-                src="/assets/images/clicker-character/ref03.png"
+                src="/assets/images/clicker-character/ref03.webp"
                 alt="Rank Up Rewards"
               />
               <div className="flex flex-col justify-start items-center gap-2">
@@ -282,7 +282,7 @@ function ReferralPage (){
               >
                 <img
                   className="w-full h-full"
-                  src="/assets/images/clicker-character/arrow-left.png"
+                  src="/assets/images/clicker-character/arrow-left.webp"
                   alt="left arrow"
                 />
               </button>
@@ -294,7 +294,7 @@ function ReferralPage (){
               >
                 <img
                   className="w-full h-full "
-                  src="/assets/images/clicker-character/arrow-right.png"
+                  src="/assets/images/clicker-character/arrow-right.webp"
                   alt="right arrow"
                 />
               </button>
@@ -313,7 +313,7 @@ function ReferralPage (){
                   <div
                     className="w-full h-full p-12 items-center"
                     style={{
-                      backgroundImage: 'url("/assets/images/clicker-character/ticketWeb02.png")',
+                      backgroundImage: 'url("/assets/images/clicker-character/ticketWeb02.webp")',
                       backgroundSize: 'contain',
                       backgroundPosition: 'center',
                       backgroundRepeat: 'no-repeat',
@@ -398,7 +398,7 @@ function ReferralPage (){
                   <div
                     className="w-full h-full place-content-center"
                     style={{
-                      backgroundImage: 'url("/assets/images/clicker-character/ticketWeb01.png")',
+                      backgroundImage: 'url("/assets/images/clicker-character/ticketWeb01.webp")',
                       backgroundSize: 'contain',
                       backgroundPosition: 'center',
                       backgroundRepeat: 'no-repeat',
@@ -428,15 +428,7 @@ function ReferralPage (){
 
                         {/* Claim button */}
                         <div className={`pb-1 justify-center items-center inline-flex transition-transform duration-200 hover:scale-105`}>
-                          <div 
-                            className={`h-[60px] w-[160px] rounded-full border justify-center items-center inline-flex shadow-[0px_4px_4px_0px_#FFFBEF_inset,0px_-4px_4px_0px_rgba(255,249,228,0.48),0px_5px_4px_0px_rgba(232,140,72,0.48)] hover:bg-[#FFB23F] hover:pl-[24px] hover:pr-[20px] hover:border-1 hover:border-[#E59E69] hover:shadow-[0px_4px_4px_0px_rgba(255,210,143,0.61)_inset,0px_4px_4px_0px_rgba(136,136,136,0.48)] cursor-pointer border-[#E59E69] bg-[#FFDC62]`}>
-                            <div
-                              className="text-center text-white text-2xl font-normal"
-                              style={{ textShadow: '0px 2px 0.6px rgba(240, 139, 0, 0.66)'}}
-                            >
-                              <span className={`hover:text-shadow-none`}>Claim</span>
-                            </div>
-                          </div>
+                          <p className="text-lg text-center">Cashback claim available soon!</p>
                         </div>
 
                         {/* NFT Prompt */}
@@ -465,7 +457,7 @@ function ReferralPage (){
               <div
                 className="w-full h-full place-content-center p-[3rem]"
                 style={{
-                  backgroundImage: 'url("/assets/images/clicker-character/QRBg.png")',
+                  backgroundImage: 'url("/assets/images/clicker-character/QRBg.webp")',
                   backgroundSize: 'contain',
                   backgroundPosition: 'center',
                   backgroundRepeat: 'no-repeat',
@@ -537,7 +529,7 @@ function ReferralPage (){
                   <div
                     className="w-full h-full items-center p-[4.5rem]"
                     style={{
-                      backgroundImage: 'url("/assets/images/clicker-character/ticket-mobile-white.png")',
+                      backgroundImage: 'url("/assets/images/clicker-character/ticket-mobile-white.webp")',
                       backgroundSize: 'contain',
                       backgroundPosition: 'center',
                       backgroundRepeat: 'no-repeat',
@@ -626,7 +618,7 @@ function ReferralPage (){
                   <div
                     className="w-full place-content-center"
                     style={{
-                      backgroundImage: 'url("/assets/images/clicker-character/ticket-mobile-orange.png")',
+                      backgroundImage: 'url("/assets/images/clicker-character/ticket-mobile-orange.webp")',
                       backgroundSize: 'contain',
                       backgroundPosition: 'center',
                       backgroundRepeat: 'no-repeat',
@@ -656,15 +648,7 @@ function ReferralPage (){
 
                         {/* Claim button */}
                         <div className={`pb-1 justify-center items-center inline-flex transition-transform duration-200 hover:scale-105`}>
-                          <div 
-                            className={`h-[60px] w-[160px] rounded-full border justify-center items-center inline-flex shadow-[0px_4px_4px_0px_#FFFBEF_inset,0px_-4px_4px_0px_rgba(255,249,228,0.48),0px_5px_4px_0px_rgba(232,140,72,0.48)] hover:bg-[#FFB23F] hover:pl-[24px] hover:pr-[20px] hover:border-1 hover:border-[#E59E69] hover:shadow-[0px_4px_4px_0px_rgba(255,210,143,0.61)_inset,0px_4px_4px_0px_rgba(136,136,136,0.48)] cursor-pointer border-[#E59E69] bg-[#FFDC62]`}>
-                            <div
-                              className="text-center text-white text-2xl font-normal"
-                              style={{ textShadow: '0px 2px 0.6px rgba(240, 139, 0, 0.66)'}}
-                            >
-                              <span className={`hover:text-shadow-none`}>Claim</span>
-                            </div>
-                          </div>
+                          <p className="w-[70%] text-lg text-center">Cashback claim available soon!</p>
                         </div>
 
                         {/* NFT Prompt */}
@@ -693,7 +677,7 @@ function ReferralPage (){
               <div
                 className="w-full h-full place-content-center p-[4.5rem]"
                 style={{
-                  backgroundImage: 'url("/assets/images/clicker-character/qr-mobile-bg.png")',
+                  backgroundImage: 'url("/assets/images/clicker-character/qr-mobile-bg.webp")',
                   backgroundSize: 'contain',
                   backgroundPosition: 'center',
                   backgroundRepeat: 'no-repeat',

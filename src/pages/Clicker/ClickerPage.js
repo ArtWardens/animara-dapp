@@ -8,7 +8,7 @@ function ClickerPage() {
     <div
       className="w-full mx-auto bg-clicker-game bg-no-repeat bg-cover h-screen relative cursor-pointer -z-99"
       style={{
-        backgroundImage: `url(/assets/images/clicker-character/clickerBg.png)`,
+        backgroundImage: `url(/assets/images/clicker-character/clickerBg.webp)`,
         backgroundSize: 'cover',
         backgroundRepeat: 'no-repeat',
         backgroundPosition: 'center',
