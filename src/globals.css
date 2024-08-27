@@ -17,8 +17,7 @@
 
 @font-face {
   font-family: "Outfit";
-  src: url("/public/fonts/outfit/OutfitRegular.ttf")
-    format("truetype");
+  src: url("/public/fonts/outfit/OutfitRegular.ttf") format("truetype");
 }
 
 @layer base {
@@ -137,7 +136,7 @@ body {
   height: 100%;
   background-image: linear-gradient(to right, transparent, black 50%);
   z-index: 2;
-  pointer-events:none;
+  pointer-events: none;
 }
 
 /* Looping Custom Animation w/o React Transition Group (RTG) as RTG dont work well with looping */
@@ -153,3 +152,17 @@ body {
   animation: rotate 180s linear infinite;
   transform-origin: center;
 }
+
+/* Custom scrollbar */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: #515151;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #aeaeae;
+  border-radius: 10px;
+}
+
+
