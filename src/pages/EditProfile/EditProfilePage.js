@@ -33,11 +33,14 @@ const EditProfilePage = () => {
   };
 
   useEffect(() => {
+    if (updateProfileLoading) { 
+      return
+    }
     setUsername(user?.name || "");
     setEmail(user?.email || "");
     setPhone(user?.phoneNumber || "");
     setInviteCode(user?.referredBy || "");
-  }, [user]);
+  }, [user, updateProfileLoading]);
 
   const handleResetPassword = () => {
     console.log(email);
@@ -104,13 +107,13 @@ const EditProfilePage = () => {
         }}
       >
         {/* outer container */}
-        <div className="flex pt-[6rem] px-[4rem] lg:pt-[11rem] w-screen h-full">
+        <div className="flex flex-col xl:flex-row pt-[6rem] lg:pt-[11rem] px-[0rem] xl:px-[4rem] w-screen h-full">
           <Header />
 
           {/* content */}
-          <div className="flex flex-col xl:flex-row w-full mt-[5rem] lg:mt-0 gap-20">
+          <div className="flex flex-col 2xl:flex-row w-full mt-[5rem] lg:mt-0 gap-20">
             {/* details panel */}
-            <div className="w-full lx:w-1/2">
+            <div className="w-full px-[2rem]">
               {/* header */}
               <div className="w-full xl:w-[100%] header flex justify-between items-center space-x-[2rem] lg:space-x-[8rem]">
                 <span className="flex gap-2">
