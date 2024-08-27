@@ -1,5 +1,5 @@
-'use client';
-import { PropTypes } from 'prop-types';
+"use client"
+import { PropTypes } from "prop-types";
 import { auth } from '../firebase/firebaseConfig';
 import { onAuthStateChanged } from 'firebase/auth';
 import React, { createContext, useState, useContext, useEffect } from 'react';
@@ -7,30 +7,28 @@ import React, { createContext, useState, useContext, useEffect } from 'react';
 const GlobalContext = createContext();
 
 export const GlobalProvider = ({ children }) => {
-  const [currentUser, setCurrentUser] = useState();
+    const [currentUser, setCurrentUser] = useState();
 
-  useEffect(() => {
-    const curntUser = onAuthStateChanged(auth, async (user) => {
-      setCurrentUser(user);
-    });
-    return () => curntUser;
-  }, []);
-
+    useEffect(() => {
+        const curntUser = onAuthStateChanged(auth, async (user) => {
+          setCurrentUser(user);
+        });
+        return () => curntUser;
+      }, []);
+ 
   return (
-    <GlobalContext.Provider
-      value={{
-        currentUser,
-        setCurrentUser,
-      }}
-    >
+    <GlobalContext.Provider value={{ 
+        currentUser, 
+        setCurrentUser
+    }}>
       {children}
     </GlobalContext.Provider>
   );
 };
 
 GlobalProvider.propTypes = {
-  children: PropTypes.object,
-};
+  children: PropTypes.object
+}
 
 // Custom hook to use the global context
 export const useGlobalContext = () => useContext(GlobalContext);
