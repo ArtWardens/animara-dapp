@@ -1,105 +1,154 @@
-import { auth } from "./firebaseConfig.js";
 import {
-  createUserWithEmailAndPassword,
   GoogleAuthProvider,
+  TwitterAuthProvider,
+  createUserWithEmailAndPassword,
+  sendEmailVerification,
+  sendPasswordResetEmail,
   signInWithEmailAndPassword,
   signInWithPopup,
-  sendPasswordResetEmail,
+  signInWithCustomToken,
 } from "firebase/auth";
-import { sendEmailVerification } from "firebase/auth";
-import { toast } from "react-toastify";
+import {
+  auth,
+  firstLoginLinkReferral,
+  cleanupFailedRegistration,
+  loginWithTelegram,
+} from "./firebaseConfig.js";
 
-const handleSignUp = async (
-  email,
-  password,
-  name,
-) => {
+const signUpWithEmailImpl = async (email, password, username, referralCode) => {
   try {
-    const userCredential = await createUserWithEmailAndPassword(
-      auth,
-      email,
-      password
-    );
-    console.log("User signed up successfully:", userCredential.user);
-    toast.success("Signed up successfully");
+    // validate input before proceeding
+    if (!username || !email || !password) {
+      return -1;
+    }
 
-    return userCredential.user;
+    // create user
+    const result = await createUserWithEmailAndPassword(auth, email, password);
+
+    // update referral code if any
+    const idToken = await result.user.getIdToken();
+    if (referralCode !== "") {
+      try {
+        await firstLoginLinkReferral({ idToken: idToken, referralCode: referralCode });
+      } catch (err) {
+        await cleanupFailedRegistration({ idToken: idToken });
+        return -3;
+      }
+    }
+
+    try {
+      // send verificaiton email
+      const actionCodeSettings = {
+        url: `${process.env.REACT_APP_PUBLIC_URL}/login?registrationEmail=${email}`,
+        handleCodeInApp: false,
+        dynamicLinkDomain: `${process.env.REACT_APP_DOMAIN}`,
+      };
+
+      await sendEmailVerification(
+        result.user,
+        actionCodeSettings
+      );
+
+      //redirect user to verify email page
+      window.location.href = "/verify-email";
+    } catch (err) {
+      try {
+        const idToken = await result.user.getIdToken();
+        await cleanupFailedRegistration({ idToken: idToken });
+      } catch (err) {
+        return -4;
+      }
+      return -5;
+    }
+    // cleanupFailedRegistration
+    return 1;
   } catch (error) {
-    console.error("Error signing up:", error);
-    toast.error("Error signing up");
-    return null;
+    if (error.code === 'auth/error-code:-47'){
+      return -6;
+    }
+    return 0;
   }
 };
 
-const handleSignInWithGoogle = async () => {
-  const provider = new GoogleAuthProvider();
-  try {
-    const userCredential = await signInWithPopup(auth, provider);
-    console.log("User signed in with Google:", userCredential.user);
-    toast.success("Signed in with Google");
-    return userCredential.user;
-  } catch (error) {
-    console.error("Error signing in with Google:", error);
-    toast.error("Error signing in with Google");
-    return null;
-  }
+const getIdTokenResult = async (user) => {
+  return await user?.getIdTokenResult(true);
 };
 
-const handleSignIn = async (data) => {
+const loginWithEmailImpl = async (data) => {
   try {
     const { email, password } = data;
-    const userCredential = await signInWithEmailAndPassword(
-      auth,
-      email,
-      password
-    );
-    toast.success("Signed in");
-    return userCredential.user;
+    const result = await signInWithEmailAndPassword(auth, email, password);
+    const { user } = result;
+    return user;
   } catch (error) {
-    console.error("Error signing in:", error);
-    toast.error("Error signing in");
     return null;
   }
 };
 
-const handleLogout = async () => {
+const loginWithGoogleImpl = async () => {
+  const provider = new GoogleAuthProvider();
   try {
-    await auth.signOut();
-    toast.success("Logged out successfully");
-    return true;
+    const result = await signInWithPopup(auth, provider);
+    const { user } = result;
+    return user;
   } catch (error) {
-    toast.error("Error signing out");
-    return false;
+    return null;
   }
 };
 
-const handleEmailVerification = async () => {
+const loginWithTwitterImpl = async () => {
+  const provider = new TwitterAuthProvider();
   try {
-    await sendEmailVerification(auth.currentUser);
-    toast.success("Email verification sent");
-    return true;
+    const result = await signInWithPopup(auth, provider);
+    const { user } = result;
+    return user;
   } catch (error) {
-    toast.error("Error sending email verification");
-    return false;
+    console.log(error);
+    if (error.code === "auth/account-exists-with-different-credential") {
+      throw error;
+    }
+    return null;
   }
 };
 
-const handlePasswordReset = async (email) => {
+const loginWithTelegramImpl = async (telegramUser) => {
+  try {
+    // Firebase does not support signInWithPopup with Telegram
+    // for every user authenticated with telegram, our backend creates a corresponding firebase user. When user log in with Telegram, we stealthily login the user with corresponding Firebase user using custom token
+    const token = await loginWithTelegram(telegramUser);
+    const result = await signInWithCustomToken(auth, token.data.token);
+    const { user } = result;
+    return user;
+  } catch (error) {
+    return error;
+  }
+};
+
+const logoutImpl = async () => {
+    return await auth.signOut();
+};
+
+const resetPasswordImpl = async (email) => {
   try {
     await sendPasswordResetEmail(auth, email);
-    toast.success("Password reset email sent");
     return true;
   } catch (error) {
-    toast.error("Error sending password reset email");
     return false;
   }
 };
 
+const getCurrentUserIdImpl = ()=>{
+  return auth.currentUser.uid;
+}
+
 export {
-  handleSignUp,
-  handleSignInWithGoogle,
-  handleSignIn,
-  handleLogout,
-  handleEmailVerification,
-  handlePasswordReset,
+  signUpWithEmailImpl,
+  getIdTokenResult,
+  loginWithEmailImpl,
+  loginWithTwitterImpl,
+  loginWithGoogleImpl,
+  loginWithTelegramImpl,
+  logoutImpl,
+  resetPasswordImpl,
+  getCurrentUserIdImpl,
 };

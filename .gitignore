@@ -22,4 +22,9 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
+<<<<<<< HEAD
 .vscode
+=======
+.vscode
+.firebase
+>>>>>>> origin/dev-1.0

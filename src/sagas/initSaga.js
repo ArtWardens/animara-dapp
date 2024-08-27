@@ -3,7 +3,7 @@ import { appInit } from '../sagaStore/slices';
 import { initData } from '../utils/localStorage/localStorage';
 
 function* initSaga() {
-  console.log('2?');
+  // console.log('2?');
   if (!initData.getItem()) {
     try {
       const detectTimeZone = () => {
@@ -12,7 +12,7 @@ function* initSaga() {
       const initializeInit = {
         timeZone: detectTimeZone(),
         displayMode: 'light',
-        userId: null,
+        uid: null,
         language: 'en',
       };
       yield initData.setItem(initializeInit);
