@@ -126,14 +126,14 @@ const LoginPage = () => {
         <div ref={nodeRef} className="fade-mask-layer -translate-x-full"></div>
         {/* Background Image */}
         <img 
-          src="../backgrounds/BG_login.png" alt="background"
+          src="../backgrounds/BG_login.webp" alt="background"
           className="w-full h-full absolute top-0 -z-40 opacity-75 object-cover"
         />
 
         {/* Header */}
         <header className="absolute py-[2rem] px-[12rem] h-[6rem] w-full hidden lg:block">
           <img 
-            src="/assets/icons/logo.png" alt="logo"
+            src="/assets/icons/logo.webp" alt="logo"
             className="max-h-[2rem]"
           />
         </header>
@@ -237,7 +237,7 @@ const LoginPage = () => {
             onClick={handleLoginWithGoogle} 
           >
             <img 
-              src="/socials/devicon_google.png" alt="" 
+              src="/socials/devicon_google.webp" alt="" 
               className="max-h-[2.5rem] max-w-[2.5rem]"
             />
             Login With Google
@@ -248,7 +248,7 @@ const LoginPage = () => {
             onClick={handleLoginWithTwitter} 
           >
             <img 
-              src="/socials/devicon_x.png" alt="" 
+              src="/socials/devicon_x.webp" alt="" 
               className="max-h-[2.5rem] max-w-[2.5rem]"
             />
             Login With X

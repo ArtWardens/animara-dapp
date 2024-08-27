@@ -104,7 +104,7 @@ const EditProfilePage = () => {
       <div className={`flex flex-col items-center pb-8 min-h-screen w-full transition-all duration-500`}
         style={{
           backgroundImage:
-            'url("/assets/images/clicker-character/clickerWall.png")',
+            'url("/assets/images/clicker-character/clickerWall.webp")',
           backgroundSize: "cover",
           backgroundPosition: "center",
           backgroundRepeat: "no-repeat",
@@ -170,18 +170,18 @@ const EditProfilePage = () => {
                       className="group-hover:brightness-75 h-full w-full object-cover"
                       onError={(e) => {
                         e.target.onerror = null;
-                        e.target.src = "/assets/images/clicker-character/2-initial.png";
+                        e.target.src = "/assets/images/clicker-character/2-initial.webp";
                       }}
                     />
                   ) : (
                     <img
-                      src="..//assets/images/lock.png"
+                      src="..//assets/images/lock.webp"
                       alt="pfp"
                       className="group-hover:brightness-75 h-full w-full object-cover"
                     />
                   )}
                   <img
-                    src=".//assets/icons/edit.png"
+                    src=".//assets/icons/edit.webp"
                     alt="edit"
                     className="invisible group-hover:visible absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 text-white fill-white"
                   />

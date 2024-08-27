@@ -78,7 +78,7 @@ function EnergyRegeneration({ isLeaderboardOpen, setIsLeaderboardOpen, isOneTime
             }}
           >
             <img
-              src={'/assets/images/clicker-character/coinTimer.png'}
+              src={'/assets/images/clicker-character/coinTimer.webp'}
               className="object-contain w-1/3"
               alt="coinTimer icon"
             />
