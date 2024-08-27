@@ -452,7 +452,6 @@ export const userSlice = createSlice({
       state.nftMinted = null;
     },
     mintNFTSuccess: (state, { payload }) => {
-      console.log(`mint success ${Object.keys(payload)}`);
       state.nftMinted = payload;
     },
     mintNFTError: (state, { payload }) => {
