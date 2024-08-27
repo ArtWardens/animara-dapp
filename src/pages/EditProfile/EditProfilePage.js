@@ -232,7 +232,7 @@ const EditProfilePage = () => {
                     />
                   ) : (
                     <img
-                      src="..//assets/images/lock.png"
+                      src="..//assets/images/lock.webp"
                       alt="pfp"
                       className="group-hover:brightness-75 h-full w-full object-cover"
                     />

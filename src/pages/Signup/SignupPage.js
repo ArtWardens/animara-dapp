@@ -208,7 +208,7 @@ const SignupPage = () => {
       <div ref={nodeRef} className="fade-mask-layer -translate-x-full"></div>
         {/* Background Image */}
         <img 
-          src="../backgrounds/BG_login.png" alt="background"
+          src="../backgrounds/BG_login.webp" alt="background"
           className="w-full h-full absolute top-0 -z-40 opacity-75 object-cover"
         />
 
