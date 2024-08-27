@@ -129,9 +129,10 @@ const UpgradeDetailsModal = ({ upgrade, isMaxLevel, onClose }) => {
 
   return (
     <>
-      <div className="fixed inset-0 bg-transparent backdrop-blur-xl rounded-xl flex justify-center items-center z-[200] overflow-hidden">
+      <div className="fixed inset-0 bg-transparent backdrop-blur-xl rounded-xl flex justify-center items-center z-[200]">
         {!isUserLocationLoading &&
         (showMaxLevelMessage || isExploredSuccessfully) ? (
+<<<<<<< HEAD
           <>
           <div className={`absolute w-full h-full rotate-image`}
             style={{
@@ -145,6 +146,12 @@ const UpgradeDetailsModal = ({ upgrade, isMaxLevel, onClose }) => {
             className={`flex flex-col px-[4rem] py-[8rem] rounded-xl w-[45%] transition-all duration-1000 ${showModal ? `opacity-100 scale-100` : `opacity-0 scale-0`}`}
             style={{
               backgroundImage: `url("/assets/images/clicker-character/successfull-bg.webp")`,
+=======
+          <div
+            className={`flex flex-col px-[4rem] py-[8rem] rounded-xl w-[45%] transition-all duration-1000 ${showModal ? `opacity-100 scale-100` : `opacity-0 scale-0`}`}
+            style={{
+              backgroundImage: `url("/assets/images/clicker-character/upgrades-details-bg.png")`,
+>>>>>>> origin/dev-1.0-hy
               backgroundSize: "contain",
               backgroundPosition: "center",
               backgroundRepeat: "no-repeat",
@@ -152,7 +159,7 @@ const UpgradeDetailsModal = ({ upgrade, isMaxLevel, onClose }) => {
           >
             {/* Close Button */}
             <button
-              className="w-full items-end justify-end text-white text-4xl text-right hover:brightness-75"
+              className="w-full items-end justify-end text-white text-4xl text-right"
               onClick={() => {
                 handleLevelUp();
               }}
@@ -202,7 +209,7 @@ const UpgradeDetailsModal = ({ upgrade, isMaxLevel, onClose }) => {
 
             <div className="w-full flex items-center justify-center">
               <button
-                className="bg-[#ffdc61] text-white mt-[1rem] px-8 py-2 rounded-full text-lg uppercase flex items-center justify-center hover:shadow-[0px_4px_4px_0px_#FFFBEF_inset]"
+                className="bg-[#ffdc61] text-white mt-[1rem] px-8 py-2 rounded-full text-lg uppercase flex items-center justify-center"
                 onClick={() => {
                   handleLevelUp();
                 }}
@@ -212,7 +219,6 @@ const UpgradeDetailsModal = ({ upgrade, isMaxLevel, onClose }) => {
               </button>
             </div>
           </div>
-          </>
         ) : (
           <div
             className={`relative px-[4rem] py-[8rem] rounded-xl w-[90%] max-w-[800px] bg-no-repeat bg-contain transition-all duration-1000 ${showModal ? `opacity-100 scale-100` : `opacity-0 scale-0`}`}
@@ -224,7 +230,7 @@ const UpgradeDetailsModal = ({ upgrade, isMaxLevel, onClose }) => {
           >
             {/* Close Button */}
             <button
-              className="absolute top-20 right-20 text-white text-4xl hover:brightness-75"
+              className="absolute top-20 right-20 text-white text-4xl"
               onClick={onClose}
               disabled={isUserLocationLoading}
             >
@@ -299,7 +305,7 @@ const UpgradeDetailsModal = ({ upgrade, isMaxLevel, onClose }) => {
                     <MoonLoader color={"#FFB23F"} size={40} />
                   ) : (
                     <button
-                      className="bg-[#ffdc61] text-white mt-8 px-8 py-2 rounded-full text-lg uppercase flex items-center justify-center hover:shadow-[0px_4px_4px_0px_#FFFBEF_inset]"
+                      className="bg-[#ffdc61] text-white mt-8 px-8 py-2 rounded-full text-lg uppercase flex items-center justify-center"
                       onClick={handleUpgrade}
                       disabled={isUserLocationLoading}
                     >

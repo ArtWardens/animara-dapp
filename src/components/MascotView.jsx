@@ -1,19 +1,15 @@
-import React, { useEffect, useRef, useState, useCallback } from 'react';
-import { PropTypes } from 'prop-types';
-import useSound from 'use-sound';
-import { useAppDispatch } from '../hooks/storeHooks.js';
-import {
-  useUserDetails,
-  useLocalStamina,
-  useLocalCoins,
-  useSettleTapSessionLoading,
-  consumeStamina,
-  settleTapSession,
-} from '../sagaStore/slices';
-import { getAllImagePaths } from '../utils/getImagePath';
+import React, { useEffect, useRef, useState, useCallback } from "react";
+import { PropTypes } from "prop-types";
+import useSound from "use-sound";
+import { useAppDispatch } from "../hooks/storeHooks.js";
+import { useUserDetails, useLocalStamina, useLocalCoins, useSettleTapSessionLoading, consumeStamina, settleTapSession } from "../sagaStore/slices";
+import { getAllImagePaths } from "../utils/getImagePath";
 import { mascots } from '../utils/constants';
 
-const MascotView = ({ openModal, setOpenModal }) => {
+const MascotView = ({
+  openModal,
+  setOpenModal
+}) => {
   const dispatch = useAppDispatch();
   const currentUser = useUserDetails();
   const localCoins = useLocalCoins();
@@ -35,7 +31,7 @@ const MascotView = ({ openModal, setOpenModal }) => {
 
   const tapSessionSettleInterval = 5000;
   const idleTimeoutDuration = 1500;
-
+  
   // intro anim
   useEffect(() => {
     const slideTimer = setTimeout(() => {
@@ -55,12 +51,10 @@ const MascotView = ({ openModal, setOpenModal }) => {
   // initial setup
   useEffect(() => {
     //  skip init if already done once
-    if (isIinitialized) {
-      return;
-    }
+    if (isIinitialized){ return; }
 
     // set mascot
-    const mascotIndex = mascots.filter((mascot) => (currentUser?.level || 0) <= mascot.maxLevel);
+    const mascotIndex = mascots.filter((mascot)=> (currentUser?.level || 0) <= mascot.maxLevel);
     setCurrentMascot(mascots[mascotIndex]);
 
     // preload images if enter on the first time
@@ -75,13 +69,11 @@ const MascotView = ({ openModal, setOpenModal }) => {
     // Condition 1: when user's moves away from browser
     const handleMouseLeave = (event) => {
       if (event.clientY <= 0) {
-        if (!settlingTapSession && (currentUser.coins !== localCoins || currentUser.stamina !== localStamina)) {
-          dispatch(
-            settleTapSession({
-              newCointAmt: localCoins,
-              newStamina: localStamina,
-            }),
-          );
+        if (!settlingTapSession && (currentUser.coins !== localCoins || currentUser.stamina !== localStamina)){
+          dispatch(settleTapSession({
+            newCointAmt: localCoins,
+            newStamina: localStamina,
+          }));
         }
       }
     };
@@ -89,20 +81,18 @@ const MascotView = ({ openModal, setOpenModal }) => {
     // Condition 2: when user closes browser
     const handleVisibilityChange = () => {
       if (document.visibilityState === 'hidden') {
-        if (currentUser.coins !== localCoins || currentUser.stamina !== localStamina) {
-          dispatch(
-            settleTapSession({
-              newCointAmt: localCoins,
-              newStamina: localStamina,
-            }),
-          );
+        if (currentUser.coins !== localCoins || currentUser.stamina !== localStamina){
+          dispatch(settleTapSession({
+            newCointAmt: localCoins,
+            newStamina: localStamina,
+          }));
         }
       }
     };
 
     document.addEventListener('mouseleave', handleMouseLeave);
     document.addEventListener('visibilitychange', handleVisibilityChange);
-
+ 
     // remember that we have initialized
     setIsIinitialized(true);
     return () => {
@@ -112,21 +102,16 @@ const MascotView = ({ openModal, setOpenModal }) => {
   }, [dispatch, currentUser, localCoins, localStamina, isIinitialized, settlingTapSession]);
 
   // periodic tap session settler
-  const setupSettler = useCallback(() => {
+  const setupSettler = useCallback(() =>{
     // skip setup settler if already present
-    if (periodicSettlerTimerRef.current) {
-      return;
-    }
+    if (periodicSettlerTimerRef.current){ return; }
 
     // try to settle tap session if there are any changes
-    if (!settlingTapSession && (currentUser?.coins !== localCoins || currentUser?.stamina !== localStamina)) {
-      console.log('dispatch');
-      dispatch(
-        settleTapSession({
-          newCointAmt: localCoins,
-          newStamina: localStamina,
-        }),
-      );
+    if (!settlingTapSession && (currentUser?.coins !== localCoins || currentUser?.stamina !== localStamina)){
+      dispatch(settleTapSession({
+        newCointAmt: localCoins,
+        newStamina: localStamina,
+      }));
     }
 
     // set a timer to repeat this set
@@ -137,117 +122,90 @@ const MascotView = ({ openModal, setOpenModal }) => {
   }, [settlingTapSession, localCoins, localStamina, currentUser, dispatch]);
 
   // tap handlers
-  const handleTap = useCallback(() => {
-    // skip if not interactive
-    if (!isInteractive) return;
-
-    // skip if stamina too low
-    if (localStamina === 0 && openModal !== 'boosts' && isOpenRewardModal === false) {
-      // skip and show boost modal if out of stamina
-      setOpenModal('boosts');
-      return;
-    }
-
-    // has stamina to click, change picture
-    setImgIndex(((currentUser.maxStamina - localStamina) % 2) + 1);
-
-    // kickstart idle timer
-    const restartIdleTimer = () => {
-      // reset timer whenever we call this
-      if (idleTimerRef.current) {
-        clearTimeout(idleTimerRef.current);
+  const handleTap = useCallback(
+    () => {
+      // skip if not interactive
+      if (!isInteractive) return;
+  
+      // skip if stamina too low
+      if (localStamina === 0 && openModal !== 'boosts' && isOpenRewardModal === false){
+        // skip and show boost modal if out of stamina
+        setOpenModal("boosts");
+        return;
       }
-      // set a timer to reset mascot after no action for a duration
-      idleTimerRef.current = setTimeout(() => {
-        console.log('idle!');
-        setImgIndex(0);
-        clearInterval(periodicSettlerTimerRef.current);
-        periodicSettlerTimerRef.current = null;
-        // Note: if reward modal is opened, then skip idle handling
-        // because usually we are waiting for server to update back depletion rewards
-        if (
-          !settlingTapSession &&
-          !isOpenRewardModal &&
-          (currentUser?.coins !== localCoins || currentUser?.stamina !== localStamina)
-        ) {
-          console.log('settle');
-          dispatch(
-            settleTapSession({
+  
+      // has stamina to click, change picture
+      setImgIndex(((currentUser.maxStamina - localStamina) % 2) + 1);
+      
+      // kickstart idle timer
+      const restartIdleTimer = () => {
+        // reset timer whenever we call this
+        if (idleTimerRef.current) {
+          clearTimeout(idleTimerRef.current);
+        }
+        // set a timer to reset mascot after no action for a duration
+        idleTimerRef.current = setTimeout(() => {
+          setImgIndex(0);
+          clearInterval(periodicSettlerTimerRef.current);
+          periodicSettlerTimerRef.current = null;
+          // Note: if reward modal is opened, then skip idle handling
+          // because usually we are waiting for server to update back depletion rewards
+          if (!settlingTapSession && !isOpenRewardModal && (currentUser?.coins !== localCoins || currentUser?.stamina !== localStamina)){
+            dispatch(settleTapSession({
               newCointAmt: localCoins,
               newStamina: localStamina,
-            }),
-          );
-        }
-      }, idleTimeoutDuration);
-    };
-    restartIdleTimer();
-    if (!periodicSettlerTimerRef.current) {
-      setupSettler();
-    }
-
-    // proceed with click
-    dispatch(
-      consumeStamina({
+            }));
+          }
+        }, idleTimeoutDuration);
+      };
+      restartIdleTimer();
+      if (!periodicSettlerTimerRef.current){
+        setupSettler();
+      }
+  
+      // proceed with click
+      dispatch(consumeStamina({
         staminaToConsume: 1,
-        coinToGain: 1,
-      }),
-    );
-
-    // play sfx
-    mascotSound();
-
-    // show floating number
-    const randomLeft = Math.random() * 70 + 15;
-    const randomTop = Math.random() * 50 + 5; // Adjusted range to appear higher
-    setPlusOneEffect({ show: false, left: randomLeft, top: randomTop });
-
-    setTimeout(() => {
-      setPlusOneEffect({ show: true, left: randomLeft, top: randomTop });
-    }, 0);
-
-    if (plusOneTimerRef.current) {
-      clearTimeout(plusOneTimerRef.current);
-    }
-    plusOneTimerRef.current = setTimeout(() => {
-      setPlusOneEffect({ show: false, left: 0, top: 0 });
-    }, 500);
-  }, [
-    dispatch,
-    currentUser,
-    settlingTapSession,
-    isInteractive,
-    isOpenRewardModal,
-    localCoins,
-    localStamina,
-    mascotSound,
-    openModal,
-    setOpenModal,
-    setupSettler,
-  ]);
-
-  const handleTapUp = () => {};
+        coinToGain: 1
+      }));
+  
+      // play sfx
+      mascotSound();
+  
+      // show floating number
+      const randomLeft = Math.random() * 70 + 15;
+      const randomTop = Math.random() * 50 + 5; // Adjusted range to appear higher
+      setPlusOneEffect({ show: false, left: randomLeft, top: randomTop });
+  
+      setTimeout(() => {
+        setPlusOneEffect({ show: true, left: randomLeft, top: randomTop });
+      }, 0);
+  
+      if (plusOneTimerRef.current) {
+        clearTimeout(plusOneTimerRef.current);
+      }
+      plusOneTimerRef.current = setTimeout(() => {
+        setPlusOneEffect({ show: false, left: 0, top: 0 });
+      }, 500);
+  },[dispatch, currentUser, settlingTapSession, isInteractive, isOpenRewardModal, localCoins, localStamina, mascotSound, openModal, setOpenModal, setupSettler]);
+  
+  const handleTapUp = () => { };
 
   // grant depletion rewards when local stamina is updated
   useEffect(() => {
     // skip if user not initialized yet
-    if (!currentUser) {
-      return;
-    }
+    if (!currentUser){ return; }
 
     // check if we should grant depletion reward
     const shouldGrantDepletionReward = localStamina === 0;
-    if (!shouldGrantDepletionReward || isOpenRewardModal || !currentUser?.canGetDepletionReward) {
-      return;
-    }
+    if (!shouldGrantDepletionReward || isOpenRewardModal || !currentUser?.canGetDepletionReward) { return; }
 
     // settle tap session when stamina is depleted
     // Note: server side will auto grant depletion reward
-    dispatch(
-      settleTapSession({
-        newCointAmt: localCoins,
-        newStamina: localStamina,
-      }),
-    );
+    dispatch(settleTapSession({
+      newCointAmt: localCoins,
+      newStamina: localStamina,
+    }));
 
     // show reward popup
     setIsOpenRewardModal(true);
@@ -262,7 +220,9 @@ const MascotView = ({ openModal, setOpenModal }) => {
   };
 
   return (
-    <div className="flex justify-center items-end h-screen w-screen xl:pb-16">
+    <div
+      className="flex justify-center items-end h-screen w-screen xl:pb-16"
+    >
       <div
         onMouseDown={handleTap}
         onMouseUp={handleTapUp}
@@ -275,24 +235,38 @@ const MascotView = ({ openModal, setOpenModal }) => {
           backdropFilter: 'blur(15px)',
         }}
       >
-        <div className="absolute flex w-full justify-between -top-9">
+        <div 
+          className="absolute flex w-full justify-between -top-9"
+        >
           <img
+<<<<<<< HEAD
             src={'/assets/images/clicker-character/ring01.webp'}
+=======
+            src={"/assets/images/clicker-character/ring01.png"}
+>>>>>>> origin/dev-1.0-hy
             alt="ring"
             className="object-cover w-12 absolute left-2"
           />
           <img
+<<<<<<< HEAD
             src={'/assets/images/clicker-character/ring01.webp'}
+=======
+            src={"/assets/images/clicker-character/ring01.png"}
+>>>>>>> origin/dev-1.0-hy
             alt="ring"
             className="object-cover w-12 opacity-0"
           />
           <img
+<<<<<<< HEAD
             src={'/assets/images/clicker-character/ring01.webp'}
             alt="ring"
             className="object-cover w-12 opacity-0"
           />
           <img
             src={'/assets/images/clicker-character/ring02.webp'}
+=======
+            src={"/assets/images/clicker-character/ring02.png"}
+>>>>>>> origin/dev-1.0-hy
             alt="ring"
             className="object-cover w-12 absolute right-8"
           />
@@ -309,13 +283,17 @@ const MascotView = ({ openModal, setOpenModal }) => {
           <div className="flex justify-center items-center h-full w-full">
             {plusOneEffect.show && (
               <img
+<<<<<<< HEAD
                 src={'/assets/images/clicker-character/plusOne.webp'}
+=======
+                src={"/assets/images/clicker-character/plusOne.png"}
+>>>>>>> origin/dev-1.0-hy
                 alt="+1"
                 className="absolute w-40 h-40 animate-fadeInOut z-10"
                 style={{ left: `${plusOneEffect.left}%`, top: `${plusOneEffect.top}%` }}
               />
             )}
-            {imgIndex === 0 ? (
+            {imgIndex === 0 ?
               <img
                 src={mascotImages[0]}
                 alt="Game mascot"
@@ -323,7 +301,7 @@ const MascotView = ({ openModal, setOpenModal }) => {
                   startSlide ? 'translate-y-0' : 'translate-y-full'
                 }`}
               />
-            ) : imgIndex === 1 ? (
+            : imgIndex === 1 ?
               <img
                 src={mascotImages[1]}
                 alt="Game mascot"
@@ -331,7 +309,7 @@ const MascotView = ({ openModal, setOpenModal }) => {
                   startSlide ? 'translate-y-0' : 'translate-y-full'
                 }`}
               />
-            ) : (
+            : 
               <img
                 src={mascotImages[2]}
                 alt="Game mascot"
@@ -339,7 +317,7 @@ const MascotView = ({ openModal, setOpenModal }) => {
                   startSlide ? 'translate-y-0' : 'translate-y-full'
                 }`}
               />
-            )}
+            }
           </div>
         </div>
       </div>
@@ -359,15 +337,17 @@ const MascotView = ({ openModal, setOpenModal }) => {
             onEnded={closeRewardModal}
             className={`absolute inset-0 object-cover w-full h-full`}
           />
+
         </div>
       )}
+
     </div>
   );
 };
 
 MascotView.propTypes = {
   openModal: PropTypes.string,
-  setOpenModal: PropTypes.func,
-};
+  setOpenModal: PropTypes.func
+}
 
 export default MascotView;
