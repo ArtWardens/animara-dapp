@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { PropTypes } from "prop-types";
+import { PropTypes } from 'prop-types';
 import { useAppDispatch } from '../hooks/storeHooks';
 import {
   getLeaderBoard,
@@ -61,7 +61,7 @@ const LeaderBoardModal = ({ setIsLeaderBoardOpen, countdown, timeRemaining }) =>
                 <img src="/assets/images/x.png" width={50} height={50} className="cursor-pointer" alt="x" />
               </div>
 
-              {leaderBoardData?.length > 0 ?
+              {leaderBoardData?.length > 0 ? (
                 <div className="absolute top-1/4 w-[100%] ">
                   <ul className="grid gap-2 max-h-[230px] overflow-y-auto px-8">
                     {leaderBoardData?.map((el, index) => (
@@ -108,11 +108,11 @@ const LeaderBoardModal = ({ setIsLeaderBoardOpen, countdown, timeRemaining }) =>
                     ))}
                   </ul>
                 </div>
-                :
+              ) : (
                 <div className="absolute">
                   <span className="text-xl">NO RECORDS YET</span>
                 </div>
-              }
+              )}
 
               <div className="absolute -bottom-9 -right-24">
                 <div className="max-w-48 w-full h-8 bg-purple-900 opacity-80 rounded-[602px] flex justify-between items-center pl-3">
@@ -137,7 +137,7 @@ const LeaderBoardModal = ({ setIsLeaderBoardOpen, countdown, timeRemaining }) =>
 LeaderBoardModal.propTypes = {
   setIsLeaderBoardOpen: PropTypes.func,
   countdown: PropTypes.number,
-  timeRemaining: PropTypes.number
-}
+  timeRemaining: PropTypes.number,
+};
 
 export default LeaderBoardModal;
