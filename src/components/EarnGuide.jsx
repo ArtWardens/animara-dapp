@@ -204,7 +204,7 @@ function EarnGuide({
                         onBlur={() => setOpenModal('')}
                         className="w-full md:w-2/3 h-full md:h-2/3 px-8 py-12 text-center md:px-[70px] md:py-[60px]"
                         style={{
-                            backgroundImage: 'url("/assets/images/leaderboardExp.png")',
+                            backgroundImage: 'url("/assets/images/leaderboardExp.webp")',
                             backgroundSize: 'contain',
                             backgroundPosition: 'center',
                             backgroundRepeat: 'no-repeat',
