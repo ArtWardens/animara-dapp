@@ -376,7 +376,7 @@ const SignupPage = () => {
             onClick={handleLoginWithGoogle} 
           >
             <img 
-              src="/socials/devicon_google.png" alt="" 
+              src="/socials/devicon_google.webp" alt="" 
               className="max-h-[2.5rem] max-w-[2.5rem]"
             />
             Continue With Google
@@ -387,7 +387,7 @@ const SignupPage = () => {
             onClick={handleLoginWithTwitter} 
           >
             <img 
-              src="/socials/devicon_x.png" alt="" 
+              src="/socials/devicon_x.webp" alt="" 
               className="max-h-[2.5rem] max-w-[2.5rem]"
             />
             Continue With X
