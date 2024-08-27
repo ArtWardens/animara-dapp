@@ -92,7 +92,7 @@ const ClickerView = () => {
           <div className="fixed inset-0 bg-transparent backdrop-blur-xl rounded-xl flex justify-center items-center z-[200] overflow-hidden">
             <div className="min-h-[800px] md:min-h-[unset] daily-reward-bg relative rounded-xl w-[100%] lg:w-[90%] lg:max-w-[800px] bg-no-repeat bg-cover md:bg-contain"
               style={{
-                backgroundImage: `url("/assets/images/clicker-character/upgrades-details-bg.png")`,
+                backgroundImage: `url("/assets/images/clicker-character/upgrades-details-bg.webp")`,
                 backgroundPosition: "center",
               }}
             >

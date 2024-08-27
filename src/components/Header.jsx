@@ -43,9 +43,9 @@ function Header() {
     };
 
     // setup logout button
-    const [imageSrcLogout, setImageSrcLogout] = useState("/assets/images/clicker-character/logout.png");
-    const handleMouseEnterLogout = () => setImageSrcLogout("/assets/images/clicker-character/logout-hover.png");
-    const handleMouseLeaveLogout = () => setImageSrcLogout("/assets/images/clicker-character/logout.png");
+    const [imageSrcLogout, setImageSrcLogout] = useState("/assets/images/clicker-character/logout.webp");
+    const handleMouseEnterLogout = () => setImageSrcLogout("/assets/images/clicker-character/logout-hover.webp");
+    const handleMouseLeaveLogout = () => setImageSrcLogout("/assets/images/clicker-character/logout.webp");
 
     const handleLogout = () => {
         dispatch(logOut());
@@ -107,7 +107,7 @@ function Header() {
                         </div>
                     )}
                     <img
-                        src={currentUser?.photoUrl ? currentUser.photoUrl : "/assets/images/clicker-character/2-initial.png"}
+                        src={currentUser?.photoUrl ? currentUser.photoUrl : "/assets/images/clicker-character/2-initial.webp"}
                         alt="profile"
                         className="justify-self-center rounded-full w-24 cursor-pointer group-hover:brightness-[0.55] transition-all duration-300"
                         style={{
@@ -120,12 +120,12 @@ function Header() {
                         onLoad={() => setLoadingImage(false)}
                         onError={(e) => {
                             e.target.onerror = null;
-                            e.target.src = "/assets/images/clicker-character/2-initial.png";
+                            e.target.src = "/assets/images/clicker-character/2-initial.webp";
                             setLoadingImage(false);
                         }}
                     />
                     <img
-                        src="/assets/icons/edit.png"
+                        src="/assets/icons/edit.webp"
                         alt="edit"
                         className="invisible group-hover:visible absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 text-white fill-white"
                     />
@@ -141,7 +141,7 @@ function Header() {
                     <div className="gap-2 flex">
                         <img
                             className="w-8 object-contain"
-                            src={"/assets/images/clicker-character/gem.png"}
+                            src={"/assets/images/clicker-character/gem.webp"}
                             alt="gem"
                         />
                         <div className="relative flex items-center justify-center w-44">
@@ -167,7 +167,7 @@ function Header() {
             >
                 <div className="relative">
                     <img
-                    src="/assets/images/clicker-character/locale.png"
+                    src="/assets/images/clicker-character/locale.webp"
                     className="w-[3dvw] xl:w-[1.5dvw] cursor-pointer"
                     onClick={() => setLangDropdownOpen(!langDropdownOpen)}
                     alt="change locale"
@@ -229,7 +229,7 @@ function Header() {
                 <div
                     className="fixed inset-0 z-40 flex flex-col justify-center px-12"
                     style={{
-                        backgroundImage: 'url("/assets/images/clicker-character/clickerWall.png")',
+                        backgroundImage: 'url("/assets/images/clicker-character/clickerWall.webp")',
                         backgroundSize: 'cover',
                         backgroundPosition: 'center',
                         backgroundRepeat: 'no-repeat',
@@ -237,7 +237,7 @@ function Header() {
                 >
                     <div className="absolute top-12 left-12 flex items-center space-x-4">
                         <img
-                            src="/assets/images/clicker-character/animara-logo.png"
+                            src="/assets/images/clicker-character/animara-logo.webp"
                             alt="Animara Logo"
                             className="h-8"
                         />
@@ -246,7 +246,7 @@ function Header() {
                     <div
                         className="text-center w-auto h-full place-content-center scale-125 mt-20 -z-50"
                         style={{
-                            backgroundImage: 'url("/assets/images/clicker-character/sticky-Note.png")',
+                            backgroundImage: 'url("/assets/images/clicker-character/sticky-Note.webp")',
                             backgroundSize: 'contain',
                             backgroundPosition: 'center',
                             backgroundRepeat: 'no-repeat',
@@ -259,7 +259,7 @@ function Header() {
                         )}
 
                         <img
-                            src={currentUser?.photoUrl ? currentUser.photoUrl : "/assets/images/clicker-character/2-initial.png"}
+                            src={currentUser?.photoUrl ? currentUser.photoUrl : "/assets/images/clicker-character/2-initial.webp"}
                             alt="profile"
                             className="items-center rounded-full w-32 mx-auto mb-4"
                             style={{
@@ -281,7 +281,7 @@ function Header() {
                         <div className="gap-2 flex place-content-center">
                             <img
                                 className="w-8 object-contain"
-                                src={"/assets/images/clicker-character/gem.png"}
+                                src={"/assets/images/clicker-character/gem.webp"}
                                 alt="gem"
                             />
                             <div className="items-center justify-center">

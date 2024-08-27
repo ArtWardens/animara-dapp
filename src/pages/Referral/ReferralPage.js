@@ -52,14 +52,14 @@ function ReferralPage (){
   // Mobile view carousel content
   const content = [
     {
-      image: "/assets/images/clicker-character/ref01.png",
+      image: "/assets/images/clicker-character/ref01.webp",
       alt: "Invite Rewards",
       title: "Invite Rewards",
       description:
         "Get a boost of currencies to use in our Tap-to-Earn game when anyone signs up with your code.",
     },
     {
-      image: "/assets/images/clicker-character/ref02.png",
+      image: "/assets/images/clicker-character/ref02.webp",
       alt: "NFT Cashback",
       title: "NFT Cashback",
       description:
@@ -183,7 +183,7 @@ function ReferralPage (){
       <div
         className="flex flex-col items-center pb-4 xl:px-[2rem] min-h-screen"
         style={{
-          backgroundImage: 'url("/assets/images/clicker-character/clickerWall.png")',
+          backgroundImage: 'url("/assets/images/clicker-character/clickerWall.webp")',
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat',
@@ -209,7 +209,7 @@ function ReferralPage (){
                ${showRefOne ? `opacity-100` : `opacity-0`}`}>
               <img
                 className="w-4/5 h-auto origin-top-left shadow"
-                src="/assets/images/clicker-character/ref01.png"
+                src="/assets/images/clicker-character/ref01.webp"
                 alt="Invite Rewards"
               />
               <div className="flex flex-col justify-start items-center gap-2">
@@ -225,7 +225,7 @@ function ReferralPage (){
                ${showRefThree ? `opacity-100` : `opacity-0`}`}>
               <img
                 className="w-full h-auto origin-top-left shadow"
-                src="/assets/images/clicker-character/ref02.png"
+                src="/assets/images/clicker-character/ref02.webp"
                 alt="NFT Cashback"
               />
               <div className="flex flex-col justify-start items-center gap-2">
@@ -282,7 +282,7 @@ function ReferralPage (){
               >
                 <img
                   className="w-full h-full"
-                  src="/assets/images/clicker-character/arrow-left.png"
+                  src="/assets/images/clicker-character/arrow-left.webp"
                   alt="left arrow"
                 />
               </button>
@@ -294,7 +294,7 @@ function ReferralPage (){
               >
                 <img
                   className="w-full h-full "
-                  src="/assets/images/clicker-character/arrow-right.png"
+                  src="/assets/images/clicker-character/arrow-right.webp"
                   alt="right arrow"
                 />
               </button>
@@ -313,7 +313,7 @@ function ReferralPage (){
                   <div
                     className="w-full h-full p-12 items-center"
                     style={{
-                      backgroundImage: 'url("/assets/images/clicker-character/ticketWeb02.png")',
+                      backgroundImage: 'url("/assets/images/clicker-character/ticketWeb02.webp")',
                       backgroundSize: 'contain',
                       backgroundPosition: 'center',
                       backgroundRepeat: 'no-repeat',
@@ -398,7 +398,7 @@ function ReferralPage (){
                   <div
                     className="w-full h-full place-content-center"
                     style={{
-                      backgroundImage: 'url("/assets/images/clicker-character/ticketWeb01.png")',
+                      backgroundImage: 'url("/assets/images/clicker-character/ticketWeb01.webp")',
                       backgroundSize: 'contain',
                       backgroundPosition: 'center',
                       backgroundRepeat: 'no-repeat',
@@ -465,7 +465,7 @@ function ReferralPage (){
               <div
                 className="w-full h-full place-content-center p-[3rem]"
                 style={{
-                  backgroundImage: 'url("/assets/images/clicker-character/QRBg.png")',
+                  backgroundImage: 'url("/assets/images/clicker-character/QRBg.webp")',
                   backgroundSize: 'contain',
                   backgroundPosition: 'center',
                   backgroundRepeat: 'no-repeat',
@@ -537,7 +537,7 @@ function ReferralPage (){
                   <div
                     className="w-full h-full items-center p-[4.5rem]"
                     style={{
-                      backgroundImage: 'url("/assets/images/clicker-character/ticket-mobile-white.png")',
+                      backgroundImage: 'url("/assets/images/clicker-character/ticket-mobile-white.webp")',
                       backgroundSize: 'contain',
                       backgroundPosition: 'center',
                       backgroundRepeat: 'no-repeat',
@@ -626,7 +626,7 @@ function ReferralPage (){
                   <div
                     className="w-full place-content-center"
                     style={{
-                      backgroundImage: 'url("/assets/images/clicker-character/ticket-mobile-orange.png")',
+                      backgroundImage: 'url("/assets/images/clicker-character/ticket-mobile-orange.webp")',
                       backgroundSize: 'contain',
                       backgroundPosition: 'center',
                       backgroundRepeat: 'no-repeat',
@@ -693,7 +693,7 @@ function ReferralPage (){
               <div
                 className="w-full h-full place-content-center p-[4.5rem]"
                 style={{
-                  backgroundImage: 'url("/assets/images/clicker-character/qr-mobile-bg.png")',
+                  backgroundImage: 'url("/assets/images/clicker-character/qr-mobile-bg.webp")',
                   backgroundSize: 'contain',
                   backgroundPosition: 'center',
                   backgroundRepeat: 'no-repeat',

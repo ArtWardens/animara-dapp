@@ -17,32 +17,32 @@ const ClickerUpgrades = ({ onClose }) => {
     {
       name: "mountain",
       label: "Mountain",
-      icon: "/assets/images/clicker-character/mountain-icon.png",
+      icon: "/assets/images/clicker-character/mountain-icon.webp",
     },
     {
       name: "forest",
       label: "Forest",
-      icon: "/assets/images/clicker-character/forest-icon.png",
+      icon: "/assets/images/clicker-character/forest-icon.webp",
     },
     {
       name: "deserts",
       label: "Deserts",
-      icon: "/assets/images/clicker-character/deserts-icon.png",
+      icon: "/assets/images/clicker-character/deserts-icon.webp",
     },
     {
       name: "cave",
       label: "Cave",
-      icon: "/assets/images/clicker-character/cave-icon.png",
+      icon: "/assets/images/clicker-character/cave-icon.webp",
     },
     {
       name: "iceland",
       label: "Iceland",
-      icon: "/assets/images/clicker-character/iceland-icon.png",
+      icon: "/assets/images/clicker-character/iceland-icon.webp",
     },
     {
       name: "valley",
       label: "Valley",
-      icon: "/assets/images/clicker-character/valley-icon.png",
+      icon: "/assets/images/clicker-character/valley-icon.webp",
     },
   ];
 
@@ -90,12 +90,12 @@ const ClickerUpgrades = ({ onClose }) => {
     >
       <div className="absolute flex w-full justify-between -top-9">
         <img
-          src={"/assets/images/clicker-character/ring01.png"}
+          src={"/assets/images/clicker-character/ring01.webp"}
           alt="ring"
           className="object-cover w-12 absolute left-2"
         />
         <img
-          src={"/assets/images/clicker-character/ring02.png"}
+          src={"/assets/images/clicker-character/ring02.webp"}
           alt="ring"
           className="object-cover w-12 absolute right-8"
         />
@@ -105,7 +105,7 @@ const ClickerUpgrades = ({ onClose }) => {
         className="grid w-full h-full rounded-2xl"
         style={{
           backgroundImage:
-            'url("/assets/images/clicker-character/mascotBg.png")',
+            'url("/assets/images/clicker-character/mascotBg.webp")',
           backgroundSize: "cover",
           backgroundPosition: "center",
           backgroundRepeat: "no-repeat",
@@ -118,7 +118,7 @@ const ClickerUpgrades = ({ onClose }) => {
             onClick={handleLeaderboardClick}
           >
             <img
-              src="/assets/images/clicker-character/trophy.png"
+              src="/assets/images/clicker-character/trophy.webp"
               alt="trophy"
               className="w-8 h-auto mr-[1rem]"
             />
@@ -127,7 +127,7 @@ const ClickerUpgrades = ({ onClose }) => {
 
           <div className="flex items-center justify-center">
             <img
-              src={"/assets/images/clicker-character/explore-animara.png"}
+              src={"/assets/images/clicker-character/explore-animara.webp"}
               alt="explore-animara"
               className="w-[50%] mt-[-4rem]"
             />
@@ -202,7 +202,7 @@ const ClickerUpgrades = ({ onClose }) => {
                               }`}
                               style={{
                                 position: "relative",
-                                backgroundImage: `url("/assets/images/clicker-character/upgrades-bg.png")`,
+                                backgroundImage: `url("/assets/images/clicker-character/upgrades-bg.webp")`,
                                 backgroundSize: "contain",
                                 backgroundPosition: "center",
                                 backgroundRepeat: "no-repeat",
@@ -230,7 +230,7 @@ const ClickerUpgrades = ({ onClose }) => {
                                   <div className="flex flex-row">
                                     <img
                                       src={
-                                        "/assets/images/clicker-character/explora-point.png"
+                                        "/assets/images/clicker-character/explora-point.webp"
                                       }
                                       alt="icon2"
                                       className="w-6 h-6 mr-1"
@@ -256,7 +256,7 @@ const ClickerUpgrades = ({ onClose }) => {
                                     <div className="flex flex-row ml-[2rem]">
                                       <img
                                         src={
-                                          "/assets/images/clicker-character/icon-2.png"
+                                          "/assets/images/clicker-character/icon-2.webp"
                                         }
                                         alt="icon2"
                                         className="w-6 h-6 mr-2"
@@ -275,7 +275,7 @@ const ClickerUpgrades = ({ onClose }) => {
                                 <div className="absolute inset-0 flex justify-center items-center">
                                   <img
                                     src={
-                                      "/assets/images/clicker-character/lock-chain.png"
+                                      "/assets/images/clicker-character/lock-chain.webp"
                                     }
                                     alt="Locked"
                                     className="w-full"

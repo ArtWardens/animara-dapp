@@ -10,7 +10,7 @@ const LevelUpModal = ({ onClose, coinReward }) => {
       <div
         className={`flex flex-col px-[4rem] py-[8rem] rounded-xl w-[45%] transition-all duration-1000 opacity-100 scale-100`}
         style={{
-          backgroundImage: `url("/assets/images/clicker-character/successfull-bg.png")`,
+          backgroundImage: `url("/assets/images/clicker-character/successfull-bg.webp")`,
           backgroundSize: "contain",
           backgroundPosition: "center",
           backgroundRepeat: "no-repeat",
@@ -46,7 +46,7 @@ const LevelUpModal = ({ onClose, coinReward }) => {
           <div className="gap-2 flex items-center justify-center">
             <img
               className="w-[2.5rem] h-[2.5rem] object-contain my-auto"
-              src={"/assets/images/clicker-character/gem.png"}
+              src={"/assets/images/clicker-character/gem.webp"}
               alt="gem"
             />
             <p

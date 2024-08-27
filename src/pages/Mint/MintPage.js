@@ -266,7 +266,7 @@ function MintPage() {
         className="flex flex-col items-center pb-8 min-h-screen w-full"
         style={{
           backgroundImage:
-            'url("/assets/images/clicker-character/clickerWall.png")',
+            'url("/assets/images/clicker-character/clickerWall.webp")',
           backgroundSize: "cover",
           backgroundPosition: "center",
           backgroundRepeat: "no-repeat",
@@ -309,7 +309,7 @@ function MintPage() {
               `}>
               <div className="flex items-center gap-8 pb-2">
                 <img
-                  src={"/assets/images/clicker-character/gem.png"}
+                  src={"/assets/images/clicker-character/gem.webp"}
                   alt="gem"
                   className="ml-2 w-6 h-6"
                 />
@@ -331,7 +331,7 @@ function MintPage() {
               `}>
               <div className="flex items-center gap-8 pb-2">
                 <img
-                  src={"/assets/images/clicker-character/gem.png"}
+                  src={"/assets/images/clicker-character/gem.webp"}
                   alt="gem"
                   className="ml-2 w-6 h-6"
                 />
@@ -353,7 +353,7 @@ function MintPage() {
               `}>
               <div className="flex items-center gap-8 pb-2">
                 <img
-                  src={"/assets/images/clicker-character/gem.png"}
+                  src={"/assets/images/clicker-character/gem.webp"}
                   alt="gem"
                   className="ml-2 w-6 h-6"
                 />
@@ -384,17 +384,17 @@ function MintPage() {
               {/* mint card background */}
               <div className="absolute flex w-full justify-between -top-8">
                 <img
-                  src={"/assets/images/clicker-character/ring01.png"}
+                  src={"/assets/images/clicker-character/ring01.webp"}
                   alt="ring"
                   className="object-cover w-11 absolute left-2"
                 />
                 <img
-                  src={"/assets/images/clicker-character/ring01.png"}
+                  src={"/assets/images/clicker-character/ring01.webp"}
                   alt="ring"
                   className="object-cover w-11 opacity-0"
                 />
                 <img
-                  src={"/assets/images/clicker-character/ring02.png"}
+                  src={"/assets/images/clicker-character/ring02.webp"}
                   alt="ring"
                   className="object-cover w-11 absolute right-8"
                 />
@@ -405,7 +405,7 @@ function MintPage() {
                 className="rounded-2xl place-content-center p-6 grid min-h-[60vh] lg:min-h-[80dvh] 2xl:min-h-[50dvh]"
                 style={{
                   backgroundImage:
-                    'url("/assets/images/clicker-character/mintBBG.png")',
+                    'url("/assets/images/clicker-character/mintBBG.webp")',
                   backgroundSize: "cover",
                   backgroundPosition: "center",
                   backgroundRepeat: "no-repeat",
@@ -471,7 +471,7 @@ function MintPage() {
 
                 {/* treasure box */}
                 <img
-                  src="/assets/images/clicker-character/nft-treasureBox.png"
+                  src="/assets/images/clicker-character/nft-treasureBox.webp"
                   alt="NFT Treasure Box"
                   className="object-contain w-96 -my-10"
                 />
@@ -583,17 +583,17 @@ function MintPage() {
             {/* Mint Panel background */}
             <div className="absolute flex w-full justify-between -top-8">
               <img
-                src={"/assets/images/clicker-character/ring01.png"}
+                src={"/assets/images/clicker-character/ring01.webp"}
                 alt="ring"
                 className="object-cover w-11 absolute left-2"
               />
               <img
-                src={"/assets/images/clicker-character/ring01.png"}
+                src={"/assets/images/clicker-character/ring01.webp"}
                 alt="ring"
                 className="object-cover w-11 opacity-0"
               />
               <img
-                src={"/assets/images/clicker-character/ring02.png"}
+                src={"/assets/images/clicker-character/ring02.webp"}
                 alt="ring"
                 className="object-cover w-11 absolute right-8"
               />
@@ -604,7 +604,7 @@ function MintPage() {
               className="rounded-2xl place-content-center p-6 grid min-h-[60vh] lg:min-h-[80dvh] 2xl:min-h-[50dvh]"
               style={{
                 backgroundImage:
-                  'url("/assets/images/clicker-character/mintBBG.png")',
+                  'url("/assets/images/clicker-character/mintBBG.webp")',
                 backgroundSize: "cover",
                 backgroundPosition: "center",
                 backgroundRepeat: "no-repeat",
@@ -670,7 +670,7 @@ function MintPage() {
 
               {/* treasure chest */}
               <img
-                src="/assets/images/clicker-character/nft-treasureBox.png"
+                src="/assets/images/clicker-character/nft-treasureBox.webp"
                 alt="NFT Treasure Box"
                 className="object-contain w-96 -my-10"
               />
