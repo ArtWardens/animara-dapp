@@ -109,6 +109,7 @@ function MintPage() {
   const [showTextThree, setShowTextThree] = useState(false);
   const [showTextSubtext, setShowSubtext] = useState(false);
   const [slideMintPanel, setSlideMintPanel] = useState(false);
+  const [slideCharacter, setSlideCharacter] = useState(false);
   const [timeLeft, setTimeLeft] = useState({
     days: 0,
     hours: 0,
@@ -121,6 +122,7 @@ function MintPage() {
   const [mintFadeOut, setMintFadeOut] = useState(false);
   const [showWalletBindingPanel, setShowWalletBindingPanel] = useState(false);
   const [walletBindingAnim, setWalletBindingAnim] = useState(false);
+  const [videoSource, setVideoSource] = useState('/assets/videos/unhappy-ghost.webm');
   const videoRef = useRef(null);
 
   // intro animation & fetch countdown
@@ -164,6 +166,10 @@ function MintPage() {
       setSlideMintPanel(true);
     }, 250);
 
+    const timerCharacter = setTimeout(() => {
+      setSlideCharacter(true);
+    }, 250);  
+
     return () => {
       clearTimeout(timerTitle);
       clearTimeout(timerTextOne);
@@ -171,6 +177,7 @@ function MintPage() {
       clearTimeout(timerTextThree);
       clearTimeout(timerSubtext);
       clearTimeout(timerMintPanel);
+      clearTimeout(timerCharacter);
     };
   }, []);
 
@@ -286,7 +293,7 @@ function MintPage() {
 
       {/* page background */}
       <div
-        className="flex flex-col items-center pb-8 min-h-screen w-full"
+        className="flex flex-col xl:flex-row items-center min-h-screen w-full"
         style={{
           backgroundImage:
             'url("/assets/images/clicker-character/clickerWall.png")',
@@ -297,7 +304,7 @@ function MintPage() {
         }}
       >
         {/* Page Content */}
-        <div className="w-full flex flex-col xl:flex-row justify-between container pt-[12rem] tracking-wider">
+        <div className="w-full flex flex-col xl:flex-row justify-between container pt-[10rem] xl:pt-[2rem] tracking-wider">
           
           {/* Mint info section */}
           <div className={`xl:w-[30%] text-amber-500 grid gap-8 transition-all duration-1000
@@ -391,6 +398,21 @@ function MintPage() {
                 Use your VIP Pass to join the Animara leaderboard event and
                 compete to win prizes worth up to $600,000!
               </p>
+            </div>
+
+            {/* Mobile Ghost character view */}
+            <div className="max-h-[50dvh] flex xl:hidden items-center mt-[-4rem] mb-[-12rem] animate-pulse">
+              <video
+                key={videoSource}
+                className="rounded-3xl"
+                controls={false}
+                autoPlay
+                loop
+                muted
+              >
+                <source src={videoSource} type="video/webm" />
+                Your browser does not support the video tag.
+              </video>
             </div>
 
             {/* Mobile view mint card */}
@@ -591,6 +613,21 @@ function MintPage() {
             </div>
           </div>
 
+          {/* Desktop Ghost character view */}
+          <div className={`w-[30%] hidden xl:flex items-end mr-[-10rem] animate-pulse z-[50] transition-all duration-1000 ${slideCharacter ? `translate-y-0 opacity-100` : `translate-y-60 opacity-0`}`}>
+            <video
+              key={videoSource}
+              className="rounded-3xl"
+              controls={false}
+              autoPlay
+              loop
+              muted
+            >
+              <source src={videoSource} type="video/webm" />
+              Your browser does not support the video tag.
+            </video>
+          </div>
+
           {/* Desktop View */}
           <div
             className={`xl:w-[60%] hidden xl:block rounded-3xl p-3 transition-all duration-1000
@@ -701,7 +738,10 @@ function MintPage() {
               {/* Mint button */}
               <div
                   className={`justify-center items-center inline-flex transition-transform duration-200 
-                    ${(isAllowed && !mintingNFT) || !walletAddr ? `hover:scale-105` : ``}`}>
+                    ${(isAllowed && !mintingNFT) || !walletAddr ? `hover:scale-105` : ``}`}
+                    onMouseEnter={() => setVideoSource('/assets/videos/happy-ghost.webm')}
+                    onMouseLeave={() => setVideoSource('/assets/videos/unhappy-ghost.webm')}
+              >
                   {loadingCandyMachine ? 
                   <></>
                   : 
