@@ -1,7 +1,6 @@
 import React, { useEffect, useMemo } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import useNavigatorOnline from 'use-navigator-online';
-import ClickerPage from './pages/Clicker/ClickerPage';
 import LoginPage from './pages/Login/LoginPage';
 import SignupPage from "./pages/Signup/SignupPage";
 import EditProfilePage from "./pages/EditProfile/EditProfilePage";
@@ -18,6 +17,7 @@ import { useAppDispatch } from './hooks/storeHooks';
 import { appInit, systemUpdateNetworkConnection } from './sagaStore/slices';
 import { runSaga } from './sagaStore/store';
 import "@solana/wallet-adapter-react-ui/styles.css";
+import './styles/globals.css';
 
 // Import Solana wallet packages
 import { WalletProvider } from '@solana/wallet-adapter-react';
@@ -77,7 +77,6 @@ export const App = () => {
                   <Route path="/limited-access" element={<LimitedAccessPage />} />
                   <Route path="/verify-email" element={<VerifyEmailPage />} />
                   <Route path="/edit-profile" element={<ClickerController Children={EditProfilePage} />} />
-                  <Route path="/anitap" element={<ClickerController Children={ClickerPage} />} />
                   <Route path="/referral" element={<ClickerController Children={ReferralPage} />} />
                   <Route path="/early-bird" element={<ClickerController Children={EarlyBirdPage} />} />
                   <Route path="/clicker-lock" element={<ClickerController Children={LockPage} />} />
