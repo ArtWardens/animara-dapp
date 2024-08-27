@@ -50,7 +50,7 @@ export default function ClickerMain() {
     <div className="w-full mx-auto bg-clicker-game bg-no-repeat bg-cover h-screen relative cursor-pointer">
       <div className="flex justify-between absolute mt-6 ml-10">
         {/* <img
-          src={"../../assets/images/logo.png"}
+          src={"../../assets/images/logo.webp"}
           height={50}
           width={50}
           alt="logo"
