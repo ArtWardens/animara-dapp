@@ -109,6 +109,7 @@ function MintPage() {
   const [showTextThree, setShowTextThree] = useState(false);
   const [showTextSubtext, setShowSubtext] = useState(false);
   const [slideMintPanel, setSlideMintPanel] = useState(false);
+  const [slideCharacter, setSlideCharacter] = useState(false);
   const [timeLeft, setTimeLeft] = useState({
     days: 0,
     hours: 0,
@@ -121,6 +122,7 @@ function MintPage() {
   const [mintFadeOut, setMintFadeOut] = useState(false);
   const [showWalletBindingPanel, setShowWalletBindingPanel] = useState(false);
   const [walletBindingAnim, setWalletBindingAnim] = useState(false);
+  const [videoSource, setVideoSource] = useState('/assets/videos/unhappy-ghost.webm');
   const videoRef = useRef(null);
 
   // intro animation & fetch countdown
@@ -164,6 +166,10 @@ function MintPage() {
       setSlideMintPanel(true);
     }, 250);
 
+    const timerCharacter = setTimeout(() => {
+      setSlideCharacter(true);
+    }, 250);  
+
     return () => {
       clearTimeout(timerTitle);
       clearTimeout(timerTextOne);
@@ -171,6 +177,7 @@ function MintPage() {
       clearTimeout(timerTextThree);
       clearTimeout(timerSubtext);
       clearTimeout(timerMintPanel);
+      clearTimeout(timerCharacter);
     };
   }, []);
 
@@ -286,7 +293,7 @@ function MintPage() {
 
       {/* page background */}
       <div
-        className="flex flex-col items-center pb-8 min-h-screen w-full"
+        className="flex flex-col xl:flex-row items-center min-h-screen w-full"
         style={{
           backgroundImage:
             'url("/assets/images/clicker-character/clickerWall.png")',
@@ -297,7 +304,7 @@ function MintPage() {
         }}
       >
         {/* Page Content */}
-        <div className="w-full flex flex-col xl:flex-row justify-between container pt-[12rem] tracking-wider">
+        <div className="w-full flex flex-col xl:flex-row justify-between container pt-[10rem] xl:pt-[2rem] tracking-wider">
           
           {/* Mint info section */}
           <div className={`xl:w-[30%] text-amber-500 grid gap-8 transition-all duration-1000
@@ -391,6 +398,21 @@ function MintPage() {
                 Use your VIP Pass to join the Animara leaderboard event and
                 compete to win prizes worth up to $600,000!
               </p>
+            </div>
+
+            {/* Mobile Ghost character view */}
+            <div className="max-h-[50dvh] flex xl:hidden items-center mt-[-4rem] mb-[-12rem] animate-pulse">
+              <video
+                key={videoSource}
+                className="rounded-3xl"
+                controls={false}
+                autoPlay
+                loop
+                muted
+              >
+                <source src={videoSource} type="video/webm" />
+                Your browser does not support the video tag.
+              </video>
             </div>
 
             {/* Mobile view mint card */}
@@ -591,6 +613,21 @@ function MintPage() {
             </div>
           </div>
 
+          {/* Desktop Ghost character view */}
+          <div className={`w-[30%] hidden xl:flex items-end mr-[-10rem] animate-pulse z-[50] transition-all duration-1000 ${slideCharacter ? `translate-y-0 opacity-100` : `translate-y-60 opacity-0`}`}>
+            <video
+              key={videoSource}
+              className="rounded-3xl"
+              controls={false}
+              autoPlay
+              loop
+              muted
+            >
+              <source src={videoSource} type="video/webm" />
+              Your browser does not support the video tag.
+            </video>
+          </div>
+
           {/* Desktop View */}
           <div
             className={`xl:w-[60%] hidden xl:block rounded-3xl p-3 transition-all duration-1000
@@ -701,7 +738,10 @@ function MintPage() {
               {/* Mint button */}
               <div
                   className={`justify-center items-center inline-flex transition-transform duration-200 
-                    ${(isAllowed && !mintingNFT) || !walletAddr ? `hover:scale-105` : ``}`}>
+                    ${(isAllowed && !mintingNFT) || !walletAddr ? `hover:scale-105` : ``}`}
+                    onMouseEnter={() => setVideoSource('/assets/videos/happy-ghost.webm')}
+                    onMouseLeave={() => setVideoSource('/assets/videos/unhappy-ghost.webm')}
+              >
                   {loadingCandyMachine ? 
                   <></>
                   : 
@@ -778,22 +818,50 @@ function MintPage() {
           )}
   
           {isVideoEnded && (
-            <div className="fixed z-[100] inset-0 w-screen h-screen flex">
-              <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-lg">
-                <div className="flex flex-col p-8 bg-slate-600 rounded-xl shadow-lg">
-                  <span className="mx-auto mb-8 text-5xl">You minted</span>
-                  <img 
-                    className="w-96 h-96 mb-4"
-                    src={nftMinted.offChainMetadata.image}
-                    alt="NFT Minted"/>
-                  <span classNAme="mr-auto text-4xl">{nftMinted.offChainMetadata.name}</span>
-                  <button
-                    className={`flex mx-auto w-24 h-12 mt-6 p-5 justify-center items-center rounded-[10px] border border-[#E59E69] shadow-[0px_4px_4px_0px_rgba(255,210,143,0.61)_inset,0px_4px_4px_0px_rgba(136,136,136,0.48)] bg-amber-400 hover:bg-amber-300 hover:scale-105 transition-transform duration-300 ease-in-out`}
-                    onClick={onShowNftClose}>Yay!</button>
+            <div className="fixed inset-0 bg-transparent backdrop-blur-xl rounded-xl flex justify-center items-center z-[200] overflow-hidden">
+            {/* Background Image with spinning animation */}
+            <div
+              className={`absolute w-[2000px] h-[2000px] rotate-image`}
+              style={{
+                backgroundImage: `url("/assets/images/clicker-character/light-element.webp")`,
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+                backgroundRepeat: "no-repeat",
+              }}
+            ></div>
+
+          
+            {/* Static Content */}
+            <div className="relative z-[101] flex flex-col items-center justify-center p-[1rem]">
+              <div className="w-full bg-gradient-to-t from-[#78BFF2] to-[#7ADFFF] flex flex-col items-start p-[1rem] xl:p-[2rem] rounded-xl shadow-lg">
+                <div className="w-full flex justify-center">
+                  <span className="text-2xl xl:text-4xl text-center font-normal tracking-widest uppercase mb-[1rem] xl:mb-[2rem]">You minted</span>
                 </div>
+                <div className="w-full flex justify-center">
+                  <img 
+                    className="w-[20rem] xl:w-[26rem] h-[20rem] xl:h-[26rem] mb-4"
+                    src={nftMinted.offChainMetadata.image}
+                    alt="NFT Minted"
+                  />
+                </div>
+                <span className="text-2xl xl:text-4xl text-left font-normal uppercase">{nftMinted.offChainMetadata.name}</span>
               </div>
-              <div className={`bg-white z-[101] inset-0 w-screen h-screen pointer-events-none transition-all duration-500 ${mintFadeOut ? `opacity-0` : `opacity-100`}`}></div>
+
+              <div>
+                <button
+                  className="mt-[4rem] text-base xl:text-xl px-[3rem] py-[1rem] flex justify-center items-center rounded-full border border-[#E59E69] shadow-[0px_4px_4px_0px_rgba(255,210,143,0.61)_inset,0px_4px_4px_0px_rgba(136,136,136,0.48)] bg-amber-400 hover:bg-amber-300 hover:scale-105 uppercase transition-transform duration-300 ease-in-out"
+                  onClick={onShowNftClose}
+                >
+                  awesome!
+                </button>
+              </div>
             </div>
+
+          
+            {/* Fade Out Overlay */}
+            <div className={`bg-white absolute z-[101] inset-0 w-screen h-screen pointer-events-none transition-all duration-500 ${mintFadeOut ? `opacity-0` : `opacity-100`}`}></div>
+          </div>
+          
           )}
         </div>
         :

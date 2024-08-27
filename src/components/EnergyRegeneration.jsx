@@ -55,7 +55,7 @@ function EnergyRegeneration({ isLeaderboardOpen, setIsLeaderboardOpen, isOneTime
   return (
     <>
       <div
-        className="absolute grid grid-cols-3 gap-3 justify-center items-center w-full mx-auto my-4 p-12 top-60"
+        className="absolute flex flex-col xl:grid grid-cols-3 gap-3 justify-center items-center w-full mx-auto my-4 p-4 xl:p-12 top-[8rem] xl:top-60"
         style={{
           zIndex: 20,
         }}
@@ -98,7 +98,7 @@ function EnergyRegeneration({ isLeaderboardOpen, setIsLeaderboardOpen, isOneTime
               >
                 {profitPerHour}
               </div>
-              <div className="text-sm font-outfit">Explora Points</div>
+              <div className="text-sm font-outfit">Profit Per 12h</div>
             </div>
           </div>
         </div>
