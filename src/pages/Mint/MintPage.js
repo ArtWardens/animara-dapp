@@ -308,7 +308,7 @@ function MintPage() {
         <div className="w-full flex flex-col xl:flex-row justify-between container pt-[10rem] xl:pt-[2rem] tracking-wider">
           
           {/* Mint info section */}
-          <div className={`xl:w-[30%] text-amber-500 grid gap-8 transition-all duration-1000
+          <div className={`xl:w-[30%]  text-amber-500 grid gap-8 transition-all duration-1000
             ${showTitle ? `opacity-100` : `opacity-0`}`
           }>
             {/* title */}
@@ -606,21 +606,6 @@ function MintPage() {
             </div>
           </div>
 
-          {/* Desktop Ghost character view */}
-          <div className={`w-[30%] hidden xl:flex items-end mr-[-10rem] animate-pulse z-[50] transition-all duration-1000 ${slideCharacter ? `translate-y-0 opacity-100` : `translate-y-60 opacity-0`}`}>
-            <video
-              key={videoSource}
-              className="rounded-3xl"
-              controls={false}
-              autoPlay
-              loop
-              muted
-            >
-              <source src={videoSource} type="video/webm" />
-              Your browser does not support the video tag.
-            </video>
-          </div>
-
           {/* Desktop View */}
           <div
             className={`xl:w-[60%] hidden xl:block rounded-3xl p-3 transition-all duration-1000
@@ -781,6 +766,21 @@ function MintPage() {
               {/* wallet info */}
               <WalletInfo label="Using Wallet"/>
             </div>
+          </div>
+
+          {/* Desktop Ghost character view */}
+          <div className={`w-[30%] ml-[-30rem] hidden xl:flex items-end mr-[-10rem] animate-pulse z-[50] transition-all duration-1000 ${slideCharacter ? `translate-y-0 opacity-100` : `translate-y-60 opacity-0`}`}>
+            <video
+              key={videoSource}
+              className="rounded-3xl"
+              controls={false}
+              autoPlay
+              loop
+              muted
+            >
+              <source src={videoSource} type="video/webm" />
+              Your browser does not support the video tag.
+            </video>
           </div>
         </div>
       </div>
