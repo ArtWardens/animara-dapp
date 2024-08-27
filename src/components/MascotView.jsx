@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Box } from '@mui/material';
 import Modal from '@mui/material/Modal';
-import { useAppDispatch } from '../../hooks/storeHooks';
+import { useAppDispatch } from '../hooks/storeHooks';
 import {
   useUserDetails,
   useUserDetailsLoading,
@@ -9,13 +9,13 @@ import {
   updateDailyLogin,
   useUpdatePopupLoading,
   useIsOpenDailyPopup,
-} from '../../sagaStore/slices';
-import Header from '../../components/Header.jsx';
-import MascotView from '../../components/MascotView';
-import EarnGuide from '../../components/EarnGuide';
-import EnergyRegeneration from '../../components/EnergyRegeneration';
-import ClickerUpgrades from './ClickerUpgrades';
-import { dailyLoginRewards } from '../../utils/constants';
+} from '../sagaStore/slices';
+import Header from './Header.jsx';
+import MascotView from './MascotView';
+import EarnGuide from './EarnGuide';
+import EnergyRegeneration from './EnergyRegeneration';
+import ClickerUpgrades from '../pages/Clicker/ClickerUpgrades';
+import { dailyLoginRewards } from '../utils/constants';
 
 const ClickerView = () => {
   const dispatch = useAppDispatch();
