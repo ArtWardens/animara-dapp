@@ -166,7 +166,7 @@ const WalletBindingPanel = () => {
               ) : (
                 <button
                   disabled={bindingWallet}
-                  className="bg-red-400 hover:bg-red-700 rounded-3xl px-[2rem] py-[1rem] hover:scale-110 transition-all duration-300"
+                  className="bg-[#8f8f8f] rounded-3xl px-[2rem] py-[1rem] hover:scale-110 transition-all duration-300"
                   onClick={handleDisbindWallet}
                 >
                   Unbind
@@ -322,7 +322,7 @@ const WalletBindingPanel = () => {
             </p>
             <div className="flex justify-end">
               <button
-                className="bg-[#ffaa00] hover:bg-[#ffaa00cb] text-slate-100 mr-auto py-2 px-4 rounded-2xl hover:scale-110 transition-all duration-500"
+                className="bg-[#ffa900] text-slate-100 mr-auto py-2 px-4 rounded-2xl hover:scale-110 transition-all duration-500"
                 onClick={handleCloseDisconnectPrompt}
               >
                 Keep my benefits

@@ -238,7 +238,9 @@ export const routeBuilder = async (
       merkleRoot: getMerkleRoot([]),
       user: publicKey(umi.identity),
     });
+    console.log("allowListProof",allowListProof)
     if (allowListProof === null) {
+      console.log("null")
       tx2 = tx2.add(
         route(umi, {
           guard: "allowList",

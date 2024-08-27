@@ -11,6 +11,7 @@ export const checkAtaValid = (
   umi: Umi,
   guards: { label: string; guards: GuardSet }[]
 ) => {
+    console.log("checkAtaValid")
   let atas: PublicKey[] = [];
   guards.forEach((guard) => {
     if (guard.guards.tokenPayment.__option === "Some") {
@@ -25,6 +26,7 @@ export const checkAtaValid = (
   });
   atas.forEach((ata) => {
     fetchToken(umi, ata).catch((e) => {
+      console.log(e);
       toast("Your Candy Guard config is incorrect!");
     });
   });

@@ -168,14 +168,13 @@ const ClickerUpgrades = ({ onClose }) => {
                     className={`min-w-[8dvw] w-auto flex justify-center items-center gap-1.5 p-5 mt-0 2xl:mt-[1rem] ml-[1rem] 2xl:ml-0 rounded-[10px] border-8 border-white ${
                       selectedOption === option.name ? 'bg-[#FFB100] transform rotate-6' : 'bg-[#146CFC]'
                     } hover:pl-[24px] hover:pr-[20px] hover:rotate-6 hover:scale-105 transition-transform duration-300 ease-in-out`}
-                    
                   >
                     <img
                       src={option.icon}
                       alt={`${option.name} icon`}
                       className="w-6 h-6 mr-4"
                     />
-                    <span className="text-white text-xl font-normal font-['Luckiest_Guy'] capitalize leading-[18px]">
+                    <span className="text-white text-xl capitalize leading-[18px]">
                       {option.name}
                     </span>
                   </div>
