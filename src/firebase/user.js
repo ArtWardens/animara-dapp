@@ -3,14 +3,12 @@ import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { getDownloadURL, ref, uploadString } from "firebase/storage";
 import { getIdTokenResult, updateProfile } from "firebase/auth";
 
+
 // functions that we export for saga
 const getUserDataImpl = async (uid) => {
   try {
     const docRef = doc(db, 'users', uid);
     const docSnap = await getDoc(docRef);
-
-    const referralRef = doc(db, 'referrals', uid);
-    const referralSnap = await getDoc(referralRef);
 
     let canResetPassword = false;
     const token = await getIdTokenResult(auth.currentUser);
@@ -23,24 +21,19 @@ const getUserDataImpl = async (uid) => {
     }
 
     if (docSnap.exists()) {
-      const userData = docSnap.data();
-      const referredBy = referralSnap.exists() ? referralSnap.data().referredBy : null;
-
       return {
-        ...userData,
-        referredBy,  // Include referredBy from the "referrals" collection
+        ...docSnap.data(),
         completedTask: completedTaskSnap.exists()
           ? completedTaskSnap.data().completedTask
           : [],
         canResetPassword,
       };
     } else {
+      // docSnap.data() will be undefined in this case
       console.log("No such document!");
-      return null;
     }
   } catch (error) {
     console.log("Error getting user data: ", error);
-    return null;
   }
 };
 
@@ -50,7 +43,9 @@ const updateUserProfileImpl = async (
   phoneNumber,
   photoString
 ) => {
+
   try {
+    // Get the current user
     const user = auth.currentUser;
 
     if (!user) {
@@ -59,6 +54,7 @@ const updateUserProfileImpl = async (
 
     const uid = user.uid;
 
+    // Upload the photo to Firebase Storage if provided
     let photoURL;
     if (photoString) {
       const pfpRef = ref(storage, `profile-images/${user?.uid}`);
@@ -66,6 +62,7 @@ const updateUserProfileImpl = async (
       photoURL = await getDownloadURL(pfpRef);
     }
 
+    // Fetch the current user document
     const userRef = doc(db, "users", uid);
     const userDoc = await getDoc(userRef);
 
@@ -73,11 +70,13 @@ const updateUserProfileImpl = async (
       throw new Error("User not found");
     }
 
+    const currentData = userDoc.data();
     const updateData = {};
     if (name) {
       updateData.name = name;
     }
 
+    // Only add photoURL if it's provided
     if (photoURL) {
       updateData.photoUrl = photoURL;
     }
@@ -86,36 +85,22 @@ const updateUserProfileImpl = async (
       updateData.phoneNumber = phoneNumber;
     }
 
+    // Only update invite code if it is not already set
+    if (!currentData.referredBy && inviteCode) {
+      // note: firebase functions that listens to changes on referredBy
+      // will be responsible to grant the necessary rewards
+      updateData.referredBy = inviteCode;
+    }
+
+    // Prepare updates for Firestore and Firebase Auth
     const firestoreUpdate = updateDoc(userRef, updateData);
-
-    const referralRef = doc(db, "referrals", uid);
-    const referralDoc = await getDoc(referralRef);
-
-    console.log("Referral Document Exists:", referralDoc.exists());
-    console.log("Referral Document Data:", referralDoc.data());
-
-    const referralData = referralDoc.exists() ? referralDoc.data() : {};
-
-    if (inviteCode) {
-      referralData.referredBy = inviteCode;
-    } else {
-      console.log("No invite code provided");
-    }
-
-    if (referralDoc.exists()) {
-      console.log("Updating existing referral document...");
-      await updateDoc(referralRef, referralData);
-    } else {
-      console.log("Referral document does not exist, unable to update using updateDoc.");
-      // Here you might need to add logic to create the document if it doesn't exist
-    }
-
     const authUpdateData = { displayName: name };
     if (photoURL) {
       authUpdateData.photoURL = photoURL;
     }
     const authUpdate = updateProfile(user, authUpdateData);
 
+    // Execute updates concurrently
     await Promise.all([firestoreUpdate, authUpdate]);
     return await getUserDataImpl(auth.currentUser.uid);
 

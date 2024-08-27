@@ -32,33 +32,33 @@ const UpgradeDetailsModal = ({ upgrade, isMaxLevel, onClose }) => {
   const logoList = [
     {
       region: "mountain",
-      logo: "/assets/images/clicker-character/mountain-icon.png",
+      logo: "/assets/images/clicker-character/mountain-icon.webp",
     },
     {
       region: "forest",
-      logo: "/assets/images/clicker-character/forest-icon.png",
+      logo: "/assets/images/clicker-character/forest-icon.webp",
     },
     {
       region: "deserts",
-      logo: "/assets/images/clicker-character/deserts-icon-icon.png",
+      logo: "/assets/images/clicker-character/deserts-icon.webp",
     },
     {
       region: "cave",
-      logo: "/assets/images/clicker-character/cave-icon.png",
+      logo: "/assets/images/clicker-character/cave-icon.webp",
     },
     {
       region: "iceland",
-      logo: "/assets/images/clicker-character/iceland-icon.png",
+      logo: "/assets/images/clicker-character/iceland-icon.webp",
     },
     {
       region: "valley",
-      logo: "/assets/images/clicker-character/valley-icon.png",
+      logo: "/assets/images/clicker-character/valley-icon.webp",
     },
   ];
 
   const logo =
     logoList.find((item) => item.region === upgrade.region)?.logo ||
-    "/assets/images/clicker-character/default-icon.png";
+    "/assets/images/clicker-character/default-icon.webp";
 
   useEffect(() => {
     if (hasStartedUpgrade && !isUserLocationLoading) {
@@ -129,13 +129,22 @@ const UpgradeDetailsModal = ({ upgrade, isMaxLevel, onClose }) => {
 
   return (
     <>
-      <div className="fixed inset-0 bg-transparent backdrop-blur-xl rounded-xl flex justify-center items-center z-[200]">
+      <div className="fixed inset-0 bg-transparent backdrop-blur-xl rounded-xl flex justify-center items-center z-[200] overflow-hidden">
         {!isUserLocationLoading &&
         (showMaxLevelMessage || isExploredSuccessfully) ? (
+          <>
+          <div className={`absolute w-full h-full rotate-image`}
+            style={{
+              backgroundImage: `url("/assets/images/clicker-character/light_element.webp")`,
+              backgroundSize: "contain",
+              backgroundPosition: "center",
+              backgroundRepeat: "no-repeat",
+            }}>
+          </div>
           <div
             className={`flex flex-col px-[4rem] py-[8rem] rounded-xl w-[45%] transition-all duration-1000 ${showModal ? `opacity-100 scale-100` : `opacity-0 scale-0`}`}
             style={{
-              backgroundImage: `url("/assets/images/clicker-character/upgrades-details-bg.png")`,
+              backgroundImage: `url("/assets/images/clicker-character/successfull-bg.webp")`,
               backgroundSize: "contain",
               backgroundPosition: "center",
               backgroundRepeat: "no-repeat",
@@ -143,7 +152,7 @@ const UpgradeDetailsModal = ({ upgrade, isMaxLevel, onClose }) => {
           >
             {/* Close Button */}
             <button
-              className="w-full items-end justify-end text-white text-4xl text-right"
+              className="w-full items-end justify-end text-white text-4xl text-right hover:brightness-75"
               onClick={() => {
                 handleLevelUp();
               }}
@@ -193,7 +202,7 @@ const UpgradeDetailsModal = ({ upgrade, isMaxLevel, onClose }) => {
 
             <div className="w-full flex items-center justify-center">
               <button
-                className="bg-[#ffdc61] text-white mt-[1rem] px-8 py-2 rounded-full text-lg uppercase flex items-center justify-center"
+                className="bg-[#ffdc61] text-white mt-[1rem] px-8 py-2 rounded-full text-lg uppercase flex items-center justify-center hover:shadow-[0px_4px_4px_0px_#FFFBEF_inset]"
                 onClick={() => {
                   handleLevelUp();
                 }}
@@ -203,18 +212,19 @@ const UpgradeDetailsModal = ({ upgrade, isMaxLevel, onClose }) => {
               </button>
             </div>
           </div>
+          </>
         ) : (
           <div
             className={`relative px-[4rem] py-[8rem] rounded-xl w-[90%] max-w-[800px] bg-no-repeat bg-contain transition-all duration-1000 ${showModal ? `opacity-100 scale-100` : `opacity-0 scale-0`}`}
             style={{
-              backgroundImage: `url("/assets/images/clicker-character/upgrades-details-bg.png")`,
+              backgroundImage: `url("/assets/images/clicker-character/upgrades-details-bg.webp")`,
               backgroundPosition: "center",
             }}
             onClick={(e) => e.stopPropagation()}
           >
             {/* Close Button */}
             <button
-              className="absolute top-20 right-20 text-white text-4xl"
+              className="absolute top-20 right-20 text-white text-4xl hover:brightness-75"
               onClick={onClose}
               disabled={isUserLocationLoading}
             >
@@ -240,7 +250,7 @@ const UpgradeDetailsModal = ({ upgrade, isMaxLevel, onClose }) => {
               <div className="flex flex-row items-center justify-between">
                 <p className="text-sm font-sans mr-[1rem]">with</p>
                 <img
-                  src={"/assets/images/clicker-character/gem.png"}
+                  src={"/assets/images/clicker-character/gem.webp"}
                   alt="gem"
                   className="w-6 h-6 mr-2"
                 />
@@ -257,7 +267,7 @@ const UpgradeDetailsModal = ({ upgrade, isMaxLevel, onClose }) => {
                     Explora Points
                   </p>
                   <img
-                    src={"/assets/images/clicker-character/explora-point.png"}
+                    src={"/assets/images/clicker-character/explora-point.webp"}
                     alt="icon2"
                     className="w-6 h-6 mr-1"
                   />
@@ -270,7 +280,7 @@ const UpgradeDetailsModal = ({ upgrade, isMaxLevel, onClose }) => {
                       <p className="text-white">&nbsp; → &nbsp;</p>
                       <img
                         src={
-                          "/assets/images/clicker-character/explora-point.png"
+                          "/assets/images/clicker-character/explora-point.webp"
                         }
                         alt="icon2"
                         className="w-6 h-6 mr-1"
@@ -289,7 +299,7 @@ const UpgradeDetailsModal = ({ upgrade, isMaxLevel, onClose }) => {
                     <MoonLoader color={"#FFB23F"} size={40} />
                   ) : (
                     <button
-                      className="bg-[#ffdc61] text-white mt-8 px-8 py-2 rounded-full text-lg uppercase flex items-center justify-center"
+                      className="bg-[#ffdc61] text-white mt-8 px-8 py-2 rounded-full text-lg uppercase flex items-center justify-center hover:shadow-[0px_4px_4px_0px_#FFFBEF_inset]"
                       onClick={handleUpgrade}
                       disabled={isUserLocationLoading}
                     >
