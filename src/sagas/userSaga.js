@@ -449,9 +449,7 @@ export function* getReferralStatsSaga() {
     if (referralStats) {
       yield put(getReferralStatsSuccess(referralStats));
     } else {
-      yield put(
-        getReferralStatsError("Failed to get referral stats. Please try again. ")
-      );
+      yield put(getReferralStatsError("Failed to get referral stats. Please try again."));
     }
   } catch (error) {
     yield put(getReferralStatsError(error));

@@ -29,7 +29,7 @@ function Header() {
 
     // navigation bar setup
     const navDestinations = [
-        { name: 'ANITAP', link: '/anitap' },
+        { name: 'ANITAP', link: '/clicker-lock' },
         { name: 'MINT', link: '/mint' },
         { name: 'REFERRAL', link: '/referral' },
     ];
