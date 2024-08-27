@@ -152,6 +152,7 @@ function Header() {
           </div>
         </div>
       </div>
+
       <div
         className="hidden xl:flex absolute top-16 gap-2 right-[4rem] z-96 items-center"
         style={{
@@ -166,10 +167,10 @@ function Header() {
             alt="change locale"
           />
           {langDropdownOpen && (
-            <div className="absolute right-0 mt-2 w-[150px] bg-white shadow-lg rounded-md z-10">
+            <div className="absolute right-0 mt-2 w-[150px] bg-slate-800 shadow-lg rounded-md z-10">
               {Object.keys(lngs).map((lng) => (
                 <button
-                  className="block w-full px-4 py-2 text-left hover:bg-gray-200"
+                  className="block w-full px-4 py-2 text-left hover:bg-slate-500"
                   type="submit"
                   key={lng}
                   onClick={() => handleLangChange(lng)}
@@ -186,9 +187,11 @@ function Header() {
           <button
             key={name}
             onClick={() => handleButtonClick(link)}
-            className={`flex w-36 h-15 p-5 justify-center items-center gap-1.5 rounded-lg border border-[#E59E69] shadow-inner shadow-[0px_4px_4px_0px_rgba(255,210,143,0.61),0px_4px_4px_0px_rgba(136,136,136,0.48)] bg-[#FFB23F] hover:bg-[#FFDC62] hover:px-[20px] hover:border-[#E59E69] hover:shadow-[0px_4px_4px_0px_#FFFBEF_inset,0px_-4px_4px_0px_rgba(255,249,228,0.48),0px_5px_4px_0px_rgba(232,140,72,0.48)] hover:rotate-6 hover:scale-105 transition-transform duration-300 ease-in-out ${currentPath === link ? 'transform rotate-6 bg-[#FFDC62]' : ''}`}
+            className={`flex w-[146px] h-[60px] p-5 justify-center items-center gap-1.5 rounded-[10px] border border-[#E59E69] shadow-[0px_4px_4px_0px_rgba(255,210,143,0.61)_inset,0px_4px_4px_0px_rgba(136,136,136,0.48)] bg-[#FFB23F] hover:bg-[#FFDC62] hover:pl-[24px] hover:pr-[20px] hover:border-1 hover:border-[#E59E69] hover:shadow-[0px_4px_4px_0px_#FFFBEF_inset,0px_-4px_4px_0px_rgba(255,249,228,0.48),0px_5px_4px_0px_rgba(232,140,72,0.48)] hover:rotate-6 hover:scale-105 transition-transform duration-300 ease-in-out ${currentPath === link ? 'transform rotate-6 bg-[#FFDC62]' : ''}`}
           >
-            <span className="text-center text-white text-xl capitalize leading-[18px]">{name}</span>
+            <span className="text-center text-white text-xl font-normal font-['Luckiest_Guy'] capitalize leading-[18px]">
+              {name}
+            </span>
           </button>
         ))}
 
@@ -205,29 +208,24 @@ function Header() {
 
       {/* Mobile Menu Button */}
       <button
-        className="transition ease-in-out hover:scale-105 xl:hidden absolute top-[5rem] right-[4rem] xl:right-[4rem] z-50"
+        className="transition ease-in-out hover:scale-105 xl:hidden absolute top-[5rem] right-[2rem] xl:right-[4rem] z-50"
         onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
       >
         <svg
-          className="h-9 w-9 text-amber-500"
+          className={`h-9 w-9 text-amber-500 ${mobileMenuOpen ? 'hidden' : 'block'}`}
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
           aria-hidden="true"
         >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={3}
-            d={mobileMenuOpen ? 'M6 18L18 6M6 6l12 12' : 'M4 6h16M4 12h16m-7 6h7'}
-          />
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d={'M4 6h16M4 12h16m-7 6h7'} />
         </svg>
       </button>
 
       {/* Mobile Menu */}
       {mobileMenuOpen && (
         <div
-          className="fixed inset-0 z-40 flex flex-col justify-center px-12"
+          className="fixed inset-0 z-40 flex flex-col justify-center p-[4rem]"
           style={{
             backgroundImage: 'url("/assets/images/clicker-character/clickerWall.png")',
             backgroundSize: 'cover',
@@ -235,12 +233,29 @@ function Header() {
             backgroundRepeat: 'no-repeat',
           }}
         >
-          <div className="absolute top-12 left-12 flex items-center space-x-4">
-            <img src="/assets/images/clicker-character/animara-logo.png" alt="Animara Logo" className="h-8" />
+          <div className="flex flex-row justify-between">
+            <div className="left-[3rem] flex items-center space-x-4">
+              <img src="/assets/images/clicker-character/animara-logo.png" alt="Animara Logo" className="h-8" />
+            </div>
+
+            <button
+              className="transition ease-in-out hover:scale-105 xl:hidden right-[3rem] xl:right-[4rem] z-50"
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            >
+              <svg
+                className="h-9 w-9 text-amber-500"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                aria-hidden="true"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d={'M6 18L18 6M6 6l12 12'} />
+              </svg>
+            </button>
           </div>
 
           <div
-            className="text-center w-auto h-full place-content-center scale-125 mt-20 -z-50"
+            className="text-center w-auto h-full place-content-center scale-125 mt-[5rem] -z-50"
             style={{
               backgroundImage: 'url("/assets/images/clicker-character/sticky-Note.png")',
               backgroundSize: 'contain',
@@ -288,15 +303,21 @@ function Header() {
             </div>
           </div>
 
-          <div className="space-y-4 mb-16 z-60">
+          <div className="space-y-4 mt-[4rem] mb-16 z-60">
             {navDestinations.map(({ name, link }) => (
-              <button
-                key={name}
-                onClick={() => handleButtonClick(link)}
-                className="block w-full text-left py-2 text-[#00b8e1] hover:text-[#ffc75a] text-4xl font-LuckiestGuy font-bold leading-9 tracking-wider transition-all duration-500"
-              >
-                {name}
-              </button>
+              <div className="flex flex-row items-center group" key={name}>
+                <button
+                  onClick={() => handleButtonClick(link)}
+                  className="block w-full text-left py-2 text-[#00b8e1] hover:text-[#ffc75a] text-4xl font-LuckiestGuy font-bold leading-9 tracking-wider transition-all duration-500"
+                >
+                  {name}
+                </button>
+                <img
+                  className="w-10 h-10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                  src="/assets/images/clicker-character/arrow-right.png"
+                  alt="right arrow"
+                />
+              </div>
             ))}
             <button
               className="transition ease-in-out hover:scale-105 flex items-center"
