@@ -1,7 +1,5 @@
 /** @type {import('tailwindcss').Config} */
 
-// import tailwindAnimate from "tailwindcss-animate";
-
 const tailwinConfig = {
   darkMode: ["class"],
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
@@ -76,6 +74,45 @@ const tailwinConfig = {
         sm: "calc(var(--radius) - 4px)",
       },
       keyframes: {
+        modalOpen: {
+          '0%': { opacity: 0, transform: 'scale(0.95)' },
+          '100%': { opacity: 1, transform: 'scale(1)' },
+        },
+        modalClose: {
+          '0%': { opacity: 1, transform: 'scale(1)' },
+          '100%': { opacity: 0, transform: 'scale(0.95)' },
+        },
+        fadeIn: {
+          '0%': { opacity: 0 },
+          '100%': { opacity: 1 },
+        },
+        fadeOut: {
+          '0%': { opacity: 1 },
+          '100%': { opacity: 0 },
+        },
+        fadeInOut: {
+          '0%': { opacity: 0 },
+          '25%': { opacity: 1 },
+          '100%': { opacity: 0 },
+        },
+        slideInFromBottom: {
+          '0%': { transform: 'translateY(100%)', opacity: 0 },
+          '100%': { transform: 'translateY(0)', opacity: 1 },
+        },
+        slideOutToBottom: {
+          '0%': { transform: 'translateY(0)', opacity: 1 },
+          '100%': { transform: 'translateY(100%)', opacity: 0 },
+        },
+        slideInFromTop: {
+          '0%': { transform: 'translateY(-100%)', opacity: 0 },
+          '20%': { transform: 'translateY(-100%)', opacity: 0 }, // Keep hidden for the first 20%
+          '100%': { transform: 'translateY(0)', opacity: 1 },
+        },
+        slideOutToTop: {
+          '0%': { transform: 'translateY(0)', opacity: 1 },
+          '80%': { transform: 'translateY(0)', opacity: 0 }, // Start hiding at 80%
+          '100%': { transform: 'translateY(-100%)', opacity: 0 },
+        },
         "accordion-down": {
           from: { height: 0 },
           to: { height: "var(--radix-accordion-content-height)" },
@@ -88,10 +125,22 @@ const tailwinConfig = {
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+        modalOpen: 'modalOpen 0.3s ease-out',
+        modalClose: 'modalClose 0.3s ease-in',
+        fadeIn: 'fadeIn 0.3s ease-out',
+        fadeOut: 'fadeOut 0.3s ease-in',
+        fadeInOut: 'fadeInOut 0.5s ease-out',
+        slideInFromBottom: 'slideInFromBottom 0.5s ease-out',
+        slideOutToBottom: 'slideOutToBottom 0.5s ease-in',
+        slideInFromTop: 'slideInFromTop 0.5s ease-out',
+        slideOutToTop: 'slideOutToTop 0.5s ease-in',
       },
       fontFamily: {
         "LuckiestGuy": ['var(--LuckiestGuy)'],
-        "inter": ['var(--inter)']
+        "inter": ['var(--inter)'],
+        outfit: ['Outfit', 'sans-serif'],
+        LuckiestGuy: ['LuckiestGuy'], 
+        bignoodle: ['BigNoodleTitling', 'sans-serif'],
       },
       cursor: {
         "360deg": "url('./public/assets/icons/360deg.svg'), pointer",
