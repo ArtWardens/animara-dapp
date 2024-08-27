@@ -13,12 +13,10 @@ const useAuth = () => {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (authUser) => {
       if (authUser) {
-        // console.log("found authUser", authUser);
         setIsLoggedIn(true);
         setLoading(true);
 
         // Query Firestore to retrieve the user object
-        // console.log(authUser);
         const userDocRef = doc(db, "users", authUser.uid);
         const userDoc = await getDoc(userDocRef);
 

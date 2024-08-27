@@ -16,6 +16,7 @@ import {
   getUserDataImpl,
   dailyLoginImpl,
   getReferralStatsImpl,
+  registerNFTImpl,
 } from "../firebase/user";
 import { handleGetLeaderboard } from "../firebase/leaderboard";
 import {
@@ -276,7 +277,6 @@ export function* updateUserProfileSaga({ payload }) {
     toast.error("failed to update profile");
     yield put(updateProfileError(error));
     toast.error("Failed to update profile. Please try again");
-    console.log(error);
   }
 }
 
@@ -355,9 +355,7 @@ export function* updateOneTimeTaskSaga({ payload }) {
 
 export function* logOutSaga() {
   try{
-    console.log(`saga logging out`);
     yield call(logoutImpl);
-    console.log(`saga logged out`);
     yield put(logOutSuccess());
   }catch (error){
     yield put(logOutError(error));
@@ -530,6 +528,7 @@ export function* mintNFTSaga({ payload }) {
     //     }
     //   }
     // ]
+    yield call(registerNFTImpl);
     yield put(mintNFTSuccess(result[0]));
   } catch (error) {
     yield put(mintNFTError(error));
