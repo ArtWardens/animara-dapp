@@ -281,7 +281,11 @@ const MascotView = ({ openModal, setOpenModal }) => {
             alt="ring"
             className="object-cover w-12 absolute left-2"
           />
-          <img src={'/assets/images/clicker-character/ring01.png'} alt="ring" className="object-cover w-12 opacity-0" />
+          <img
+            src={'/assets/images/clicker-character/ring01.webp'}
+            alt="ring"
+            className="object-cover w-12 opacity-0"
+          />
           <img
             src={'/assets/images/clicker-character/ring01.webp'}
             alt="ring"

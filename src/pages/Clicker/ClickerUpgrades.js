@@ -186,7 +186,7 @@ const ClickerUpgrades = ({ onClose }) => {
                 <div className="w-full flex flex-row justify-center 2xl:justify-between items-center ">
                   <div className="hidden 2xl:flex flex-row">
                     <img
-                        src={`/assets/images/clicker-character/${selectedOption}-icon.png`}
+                        src={`/assets/images/clicker-character/${selectedOption}-icon.webp`}
                         alt={`${selectedOption} icon`}
                         className="w-10 h-10 mr-4"
                       />
@@ -204,21 +204,21 @@ const ClickerUpgrades = ({ onClose }) => {
                           DAILY COMBO
                         </div>
                         <div className="flex flex-row items-center text-white text-lg ">
-                          <img src="/assets/images/clicker-character/gem.png" alt="currency icon" className="w-6 h-6" />
+                          <img src="/assets/images/clicker-character/gem.webp" alt="currency icon" className="w-6 h-6" />
                           <span className="mx-2">{totalProfit}</span>
-                          <img src={`/assets/images/clicker-character/${dailyComboMatched.length === 3 ? "checked" : "unchecked"}.png`} alt={`/assets/images/clicker-character/${dailyComboMatched.length === 3 ? "checked" : "unchecked"}.png`} className="w-6 h-6 ml-2" />
+                          <img src={`/assets/images/clicker-character/${dailyComboMatched.length === 3 ? "checked" : "unchecked"}.webp`} alt={`/assets/images/clicker-character/${dailyComboMatched.length === 3 ? "checked" : "unchecked"}.webp`} className="w-6 h-6 ml-2" />
                         </div>
                       </div>
                       <div className="flex ml-4">
-                        <img src={`/assets/images/clicker-character/treasure-${dailyComboMatched.length > 0 ? "unlocked" : "locked"}.png`} alt="reward 1" title={dailyComboMatched.length > 0 ? t(dailyComboMatched[0]) : ""} className="w-full h-full" />
-                        <img src={`/assets/images/clicker-character/treasure-${dailyComboMatched.length > 1 ? "unlocked" : "locked"}.png`} alt="reward 2" title={dailyComboMatched.length > 1 ? t(dailyComboMatched[1]) : ""} className="w-full h-full ml-2" />
-                        <img src={`/assets/images/clicker-character/treasure-${dailyComboMatched.length > 2 ? "unlocked" : "locked"}.png`} alt="reward 2" title={dailyComboMatched.length > 2 ? t(dailyComboMatched[2]) : ""} className="w-full h-full ml-2" />
+                        <img src={`/assets/images/clicker-character/treasure-${dailyComboMatched.length > 0 ? "unlocked" : "locked"}.webp`} alt="reward 1" title={dailyComboMatched.length > 0 ? t(dailyComboMatched[0]) : ""} className="w-full h-full" />
+                        <img src={`/assets/images/clicker-character/treasure-${dailyComboMatched.length > 1 ? "unlocked" : "locked"}.webp`} alt="reward 2" title={dailyComboMatched.length > 1 ? t(dailyComboMatched[1]) : ""} className="w-full h-full ml-2" />
+                        <img src={`/assets/images/clicker-character/treasure-${dailyComboMatched.length > 2 ? "unlocked" : "locked"}.webp`} alt="reward 2" title={dailyComboMatched.length > 2 ? t(dailyComboMatched[2]) : ""} className="w-full h-full ml-2" />
                       </div>
                     </div>
 
                     {/* Profit Per 12h Section */}
                     <div className="flex flex-row items-center bg-[#11365F] rounded-3xl px-[2rem] py-[1.3rem] shadow-[0px_4px_4px_rgba(0,0,0,0.25)]">
-                      <img src="/assets/images/clicker-character/explora-point.png" alt="profit icon" className="w-10 h-10 mr-2" />
+                      <img src="/assets/images/clicker-character/explora-point.webp" alt="profit icon" className="w-10 h-10 mr-2" />
                       <div className="flex flex-col mr-[5rem]">
                         <div className="text-[#00E0FF] text-2xl font-LuckiestGuy font-normal tracking-wider">
                           +102,100,100K

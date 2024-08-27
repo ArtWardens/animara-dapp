@@ -40,7 +40,7 @@ const UpgradeDetailsModal = ({ upgrade, isMaxLevel, onClose }) => {
     },
     {
       region: "deserts",
-      logo: "/assets/images/clicker-character/deserts-icon-icon.png",
+      logo: "/assets/images/clicker-character/deserts-icon.webp",
     },
     {
       region: "cave",
@@ -58,7 +58,7 @@ const UpgradeDetailsModal = ({ upgrade, isMaxLevel, onClose }) => {
 
   const logo =
     logoList.find((item) => item.region === upgrade.region)?.logo ||
-    "/assets/images/clicker-character/default-icon.png";
+    "/assets/images/clicker-character/default-icon.webp";
 
   useEffect(() => {
     if (hasStartedUpgrade && !isUserLocationLoading) {
