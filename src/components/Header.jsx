@@ -173,10 +173,10 @@ function Header() {
                     alt="change locale"
                     />
                     {langDropdownOpen && (
-                    <div className="absolute right-0 mt-2 w-[150px] bg-white shadow-lg rounded-md z-10">
+                    <div className="absolute right-0 mt-2 w-[150px] bg-slate-800 shadow-lg rounded-md z-10">
                         {Object.keys(lngs).map((lng) => (
                         <button
-                            className="block w-full px-4 py-2 text-left hover:bg-gray-200"
+                            className="block w-full px-4 py-2 text-left hover:bg-slate-500"
                             type="submit"
                             key={lng}
                             onClick={() => handleLangChange(lng)}
@@ -219,15 +219,15 @@ function Header() {
                 className="transition ease-in-out hover:scale-105 xl:hidden absolute top-[5rem] right-[2rem] xl:right-[4rem] z-50"
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             >
-                <svg className="h-9 w-9 text-amber-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d={mobileMenuOpen ? "M6 18L18 6M6 6l12 12" : "M4 6h16M4 12h16m-7 6h7"} />
+                <svg className={`h-9 w-9 text-amber-500 ${ mobileMenuOpen ? 'hidden' : 'block' }`} fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d={"M4 6h16M4 12h16m-7 6h7"} />
                 </svg>
             </button>
 
             {/* Mobile Menu */}
             {mobileMenuOpen && (
                 <div
-                    className="fixed inset-0 z-40 flex flex-col justify-center px-12"
+                    className="fixed inset-0 z-40 flex flex-col justify-center p-[4rem]"
                     style={{
                         backgroundImage: 'url("/assets/images/clicker-character/clickerWall.png")',
                         backgroundSize: 'cover',
@@ -235,16 +235,27 @@ function Header() {
                         backgroundRepeat: 'no-repeat',
                     }}
                 >
-                    <div className="absolute top-12 left-12 flex items-center space-x-4">
-                        <img
-                            src="/assets/images/clicker-character/animara-logo.png"
-                            alt="Animara Logo"
-                            className="h-8"
-                        />
-                    </div>
+                    <div className="flex flex-row justify-between">
+                        <div className="left-[3rem] flex items-center space-x-4">
+                            <img
+                                src="/assets/images/clicker-character/animara-logo.png"
+                                alt="Animara Logo"
+                                className="h-8"
+                            />
+                        </div>
+
+                        <button
+                            className="transition ease-in-out hover:scale-105 xl:hidden right-[3rem] xl:right-[4rem] z-50"
+                            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                        >
+                            <svg className="h-9 w-9 text-amber-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d={"M6 18L18 6M6 6l12 12"} />
+                            </svg>
+                        </button>
+                    </div>   
 
                     <div
-                        className="text-center w-auto h-full place-content-center scale-125 mt-20 -z-50"
+                        className="text-center w-auto h-full place-content-center scale-125 mt-[5rem] -z-50"
                         style={{
                             backgroundImage: 'url("/assets/images/clicker-character/sticky-Note.png")',
                             backgroundSize: 'contain',
@@ -298,16 +309,22 @@ function Header() {
                         </div>
                     </div>
 
-                    <div className="space-y-4 mb-16 z-60">
-                        {navDestinations.map(({ name, link }) => (
+                    <div className="space-y-4 mt-[4rem] mb-16 z-60">
+                    {navDestinations.map(({ name, link }) => (
+                        <div className="flex flex-row items-center group" key={name}>
                             <button
-                                key={name}
                                 onClick={() => handleButtonClick(link)}
                                 className="block w-full text-left py-2 text-[#00b8e1] hover:text-[#ffc75a] text-4xl font-LuckiestGuy font-bold leading-9 tracking-wider transition-all duration-500"
                             >
                                 {name}
                             </button>
-                        ))}
+                            <img
+                                className="w-10 h-10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                                src="/assets/images/clicker-character/arrow-right.png"
+                                alt="right arrow"
+                            />
+                        </div>
+                    ))}
                         <button
                             className="transition ease-in-out hover:scale-105 flex items-center"
                             onMouseEnter={handleMouseEnterLogout}
