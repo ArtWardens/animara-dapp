@@ -3,6 +3,7 @@ import { appInit } from '../sagaStore/slices';
 import { initData } from '../utils/localStorage/localStorage';
 
 function* initSaga() {
+  // console.log('2?');
   if (!initData.getItem()) {
     try {
       const detectTimeZone = () => {

@@ -302,6 +302,7 @@ export const userSlice = createSlice({
       state.settleTapSessionLoading = true;
     },
     settleTapSessionError: (state, { payload }) => {
+      console.log(`failed to settle tap session with error; ${payload}`);
       // check if is desync error
       const currentUser = current(state.user);
       state.localStamina = currentUser.stamina;

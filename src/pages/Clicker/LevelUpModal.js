@@ -10,11 +10,7 @@ const LevelUpModal = ({ onClose, coinReward }) => {
       <div
         className={`flex flex-col px-[4rem] py-[8rem] rounded-xl w-[45%] transition-all duration-1000 opacity-100 scale-100`}
         style={{
-<<<<<<< HEAD
           backgroundImage: `url("/assets/images/clicker-character/successfull-bg.webp")`,
-=======
-          backgroundImage: `url("../assets/images/clicker-character/upgrades-details-bg.png")`,
->>>>>>> origin/dev-1.0-hy
           backgroundSize: "contain",
           backgroundPosition: "center",
           backgroundRepeat: "no-repeat",
@@ -22,7 +18,7 @@ const LevelUpModal = ({ onClose, coinReward }) => {
       >
         {/* Close Button */}
         <button
-          className="w-full items-end justify-end text-white text-4xl text-right"
+          className="w-full items-end justify-end text-white text-4xl text-right hover:brightness-75"
           onClick={onClose}
         >
           &times;
@@ -67,7 +63,7 @@ const LevelUpModal = ({ onClose, coinReward }) => {
 
         <div className="w-full flex items-center justify-center">
           <button
-            className="bg-[#ffdc61] text-white mt-[1rem] px-8 py-2 rounded-full text-lg uppercase flex items-center justify-center"
+            className="bg-[#ffdc61] text-white mt-[1rem] px-8 py-2 rounded-full text-lg uppercase flex items-center justify-center hover:shadow-[0px_4px_4px_0px_#FFFBEF_inset]"
             onClick={onClose}
           >
             Continue

@@ -103,6 +103,7 @@ const loginWithTwitterImpl = async () => {
     const { user } = result;
     return user;
   } catch (error) {
+    console.log(error);
     if (error.code === "auth/account-exists-with-different-credential") {
       throw error;
     }

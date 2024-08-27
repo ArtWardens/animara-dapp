@@ -36,10 +36,13 @@ const ClickerController = ({ Children }) => {
   // check to make sure user is using correct wallet
   useEffect(()=>{
     if (!currentUser){ return; }
+    console.log(`======================controller got user======================`);
 
     if (connectingWallet){ return; }
+    console.log(`not connecting wallet`);
 
     if (!connectingWallet && isModalVisible) { return; }
+    console.log(`wallet selection modal closed`);
 
     // extract wallet address
     // Note: has to use public key as a string or else its an object
@@ -61,6 +64,7 @@ const ClickerController = ({ Children }) => {
   },[currentUser?.walletAddr, publicKey, connectingWallet, walletConnected, isModalVisible]);
 
   useEffect(()=>{
+    console.log(`publicKey ${publicKey}`);
   }, [publicKey]);
   return (
     <div>

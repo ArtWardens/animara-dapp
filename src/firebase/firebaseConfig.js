@@ -5,14 +5,13 @@ import { getStorage } from "firebase/storage";
 import { getFunctions, httpsCallable } from "firebase/functions";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyCXsrX-2wxsd35d5rKcTfN7zkeW4XVY200",
-  authDomain: "moveon-b6ea3.firebaseapp.com",
-  databaseURL: "https://moveon-b6ea3-default-rtdb.firebaseio.com",
-  projectId: "moveon-b6ea3",
-  storageBucket: "moveon-b6ea3.appspot.com",
-  messagingSenderId: "269542446082",
-  appId: "1:269542446082:web:53fd0253312517702a831b",
-  measurementId: "G-WQVCSX6C65",
+  apiKey: "AIzaSyCcIwEQL5hhqj9f-5ExOIiSlXnSvcJ8YGg",
+  authDomain: "animara-38a73.firebaseapp.com",
+  projectId: "animara-38a73",
+  storageBucket: "animara-38a73.appspot.com",
+  messagingSenderId: "924690778781",
+  appId: "1:924690778781:web:1b39a99f3e6da6a3596274",
+  measurementId: "G-V2D9X0LB6K"
 };
 
 // Initialize Firebase
@@ -47,7 +46,6 @@ const exploreLocation = httpsCallable(functions, "exploreLocation");
 const getReferralStats = httpsCallable(functions, "getReferralStats");
 const bindWallet = httpsCallable(functions, "bindWallet");
 const unbindWallet = httpsCallable(functions, "unbindWallet");
-const registerNFT = httpsCallable(functions, "registerNFT");
 
 export {
   auth,
@@ -68,5 +66,4 @@ export {
   getReferralStats,
   bindWallet,
   unbindWallet,
-  registerNFT,
 };

@@ -71,6 +71,7 @@ const ReferPopup = ({ onClose }) => {
         <button
           className="absolute top-2 right-2 text-white text-md pl-3 pr-3 pt-1 pb-1 rounded-full border-2 border-slate-500 m-2"
           onClick={() => {
+            console.log("Close");
             isCloseEnabled && onClose(false)
           }}
           disabled={!isCloseEnabled}
