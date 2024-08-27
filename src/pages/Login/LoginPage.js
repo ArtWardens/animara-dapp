@@ -133,7 +133,7 @@ const LoginPage = () => {
         {/* Header */}
         <header className="absolute py-[2rem] px-[12rem] h-[6rem] w-full hidden lg:block">
           <img 
-            src="/assets/icons/logo.png" alt="logo"
+            src="/assets/icons/logo.webp" alt="logo"
             className="max-h-[2rem]"
           />
         </header>

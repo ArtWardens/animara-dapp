@@ -32,11 +32,11 @@ const UpgradeDetailsModal = ({ upgrade, isMaxLevel, onClose }) => {
   const logoList = [
     {
       region: "mountain",
-      logo: "/assets/images/clicker-character/mountain-icon.png",
+      logo: "/assets/images/clicker-character/mountain-icon.webp",
     },
     {
       region: "forest",
-      logo: "/assets/images/clicker-character/forest-icon.png",
+      logo: "/assets/images/clicker-character/forest-icon.webp",
     },
     {
       region: "deserts",
@@ -44,15 +44,15 @@ const UpgradeDetailsModal = ({ upgrade, isMaxLevel, onClose }) => {
     },
     {
       region: "cave",
-      logo: "/assets/images/clicker-character/cave-icon.png",
+      logo: "/assets/images/clicker-character/cave-icon.webp",
     },
     {
       region: "iceland",
-      logo: "/assets/images/clicker-character/iceland-icon.png",
+      logo: "/assets/images/clicker-character/iceland-icon.webp",
     },
     {
       region: "valley",
-      logo: "/assets/images/clicker-character/valley-icon.png",
+      logo: "/assets/images/clicker-character/valley-icon.webp",
     },
   ];
 
@@ -135,7 +135,7 @@ const UpgradeDetailsModal = ({ upgrade, isMaxLevel, onClose }) => {
           <>
           <div className={`absolute w-full h-full rotate-image`}
             style={{
-              backgroundImage: `url("/assets/images/clicker-character/light_element.png")`,
+              backgroundImage: `url("/assets/images/clicker-character/light_element.webp")`,
               backgroundSize: "contain",
               backgroundPosition: "center",
               backgroundRepeat: "no-repeat",
@@ -144,7 +144,7 @@ const UpgradeDetailsModal = ({ upgrade, isMaxLevel, onClose }) => {
           <div
             className={`flex flex-col px-[4rem] py-[8rem] rounded-xl w-[45%] transition-all duration-1000 ${showModal ? `opacity-100 scale-100` : `opacity-0 scale-0`}`}
             style={{
-              backgroundImage: `url("/assets/images/clicker-character/successfull-bg.png")`,
+              backgroundImage: `url("/assets/images/clicker-character/successfull-bg.webp")`,
               backgroundSize: "contain",
               backgroundPosition: "center",
               backgroundRepeat: "no-repeat",
@@ -217,7 +217,7 @@ const UpgradeDetailsModal = ({ upgrade, isMaxLevel, onClose }) => {
           <div
             className={`relative px-[4rem] py-[8rem] rounded-xl w-[90%] max-w-[800px] bg-no-repeat bg-contain transition-all duration-1000 ${showModal ? `opacity-100 scale-100` : `opacity-0 scale-0`}`}
             style={{
-              backgroundImage: `url("/assets/images/clicker-character/upgrades-details-bg.png")`,
+              backgroundImage: `url("/assets/images/clicker-character/upgrades-details-bg.webp")`,
               backgroundPosition: "center",
             }}
             onClick={(e) => e.stopPropagation()}
@@ -250,7 +250,7 @@ const UpgradeDetailsModal = ({ upgrade, isMaxLevel, onClose }) => {
               <div className="flex flex-row items-center justify-between">
                 <p className="text-sm font-sans mr-[1rem]">with</p>
                 <img
-                  src={"/assets/images/clicker-character/gem.png"}
+                  src={"/assets/images/clicker-character/gem.webp"}
                   alt="gem"
                   className="w-6 h-6 mr-2"
                 />
@@ -267,7 +267,7 @@ const UpgradeDetailsModal = ({ upgrade, isMaxLevel, onClose }) => {
                     Explora Points
                   </p>
                   <img
-                    src={"/assets/images/clicker-character/explora-point.png"}
+                    src={"/assets/images/clicker-character/explora-point.webp"}
                     alt="icon2"
                     className="w-6 h-6 mr-1"
                   />
@@ -280,7 +280,7 @@ const UpgradeDetailsModal = ({ upgrade, isMaxLevel, onClose }) => {
                       <p className="text-white">&nbsp; → &nbsp;</p>
                       <img
                         src={
-                          "/assets/images/clicker-character/explora-point.png"
+                          "/assets/images/clicker-character/explora-point.webp"
                         }
                         alt="icon2"
                         className="w-6 h-6 mr-1"

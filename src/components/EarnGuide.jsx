@@ -127,7 +127,7 @@ function EarnGuide({
             <div className="absolute bottom-24 flex justify-center place-content-center w-[80%] h-44 pb-8" >
                 
                 <img
-                    src={"/assets/images/clicker-character/button-footerBg.png"}
+                    src={"/assets/images/clicker-character/button-footerBg.webp"}
                     alt="ring"
                     className={`absolute inset-0 w-full h-full object-cover rounded-b-3xl transition-opacity duration-500 ${
                         guideSlideUp ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0'
@@ -145,7 +145,7 @@ function EarnGuide({
                             onClick={() => setOpenModal('boosts')}
                         >
                             <img
-                                src="/assets/images/clicker-character/boosts-icon.png"
+                                src="/assets/images/clicker-character/boosts-icon.webp"
                                 className="h-auto w-[2dvw]"
                                 alt="boosts-icon"
                             />
@@ -163,7 +163,7 @@ function EarnGuide({
                             onClick={handleUserUpgrades}
                         >
                             <img
-                                src="/assets/images/clicker-character/star-icon.png"
+                                src="/assets/images/clicker-character/star-icon.webp"
                                 className="h-auto w-[2dvw]"
                                 alt="star-icon"
                             />
@@ -180,7 +180,7 @@ function EarnGuide({
                             onClick={() => setIsOneTimeTaskOpen('true')}
                         >
                             <img
-                                src="/assets/images/clicker-character/tasks-icon.png"
+                                src="/assets/images/clicker-character/tasks-icon.webp"
                                 className="h-auto w-[2dvw]"
                                 alt="tasks-icon"
                             />

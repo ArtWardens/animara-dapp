@@ -12,7 +12,7 @@ import { useNavigate } from "react-router-dom";
     <div
       className="flex flex-col justify-center items-center w-screen h-screen"
       style={{
-        backgroundImage: `url("/assets/images/clicker-character/verify-email-bg.jpg")`,
+        backgroundImage: `url("/assets/images/clicker-character/verify-email-bg.webp")`,
         backgroundSize: "cover",
         backgroundPosition: "center",
       }}
@@ -20,7 +20,7 @@ import { useNavigate } from "react-router-dom";
       {/* Logo */}
       <div className="absolute top-[2rem] xl:top-[4rem] left-[3rem] lg:left-[6rem] xl:left-[12rem]">
         <img
-          src={"/assets/images/clicker-character/animara-logo.png"}
+          src={"/assets/images/clicker-character/animara-logo.webp"}
           alt="animara logo"
           className="w-[35%] xl:w-[50%] h-auto"
         />
@@ -30,13 +30,13 @@ import { useNavigate } from "react-router-dom";
       <div
         className="w-auto h-[55dvh] xl:h-[70dvh] items-center justify-center bg-contain bg-no-repeat"
         style={{
-          backgroundImage: `url("/assets/images/clicker-character/verify-email-content-bg.png")`,
+          backgroundImage: `url("/assets/images/clicker-character/verify-email-content-bg.webp")`,
           backgroundPosition: "center",
         }}
       >
         <div className="h-full flex flex-col justify-center items-center mb-[1rem]">
           <img
-            src={"/assets/images/clicker-character/limited-access-icon.png"}
+            src={"/assets/images/clicker-character/limited-access-icon.webp"}
             alt="limited-access-icon"
             className="w-auto h-[8dvh] xl:h-[15dvh] mb-[1rem]"
           />
