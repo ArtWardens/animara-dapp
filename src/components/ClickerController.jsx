@@ -41,17 +41,13 @@ const ClickerController = ({ Children }) => {
     if (!currentUser) {
       return;
     }
-    console.log(`======================controller got user======================`);
-
     if (connectingWallet) {
       return;
     }
-    console.log(`not connecting wallet`);
 
     if (!connectingWallet && isModalVisible) {
       return;
     }
-    console.log(`wallet selection modal closed`);
 
     // extract wallet address
     // Note: has to use public key as a string or else its an object
@@ -72,9 +68,7 @@ const ClickerController = ({ Children }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentUser?.walletAddr, publicKey, connectingWallet, walletConnected, isModalVisible]);
 
-  useEffect(() => {
-    console.log(`publicKey ${publicKey}`);
-  }, [publicKey]);
+  useEffect(() => {}, [publicKey]);
   return (
     <div className="overflow-hidden">
       <Children />
