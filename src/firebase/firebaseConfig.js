@@ -47,6 +47,7 @@ const exploreLocation = httpsCallable(functions, "exploreLocation");
 const getReferralStats = httpsCallable(functions, "getReferralStats");
 const bindWallet = httpsCallable(functions, "bindWallet");
 const unbindWallet = httpsCallable(functions, "unbindWallet");
+const registerNFT = httpsCallable(functions, "registerNFT");
 
 export {
   auth,
@@ -67,4 +68,5 @@ export {
   getReferralStats,
   bindWallet,
   unbindWallet,
+  registerNFT,
 };

@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { useLocation, useNavigate } from 'react-router-dom/dist';
-import { PropagateLoader } from 'react-spinners';
+import { MoonLoader } from 'react-spinners';
 import { logOut, useUserDetails, useLocalCoins } from '../sagaStore/slices';
 
 const lngs = {
@@ -97,10 +97,8 @@ function Header() {
         <div className="p-1 w-20 h-20 relative">
           <button onClick={handleEditProfile} className="group relative">
             {loadingImage && (
-              <div className="flex justify-center items-center">
-                <div className="flex justify-center items-center h-56">
-                  <PropagateLoader color={'#FFB23F'} />
-                </div>
+              <div className="h-18 flex justify-center items-center">
+                  <MoonLoader color={'#FFB23F'} />
               </div>
             )}
             <img
@@ -265,7 +263,7 @@ function Header() {
           >
             {loadingImage && (
               <div className="flex justify-center items-center">
-                <PropagateLoader color={'#FFB23F'} />
+                <MoonLoader color={'#FFB23F'} />
               </div>
             )}
 
