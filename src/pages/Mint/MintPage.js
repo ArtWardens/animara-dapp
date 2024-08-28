@@ -11,8 +11,8 @@ import Header from "../../components/Header.jsx";
 import WalletInfo from "../../components/SolanaWallet/WalletInfo.jsx";
 import WalletBindingPanel from "../../components/SolanaWallet/WalletBindingPanel.jsx";
 import { useAppDispatch } from "../../hooks/storeHooks.js";
-import { mintNFT, useMintingNFT, useNFTMinted, resetMintedNFT, useBindWalletLoading, useUserDetails } from "../../sagaStore/slices/userSlice.js";
-import { fetchDate, startCountdown } from "../../firebase/countDown";
+import { mintNFT, useMintingNFT, useNFTMinted, resetMintedNFT, useBindWalletLoading, useUserDetails, useMintDate } from "../../sagaStore/slices/userSlice.js";
+import { startCountdown } from "../../firebase/countDown";
 
 const useCandyMachine = (
   umi,
@@ -75,6 +75,7 @@ const useCandyMachine = (
 function MintPage() {
   const dispatch = useAppDispatch();
   const currentUser = useUserDetails();
+  const mintDate = useMintDate();
   const bindingWallet = useBindWalletLoading();
   const mintingNFT = useMintingNFT();
   const nftMinted = useNFTMinted();
@@ -129,20 +130,6 @@ function MintPage() {
 
   // intro animation & fetch countdown
   useEffect(() => {
-    // start minting deadline
-    const fetchAndStartCountdown = async () => {
-      const referralDate = await fetchDate("mint");
-      if (referralDate) {
-        const cleanup = startCountdown(
-          referralDate,
-          setTimeLeft,
-          setIsContainerVisible
-        );
-        return cleanup;
-      }
-    };
-    fetchAndStartCountdown();
-
     // intro animations
     const timerTitle = setTimeout(() => {
       setShowTitle(true);
@@ -182,6 +169,22 @@ function MintPage() {
       clearTimeout(timerCharacter);
     };
   }, []);
+
+  useEffect(()=>{
+    console.log(`mintDate ${mintDate}`);
+    // start minting deadline
+    const fetchAndStartCountdown = async () => {
+      if (mintDate) {
+        const cleanup = startCountdown(
+          mintDate,
+          setTimeLeft,
+          setIsContainerVisible
+        );
+        return cleanup;
+      }
+    };
+    fetchAndStartCountdown();
+  },[mintDate]);
 
   // minting setup
   useEffect(() => {
