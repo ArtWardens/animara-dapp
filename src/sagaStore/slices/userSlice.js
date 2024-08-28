@@ -4,9 +4,9 @@ import {
   addToLocalStorage,
 } from "../../utils/localStorage";
 import {
-    StaminaRechargeTypeBasic,
-    StaminaRechargeTypeInvite,
-  } from "../../utils/constants"
+  StaminaRechargeTypeBasic,
+  StaminaRechargeTypeInvite,
+} from "../../utils/constants"
 
 const userInitialState = {
   authLoading: false,
@@ -49,7 +49,10 @@ const userInitialState = {
   nftClaimable: 0,
   bindWalletLoading: false,
   mintingNFT: false,
-  nftMinted: null
+  nftMinted: null,
+  mintDate: null,
+  lockDate: null,
+  earlyBirdDate: null,
 };
 
 export const userSlice = createSlice({
@@ -461,6 +464,15 @@ export const userSlice = createSlice({
       state.nftMinted = null;
       state.mintingNFT = false;
     },
+    fetchDates: (state, { payload }) => {
+    },
+    fetchDatesSuccess: (state, { payload }) => {
+      state.mintDate = payload.mint;
+      state.lockDate = payload.lock;
+      state.earlyBirdDate = payload.earlyBird;
+    },
+    fetchDatesError: (state, { payload }) => {
+    },
   },
 });
 
@@ -541,6 +553,9 @@ export const {
   mintNFTSuccess,
   mintNFTError,
   resetMintedNFT,
+  fetchDates,
+  fetchDatesSuccess,
+  fetchDatesError,
 } = userSlice.actions;
 
 export const useAuthLoading = () => useAppSelector((state) => state.user.authLoading);
@@ -588,6 +603,9 @@ export const useNftClaimable = () => useAppSelector((state) => state.user.nftCla
 export const useBindWalletLoading = () => useAppSelector((state) => state.user.bindWalletLoading);
 export const useMintingNFT = () => useAppSelector((state) => state.user.mintingNFT);
 export const useNFTMinted = () => useAppSelector((state) => state.user.nftMinted);
+export const useMintDate = () => useAppSelector((state) => state.user.mintDate);
+export const useLockDate = () => useAppSelector((state) => state.user.lockDate);
+export const useEarlyBirdDate = () => useAppSelector((state) => state.user.earlyBirdDate);
 
 const userReducer = userSlice.reducer;
 
