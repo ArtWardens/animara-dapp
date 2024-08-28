@@ -525,14 +525,6 @@ function MintPage() {
                 {/* mint price */}
                 <div className="w-full flex-col justify-center items-center inline-flex">
                   <div className="flex-col justify-center items-center flex pb-8">
-                    <span className="text-gray-200 text-xl line-through">
-                      0.097 SOL
-                    </span>
-                    <div className="text-center absolute right-0 bottom-[13rem] text-white text-sm border-4 px-3 py-1 border-white rounded-2xl bg-sky-500 rotate-[20deg]">
-                      Early Bird
-                      <br />
-                      Bonus Active!
-                    </div>
                     <div
                       className="text-center text-amber-500 text-5xl z-10"
                       style={{
@@ -541,7 +533,7 @@ function MintPage() {
                         textShadow: "0px 2px 4px rgba(0, 0, 0, 0.25)",
                       }}
                     >
-                      0.073 SOL
+                      0.99 SOL
                     </div>
                   </div>
                 </div>
@@ -735,6 +727,22 @@ function MintPage() {
                 alt="NFT Treasure Box"
                 className="object-contain w-96 -my-10"
               />
+
+              {/* mint price */}
+              <div className="w-full flex-col justify-center items-center inline-flex">
+                <div className="flex-col justify-center items-center flex pb-8">
+                  <div
+                    className="text-center text-amber-500 text-5xl z-10"
+                    style={{
+                      WebkitTextStrokeWidth: "3.5px",
+                      WebkitTextStrokeColor: "var(--COlor-11, #FFF)",
+                      textShadow: "0px 2px 4px rgba(0, 0, 0, 0.25)",
+                    }}
+                  >
+                    0.99 SOL
+                  </div>
+                </div>
+              </div>
 
               {/* Mint button */}
               <div
