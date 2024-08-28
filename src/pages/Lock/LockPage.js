@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
 import Header from "../../components/Header.jsx";
-import { fetchDate, startCountdown } from '../../firebase/countDown';
+import { startCountdown } from '../../firebase/countDown';
+import { useLockDate } from "../../sagaStore/slices/userSlice.js";
 
 const LockPage = () => {
+    const lockDate = useLockDate();
     const [showLeftChain, setShowLeftChain] = useState(false);
     const [showRightChain, setShowRightChain] = useState(false);
     const [showLock, setShowLock] = useState(false);
@@ -31,7 +33,6 @@ const LockPage = () => {
 
     useEffect(() => {
         const fetchAndStartCountdown = async () => {
-            const lockDate = await fetchDate("lock");
             if (lockDate) {
                 const cleanup = startCountdown(lockDate, setTimeLeft, setReverse);
                 return cleanup;
@@ -39,7 +40,7 @@ const LockPage = () => {
         };
 
         fetchAndStartCountdown();
-    }, []);
+    }, [lockDate]);
 
     return (
         <>
