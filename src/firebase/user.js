@@ -1,4 +1,4 @@
-import { auth, db, storage, updateUserLastLogin, dailyLogin, getReferralStats } from "../firebase/firebaseConfig";
+import { auth, db, storage, updateUserLastLogin, dailyLogin, getReferralStats, firstLoginLinkReferral } from "../firebase/firebaseConfig";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { getDownloadURL, ref, uploadString } from "firebase/storage";
 import { getIdTokenResult, updateProfile } from "firebase/auth";
@@ -86,29 +86,13 @@ const updateUserProfileImpl = async (
       updateData.phoneNumber = phoneNumber;
     }
 
+    const idToken = await auth.currentUser.getIdToken(/* forceRefresh */ false);
+
+    if (inviteCode !== "") {
+      await firstLoginLinkReferral({ idToken: idToken, referralCode: inviteCode });
+    }
+
     const firestoreUpdate = updateDoc(userRef, updateData);
-
-    const referralRef = doc(db, "referrals", uid);
-    const referralDoc = await getDoc(referralRef);
-
-    console.log("Referral Document Exists:", referralDoc.exists());
-    console.log("Referral Document Data:", referralDoc.data());
-
-    const referralData = referralDoc.exists() ? referralDoc.data() : {};
-
-    if (inviteCode) {
-      referralData.referredBy = inviteCode;
-    } else {
-      console.log("No invite code provided");
-    }
-
-    if (referralDoc.exists()) {
-      console.log("Updating existing referral document...");
-      await updateDoc(referralRef, referralData);
-    } else {
-      console.log("Referral document does not exist, unable to update using updateDoc.");
-      // Here you might need to add logic to create the document if it doesn't exist
-    }
 
     const authUpdateData = { displayName: name };
     if (photoURL) {
@@ -120,7 +104,7 @@ const updateUserProfileImpl = async (
     return await getUserDataImpl(auth.currentUser.uid);
 
   } catch (error) {
-    console.error("Error updating user profile:", error);
+    console.error(error);
   }
 };
 
