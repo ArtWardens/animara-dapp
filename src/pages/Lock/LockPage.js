@@ -48,7 +48,7 @@ const LockPage = () => {
             <div
                 className="relative flex-grow flex flex-col place-content-center items-center xl:px-[6rem] pb-4 min-h-screen bg-cover bg-center bg-no-repeat bg-fixed"
                 style={{
-                    backgroundImage: 'url("/assets/images/clicker-character/clickerBg.png")',
+                    backgroundImage: 'url("/assets/images/clicker-character/clickerBg.webp")',
                 }}
             >
                 <div
@@ -59,20 +59,20 @@ const LockPage = () => {
                     }}
                 >
                     <img
-                        src="/assets/images/clicker-character/chain-left.png"
+                        src="/assets/images/clicker-character/chain-left.webp"
                         alt="Left Chain"
                         className={`absolute origin-center h-full w-auto right-0 transition-transform duration-1000 ease-out ${showLeftChain ? (reverse ? "-translate-x-full -translate-y-full opacity-0" : "translate-x-0 translate-y-0 opacity-100") : "-translate-x-full -translate-y-full opacity-0"
                             }`}
                     />
                     <img
-                        src="/assets/images/clicker-character/chain-right.png"
+                        src="/assets/images/clicker-character/chain-right.webp"
                         alt="Right Chain"
                         className={`absolute origin-center h-full w-auto left-0 transition-transform duration-1000 ease-out ${showRightChain ? (reverse ? "translate-x-full -translate-y-full opacity-0" : "translate-x-0 translate-y-0 opacity-100") : "translate-x-full -translate-y-full opacity-0"
                             }`}
                     />
                 </div>
                 <img
-                    src="/assets/images/clicker-character/padlock.png"
+                    src="/assets/images/clicker-character/padlock.webp"
                     alt="Lock"
                     className={`origin-center mb-[7rem] transition-transform duration-500 delay-150 transform ${showLock ? (reverse ? "scale-0 opacity-0" : "scale-110 opacity-100") : "scale-0 opacity-0"
                         } z-10`}

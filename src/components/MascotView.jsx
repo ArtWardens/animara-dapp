@@ -277,13 +277,22 @@ const MascotView = ({ openModal, setOpenModal }) => {
       >
         <div className="absolute flex w-full justify-between -top-9">
           <img
-            src={'/assets/images/clicker-character/ring01.png'}
+            src={'/assets/images/clicker-character/ring01.webp'}
             alt="ring"
             className="object-cover w-12 absolute left-2"
           />
-          <img src={'/assets/images/clicker-character/ring01.png'} alt="ring" className="object-cover w-12 opacity-0" />
           <img
-            src={'/assets/images/clicker-character/ring02.png'}
+            src={'/assets/images/clicker-character/ring01.webp'}
+            alt="ring"
+            className="object-cover w-12 opacity-0"
+          />
+          <img
+            src={'/assets/images/clicker-character/ring01.webp'}
+            alt="ring"
+            className="object-cover w-12 opacity-0"
+          />
+          <img
+            src={'/assets/images/clicker-character/ring02.webp'}
             alt="ring"
             className="object-cover w-12 absolute right-8"
           />
@@ -291,7 +300,7 @@ const MascotView = ({ openModal, setOpenModal }) => {
         <div
           className="flex w-full h-full rounded-2xl"
           style={{
-            backgroundImage: 'url("/assets/images/clicker-character/mascotBg.png")',
+            backgroundImage: 'url("/assets/images/clicker-character/mascotBg.webp")',
             backgroundSize: 'cover',
             backgroundPosition: 'center',
             backgroundRepeat: 'no-repeat',
@@ -300,7 +309,7 @@ const MascotView = ({ openModal, setOpenModal }) => {
           <div className="flex justify-center items-center h-full w-full">
             {plusOneEffect.show && (
               <img
-                src={'/assets/images/clicker-character/plusOne.png'}
+                src={'/assets/images/clicker-character/plusOne.webp'}
                 alt="+1"
                 className="absolute w-40 h-40 animate-fadeInOut z-10"
                 style={{ left: `${plusOneEffect.left}%`, top: `${plusOneEffect.top}%` }}
