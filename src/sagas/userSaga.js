@@ -16,6 +16,7 @@ import {
   getUserDataImpl,
   dailyLoginImpl,
   getReferralStatsImpl,
+  registerNFTImpl,
 } from "../firebase/user";
 import { handleGetLeaderboard } from "../firebase/leaderboard";
 import {
@@ -453,9 +454,7 @@ export function* getReferralStatsSaga() {
     if (referralStats) {
       yield put(getReferralStatsSuccess(referralStats));
     } else {
-      yield put(
-        getReferralStatsError("Failed to get referral stats. Please try again. ")
-      );
+      yield put(getReferralStatsError("Failed to get referral stats. Please try again."));
     }
   } catch (error) {
     yield put(getReferralStatsError(error));
@@ -534,6 +533,7 @@ export function* mintNFTSaga({ payload }) {
     //     }
     //   }
     // ]
+    yield call(registerNFTImpl);
     yield put(mintNFTSuccess(result[0]));
   } catch (error) {
     yield put(mintNFTError(error));
