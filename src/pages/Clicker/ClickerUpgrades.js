@@ -51,9 +51,9 @@ const ClickerUpgrades = ({ onClose }) => {
   const [selectedUpgrade, setSelectedUpgrade] = useState(null);
   const userLocationLoading = useUserLocationLoading();
 
-  let dailyComboMatched = [];
   const { userLocations } = useUserLocation();
-  dailyComboMatched = useDailyComboMatched();
+  const dailyComboMatched = useDailyComboMatched();
+  console.log(dailyComboMatched);
 
   useEffect(() => {
     if (!userLocations && !userLocationLoading) {
@@ -165,7 +165,7 @@ const ClickerUpgrades = ({ onClose }) => {
                   <div
                     key={index}
                     onClick={() => setSelectedOption(option.name)}
-                    className={`min-w-[8dvw] w-auto flex justify-center items-center gap-1.5 p-5 mt-0 2xl:mt-[1rem] ml-[1rem] 2xl:ml-0 rounded-[10px] border-8 border-white ${
+                    className={`min-w-[150px] w-auto flex justify-center items-center gap-1.5 p-5 mt-0 2xl:mt-[1rem] ml-[1rem] 2xl:ml-0 rounded-[10px] border-8 border-white ${
                       selectedOption === option.name ? 'bg-[#FFB100] transform rotate-6' : 'bg-[#146CFC]'
                     } hover:pl-[24px] hover:pr-[20px] hover:rotate-6 hover:scale-105 transition-transform duration-300 ease-in-out`}
                   >
@@ -206,13 +206,17 @@ const ClickerUpgrades = ({ onClose }) => {
                         <div className="flex flex-row items-center text-white text-lg ">
                           <img src="/assets/images/clicker-character/gem.webp" alt="currency icon" className="w-6 h-6" />
                           <span className="mx-2">{totalProfit}</span>
-                          <img src={`/assets/images/clicker-character/${dailyComboMatched.length === 3 ? "checked" : "unchecked"}.webp`} alt={`/assets/images/clicker-character/${dailyComboMatched.length === 3 ? "checked" : "unchecked"}.webp`} className="w-6 h-6 ml-2" />
+                          <img 
+                            src={`/assets/images/clicker-character/${dailyComboMatched.every(item => item !== "") ? "checked" : "unchecked"}.webp`} 
+                            alt={`${dailyComboMatched.every(item => item !== "") ? "checked" : "unchecked"} icon`} 
+                            className="w-6 h-6 ml-2" 
+                          />
                         </div>
                       </div>
                       <div className="flex ml-4">
-                        <img src={`/assets/images/clicker-character/treasure-${dailyComboMatched.length > 0 ? "unlocked" : "locked"}.webp`} alt="reward 1" title={dailyComboMatched.length > 0 ? t(dailyComboMatched[0]) : ""} className="w-full h-full" />
-                        <img src={`/assets/images/clicker-character/treasure-${dailyComboMatched.length > 1 ? "unlocked" : "locked"}.webp`} alt="reward 2" title={dailyComboMatched.length > 1 ? t(dailyComboMatched[1]) : ""} className="w-full h-full ml-2" />
-                        <img src={`/assets/images/clicker-character/treasure-${dailyComboMatched.length > 2 ? "unlocked" : "locked"}.webp`} alt="reward 2" title={dailyComboMatched.length > 2 ? t(dailyComboMatched[2]) : ""} className="w-full h-full ml-2" />
+                        <img src={`/assets/images/clicker-character/treasure-${dailyComboMatched[0] !== "" ? "unlocked" : "locked"}.webp`} alt="reward 1" title={dailyComboMatched.length > 0 ? t(dailyComboMatched[0]) : ""} className="w-full h-full" />
+                        <img src={`/assets/images/clicker-character/treasure-${dailyComboMatched[1] !== "" ? "unlocked" : "locked"}.webp`} alt="reward 2" title={dailyComboMatched.length > 1 ? t(dailyComboMatched[1]) : ""} className="w-full h-full ml-2" />
+                        <img src={`/assets/images/clicker-character/treasure-${dailyComboMatched[2] !== "" ? "unlocked" : "locked"}.webp`} alt="reward 2" title={dailyComboMatched.length > 2 ? t(dailyComboMatched[2]) : ""} className="w-full h-full ml-2" />
                       </div>
                     </div>
 
@@ -248,7 +252,7 @@ const ClickerUpgrades = ({ onClose }) => {
                               style={{
                                 position: "relative",
                                 backgroundImage: `url("/assets/images/clicker-character/upgrades-bg.webp")`,
-                                backgroundSize: "contain",
+                                backgroundSize: "cover",
                                 backgroundPosition: "center",
                                 backgroundRepeat: "no-repeat",
                               }}
@@ -320,12 +324,15 @@ const ClickerUpgrades = ({ onClose }) => {
                                 <>
                                   <div className="absolute inset-0 bg-gradient-to-b from-[rgba(0,0,0,0.5)] to-[rgba(0,0,0,0.8)] flex justify-center items-center opacity-70 rounded-[36px] backdrop-blur-lg" ></div>
                                   <img
-                                    src={
-                                      "/assets/images/clicker-character/lock-chain.webp"
-                                    }
-                                    alt="Locked"
-                                    className="w-full"
-                                  />
+                                      src="/assets/images/clicker-character/lock-chain-only.webp"
+                                      style={{
+                                        backgroundSize: "cover",
+                                        backgroundPosition: "center",
+                                        backgroundRepeat: "no-repeat",
+                                      }}
+                                      alt="Locked"
+                                      className="w-full h-full absolute inset-0"
+                                    />
                                 </>
                               )}
                             </div>
