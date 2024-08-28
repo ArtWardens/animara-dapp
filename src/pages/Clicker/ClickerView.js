@@ -110,7 +110,12 @@ const ClickerView = () => {
                 md:px-[4rem] md:pt-[13rem] md:pb-[14rem] 
                 lg:pt-[8rem] lg:pb-[10rem]">
                 <Box>
-                  <img className="max-w-[8rem] lg:max-w-[10rem]" src="assets/images/DailyRewards1.webp" alt="Daily Rewards" />
+                  <video
+                    src="/assets/videos/Daily_Reward_Anim.webm"
+                    autoPlay
+                    loop={true}
+                    className="max-w-[8rem] lg:max-w-[9rem] pt-1"
+                  />
                 </Box>
                 <div className="space-y-1 flex flex-col items-center pb-3">
                   <p className="text-[#FFAA00] text-[3rem] lg:text-[3.75rem] font-base text-center">Daily reward</p>
