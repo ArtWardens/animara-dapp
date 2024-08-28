@@ -11,6 +11,7 @@ import LockPage from "./pages/Lock/LockPage";
 import VerifyEmailPage from "./pages/VerifyEmail/VerifyEmailPage";
 import LimitedAccessPage from "./pages/VerifyEmail/LimitedAccessPage";
 import MintPage from "./pages/Mint/MintPage";
+import ClickerPage from "./pages/Clicker/ClickerPage";
 import AppLayout from './components/AppLayout';
 import { GlobalProvider } from './context/ContextProvider';
 import rootSaga from './sagas';
