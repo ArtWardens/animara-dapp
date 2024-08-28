@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import PropTypes from "prop-types";
 import { useAppDispatch } from "../../hooks/storeHooks.js";
-import { useUserLocation, useUserLocationLoading, getUserLocations, useDailyComboMatched } from "../../sagaStore/slices";
+import { useUserLocation, useUserLocationLoading, getUserLocations, useDailyComboMatched, useUserDetails } from "../../sagaStore/slices";
 import UpgradeDetailsModal from "./UpgradeDetailsModal";
 import { PropagateLoader } from "react-spinners";
 import LeaderBoardModal from "../../components/LeaderBoardModal";
@@ -10,7 +10,7 @@ import LeaderBoardModal from "../../components/LeaderBoardModal";
 const ClickerUpgrades = ({ onClose }) => {
   const dispatch = useAppDispatch();
   const { t } = useTranslation();
-  const totalProfit = "9,000,000,000";
+  const totalProfit = "9,000,000";
   const [isLeaderboardOpen, setIsLeaderboardOpen] = useState(false);
   const [slideUpgrades, setSlideUpgrades] = useState(false);
 
@@ -52,8 +52,8 @@ const ClickerUpgrades = ({ onClose }) => {
   const userLocationLoading = useUserLocationLoading();
 
   const { userLocations } = useUserLocation();
+  const currentUser = useUserDetails();
   const dailyComboMatched = useDailyComboMatched();
-  console.log(dailyComboMatched);
 
   useEffect(() => {
     if (!userLocations && !userLocationLoading) {
@@ -225,10 +225,10 @@ const ClickerUpgrades = ({ onClose }) => {
                       <img src="/assets/images/clicker-character/explora-point.webp" alt="profit icon" className="w-10 h-10 mr-2" />
                       <div className="flex flex-col mr-[5rem]">
                         <div className="text-[#00E0FF] text-2xl font-LuckiestGuy font-normal tracking-wider">
-                          +102,100,100K
+                          +{currentUser.profitPerHour}
                         </div>
                         <div className="text-white text-sm font-outfit ml-2">
-                          Profit Per 12h
+                          Explora Points
                         </div>
                       </div>
                     </div>
