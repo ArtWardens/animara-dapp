@@ -123,6 +123,7 @@ function MintPage() {
   const [mintFadeOut, setMintFadeOut] = useState(false);
   const [showWalletBindingPanel, setShowWalletBindingPanel] = useState(false);
   const [walletBindingAnim, setWalletBindingAnim] = useState(false);
+  const [ghostExcited, setGhostExcited] = useState(false);
   const [videoSource, setVideoSource] = useState('/assets/videos/unhappy-ghost.webm');
   const videoRef = useRef(null);
 
@@ -271,8 +272,10 @@ function MintPage() {
 
   useEffect(()=>{
     if (!mintingNFT || !nftMinted){
+      setGhostExcited(false);
       return;
     }
+    setGhostExcited(true);
     setIsVideoEnded(false);
     setIsShowNftOpen(true);
     setTimeout(()=>{
@@ -287,6 +290,14 @@ function MintPage() {
       setMintFadeOut(true);
     },500);
   };
+
+  useEffect(()=>{
+    if (ghostExcited){
+      setVideoSource('/assets/videos/happy-ghost.webm');
+    }else{
+      setVideoSource('/assets/videos/unhappy-ghost.webm');
+    }
+  },[ghostExcited]);
   
   return (
     <>
@@ -305,7 +316,7 @@ function MintPage() {
         }}
       >
         {/* Page Content */}
-        <div className="w-full flex flex-col xl:flex-row justify-between container pt-[10rem] xl:pt-[2rem] tracking-wider">
+        <div className="w-full flex flex-col xl:flex-row justify-between container pt-[10rem] xl:pt-[6rem] tracking-wider">
           
           {/* Mint info section */}
           <div className={`xl:w-[30%]  text-amber-500 grid gap-8 transition-all duration-1000
@@ -338,71 +349,77 @@ function MintPage() {
             <div className={`transition-all duration-1000
                 ${showTextOne ? `opacity-100` : `opacity-0`}
               `}>
-              <div className="flex items-center gap-8 pb-2">
-                <img
-                  src={"/assets/images/clicker-character/gem.webp"}
-                  alt="gem"
-                  className="ml-2 w-6 h-6"
-                />
-                <h3 className="text-2xl text-white w-full">STEP 1</h3>
+              <div className="transition-all duration-500 hover:scale-110">
+                <div className="flex items-center gap-8 pb-2">
+                  <img
+                    src={"/assets/images/clicker-character/gem.webp"}
+                    alt="gem"
+                    className="ml-2 w-6 h-6"
+                  />
+                  <h3 className="text-2xl text-white w-full">STEP 1</h3>
+                </div>
+                <p
+                  className="leading-normal tracking-normal text-white font-outfit text-justify"
+                  style={{
+                    fontSize: "14px",
+                  }}
+                >
+                  Complete the following tasks to get a 25% whitelist discount!
+                </p>
               </div>
-              <p
-                className="leading-normal tracking-normal text-white font-outfit text-justify"
-                style={{
-                  fontSize: "14px",
-                }}
-              >
-                Complete the following tasks to get a 25% whitelist discount!
-              </p>
             </div>
 
             {/* step 2 text */}
             <div className={`transition-all duration-1000
                 ${showTextTwo ? `opacity-100` : `opacity-0`}
               `}>
-              <div className="flex items-center gap-8 pb-2">
-                <img
-                  src={"/assets/images/clicker-character/gem.webp"}
-                  alt="gem"
-                  className="ml-2 w-6 h-6"
-                />
-                <h3 className="text-2xl text-white w-full">STEP 2</h3>
+              <div className="transition-all duration-500 hover:scale-110">
+                <div className="flex items-center gap-8 pb-2">
+                  <img
+                    src={"/assets/images/clicker-character/gem.webp"}
+                    alt="gem"
+                    className="ml-2 w-6 h-6"
+                  />
+                  <h3 className="text-2xl text-white w-full">STEP 2</h3>
+                </div>
+                <p
+                  className="leading-normal tracking-normal text-white font-outfit text-justify"
+                  style={{
+                    fontSize: "14px",
+                  }}
+                >
+                  Mint your NFTs and unlock your Anitap VIP Value Pass today!
+                </p>
               </div>
-              <p
-                className="leading-normal tracking-normal text-white font-outfit text-justify"
-                style={{
-                  fontSize: "14px",
-                }}
-              >
-                Mint your NFTs and unlock your Anitap VIP Value Pass today!
-              </p>
             </div>
 
             {/* step 3 text */}
-            <div className={`transition-all duration-1000
+            <div className={`pb-6 transition-all duration-1000
                 ${showTextThree ? `opacity-100` : `opacity-0`}
               `}>
-              <div className="flex items-center gap-8 pb-2">
-                <img
-                  src={"/assets/images/clicker-character/gem.webp"}
-                  alt="gem"
-                  className="ml-2 w-6 h-6"
-                />
-                <h3 className="text-2xl text-white w-full">STEP 3</h3>
+              <div className="transition-all duration-500 hover:scale-110">
+                <div className="flex items-center gap-8 pb-2">
+                  <img
+                    src={"/assets/images/clicker-character/gem.webp"}
+                    alt="gem"
+                    className="ml-2 w-6 h-6"
+                  />
+                  <h3 className="text-2xl text-white w-full">STEP 3</h3>
+                </div>
+                <p
+                  className="leading-normal tracking-normal text-white font-outfit text-justify"
+                  style={{
+                    fontSize: "14px",
+                  }}
+                >
+                  Use your VIP Pass to join the Animara leaderboard event and
+                  compete to win prizes worth up to $600,000!
+                </p>
               </div>
-              <p
-                className="leading-normal tracking-normal text-white font-outfit text-justify"
-                style={{
-                  fontSize: "14px",
-                }}
-              >
-                Use your VIP Pass to join the Animara leaderboard event and
-                compete to win prizes worth up to $600,000!
-              </p>
             </div>
 
             {/* Mobile Ghost character view */}
-            <div className="max-h-[50dvh] flex xl:hidden items-center mt-[-4rem] mb-[-12rem] animate-pulse">
+            <div className="max-h-[50dvh] flex xl:hidden items-center mt-[-4rem] mb-[-13rem] animate-pulse">
               <video
                 key={videoSource}
                 className="rounded-3xl"
@@ -519,7 +536,7 @@ function MintPage() {
                 <img
                   src="/assets/images/clicker-character/nft-treasureBox.webp"
                   alt="NFT Treasure Box"
-                  className="object-contain w-96 -my-10"
+                  className="object-contain w-96 -my-10 hover:animate-treasureBoxTwerk"
                 />
 
                 {/* mint price */}
@@ -541,7 +558,9 @@ function MintPage() {
                 {/* mint button */}
                 <div
                   className={`justify-center items-center inline-flex transition-transform duration-200 
-                    ${(isAllowed && !mintingNFT) || !walletAddr ? `hover:scale-105` : ``}`}>
+                    ${(isAllowed && !mintingNFT) || !walletAddr ? `hover:scale-105` : ``}`}
+                    onMouseEnter={() => isAllowed ? setGhostExcited(true) : setGhostExcited(false)}
+                    onMouseLeave={() => !mintingNFT ? setGhostExcited(false) : setGhostExcited(true)}>
                   {loadingCandyMachine ? 
                   <></>
                   : 
@@ -578,27 +597,29 @@ function MintPage() {
               ${showTextSubtext ? `opacity-100` : `opacity-0`}`
             }>
               <div className="flex flex-col items-center xl:items-start">
-                <div>
-                  <span className="cursor-pointer text-amber-500 hover:text-amber-500">
+                {/* Web3 links */}
+                <div className="flex">
+                  <span className="text-amber-500 transition-all duration-300 hover:scale-105">
                     <a
-                      href="https://opensea.io/login"
+                      href="https://solscan.io/"
                       target="_blank"
                       rel="noopener noreferrer"
                     >
-                      Opensea Link
+                      Solscan
                     </a>
                   </span>
                   <span className="text-white">&nbsp;&nbsp;|&nbsp;&nbsp;</span>
-                  <span className="cursor-pointer text-amber-500 hover:text-amber-500">
+                  <span className="text-amber-500 transition-all duration-300  hover:scale-105">
                     <a
-                      href="https://etherscan.io/login"
+                      href="https://wallet.magiceden.io/"
                       target="_blank"
                       rel="noopener noreferrer"
                     >
-                      Etherscan
+                      Magic Eden
                     </a>
                   </span>
                 </div>
+                {/* mainnet desc */}
                 <p className="text-white text-xs">
                   You must be on the Poleygon Mainnet to mint.
                 </p>
@@ -710,7 +731,7 @@ function MintPage() {
               <img
                 src="/assets/images/clicker-character/nft-treasureBox.webp"
                 alt="NFT Treasure Box"
-                className="object-contain w-96 -my-10"
+                className="object-contain w-96 -my-10 hover:animate-treasureBoxTwerk"
               />
 
               {/* mint price */}
@@ -733,8 +754,8 @@ function MintPage() {
               <div
                   className={`justify-center items-center inline-flex transition-transform duration-200 
                     ${(isAllowed && !mintingNFT) || !walletAddr ? `hover:scale-105` : ``}`}
-                    onMouseEnter={() => setVideoSource('/assets/videos/happy-ghost.webm')}
-                    onMouseLeave={() => setVideoSource('/assets/videos/unhappy-ghost.webm')}
+                    onMouseEnter={() => isAllowed ? setGhostExcited(true) : setGhostExcited(false)}
+                    onMouseLeave={() => !mintingNFT ? setGhostExcited(false) : setGhostExcited(true)}
               >
                   {loadingCandyMachine ? 
                   <></>
