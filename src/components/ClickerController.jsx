@@ -4,7 +4,7 @@ import { useWalletModal } from '@solana/wallet-adapter-react-ui';
 import { useWalletMultiButton } from '@solana/wallet-adapter-base-ui';
 import { useAppDispatch } from '../hooks/storeHooks';
 import { useNavigate } from 'react-router-dom/dist';
-import { getUser } from '../sagaStore/slices';
+import { getUser, fetchDates } from '../sagaStore/slices';
 import { useUserDetails, useBindWalletLoading, useUserAuthenticated, useAuthLoading } from '../sagaStore/slices';
 import { toast } from 'react-toastify';
 
@@ -30,6 +30,7 @@ const ClickerController = ({ Children }) => {
     if (!isAuthLoading) {
       if (isAuthenticated) {
         dispatch(getUser());
+        dispatch(fetchDates());
       } else {
         navigate('/login');
       }
