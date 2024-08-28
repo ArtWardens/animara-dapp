@@ -113,6 +113,12 @@ const tailwinConfig = {
           '80%': { transform: 'translateY(0)', opacity: 0 }, // Start hiding at 80%
           '100%': { transform: 'translateY(-100%)', opacity: 0 },
         },
+        treasureBoxTwerk: {
+          '0%': { transform: 'rotate(0deg)'},
+          '33%': { transform: 'rotate(-1.5deg)'},
+          '66%': { transform: 'rotate(1.5deg)'},
+          '100%': { transform: 'rotate(0deg)'},
+        },
         "accordion-down": {
           from: { height: 0 },
           to: { height: "var(--radix-accordion-content-height)" },
@@ -134,6 +140,7 @@ const tailwinConfig = {
         slideOutToBottom: 'slideOutToBottom 0.5s ease-in',
         slideInFromTop: 'slideInFromTop 0.5s ease-out',
         slideOutToTop: 'slideOutToTop 0.5s ease-in',
+        treasureBoxTwerk: 'treasureBoxTwerk 0.1s ease-in infinite',
       },
       fontFamily: {
         "LuckiestGuy": ['var(--LuckiestGuy)'],
