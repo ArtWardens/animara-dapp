@@ -166,7 +166,7 @@ const WalletBindingPanel = () => {
               ) : (
                 <button
                   disabled={bindingWallet}
-                  className="bg-[#8f8f8f] rounded-3xl px-[2rem] py-[1rem] hover:scale-110 transition-all duration-300"
+                  className="bg-red-400 rounded-3xl px-[2rem] py-[1rem] hover:scale-110 transition-all duration-300"
                   onClick={handleDisbindWallet}
                 >
                   Unbind
@@ -328,7 +328,7 @@ const WalletBindingPanel = () => {
                 Keep my benefits
               </button>
               <button
-                className="bg-red-400 hover:bg-red-700 text-red-100 py-2 px-4 rounded-2xl hover:scale-110 transition-all duration-500"
+                className="bg-red-400 hover:bg-red-700 py-2 px-4 rounded-2xl hover:scale-110 transition-all duration-500"
                 onClick={handleConfirmDisconnect}
               >
                 Unbind
