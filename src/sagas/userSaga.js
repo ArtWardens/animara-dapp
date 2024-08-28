@@ -16,6 +16,7 @@ import {
   getUserDataImpl,
   dailyLoginImpl,
   getReferralStatsImpl,
+  registerNFTImpl,
 } from "../firebase/user";
 import { handleGetLeaderboard } from "../firebase/leaderboard";
 import {
@@ -530,6 +531,7 @@ export function* mintNFTSaga({ payload }) {
     //     }
     //   }
     // ]
+    yield call(registerNFTImpl);
     yield put(mintNFTSuccess(result[0]));
   } catch (error) {
     yield put(mintNFTError(error));
