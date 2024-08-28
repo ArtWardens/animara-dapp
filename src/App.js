@@ -1,7 +1,6 @@
 import React, { useEffect, useMemo } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import useNavigatorOnline from 'use-navigator-online';
-import ClickerPage from './pages/Clicker/ClickerPage';
 import LoginPage from './pages/Login/LoginPage';
 import SignupPage from "./pages/Signup/SignupPage";
 import EditProfilePage from "./pages/EditProfile/EditProfilePage";
@@ -11,6 +10,7 @@ import LockPage from "./pages/Lock/LockPage";
 import VerifyEmailPage from "./pages/VerifyEmail/VerifyEmailPage";
 import LimitedAccessPage from "./pages/VerifyEmail/LimitedAccessPage";
 import MintPage from "./pages/Mint/MintPage";
+import ClickerPage from "./pages/Clicker/ClickerPage";
 import AppLayout from './components/AppLayout';
 import { GlobalProvider } from './context/ContextProvider';
 import rootSaga from './sagas';
@@ -18,6 +18,7 @@ import { useAppDispatch } from './hooks/storeHooks';
 import { appInit, systemUpdateNetworkConnection } from './sagaStore/slices';
 import { runSaga } from './sagaStore/store';
 import "@solana/wallet-adapter-react-ui/styles.css";
+import './styles/globals.css';
 
 // Import Solana wallet packages
 import { WalletProvider } from '@solana/wallet-adapter-react';

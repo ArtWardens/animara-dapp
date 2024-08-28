@@ -3,13 +3,14 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import Header from "../../components/Header.jsx";
 import { FaInstagram, FaTwitter, FaTelegramPlane, FaYoutube, FaLink } from 'react-icons/fa';
-import { useUserDetails,getEarlyBirdOneTimeTaskList, useEarlyBirdOneTimeTaskList, useTaskIdToComplete, useEarlyBirdOneTimeTaskListSuccess, completeOneTimeTask } from "../../sagaStore/slices/userSlice.js";
-import { fetchDate, startCountdown } from '../../firebase/countDown';
+import { useEarlyBirdDate, useUserDetails,getEarlyBirdOneTimeTaskList, useEarlyBirdOneTimeTaskList, useTaskIdToComplete, useEarlyBirdOneTimeTaskListSuccess, completeOneTimeTask } from "../../sagaStore/slices/userSlice.js";
+import { startCountdown } from '../../firebase/countDown';
 
 const EarlyBirdPage = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const currentUser = useUserDetails();
+    const earlyBirdDate = useEarlyBirdDate();
     const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
     const [isContainerVisible, setIsContainerVisible] = useState(true);
     const earlyBirdOneTimeTaskList = useEarlyBirdOneTimeTaskList();
@@ -22,14 +23,13 @@ const EarlyBirdPage = () => {
     }, [dispatch, getEarlyBirdOneTimeTaskListSuccess]);
     useEffect(() => {
         const fetchAndStartCountdown = async () => {
-            const earlyBirdDate = await fetchDate("earlyBird");
             if (earlyBirdDate) {
                 const cleanup = startCountdown(earlyBirdDate, setTimeLeft, setIsContainerVisible);
                 return cleanup;
             }
         };
         fetchAndStartCountdown();
-    }, []);
+    }, [earlyBirdDate]);
     const getIconComponent = (actionType) => {
         switch (actionType) {
             case 'youtube':
