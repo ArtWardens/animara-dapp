@@ -87,12 +87,14 @@ const UpgradeDetailsModal = ({ upgrade, isMaxLevel, onClose }) => {
     dispatch(upgradeUserLocation(upgrade.locationId));
   };
 
+  const MAX_LEVEL = 40;
   const handleLevelUp = () => {
-    if (currentUser?.level !== userLevel) {
+    if (currentUser?.level !== userLevel && userLevel < MAX_LEVEL ) {
       setUserLevel(currentUser?.level);
       setShowLevelUpMessage(true);
       getLevelingSystemData();
-    } else {
+    } 
+    else {
       onClose();
     }
   };
@@ -111,20 +113,24 @@ const UpgradeDetailsModal = ({ upgrade, isMaxLevel, onClose }) => {
       // return error
     }
     const levelingSystemData = levelingSystemDataDoc.data();
-    setCoinReward(levelingSystemData.levelMilestone[currentUser?.level].coinReward);
 
-    // Update user exploraPointsToNextLvl and coins
-    const userRef = doc(db, "users", currentUser.uid);
-    await updateDoc(userRef, {
-      exploraPointsToNextLvl:
-        levelingSystemData.levelMilestone[currentUser?.level].xp,
-      coins:
-        currentUser.coins +
-        levelingSystemData.levelMilestone[currentUser?.level].coinReward,
-      expLeftToNextLvl:
-        levelingSystemData.levelMilestone[currentUser?.level].xp -
-        currentUser.profitPerHour,
-    });
+    // Max level check
+    if (currentUser?.level < MAX_LEVEL) {
+      setCoinReward(levelingSystemData.levelMilestone[currentUser?.level].coinReward);
+
+      // Update user exploraPointsToNextLvl and coins
+      const userRef = doc(db, "users", currentUser.uid);
+      await updateDoc(userRef, {
+        exploraPointsToNextLvl:
+          levelingSystemData.levelMilestone[currentUser?.level].xp,
+        coins:
+          currentUser.coins +
+          levelingSystemData.levelMilestone[currentUser?.level].coinReward,
+        expLeftToNextLvl:
+          levelingSystemData.levelMilestone[currentUser?.level].xp -
+          currentUser.profitPerHour,
+      });
+    }
   };
 
   return (
