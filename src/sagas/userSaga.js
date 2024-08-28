@@ -16,6 +16,7 @@ import {
   getUserDataImpl,
   dailyLoginImpl,
   getReferralStatsImpl,
+  registerNFTImpl,
 } from "../firebase/user";
 import { handleGetLeaderboard } from "../firebase/leaderboard";
 import {
@@ -101,6 +102,9 @@ import {
   mintNFT,
   mintNFTSuccess,
   mintNFTError,
+  fetchDates,
+  fetchDatesSuccess,
+  fetchDatesError,
 } from "../sagaStore/slices";
 import {
   StaminaRechargeTypeBasic,
@@ -113,6 +117,7 @@ import {
   setDashboardData,
 } from "../utils/getTimeRemaining";
 import { mintImpl, fetchMintedNFTImpl } from "../web3/mintNFT.tsx";
+import { fetchAllDatesImpl } from "../firebase/countDown.js";
 
 export function* signupWithEmailSaga({ payload }) {
   try {
@@ -528,9 +533,21 @@ export function* mintNFTSaga({ payload }) {
     //     }
     //   }
     // ]
+    yield call(registerNFTImpl);
     yield put(mintNFTSuccess(result[0]));
   } catch (error) {
     yield put(mintNFTError(error));
+  }
+}
+
+export function* fetchDatesSaga() {
+  try {
+    console.log(`fetchDatesSaga`);
+    const dates = yield call(fetchAllDatesImpl);
+    yield put(fetchDatesSuccess(dates));
+  } catch (error) {
+    toast.error("Failed to fetch dates");
+    yield put(fetchDatesError(error));
   }
 }
 
@@ -559,4 +576,5 @@ export function* userSagaWatcher() {
   yield takeLatest(bindWallet.type, bindWalletSaga);
   yield takeLatest(unbindWallet.type, unbindWalletSaga);
   yield takeLatest(mintNFT.type, mintNFTSaga);
+  yield takeLatest(fetchDates.type, fetchDatesSaga);
 }

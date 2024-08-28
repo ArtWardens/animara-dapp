@@ -4,7 +4,7 @@ import { useWalletModal } from '@solana/wallet-adapter-react-ui';
 import { useWalletMultiButton } from '@solana/wallet-adapter-base-ui';
 import { useAppDispatch } from '../hooks/storeHooks';
 import { useNavigate } from 'react-router-dom/dist';
-import { getUser } from '../sagaStore/slices';
+import { getUser, fetchDates } from '../sagaStore/slices';
 import { useUserDetails, useBindWalletLoading, useUserAuthenticated, useAuthLoading } from '../sagaStore/slices';
 import { toast } from 'react-toastify';
 
@@ -30,6 +30,7 @@ const ClickerController = ({ Children }) => {
     if (!isAuthLoading) {
       if (isAuthenticated) {
         dispatch(getUser());
+        dispatch(fetchDates());
       } else {
         navigate('/login');
       }
@@ -41,17 +42,13 @@ const ClickerController = ({ Children }) => {
     if (!currentUser) {
       return;
     }
-    console.log(`======================controller got user======================`);
-
     if (connectingWallet) {
       return;
     }
-    console.log(`not connecting wallet`);
 
     if (!connectingWallet && isModalVisible) {
       return;
     }
-    console.log(`wallet selection modal closed`);
 
     // extract wallet address
     // Note: has to use public key as a string or else its an object
@@ -72,9 +69,7 @@ const ClickerController = ({ Children }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentUser?.walletAddr, publicKey, connectingWallet, walletConnected, isModalVisible]);
 
-  useEffect(() => {
-    console.log(`publicKey ${publicKey}`);
-  }, [publicKey]);
+  useEffect(() => {}, [publicKey]);
   return (
     <div className="overflow-hidden">
       <Children />
