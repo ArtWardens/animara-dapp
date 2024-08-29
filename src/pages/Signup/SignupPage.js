@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { LoginButton } from "@telegram-auth/react";
+// import { LoginButton } from "@telegram-auth/react";
 import { useAppDispatch } from "../../hooks/storeHooks.js";
 import {
   useAuthLoading,
@@ -8,7 +8,7 @@ import {
   signupWithEmail,
   loginWithGoogle,
   loginWithTwitter,
-  loginWithTelegram,
+  // loginWithTelegram,
 } from "../../sagaStore/slices/userSlice.js";
 import { useIsIOS } from "../../sagaStore/slices/systemSlice.js";
 import { CSSTransition } from "react-transition-group";
@@ -78,9 +78,9 @@ const SignupPage = () => {
     dispatch(loginWithTwitter());
   };
 
-  const handleTelegramAuth = async (telegramUser) => {
-    dispatch(loginWithTelegram(telegramUser));
-  };
+  // const handleTelegramAuth = async (telegramUser) => {
+  //   dispatch(loginWithTelegram(telegramUser));
+  // };
 
   useEffect(() => {
     if (!isAuthLoading && isAuthenticated) {
@@ -404,10 +404,10 @@ const SignupPage = () => {
             Continue With X
           </button>
           <div className="flex items-center justify-center">
-            <LoginButton
-              botUsername="ReactTonBot"
+            {/* <LoginButton
+              botUsername={process.env.REACT_APP_TELEGRAM_BOT_NAME}
               onAuthCallback={handleTelegramAuth}
-            />
+            /> */}
           </div>
 
 
