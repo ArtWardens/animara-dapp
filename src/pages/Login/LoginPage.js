@@ -1,14 +1,13 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { LoginButton } from "@telegram-auth/react";
+// import { LoginButton } from "@telegram-auth/react";
 import { useAppDispatch } from "../../hooks/storeHooks.js";
 import {
   useAuthLoading,
   loginWithEmail,
   loginWithGoogle,
   loginWithTwitter,
-  loginWithTelegram,
   useUserAuthenticated,
 } from "../../sagaStore/slices/userSlice.js";
 import { useIsIOS } from "../../sagaStore/slices/systemSlice.js";
@@ -76,9 +75,9 @@ const LoginPage = () => {
     dispatch(loginWithTwitter());
   };
 
-  const handleTelegramAuth = async (telegramUser) => {
-    dispatch(loginWithTelegram(telegramUser));
-  };
+  // const handleTelegramAuth = async (telegramUser) => {
+  //   dispatch(loginWithTelegram(telegramUser));
+  // };
 
   // Loop icon video after random seconds
   const videoRef = useRef(null);
@@ -265,11 +264,10 @@ const LoginPage = () => {
             Login With X
           </button>
           <div className="flex items-center justify-center">
-            <LoginButton
-              disabled={isAuthLoading}
-              botUsername="ReactTonBot"
+            {/* <LoginButton
+              botUsername={process.env.REACT_APP_TELEGRAM_BOT_NAME}
               onAuthCallback={handleTelegramAuth}
-            />
+            /> */}
           </div>
 
           <div className="mt-3 flex gap-8 font-outfit text-[#C5C5C5] text-[1rem] text-center justify-center">
