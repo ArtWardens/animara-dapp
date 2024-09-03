@@ -13,7 +13,6 @@ import {
 import Header from "../../components/Header.jsx";
 import WalletBindingPanel from "../../components/SolanaWallet/WalletBindingPanel.jsx";
 import "./EditProfile.css";
-import UploadButton from "./UploadJson.js";
 
 const EditProfilePage = () => {
   const dispatch = useAppDispatch();
@@ -306,8 +305,6 @@ const EditProfilePage = () => {
                         </div>
                       </div>
                     </button>
-
-                    <UploadButton />
                   </div>
                 </div>
               </form>
