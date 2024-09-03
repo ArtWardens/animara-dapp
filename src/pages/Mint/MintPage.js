@@ -371,7 +371,7 @@ function MintPage() {
                     fontSize: "14px",
                   }}
                 >
-                  Complete the following tasks to get a 25% whitelist discount!
+                  Register an account with Animara!
                 </p>
               </div>
             </div>
