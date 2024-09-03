@@ -51,7 +51,7 @@ const ClickerUpgrades = ({ onClose }) => {
   const [selectedUpgrade, setSelectedUpgrade] = useState(null);
   const userLocationLoading = useUserLocationLoading();
 
-  const { userLocations } = useUserLocation();
+  const userLocations = useUserLocation();
   const currentUser = useUserDetails();
   const dailyComboMatched = useDailyComboMatched();
 
