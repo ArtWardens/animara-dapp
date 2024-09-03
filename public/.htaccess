@@ -1,0 +1,33 @@
+RewriteEngine On
+
+# Internally rewrite all subpaths to root while maintaining the URL
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ /index.html [L]
+
+# Caching rules
+
+# Long cache life for static assets (1 year)
+<FilesMatch "\.(js|css|png|jpg|jpeg|gif|svg|woff|woff2|ttf|eot)$">
+    Header set Cache-Control "max-age=31536000, public"
+</FilesMatch>
+
+# Moderate cache life for web manifest and favicon (1 week)
+<FilesMatch "\.(ico|json|png)$">
+    Header set Cache-Control "max-age=604800, public"
+</FilesMatch>
+
+# Short cache life for HTML files (1 hour)
+<FilesMatch "\.(html)$">
+    Header set Cache-Control "max-age=3600, must-revalidate"
+</FilesMatch>
+
+# Cache robots.txt and other text files (1 day)
+<FilesMatch "\.(txt)$">
+    Header set Cache-Control "max-age=86400, public"
+</FilesMatch>
+
+# Cache asset-manifest.json (1 day)
+<FilesMatch "asset-manifest\.json$">
+    Header set Cache-Control "max-age=86400, public"
+</FilesMatch>
