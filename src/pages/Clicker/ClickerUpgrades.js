@@ -26,9 +26,9 @@ const ClickerUpgrades = ({ onClose }) => {
       icon: "/assets/images/clicker-character/forest-icon.webp",
     },
     {
-      name: "deserts",
-      label: "Deserts",
-      icon: "/assets/images/clicker-character/deserts-icon.webp",
+      name: "desert",
+      label: "Desert",
+      icon: "/assets/images/clicker-character/desert-icon.webp",
     },
     {
       name: "cave",

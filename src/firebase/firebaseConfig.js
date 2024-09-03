@@ -48,6 +48,7 @@ const getReferralStats = httpsCallable(functions, "getReferralStats");
 const bindWallet = httpsCallable(functions, "bindWallet");
 const unbindWallet = httpsCallable(functions, "unbindWallet");
 const registerNFT = httpsCallable(functions, "registerNFT");
+const uploadJsonToFirestore = httpsCallable(functions, "uploadJsonToFirestore");
 
 export {
   auth,
@@ -69,4 +70,5 @@ export {
   bindWallet,
   unbindWallet,
   registerNFT,
+  uploadJsonToFirestore
 };
