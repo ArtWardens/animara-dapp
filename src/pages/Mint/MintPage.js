@@ -543,7 +543,7 @@ function MintPage() {
                 <img
                   src="/assets/images/clicker-character/nft-treasureBox.webp"
                   alt="NFT Treasure Box"
-                  className="object-contain w-96 -my-10 hover:animate-treasureBoxTwerk"
+                  className="object-contain w-96 h-96 -my-10 hover:animate-treasureBoxTwerk"
                 />
 
                 {/* mint price */}
@@ -569,7 +569,7 @@ function MintPage() {
                     onMouseEnter={() => isAllowed ? setGhostExcited(true) : setGhostExcited(false)}
                     onMouseLeave={() => !mintingNFT ? setGhostExcited(false) : setGhostExcited(true)}>
                   {loadingCandyMachine ? 
-                    <span className='m-auto text-red-300 text-xl lg:text-3xl'>
+                    <span className='h-20 m-auto text-red-300 text-xl lg:text-3xl'>
                       {`Minting not available yet`}    
                     </span>
                     : 
@@ -740,7 +740,7 @@ function MintPage() {
               <img
                 src="/assets/images/clicker-character/nft-treasureBox.webp"
                 alt="NFT Treasure Box"
-                className="object-contain w-96 -my-10 hover:animate-treasureBoxTwerk"
+                className="object-contain w-96 h-96 -my-10 hover:animate-treasureBoxTwerk"
               />
 
               {/* mint price */}
@@ -767,7 +767,7 @@ function MintPage() {
                     onMouseLeave={() => !mintingNFT ? setGhostExcited(false) : setGhostExcited(true)}
               >
                 {loadingCandyMachine ? 
-                  <span className='m-auto text-red-300 text-xl lg:text-3xl'>
+                  <span className='h-20 m-auto text-red-300 text-xl lg:text-3xl'>
                     {`Minting not available yet`}  
                   </span>
                   : 
