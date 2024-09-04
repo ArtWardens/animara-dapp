@@ -4,9 +4,9 @@ import {
   addToLocalStorage,
 } from "../../utils/localStorage";
 import {
-    StaminaRechargeTypeBasic,
-    StaminaRechargeTypeInvite,
-  } from "../../utils/constants"
+  StaminaRechargeTypeBasic,
+  StaminaRechargeTypeInvite,
+} from "../../utils/constants"
 
 const userInitialState = {
   authLoading: false,
@@ -41,7 +41,7 @@ const userInitialState = {
   userLocations: [],
   upgradeUserLocationErrorCode: '',
   newlyUnlockedLocations: [],
-  dailyComboMatched: [],
+  dailyComboMatched: ["", "", ""],
   referralStatLoading: false,
   referralCount: 0,
   nftPurchasedReferralCount: 0,
@@ -49,7 +49,10 @@ const userInitialState = {
   nftClaimable: 0,
   bindWalletLoading: false,
   mintingNFT: false,
-  nftMinted: null
+  nftMinted: null,
+  mintDate: null,
+  lockDate: null,
+  earlyBirdDate: null,
 };
 
 export const userSlice = createSlice({
@@ -343,6 +346,7 @@ export const userSlice = createSlice({
     },
     getUserLocationsSuccess: (state, { payload }) => {
       state.userLocations = payload;
+      state.dailyComboMatched = payload.dailyComboMatched;
       state.userLocationsLoading = false;
     },
     getUserLocationsError: (state, { payload }) => {
@@ -388,7 +392,7 @@ export const userSlice = createSlice({
         });
       }
 
-      state.dailyComboMatched = payload.completedDailyCombos || [];
+      state.dailyComboMatched = payload.completedDailyCombos;
 
       // Update user details
       const currentUser = current(state.user);
@@ -460,6 +464,15 @@ export const userSlice = createSlice({
     resetMintedNFT: (state, { payload }) => {
       state.nftMinted = null;
       state.mintingNFT = false;
+    },
+    fetchDates: (state, { payload }) => {
+    },
+    fetchDatesSuccess: (state, { payload }) => {
+      state.mintDate = payload.mint;
+      state.lockDate = payload.lock;
+      state.earlyBirdDate = payload.earlyBird;
+    },
+    fetchDatesError: (state, { payload }) => {
     },
   },
 });
@@ -541,6 +554,9 @@ export const {
   mintNFTSuccess,
   mintNFTError,
   resetMintedNFT,
+  fetchDates,
+  fetchDatesSuccess,
+  fetchDatesError,
 } = userSlice.actions;
 
 export const useAuthLoading = () => useAppSelector((state) => state.user.authLoading);
@@ -588,6 +604,9 @@ export const useNftClaimable = () => useAppSelector((state) => state.user.nftCla
 export const useBindWalletLoading = () => useAppSelector((state) => state.user.bindWalletLoading);
 export const useMintingNFT = () => useAppSelector((state) => state.user.mintingNFT);
 export const useNFTMinted = () => useAppSelector((state) => state.user.nftMinted);
+export const useMintDate = () => useAppSelector((state) => state.user.mintDate);
+export const useLockDate = () => useAppSelector((state) => state.user.lockDate);
+export const useEarlyBirdDate = () => useAppSelector((state) => state.user.earlyBirdDate);
 
 const userReducer = userSlice.reducer;
 

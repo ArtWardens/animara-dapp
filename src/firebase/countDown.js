@@ -1,22 +1,27 @@
 import { db } from "../firebase/firebaseConfig";
-import { doc, getDoc } from "firebase/firestore";
+import { collection, getDocs } from "firebase/firestore";
 import moment from 'moment';
 import { toast } from "react-toastify";
 
-export const fetchDate = async (documentName) => {
+export const fetchAllDatesImpl = async () => {
     try {
-        const docRef = doc(db, "dateConfig", documentName);
-        const docSnap = await getDoc(docRef);
-        if (docSnap.exists()) {
-            return docSnap.data().dateTime.toDate();
-        } else {
-            toast.error(`No date found for ${documentName}`);
-            return null;
-        }
+        const collectionRef = collection(db, "dateConfig");
+        const querySnapshot = await getDocs(collectionRef);
+        const datesMap = {};
+
+        querySnapshot.forEach((doc) => {
+            if (doc.exists()) {
+                const date = doc.data().dateTime.toDate();
+                datesMap[doc.id] = date;
+            } else {
+                toast.error(`No date found for document with ID ${doc.id}`);
+            }
+        });
+
+        return datesMap;
     } catch (error) {
-        console.error(`Error fetching date for ${documentName}:`, error);
-        toast.error(`Failed to fetch date for ${documentName}`);
-        return null;
+        console.error("Error fetching dates:", error);
+        throw error;
     }
 };
 

@@ -11,8 +11,8 @@ import Header from "../../components/Header.jsx";
 import WalletInfo from "../../components/SolanaWallet/WalletInfo.jsx";
 import WalletBindingPanel from "../../components/SolanaWallet/WalletBindingPanel.jsx";
 import { useAppDispatch } from "../../hooks/storeHooks.js";
-import { mintNFT, useMintingNFT, useNFTMinted, resetMintedNFT, useBindWalletLoading, useUserDetails } from "../../sagaStore/slices/userSlice.js";
-import { fetchDate, startCountdown } from "../../firebase/countDown";
+import { mintNFT, useMintingNFT, useNFTMinted, resetMintedNFT, useBindWalletLoading, useUserDetails, useMintDate } from "../../sagaStore/slices/userSlice.js";
+import { startCountdown } from "../../firebase/countDown";
 
 const useCandyMachine = (
   umi,
@@ -44,7 +44,7 @@ const useCandyMachine = (
           }
         } catch (e) {
           console.error(e);
-          toast("The CM from .env is invalid");
+          toast("Minting not available");
         }
         setCandyMachine(candyMachine);
         if (!candyMachine) {
@@ -75,6 +75,7 @@ const useCandyMachine = (
 function MintPage() {
   const dispatch = useAppDispatch();
   const currentUser = useUserDetails();
+  const mintDate = useMintDate();
   const bindingWallet = useBindWalletLoading();
   const mintingNFT = useMintingNFT();
   const nftMinted = useNFTMinted();
@@ -89,11 +90,11 @@ function MintPage() {
   ]);
   const [ownedTokens, setOwnedTokens] = useState();
   const candyMachineId = useMemo(() => {
-    if (process.env.REACT_APP__CANDY_MACHINE_ID) {
-      return publicKey(process.env.REACT_APP__CANDY_MACHINE_ID);
+    if (process.env.REACT_APP_CANDY_MACHINE_ID) {
+      return publicKey(process.env.REACT_APP_CANDY_MACHINE_ID);
     } else {
-      console.error(`failed to get candy machien id cuz No REACT_APP__CANDY_MACHINE_ID in .env!`);
-      toast('failed to get candy machien id cuz No REACT_APP__CANDY_MACHINE_ID in .env!');
+      console.error(`failed to get candy machien id cuz No REACT_APP_CANDY_MACHINE_ID in .env!`);
+      toast('failed to get candy machien id cuz No REACT_APP_CANDY_MACHINE_ID in .env!');
       return publicKey("11111111111111111111111111111111");
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -118,6 +119,7 @@ function MintPage() {
     seconds: 0,
   });
   const [isShowNftOpen, setIsShowNftOpen] = useState(false);
+  const [insufficentBalance, setInsufficentBalance] = useState(false);
   const [isVideoEnded, setIsVideoEnded] = useState(false);
   const [mintVideoAnim, setMintVideoAnim] = useState(false);
   const [mintFadeOut, setMintFadeOut] = useState(false);
@@ -129,20 +131,6 @@ function MintPage() {
 
   // intro animation & fetch countdown
   useEffect(() => {
-    // start minting deadline
-    const fetchAndStartCountdown = async () => {
-      const referralDate = await fetchDate("mint");
-      if (referralDate) {
-        const cleanup = startCountdown(
-          referralDate,
-          setTimeLeft,
-          setIsContainerVisible
-        );
-        return cleanup;
-      }
-    };
-    fetchAndStartCountdown();
-
     // intro animations
     const timerTitle = setTimeout(() => {
       setShowTitle(true);
@@ -183,6 +171,21 @@ function MintPage() {
     };
   }, []);
 
+  useEffect(()=>{
+    // start minting deadline
+    const fetchAndStartCountdown = async () => {
+      if (mintDate) {
+        const cleanup = startCountdown(
+          mintDate,
+          setTimeLeft,
+          setIsContainerVisible
+        );
+        return cleanup;
+      }
+    };
+    fetchAndStartCountdown();
+  },[mintDate]);
+
   // minting setup
   useEffect(() => {
     const checkEligibilityFunc = async () => {
@@ -200,7 +203,11 @@ function MintPage() {
       setIsAllowed(false);
 
       let allowed = false;
+      setInsufficentBalance(false);
       for (const guard of guardReturn) {
+        if (guard.reason === "Not enough SOL!"){
+          setInsufficentBalance(true);
+        }
         if (guard.allowed) {
           allowed = true;
           break;
@@ -364,7 +371,7 @@ function MintPage() {
                     fontSize: "14px",
                   }}
                 >
-                  Complete the following tasks to get a 25% whitelist discount!
+                  Register an account with Animara!
                 </p>
               </div>
             </div>
@@ -562,31 +569,33 @@ function MintPage() {
                     onMouseEnter={() => isAllowed ? setGhostExcited(true) : setGhostExcited(false)}
                     onMouseLeave={() => !mintingNFT ? setGhostExcited(false) : setGhostExcited(true)}>
                   {loadingCandyMachine ? 
-                  <></>
-                  : 
-                  <button
-                    className={`h-[80px] w-[250px] rounded-full border justify-center items-center inline-flex shadow-[0px_4px_4px_0px_#FFFBEF_inset,0px_-4px_4px_0px_rgba(255,249,228,0.48),0px_5px_4px_0px_rgba(232,140,72,0.48)] 
-                      ${isAllowed || !walletAddr ?
-                        `bg-[#FFDC62] border-[#E59E69] cursor-pointer`
-                        :
-                        `bg-slate-400 border-slate-400`}`}
-                    disabled={(!isAllowed || mintingNFT) && walletAddr}
-                    onClick={handleMintOrConnect}>
-                      {mintingNFT? 
-                        <MoonLoader color={"#E59E69"} size={40} />
-                        :
-                        <div
-                          className="text-center text-white text-2xl font-normal"
-                          style={{
-                            textShadow: "0px 2px 0.6px rgba(240, 139, 0, 0.66)",
-                          }}
-                        >
-                          <span className="">{!walletAddr ? `Connect Wallet` : isAllowed ? `Mint Now` : `Mint Disabled`}</span>
-                        </div>
-                      }
-                  </button>    
-                }
-              </div>
+                    <span className='m-auto text-red-300 text-xl lg:text-3xl'>
+                      {`Minting not available yet`}    
+                    </span>
+                    : 
+                    <button
+                      className={`h-[80px] w-[250px] rounded-full border justify-center items-center inline-flex shadow-[0px_4px_4px_0px_#FFFBEF_inset,0px_-4px_4px_0px_rgba(255,249,228,0.48),0px_5px_4px_0px_rgba(232,140,72,0.48)] 
+                        ${isAllowed || !walletAddr ?
+                          `bg-[#FFDC62] border-[#E59E69] cursor-pointer`
+                          :
+                          `bg-slate-400 border-slate-400`}`}
+                      disabled={(!isAllowed || mintingNFT) && walletAddr}
+                      onClick={handleMintOrConnect}>
+                        {mintingNFT? 
+                          <MoonLoader color={"#E59E69"} size={40} />
+                          :
+                          <div
+                            className="text-center text-white text-2xl font-normal"
+                            style={{
+                              textShadow: "0px 2px 0.6px rgba(240, 139, 0, 0.66)",
+                            }}
+                          >
+                            <span className="">{!walletAddr ? `Connect Wallet` : isAllowed ? `Mint Now` : insufficentBalance ? `Insufficient Funds` : `Mint Disabled`}</span>
+                          </div>
+                        }
+                    </button>    
+                  }
+                </div>
                 
                 <WalletInfo label="Using Wallet"/>
               </div>
@@ -757,8 +766,10 @@ function MintPage() {
                     onMouseEnter={() => isAllowed ? setGhostExcited(true) : setGhostExcited(false)}
                     onMouseLeave={() => !mintingNFT ? setGhostExcited(false) : setGhostExcited(true)}
               >
-                  {loadingCandyMachine ? 
-                  <></>
+                {loadingCandyMachine ? 
+                  <span className='m-auto text-red-300 text-xl lg:text-3xl'>
+                    {`Minting not available yet`}  
+                  </span>
                   : 
                   <button
                     className={`h-[80px] w-[250px] rounded-full border justify-center items-center inline-flex shadow-[0px_4px_4px_0px_#FFFBEF_inset,0px_-4px_4px_0px_rgba(255,249,228,0.48),0px_5px_4px_0px_rgba(232,140,72,0.48)] 
@@ -777,7 +788,7 @@ function MintPage() {
                             textShadow: "0px 2px 0.6px rgba(240, 139, 0, 0.66)",
                           }}
                         >
-                          <span className="">{!walletAddr ? `Connect Wallet` : isAllowed ? `Mint Now` : `Mint Disabled`}</span>
+                          <span className="">{!walletAddr ? `Connect Wallet` : isAllowed ? `Mint Now` : insufficentBalance ? `Insufficient Funds` : `Mint Disabled`}</span>
                         </div>
                       }
                   </button>  
