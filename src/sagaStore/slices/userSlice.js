@@ -345,7 +345,6 @@ export const userSlice = createSlice({
       state.userLocationsLoading = true;
     },
     getUserLocationsSuccess: (state, { payload }) => {
-      console.log(payload);
       state.userLocations = payload.userLocations;
       state.dailyComboMatched = payload.dailyComboMatched;
       state.userLocationsLoading = false;
