@@ -92,8 +92,14 @@ const ClickerUpgrades = ({ onClose }) => {
     <div className={`fixed inset-0 flex bg-dark bg-opacity-75 justify-center items-center z-50 transition-all duration-300
       ${slideUpgrades? `opacity-100` : `opacity-0`}`}>
       <div
-        className={`relative w-full xl:w-5/6 h-4/5 rounded-3xl p-3 mt-[10rem] z-[100] transition-all duration-300 
+        className={`relative w-full xl:w-5/6 h-4/5 rounded-3xl p-3 mt-[10rem] mb-10 z-[100] transition-all duration-300 
           ${slideUpgrades? `translate-y-0` : `translate-y-60`}`}
+        style={{
+          border: '2px solid var(--Color, #F4FBFF)',
+          background: 'rgba(155, 231, 255, 0.58)',
+          boxShadow: '0px 8px 30px 0px rgba(4, 161, 183, 0.40) inset, 0px 8px 30px 0px rgba(32, 0, 99, 0.40)',
+          backdropFilter: 'blur(15px)',
+        }}
       >
         {/* upgrade panel decoration */}
         <div className="absolute flex w-full justify-between -top-9">
