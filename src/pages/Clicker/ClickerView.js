@@ -115,11 +115,9 @@ const ClickerView = () => {
 
         {/* Upgrade panel */}
         {openModal === 'upgrades' && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-            <ClickerUpgrades
-              onClose={() => setOpenModal('')} // Close modal when done
-            />
-          </div>
+          <ClickerUpgrades
+            onClose={() => setOpenModal('')} // Close modal when done
+          />
         )}
       </div>
     </>
