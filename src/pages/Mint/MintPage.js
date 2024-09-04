@@ -630,7 +630,7 @@ function MintPage() {
                 </div>
                 {/* mainnet desc */}
                 <p className="text-white text-xs">
-                  You must be on the Poleygon Mainnet to mint.
+                  You must be on the Solana MainNet to mint.
                 </p>
               </div>
             </div>
