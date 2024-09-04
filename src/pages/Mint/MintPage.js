@@ -669,7 +669,7 @@ function MintPage() {
 
             {/* mint panel content */}
             <div
-              className="rounded-2xl place-content-center p-6 grid min-h-[60vh] lg:min-h-[80dvh] 2xl:min-h-[50dvh]"
+              className="rounded-2xl bg-opacity-75 place-content-center p-6 grid min-h-[60vh] lg:min-h-[80dvh] 2xl:min-h-[50dvh]"
               style={{
                 backgroundImage:
                   'url("/assets/images/clicker-character/mintBBG.webp")',
