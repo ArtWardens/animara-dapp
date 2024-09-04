@@ -35,7 +35,7 @@ const LevelUpModal = ({ onClose, coinReward }) => {
           >
             LEVEL UP!
           </p>
-          {currentUser?.level < 40 ? (
+          {currentUser?.level < currentUser?.maxLevel ? (
             <>
               <div className="mt-[2rem]">
                 <p className="text-[2rem] text-white font-bold tracking-wider mb-[1rem]">
