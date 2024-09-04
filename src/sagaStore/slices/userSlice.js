@@ -41,7 +41,7 @@ const userInitialState = {
   userLocations: [],
   upgradeUserLocationErrorCode: '',
   newlyUnlockedLocations: [],
-  dailyComboMatched: [],
+  dailyComboMatched: ["", "", ""],
   referralStatLoading: false,
   referralCount: 0,
   nftPurchasedReferralCount: 0,
@@ -350,6 +350,7 @@ export const userSlice = createSlice({
     },
     getUserLocationsSuccess: (state, { payload }) => {
       state.userLocations = payload;
+      state.dailyComboMatched = payload.dailyComboMatched;
       state.userLocationsLoading = false;
     },
     getUserLocationsError: (state, { payload }) => {
@@ -395,7 +396,7 @@ export const userSlice = createSlice({
         });
       }
 
-      state.dailyComboMatched = payload.completedDailyCombos || [];
+      state.dailyComboMatched = payload.completedDailyCombos;
 
       // Update user details
       const currentUser = current(state.user);
