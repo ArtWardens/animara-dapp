@@ -319,7 +319,7 @@ const MascotView = ({ openModal, setOpenModal }) => {
           />
         </div>
         <div
-          className="flex w-full h-full rounded-2xl"
+          className="flex w-full h-full rounded-2xl bg-[#0B2852]"
           style={{
             backgroundImage: 'url("/assets/images/clicker-character/mascotBg.webp")',
             backgroundSize: 'cover',
