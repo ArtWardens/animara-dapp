@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { MoonLoader } from 'react-spinners';
 import ProgressBar from './FancyProgressBar/ProgressBar.tsx';
-import { useLocalStamina, useRechargeLoading, useUserDetails } from '../sagaStore/slices';
+import { useLocalStamina, useRechargeLoading, useUserDetails, useUserDetailsLoading } from '../sagaStore/slices';
 
 function EnergyRegeneration() {
   const currentUser = useUserDetails();
   const localStamina = useLocalStamina();
   const rechargingStamina = useRechargeLoading();
+  const userDetailsLoading = useUserDetailsLoading();
   const [profitPerHour, setProfitPerHour] = useState('');
   const [progressBarWidth, setProgressBarWidth] = useState(0);
 
@@ -67,10 +68,18 @@ function EnergyRegeneration() {
             }}
           >
             <img src="/assets/icons/explora-point.webp" alt="profit icon" className="w-16 h-16 my-auto mr-2" />
-            <div className="flex flex-col mr-[5rem] my-auto">
-              <div className="text-[#00E0FF] text-2xl font-LuckiestGuy font-normal tracking-wider">{profitPerHour}</div>
-              <div className="text-white text-sm font-outfit">Explora Points</div>
-            </div>
+            {userDetailsLoading ? (
+              <div className="h-18 w-16 flex justify-center items-center">
+                <MoonLoader size={25} color={'#80E8FF'} />
+              </div>
+            ) : (
+              <div className="flex flex-col mr-[5rem] my-auto">
+                <div className="text-[#00E0FF] text-2xl font-LuckiestGuy font-normal tracking-wider">
+                  {profitPerHour}
+                </div>
+                <div className="text-white text-sm font-outfit">Explora Points</div>
+              </div>
+            )}
           </div>
         </div>
 
@@ -80,7 +89,7 @@ function EnergyRegeneration() {
             showProgressBar ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0'
           }`}
         >
-          {rechargingStamina ? (
+          {rechargingStamina || userDetailsLoading ? (
             <div className="h-18 flex justify-center items-center">
               <MoonLoader size={25} color={'#80E8FF'} />
             </div>

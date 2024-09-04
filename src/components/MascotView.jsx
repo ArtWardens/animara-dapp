@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react';
 import { PropTypes } from 'prop-types';
 import useSound from 'use-sound';
+import { PropagateLoader } from 'react-spinners';
 import { useAppDispatch } from '../hooks/storeHooks.js';
 import {
   useUserDetails,
@@ -10,6 +11,8 @@ import {
   consumeStamina,
   settleTapSession,
   useRechargeLoading,
+  useUserDetailsLoading,
+  useDailyLoginLoading,
 } from '../sagaStore/slices';
 import { getAllImagePaths } from '../utils/getImagePath';
 import { mascots } from '../utils/constants';
@@ -21,6 +24,8 @@ const MascotView = ({ openModal, setOpenModal }) => {
   const localStamina = useLocalStamina();
   const rechargingStamina = useRechargeLoading();
   const settlingTapSession = useSettleTapSessionLoading();
+  const userDetailsLoading = useUserDetailsLoading();
+  const dailyLoginLoading = useDailyLoginLoading();
   const [isIinitialized, setIsIinitialized] = useState(false);
   const [imgIndex, setImgIndex] = useState(0);
   const [mascotImages, setMascotImages] = useState([]);
@@ -30,6 +35,7 @@ const MascotView = ({ openModal, setOpenModal }) => {
   const [isOpenRewardModal, setIsOpenRewardModal] = useState(false);
   const [rewardModalFading, setRewardModalFading] = useState(false);
   const [startSlide, setStartSlide] = useState(false);
+  const [showMascot, setShowMascot] = useState(false);
   const [isInteractive, setIsInteractive] = useState(false);
   const idleTimerRef = useRef(null);
   const periodicSettlerTimerRef = useRef(null);
@@ -40,13 +46,21 @@ const MascotView = ({ openModal, setOpenModal }) => {
 
   // intro anim
   useEffect(() => {
-    setStartSlide(true);
+    const slideTimer = setTimeout(() => {
+      setStartSlide(true);
+    }, 50);
+
+    const masctoTimer = setTimeout(() => {
+      setShowMascot(true);
+    }, 250);
 
     const interactivityTimer = setTimeout(() => {
       setIsInteractive(true);
-    }, 1500); // Adjust this delay to match the duration of your transitions
+    }, 1000); // Adjust this delay to match the duration of your transitions
 
     return () => {
+      clearTimeout(slideTimer);
+      clearTimeout(masctoTimer);
       clearTimeout(interactivityTimer);
     };
   }, []);
@@ -266,12 +280,15 @@ const MascotView = ({ openModal, setOpenModal }) => {
   };
 
   return (
-    <div className="flex justify-center items-end h-screen w-screen xl:pb-16">
+    <div
+      className={`flex justify-center items-end h-screen w-screen xl:pb-16 transition-all duration-700
+      ${startSlide ? 'translate-y-0' : 'translate-y-full'}`}
+    >
       <div
         onMouseDown={handleTap}
         onMouseUp={handleTapUp}
         onMouseLeave={handleTapUp}
-        className={`cursor-pointer w-full xl:w-5/6 h-4/5 rounded-3xl p-3 `}
+        className={`cursor-pointer w-full xl:w-5/6 h-4/5 rounded-3xl p-3`}
         style={{
           border: '2px solid var(--Color, #F4FBFF)',
           background: 'rgba(155, 231, 255, 0.58)',
@@ -310,41 +327,47 @@ const MascotView = ({ openModal, setOpenModal }) => {
             backgroundRepeat: 'no-repeat',
           }}
         >
-          <div className="flex justify-center items-center h-full w-full">
-            {plusOneEffect.show && (
-              <img
-                src={'/assets/images/clicker-character/plusOne.webp'}
-                alt="+1"
-                className="absolute w-40 h-40 animate-fadeInOut z-10"
-                style={{ left: `${plusOneEffect.left}%`, top: `${plusOneEffect.top}%` }}
-              />
-            )}
-            {imgIndex === 0 ? (
-              <img
-                src={mascotImages[0]}
-                alt="Game mascot"
-                className={`absolute w-full xl:w-3/4 bottom-[12rem] xl:bottom-20 transition-transform duration-1000 overflow-visible ${
-                  startSlide ? 'translate-y-0' : 'translate-y-full'
-                }`}
-              />
-            ) : imgIndex === 1 ? (
-              <img
-                src={mascotImages[1]}
-                alt="Game mascot"
-                className={`absolute w-full xl:w-3/4 bottom-[12rem] xl:bottom-20 transition-transform duration-1000 ${
-                  startSlide ? 'translate-y-0' : 'translate-y-full'
-                }`}
-              />
-            ) : (
-              <img
-                src={mascotImages[2]}
-                alt="Game mascot"
-                className={`absolute w-full xl:w-3/4 bottom-[12rem] xl:bottom-20 transition-transform duration-1000 ${
-                  startSlide ? 'translate-y-0' : 'translate-y-full'
-                }`}
-              />
-            )}
-          </div>
+          {userDetailsLoading || dailyLoginLoading ? (
+            <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center z-50">
+              <PropagateLoader color={'#FFB23F'} />
+            </div>
+          ) : (
+            <div className="flex justify-center items-center h-full w-full">
+              {plusOneEffect.show && (
+                <img
+                  src={'/assets/images/clicker-character/plusOne.webp'}
+                  alt="+1"
+                  className="absolute w-40 h-40 animate-fadeInOut z-10"
+                  style={{ left: `${plusOneEffect.left}%`, top: `${plusOneEffect.top}%` }}
+                />
+              )}
+              {imgIndex === 0 ? (
+                <img
+                  src={mascotImages[0]}
+                  alt="Game mascot"
+                  className={`absolute w-full xl:w-3/4 bottom-[12rem] xl:bottom-20 transition-all duration-1000 overflow-visible ${
+                    showMascot ? 'opacity-100' : 'opacity-0'
+                  }`}
+                />
+              ) : imgIndex === 1 ? (
+                <img
+                  src={mascotImages[1]}
+                  alt="Game mascot"
+                  className={`absolute w-full xl:w-3/4 bottom-[12rem] xl:bottom-20 transition-all duration-1000 ${
+                    showMascot ? 'opacity-100' : 'opacity-0'
+                  }`}
+                />
+              ) : (
+                <img
+                  src={mascotImages[2]}
+                  alt="Game mascot"
+                  className={`absolute w-full xl:w-3/4 bottom-[12rem] xl:bottom-20 transition-all duration-1000 ${
+                    showMascot ? 'opacity-100' : 'opacity-0'
+                  }`}
+                />
+              )}
+            </div>
+          )}
         </div>
       </div>
 

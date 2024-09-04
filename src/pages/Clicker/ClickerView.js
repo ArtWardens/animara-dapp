@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Box } from '@mui/material';
 import Modal from '@mui/material/Modal';
-import { PropagateLoader } from "react-spinners";
 import { useAppDispatch } from '../../hooks/storeHooks';
-import { useUserDetails, useUserDetailsLoading, closeDailyPopup, updateDailyLogin, useDailyLoginLoading, useIsOpenDailyPopup } from '../../sagaStore/slices';
+import { useUserDetails, closeDailyPopup, updateDailyLogin, useIsOpenDailyPopup } from '../../sagaStore/slices';
 import Header from "../../components/Header.jsx";
 import MascotView from '../../components/MascotView';
 import EarnGuide from '../../components/EarnGuide';
@@ -14,8 +13,6 @@ import { dailyLoginRewards } from '../../utils/constants';
 const ClickerView = () => {
   const dispatch = useAppDispatch();
   const currentUser = useUserDetails();
-  const userDetailsLoading = useUserDetailsLoading();
-  const updateLoading = useDailyLoginLoading();
   const isOpenDailyPopup = useIsOpenDailyPopup();
   const [isLeaderboardOpen, setIsLeaderboardOpen] = useState(false);
   const [isOneTimeTaskOpen, setIsOneTimeTaskOpen] = useState(false);
@@ -32,18 +29,6 @@ const ClickerView = () => {
   const handleClose = () => {
     dispatch(closeDailyPopup());
   };
-
-  if (userDetailsLoading || updateLoading) {
-    return (
-      <>
-        <Header />
-
-        <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-75 flex items-center justify-center z-50">
-          <PropagateLoader color={"#FFB23F"} />
-        </div>
-      </>
-    );
-  }
 
   return (
     <>
