@@ -15,7 +15,7 @@ import AppLayout from './components/AppLayout';
 import { GlobalProvider } from './context/ContextProvider';
 import rootSaga from './sagas';
 import { useAppDispatch } from './hooks/storeHooks';
-import { appInit, systemUpdateNetworkConnection } from './sagaStore/slices';
+import { appInit, systemUpdateNetworkConnection, setIsMobile } from './sagaStore/slices';
 import { runSaga } from './sagaStore/store';
 import "@solana/wallet-adapter-react-ui/styles.css";
 import './styles/globals.css';
@@ -65,6 +65,19 @@ export const App = () => {
       });
     }
   }, [backOnline, backOffline, dispatch, isOnline, isOffline]);
+
+  // setup to track if this page is mobile
+  useEffect(() => {
+    const handleResize = () => {
+      dispatch(setIsMobile(window.innerWidth < 768));
+    };
+
+    handleResize();
+
+    window.addEventListener('resize', handleResize);
+
+    return () => window.removeEventListener('resize', handleResize);
+  }, [dispatch, setIsMobile]);
 
   return (
     <NoInternetConnection>

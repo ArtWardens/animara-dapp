@@ -16,6 +16,7 @@ const initialState = {
   },
   error: null,
   loading: false,
+  isMobile: false
 };
 
 export const systemSlice = createSlice({
@@ -35,10 +36,13 @@ export const systemSlice = createSlice({
     setTimezone: (state, { payload }) => {
       state.timeZone = payload;
     },
+    setIsMobile: (state, { payload }) => {
+      state.isMobile = payload;
+    }
   },
 });
 
-export const { systemUpdateNetworkConnection, systemUpdatePageFocus, systemAddError, setTimezone, systemDispatch } =
+export const { systemUpdateNetworkConnection, systemUpdatePageFocus, systemAddError, setTimezone, systemDispatch, setIsMobile } =
   systemSlice.actions;
 
 export const useSystemNetworkConnection = () => useAppSelector((state) => state.system);
@@ -46,6 +50,7 @@ export const useSystemPageActivityStatus = () => useAppSelector((state) => state
 export const useSystemIsOnline = () => useAppSelector((state) => state.system.networkConnection.isOnline);
 export const useTimezone = () => useAppSelector((state) => state.system.timeZone);
 export const useSystemError = () => useAppSelector((state) => state.system.error);
+export const useIsMobile = () => useAppSelector((state) => state.system.isMobile);
 
 const systemReducer = systemSlice.reducer;
 export default systemReducer;

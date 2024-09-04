@@ -11,12 +11,14 @@ import {
   useUserDetails,
   loginWithTelegram,
 } from "../../sagaStore/slices/userSlice.js";
-import {  CSSTransition } from "react-transition-group";
+import { useIsMobile } from "../../sagaStore/slices/systemSlice.js";
+import { CSSTransition } from "react-transition-group";
 
 const LoginPage = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const location = useLocation();
+  const isMobile = useIsMobile();
   const { t: tLogin } = useTranslation("login");
   const isAuthLoading = useAuthLoading();
   const currentUser = useUserDetails();
@@ -143,12 +145,19 @@ const LoginPage = () => {
           {/* Upper Section */}
           <div className="relative self-center gap-[1.25rem]">
             <div className="flex justify-center items-center">
-              <video 
-                ref={videoRef}
-                className="h-[5rem] w-[5rem]"
-                autoPlay>
-                  <source src="../assets/icons/AnimaraLogoAnimated.webm" type="video/webm" />
-              </video>
+              {isMobile?
+                <img 
+                  src="/assets/icons/AnimaraLogo.webp" alt="logo"
+                  className="h-[5rem] w-[5rem]"
+                />
+                :
+                <video 
+                  ref={videoRef}
+                  className="h-[5rem] w-[5rem]"
+                  autoPlay>
+                    <source src="../assets/icons/AnimaraLogoAnimated.webm" type="video/webm" />
+                </video>
+              }
             </div>
             <p className="mt-6 text-center text-[2.5rem] leading-[2.75rem] text-[#FFC85A]">Welcome back to ANIMARA</p>
             <p className="text-center text-[#C5C5C5] font-outfit">Please enter your details to login</p>
@@ -233,6 +242,7 @@ const LoginPage = () => {
           {/* Social Login Buttons Section */}
           <button 
             type="button" 
+            disabled={isAuthLoading}
             className="w-full max-h-[4rem] font-outfit text-[1rem] leading-[1rem] text-[#C5C5C5] rounded-[0.625rem] py-[0.875rem] px-[1rem] gap-[1.25rem] bg-[#0A4169] hover:brightness-75 text-center inline-flex items-center justify-center"
             onClick={handleLoginWithGoogle} 
           >
@@ -243,7 +253,8 @@ const LoginPage = () => {
             Login With Google
           </button>
           <button 
-            type="button" 
+            type="button"
+            disabled={isAuthLoading}
             className="mt-1 max-h-[4rem] w-full font-outfit text-[1rem] leading-[1rem] text-[#C5C5C5] rounded-[0.625rem] py-[0.875rem] px-[1rem] gap-[1.25rem] bg-[#0A4169] hover:brightness-75 text-center inline-flex items-center justify-center"
             onClick={handleLoginWithTwitter} 
           >
@@ -255,6 +266,7 @@ const LoginPage = () => {
           </button>
           <div className="flex items-center justify-center">
             <LoginButton
+              disabled={isAuthLoading}
               botUsername="ReactTonBot"
               onAuthCallback={handleTelegramAuth}
             />
