@@ -1,18 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { PropTypes } from 'prop-types';
+import { MoonLoader } from 'react-spinners';
 import ProgressBar from './FancyProgressBar/ProgressBar.tsx';
-import { useLocalStamina, useUserDetails } from '../sagaStore/slices';
-import { getTimeRemaining } from '../utils/getTimeRemaining';
-import LeaderBoardModal from './LeaderBoardModal';
-import TaskList from './TaskList';
+import { useLocalStamina, useRechargeLoading, useUserDetails } from '../sagaStore/slices';
 
-function EnergyRegeneration({ isLeaderboardOpen, setIsLeaderboardOpen, isOneTimeTaskOpen, setIsOneTimeTaskOpen }) {
+function EnergyRegeneration() {
   const currentUser = useUserDetails();
   const localStamina = useLocalStamina();
+  const rechargingStamina = useRechargeLoading();
   const [profitPerHour, setProfitPerHour] = useState('');
   const [progressBarWidth, setProgressBarWidth] = useState(0);
-  const [timeRemaining, setTimeRemaining] = useState(getTimeRemaining());
-  const [countDownRemaining] = useState(0);
 
   const [showFirstDiv, setShowFirstDiv] = useState(false);
   const [showProgressBar, setShowProgressBar] = useState(false);
@@ -34,14 +30,6 @@ function EnergyRegeneration({ isLeaderboardOpen, setIsLeaderboardOpen, isOneTime
   }, []);
 
   useEffect(() => {
-    const intervalId = setInterval(() => {
-      setTimeRemaining(getTimeRemaining());
-    }, 1000);
-
-    return () => clearInterval(intervalId);
-  }, []);
-
-  useEffect(() => {
     // update profit per hour
     setProfitPerHour(
       !currentUser?.profitPerHour || currentUser?.profitPerHour === 0 ? '-' : `+${currentUser?.profitPerHour}`,
@@ -60,6 +48,7 @@ function EnergyRegeneration({ isLeaderboardOpen, setIsLeaderboardOpen, isOneTime
           zIndex: 20,
         }}
       >
+        {/* explora point display */}
         <div
           className={`items-center justify-center transition-opacity duration-700 ${
             showFirstDiv ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0'
@@ -103,58 +92,30 @@ function EnergyRegeneration({ isLeaderboardOpen, setIsLeaderboardOpen, isOneTime
           </div>
         </div>
 
-        <ProgressBar
-          score={progressBarWidth}
-          label={'Stamina'}
-          progressColor="#80E8FF"
-          primaryColor="#49DEFF"
-          secondaryColor="#FAFF00"
-          darkTheme
+        {/* Stamina bar */}
+        <div
           className={`text-center border-2 border-white border-solid rounded-tl-3xl rounded-tr-md rounded-br-3xl rounded-bl-md pt-1 pb-2 transition-opacity duration-700 ${
             showProgressBar ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0'
           }`}
-        />
+        >
+          {rechargingStamina ? (
+            <div className="h-18 flex justify-center items-center">
+              <MoonLoader size={25} color={'#80E8FF'} />
+            </div>
+          ) : (
+            <ProgressBar
+              score={progressBarWidth}
+              label={'Stamina'}
+              progressColor="#80E8FF"
+              primaryColor="#49DEFF"
+              secondaryColor="#FAFF00"
+              darkTheme
+            />
+          )}
+        </div>
       </div>
-
-      {isOneTimeTaskOpen && (
-        <div
-          className={`fixed left-0 top-0 flex h-full min-h-screen w-full items-center justify-center bg-dark/90 px-4 py-5 ${
-            isOneTimeTaskOpen ? 'block' : 'hidden'
-          }`}
-          style={{
-            zIndex: 100,
-          }}
-        >
-          <TaskList setIsOneTimeTaskOpen={setIsOneTimeTaskOpen} />
-        </div>
-      )}
-
-      {isLeaderboardOpen && (
-        <div
-          className={`fixed left-0 top-0 flex h-full min-h-screen w-full items-center justify-center bg-dark/90 px-4 py-5 ${
-            isLeaderboardOpen ? 'block' : 'hidden'
-          }`}
-          style={{
-            zIndex: 100,
-          }}
-        >
-          <LeaderBoardModal
-            timeRemaining={timeRemaining}
-            countdown={countDownRemaining}
-            isLeaderBoardOpen={isLeaderboardOpen}
-            setIsLeaderBoardOpen={setIsLeaderboardOpen}
-          />
-        </div>
-      )}
     </>
   );
 }
-
-EnergyRegeneration.propTypes = {
-  isLeaderboardOpen: PropTypes.bool,
-  setIsLeaderboardOpen: PropTypes.func,
-  isOneTimeTaskOpen: PropTypes.bool,
-  setIsOneTimeTaskOpen: PropTypes.func,
-};
 
 export default EnergyRegeneration;

@@ -9,6 +9,7 @@ import {
   useSettleTapSessionLoading,
   consumeStamina,
   settleTapSession,
+  useRechargeLoading,
 } from '../sagaStore/slices';
 import { getAllImagePaths } from '../utils/getImagePath';
 import { mascots } from '../utils/constants';
@@ -18,6 +19,7 @@ const MascotView = ({ openModal, setOpenModal }) => {
   const currentUser = useUserDetails();
   const localCoins = useLocalCoins();
   const localStamina = useLocalStamina();
+  const rechargingStamina = useRechargeLoading();
   const settlingTapSession = useSettleTapSessionLoading();
   const [isIinitialized, setIsIinitialized] = useState(false);
   const [imgIndex, setImgIndex] = useState(0);
@@ -38,16 +40,13 @@ const MascotView = ({ openModal, setOpenModal }) => {
 
   // intro anim
   useEffect(() => {
-    const slideTimer = setTimeout(() => {
-      setStartSlide(true);
-    }, 1000);
+    setStartSlide(true);
 
     const interactivityTimer = setTimeout(() => {
       setIsInteractive(true);
-    }, 2000); // Adjust this delay to match the duration of your transitions
+    }, 1500); // Adjust this delay to match the duration of your transitions
 
     return () => {
-      clearTimeout(slideTimer);
       clearTimeout(interactivityTimer);
     };
   }, []);
@@ -120,7 +119,6 @@ const MascotView = ({ openModal, setOpenModal }) => {
 
     // try to settle tap session if there are any changes
     if (!settlingTapSession && (currentUser?.coins !== localCoins || currentUser?.stamina !== localStamina)) {
-      console.log('dispatch');
       dispatch(
         settleTapSession({
           newCointAmt: localCoins,
@@ -129,7 +127,7 @@ const MascotView = ({ openModal, setOpenModal }) => {
       );
     }
 
-    // set a timer to repeat this set
+    // re-setup a timer to repeat this set
     clearInterval(periodicSettlerTimerRef.current);
     periodicSettlerTimerRef.current = setInterval(() => {
       periodicSettlerTimerRef.current = null;
@@ -159,7 +157,6 @@ const MascotView = ({ openModal, setOpenModal }) => {
       }
       // set a timer to reset mascot after no action for a duration
       idleTimerRef.current = setTimeout(() => {
-        console.log('idle!');
         setImgIndex(0);
         clearInterval(periodicSettlerTimerRef.current);
         periodicSettlerTimerRef.current = null;
@@ -170,7 +167,6 @@ const MascotView = ({ openModal, setOpenModal }) => {
           !isOpenRewardModal &&
           (currentUser?.coins !== localCoins || currentUser?.stamina !== localStamina)
         ) {
-          console.log('settle');
           dispatch(
             settleTapSession({
               newCointAmt: localCoins,
@@ -227,7 +223,7 @@ const MascotView = ({ openModal, setOpenModal }) => {
 
   const handleTapUp = () => {};
 
-  // grant depletion rewards when local stamina is updated
+  // grant depletion rewards when local stamina is fully consumed
   useEffect(() => {
     // skip if user not initialized yet
     if (!currentUser) {
@@ -252,6 +248,14 @@ const MascotView = ({ openModal, setOpenModal }) => {
     // show reward popup
     setIsOpenRewardModal(true);
   }, [dispatch, localStamina, localCoins, currentUser, isOpenRewardModal, setIsOpenRewardModal]);
+
+  useEffect(() => {
+    if (!rechargingStamina) {
+      return;
+    }
+    clearInterval(periodicSettlerTimerRef.current);
+    periodicSettlerTimerRef.current = null;
+  }, [rechargingStamina]);
 
   const closeRewardModal = () => {
     setRewardModalFading(true);

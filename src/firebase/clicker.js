@@ -1,21 +1,19 @@
 import { auth, getUserLocations, exploreLocation, settleTapSession, rechargeEnergyByInvite, rechargeEnergy, bindWallet, unbindWallet } from "./firebaseConfig";
 
 const settleTapSessionImpl = async ({ newCointAmt, newStamina }) => {
-    try {
-        const idToken = await auth.currentUser.getIdToken(/* forceRefresh */ false);
-        const result = await settleTapSession({
-            idToken: idToken,
-            newCoinAmt: newCointAmt,
-            newStamina: newStamina
-        });
-        if (result.data.error){
-            throw result.data.error;
+    const idToken = await auth.currentUser.getIdToken(/* forceRefresh */ false);
+    const result = await settleTapSession({
+        idToken: idToken,
+        newCoinAmt: newCointAmt,
+        newStamina: newStamina
+    });
+    if (result.data.error){
+        if (result.data.error === "too-fast"){
+            return result.data;
         }
-        return result.data;
-    }catch (error) {
-        console.log("Failed to settle tap session withe error: ", error);
-        throw error;
+        throw result.data.error;
     }
+    return result.data;
 };
 
 const rechargeEnergyImpl = async () => {

@@ -35,8 +35,8 @@ export const App = () => {
   const { isOnline, isOffline, backOnline, backOffline } = useNavigatorOnline();
 
   let endpoint = "https://api.devnet.solana.com";
-  if (process.env.REACT_APP__RPC) {
-    endpoint = process.env.REACT_APP__RPC;
+  if (process.env.REACT_APP_RPC) {
+    endpoint = process.env.REACT_APP_RPC;
   }
   const wallets = useMemo(
     () => [

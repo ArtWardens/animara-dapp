@@ -78,23 +78,23 @@ function ReferralPage (){
   useEffect(() => {
     const timerTitle = setTimeout(() => {
       setShowTitle(true);
-    }, 50);
+    }, 1);
 
     const timerRefOne = setTimeout(() => {
       setShowRefOne(true);
-    }, 50);
+    }, 1);
 
     const timerRefTwo = setTimeout(() => {
       setShowRefTwo(true);
-    }, 50);
+    }, 1);
 
     const timerRefThree = setTimeout(() => {
       setShowRefThree(true);
-    }, 250);
+    }, 200);
 
     const timerPanel = setTimeout(() => {
       setShowPanel(true);
-    }, 250);
+    }, 200);
 
     return () => {
       clearTimeout(timerTitle);
