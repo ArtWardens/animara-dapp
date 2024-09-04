@@ -1,14 +1,16 @@
-import { auth, db, storage, updateUserLastLogin, dailyLogin, getReferralStats } from "../firebase/firebaseConfig";
+import { auth, db, storage, updateUserLastLogin, dailyLogin, getReferralStats, firstLoginLinkReferral, registerNFT } from "../firebase/firebaseConfig";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { getDownloadURL, ref, uploadString } from "firebase/storage";
 import { getIdTokenResult, updateProfile } from "firebase/auth";
-
 
 // functions that we export for saga
 const getUserDataImpl = async (uid) => {
   try {
     const docRef = doc(db, 'users', uid);
     const docSnap = await getDoc(docRef);
+
+    const referralRef = doc(db, 'referrals', uid);
+    const referralSnap = await getDoc(referralRef);
 
     let canResetPassword = false;
     const token = await getIdTokenResult(auth.currentUser);
@@ -21,19 +23,24 @@ const getUserDataImpl = async (uid) => {
     }
 
     if (docSnap.exists()) {
+      const userData = docSnap.data();
+      const referredBy = referralSnap.exists() ? referralSnap.data().referredBy : null;
+
       return {
-        ...docSnap.data(),
+        ...userData,
+        referredBy,  // Include referredBy from the "referrals" collection
         completedTask: completedTaskSnap.exists()
           ? completedTaskSnap.data().completedTask
           : [],
         canResetPassword,
       };
     } else {
-      // docSnap.data() will be undefined in this case
       console.log("No such document!");
+      return null;
     }
   } catch (error) {
     console.log("Error getting user data: ", error);
+    return null;
   }
 };
 
@@ -43,9 +50,7 @@ const updateUserProfileImpl = async (
   phoneNumber,
   photoString
 ) => {
-
   try {
-    // Get the current user
     const user = auth.currentUser;
 
     if (!user) {
@@ -54,7 +59,6 @@ const updateUserProfileImpl = async (
 
     const uid = user.uid;
 
-    // Upload the photo to Firebase Storage if provided
     let photoURL;
     if (photoString) {
       const pfpRef = ref(storage, `profile-images/${user?.uid}`);
@@ -62,7 +66,6 @@ const updateUserProfileImpl = async (
       photoURL = await getDownloadURL(pfpRef);
     }
 
-    // Fetch the current user document
     const userRef = doc(db, "users", uid);
     const userDoc = await getDoc(userRef);
 
@@ -70,13 +73,11 @@ const updateUserProfileImpl = async (
       throw new Error("User not found");
     }
 
-    const currentData = userDoc.data();
     const updateData = {};
     if (name) {
       updateData.name = name;
     }
 
-    // Only add photoURL if it's provided
     if (photoURL) {
       updateData.photoUrl = photoURL;
     }
@@ -85,27 +86,25 @@ const updateUserProfileImpl = async (
       updateData.phoneNumber = phoneNumber;
     }
 
-    // Only update invite code if it is not already set
-    if (!currentData.referredBy && inviteCode) {
-      // note: firebase functions that listens to changes on referredBy
-      // will be responsible to grant the necessary rewards
-      updateData.referredBy = inviteCode;
+    const idToken = await auth.currentUser.getIdToken(/* forceRefresh */ false);
+
+    if (inviteCode !== "") {
+      await firstLoginLinkReferral({ idToken: idToken, referralCode: inviteCode });
     }
 
-    // Prepare updates for Firestore and Firebase Auth
     const firestoreUpdate = updateDoc(userRef, updateData);
+
     const authUpdateData = { displayName: name };
     if (photoURL) {
       authUpdateData.photoURL = photoURL;
     }
     const authUpdate = updateProfile(user, authUpdateData);
 
-    // Execute updates concurrently
     await Promise.all([firestoreUpdate, authUpdate]);
     return await getUserDataImpl(auth.currentUser.uid);
 
   } catch (error) {
-    console.error("Error updating user profile:", error);
+    console.error(error);
   }
 };
 
@@ -143,10 +142,25 @@ const getReferralStatsImpl = async () =>{
   }
 }
 
+const registerNFTImpl = async () =>{
+  try {
+    const idToken = await auth.currentUser.getIdToken(false);
+    const { data } = await registerNFT({idToken: idToken});
+    if (data.error){
+        throw data.error;
+    }
+    return data;
+  }catch (error) {
+      console.log("Failed to register NFT: ", error);
+      throw error;
+  }
+}
+
 export {
     getUserDataImpl,
     updateUserProfileImpl,
     updateUserLeaveTimeImpl,
     dailyLoginImpl,
-    getReferralStatsImpl
+    getReferralStatsImpl,
+    registerNFTImpl,
 };

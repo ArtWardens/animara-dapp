@@ -402,9 +402,9 @@ const SignupPage = () => {
 
           {/* Policies */}
           <div className="mt-3 flex gap-8 font-outfit text-[#C5C5C5] text-[1rem] text-center justify-center">
-            <Link to="/" className="hover:brightness-75">Privacy Policy</Link>
+            <Link to="https://animara.world/privacy-policy" className="hover:brightness-75">Privacy Policy</Link>
             <span>|</span>
-            <Link to="/" className="hover:brightness-75">Terms & Conditions</Link>
+            <Link to="https://animara.world/terms-and-conditions" className="hover:brightness-75">Terms & Conditions</Link>
           </div>
         </div>
       </div>

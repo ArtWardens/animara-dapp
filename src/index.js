@@ -5,15 +5,17 @@ import { App } from './App';
 import { store } from './sagaStore/store';
 import { Buffer } from 'buffer';
 import reportWebVitals from './reportWebVitals';
+import Loading from './pages/Loading/Loading';
 import './globals.css';
 import "./i18n";
 window.Buffer = Buffer;
 
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <Provider store={store}>
-    <React.Suspense fallback="loading">
-    <App />
+    <React.Suspense fallback={<Loading />}>
+      <App />
     </React.Suspense>
   </Provider>,
 );
