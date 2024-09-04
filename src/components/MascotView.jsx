@@ -50,9 +50,9 @@ const MascotView = ({ openModal, setOpenModal }) => {
       setStartSlide(true);
     }, 50);
 
-    const masctoTimer = setTimeout(() => {
+    const mascotTimer = setTimeout(() => {
       setShowMascot(true);
-    }, 250);
+    }, 50);
 
     const interactivityTimer = setTimeout(() => {
       setIsInteractive(true);
@@ -60,7 +60,7 @@ const MascotView = ({ openModal, setOpenModal }) => {
 
     return () => {
       clearTimeout(slideTimer);
-      clearTimeout(masctoTimer);
+      clearTimeout(mascotTimer);
       clearTimeout(interactivityTimer);
     };
   }, []);
@@ -285,10 +285,7 @@ const MascotView = ({ openModal, setOpenModal }) => {
       ${startSlide ? 'translate-y-0' : 'translate-y-full'}`}
     >
       <div
-        onMouseDown={handleTap}
-        onMouseUp={handleTapUp}
-        onMouseLeave={handleTapUp}
-        className={`cursor-pointer w-full xl:w-5/6 h-4/5 rounded-3xl p-3`}
+        className={`w-full xl:w-5/6 h-4/5 rounded-3xl p-3`}
         style={{
           border: '2px solid var(--Color, #F4FBFF)',
           background: 'rgba(155, 231, 255, 0.58)',
@@ -332,7 +329,12 @@ const MascotView = ({ openModal, setOpenModal }) => {
               <PropagateLoader color={'#FFB23F'} />
             </div>
           ) : (
-            <div className="flex justify-center items-center h-full w-full">
+            <div
+              onMouseDown={handleTap}
+              onMouseUp={handleTapUp}
+              onMouseLeave={handleTapUp}
+              className="flex justify-center items-center h-full w-full cursor-pointer"
+            >
               {plusOneEffect.show && (
                 <img
                   src={'/assets/images/clicker-character/plusOne.webp'}
