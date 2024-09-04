@@ -134,31 +134,31 @@ function MintPage() {
     // intro animations
     const timerTitle = setTimeout(() => {
       setShowTitle(true);
-    }, 500);
+    }, 250);
 
     const timerTextOne = setTimeout(() => {
       setShowTextOne(true);
-    }, 750);
+    }, 500);
 
     const timerTextTwo = setTimeout(() => {
       setShowTextTwo(true);
-    }, 1000);
+    }, 600);
 
     const timerTextThree = setTimeout(() => {
       setShowTextThree(true);
-    }, 1250);
+    }, 700);
 
     const timerSubtext = setTimeout(() => {
       setShowSubtext(true);
-    }, 1750);
+    }, 900);
 
     const timerMintPanel = setTimeout(() => {
       setSlideMintPanel(true);
-    }, 250);
+    }, 1);
 
     const timerCharacter = setTimeout(() => {
       setSlideCharacter(true);
-    }, 250);  
+    }, 1);  
 
     return () => {
       clearTimeout(timerTitle);
@@ -638,8 +638,8 @@ function MintPage() {
 
           {/* Desktop View */}
           <div
-            className={`xl:w-[60%] hidden xl:block rounded-3xl p-3 transition-all duration-1000
-              ${slideMintPanel? `translate-y-0 opacity-100` : `translate-y-60 opacity-0`}`}
+            className={`xl:w-[60%] hidden xl:block rounded-3xl p-3 transition-all duration-500
+              ${slideMintPanel? `translate-x-0 opacity-100` : `translate-x-60 opacity-0`}`}
               style={{
               border: "2px solid var(--Color, #F4FBFF)",
               background: "rgba(155, 231, 255, 0.58)",
