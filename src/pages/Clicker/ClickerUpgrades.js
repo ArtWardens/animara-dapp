@@ -220,14 +220,14 @@ const ClickerUpgrades = ({ onClose }) => {
                       </div>
                     </div>
 
-                    {/* Profit Per 12h Section */}
+                    {/* Explora Point Section */}
                     <div className="flex flex-row items-center bg-[#11365F] rounded-3xl px-[2rem] py-[1.3rem] shadow-[0px_4px_4px_rgba(0,0,0,0.25)]">
-                      <img src="/assets/images/clicker-character/explora-point.webp" alt="profit icon" className="w-10 h-10 mr-2" />
+                      <img src="/assets/icons/explora-point.webp" alt="profit icon" className="w-10 h-10 mr-2" />
                       <div className="flex flex-col mr-[5rem]">
                         <div className="text-[#00E0FF] text-2xl font-LuckiestGuy font-normal tracking-wider">
-                          +{currentUser.profitPerHour}
+                          {currentUser.profitPerHour}
                         </div>
-                        <div className="text-white text-sm font-outfit ml-2">
+                        <div className="text-white text-sm font-outfit">
                           Explora Points
                         </div>
                       </div>
@@ -279,7 +279,7 @@ const ClickerUpgrades = ({ onClose }) => {
                                   <div className="flex flex-row">
                                     <img
                                       src={
-                                        "/assets/images/clicker-character/explora-point.webp"
+                                        "/assets/icons/explora-point.webp"
                                       }
                                       alt="icon2"
                                       className="w-6 h-6 mr-1"
