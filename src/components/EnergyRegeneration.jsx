@@ -32,7 +32,7 @@ function EnergyRegeneration() {
   useEffect(() => {
     // update profit per hour
     setProfitPerHour(
-      !currentUser?.profitPerHour || currentUser?.profitPerHour === 0 ? '-' : `+${currentUser?.profitPerHour}`,
+      !currentUser?.profitPerHour || currentUser?.profitPerHour === 0 ? '-' : `${currentUser?.profitPerHour}`,
     );
 
     // update energy
@@ -59,35 +59,17 @@ function EnergyRegeneration() {
           }}
         >
           <div
-            className="flex gap-3 py-5 px-6 rounded-3xl"
+            className="flex gap-1 py-5 px-6 rounded-3xl"
             style={{
               background: '#0764BA',
               backgroundBlendMode: 'multiply',
               boxShadow: '3px 2px 0px 0px #60ACFF inset',
             }}
           >
-            <img
-              src={'/assets/images/clicker-character/coinTimer.webp'}
-              className="object-contain w-1/3"
-              alt="coinTimer icon"
-            />
-            <div className="justify-center flex flex-col gap-1 pt-1">
-              <div
-                className="text-3xl"
-                style={{
-                  color: 'var(--0163BE, #0163BE)',
-                  leadingTrim: 'both',
-                  textEdge: 'cap',
-                  WebkitTextStrokeWidth: '1.2px',
-                  WebkitTextStrokeColor: 'var(--Color-11, #FFF)',
-                  lineHeight: '90%',
-                  letterSpacing: '1.5px',
-                  textTransform: 'uppercase',
-                }}
-              >
-                {profitPerHour}
-              </div>
-              <div className="text-sm font-outfit">Profit Per 12h</div>
+            <img src="/assets/icons/explora-point.webp" alt="profit icon" className="w-16 h-16 my-auto mr-2" />
+            <div className="flex flex-col mr-[5rem] my-auto">
+              <div className="text-[#00E0FF] text-2xl font-LuckiestGuy font-normal tracking-wider">{profitPerHour}</div>
+              <div className="text-white text-sm font-outfit">Explora Points</div>
             </div>
           </div>
         </div>
