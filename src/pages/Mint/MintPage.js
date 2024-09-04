@@ -371,7 +371,7 @@ function MintPage() {
                     fontSize: "14px",
                   }}
                 >
-                  Complete the following tasks to get a 25% whitelist discount!
+                  Mint your NFTs and unlock your Anitap VIP Value Pass today
                 </p>
               </div>
             </div>
@@ -395,7 +395,7 @@ function MintPage() {
                     fontSize: "14px",
                   }}
                 >
-                  Mint your NFTs and unlock your Anitap VIP Value Pass today!
+                  Unlocks more locations to explore for more Explora Points!
                 </p>
               </div>
             </div>
@@ -419,7 +419,7 @@ function MintPage() {
                     fontSize: "14px",
                   }}
                 >
-                  Use your VIP Pass to join the Animara leaderboard event and
+                  Compete in the Animara leaderboard event and
                   compete to win prizes worth up to $600,000!
                 </p>
               </div>
