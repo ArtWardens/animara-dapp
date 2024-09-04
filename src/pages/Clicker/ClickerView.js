@@ -19,6 +19,7 @@ const ClickerView = () => {
   const [isLeaderboardOpen, setIsLeaderboardOpen] = useState(false);
   const [isOneTimeTaskOpen, setIsOneTimeTaskOpen] = useState(false);
   const [openModal, setOpenModal] = useState("");
+  const [showPanel, setShowPanel] = useState(false);
 
   // Initialize
   useEffect(() => {
@@ -27,6 +28,20 @@ const ClickerView = () => {
       dispatch(updateDailyLogin());
     }
   }, [currentUser, dispatch]);
+
+  // intro anim
+  useEffect(() => {
+    if (isOpenDailyPopup) {
+      const timerPanel = setTimeout(() => {
+        setShowPanel(true);
+        console.log("Panel shown:", true);
+      }, 1000);
+  
+      return () => {
+        clearTimeout(timerPanel);
+      };
+    }
+  }, [isOpenDailyPopup]);
 
   const handleClose = () => {
     dispatch(closeDailyPopup());
@@ -90,7 +105,8 @@ const ClickerView = () => {
           className="h-screen w-screen flex flex-1 overflow-x-hidden overflow-y-auto"
         >
           <div className="fixed inset-0 bg-transparent backdrop-blur-xl rounded-xl flex justify-center items-center z-[200] overflow-hidden">
-            <div className="min-h-[800px] md:min-h-[unset] daily-reward-bg relative rounded-xl w-[100%] lg:w-[90%] lg:max-w-[800px] bg-no-repeat bg-cover md:bg-contain"
+            <div className={`min-h-[800px] md:min-h-[unset] daily-reward-bg relative rounded-xl w-[100%] lg:max-w-[1100px] bg-no-repeat bg-cover md:bg-[length:100%_70%] lg:bg-contain transition-all duration-1000
+            ${showPanel ? `opacity-100 scale-100` : `opacity-0 scale-0`}`}
               style={{
                 backgroundImage: `url("/assets/images/clicker-character/upgrades-details-bg.webp")`,
                 backgroundPosition: "center",
@@ -98,7 +114,7 @@ const ClickerView = () => {
             >
               {/* Close Button */}
               <button
-                className="absolute top-[4rem] md:top-[12rem] lg:top-[8rem] right-[5rem] text-white text-4xl hover:brightness-75"
+                className="absolute top-[4rem] md:top-[13rem] lg:top-[10rem] xl:top-[8rem] right-[2.5rem] md:right-[5rem] text-white text-4xl hover:brightness-75"
                 onClick={handleClose}
               >
                 &times;
@@ -107,8 +123,8 @@ const ClickerView = () => {
               {/* Reward Content */}
               <div className="flex flex-col items-center 
                 px-[2rem] pt-[4rem] pb-[6rem] 
-                md:px-[4rem] md:pt-[13rem] md:pb-[14rem] 
-                lg:pt-[8rem] lg:pb-[10rem]">
+                md:px-[3rem] md:pt-[14rem] md:pb-[15rem] 
+                lg:px-[4rem] lg:pt-[8rem] lg:pb-[10rem]">
                 <Box>
                   <video
                     src="/assets/videos/Daily_Reward_Anim.webm"
@@ -123,12 +139,12 @@ const ClickerView = () => {
                     Accure Coins For Loggin Into The Game Daily Without Skipping
                   </span>
                 </div>
-                <Box className="max-h-[450px] md:max-h-[150px] overflow-y-scroll py-3 pr-2 w-full grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-7 gap-2 custom-scrollbar">
+                <Box className="max-h-[450px] md:max-h-[250px] lg:max-h-[unset] overflow-y-auto py-3 pl-2 pr-4 w-full grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-7 gap-2 custom-scrollbar">
                   {dailyLoginRewards.map((dayReward, index) => {
                     const isSelected = index < currentUser?.loginDays;
                     return (
                       <Box
-                        className={`${isSelected ? 'bg-[#FFAA00]' : 'bg-[#3C3C3C]'} rounded-md py-1.5 flex`}
+                        className={`${isSelected ? 'bg-[#FFAA00]' : 'bg-[#3C3C3C]'} rounded-md py-1.5 flex transition-all duration-300 hover:scale-105 will-change-transform backface-hidden`}
                         key={index}
                       >
                         <p className={`flex flex-1 flex-col items-center justify-center text-xs space-y-1 ${isSelected ? 'text-white' : 'text-[#C5C5C5]'}`}>
@@ -144,7 +160,7 @@ const ClickerView = () => {
             </div>
           </div>
         </Modal>
-
+        
         {openModal === 'upgrades' && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
             <ClickerUpgrades
