@@ -6,7 +6,7 @@ import { getReferralStats, useUserDetails, useReferralStatLoading, useNFTPurchas
 import { useAppDispatch } from "../../hooks/storeHooks.js";
 import StyledQRCode from "../../components/StyledQRCode";
 import Header from "../../components/Header.jsx";
-import { PropagateLoader } from "react-spinners"; // Import the loader
+import { PropagateLoader } from "react-spinners";
 
 function ReferralPage (){
   const dispatch = useAppDispatch();
@@ -94,7 +94,7 @@ function ReferralPage (){
 
     const timerPanel = setTimeout(() => {
       setShowPanel(true);
-    }, 200);
+    }, 50);
 
     return () => {
       clearTimeout(timerTitle);
