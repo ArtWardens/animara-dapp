@@ -85,6 +85,7 @@ const ClickerView = () => {
           setIsOneTimeTaskOpen={setIsOneTimeTaskOpen}
         />
 
+        {/* Login Reward Panel */}
         <Modal
           open={isOpenDailyPopup}
           className="h-screen w-screen flex flex-1 overflow-x-hidden overflow-y-auto"
@@ -140,6 +141,7 @@ const ClickerView = () => {
           </div>
         </Modal>
 
+        {/* Upgrade panel */}
         {openModal === 'upgrades' && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
             <ClickerUpgrades
