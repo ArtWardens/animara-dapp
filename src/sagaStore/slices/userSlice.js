@@ -14,7 +14,7 @@ const userInitialState = {
   updateProfile: [],
   updateProfileLoading: false,
   getUserLoading: false,
-  updatePopupLoading: false,
+  dailyLoginLoading: false,
   getLeaderBoardLoading: false,
   getLeaderBoardSuccess: false,
   leaderBoard: [],
@@ -191,7 +191,7 @@ export const userSlice = createSlice({
       state.user = payload;
     },
     updateDailyLogin: (state) => {
-      state.updatePopupLoading = true;
+      state.dailyLoginLoading = true;
       state.updatePopupSuccess = false;
     },
     updateDailyLoginSuccess: (state, { payload }) => {
@@ -203,12 +203,12 @@ export const userSlice = createSlice({
         loggedInToday: true,
         loginDays: payload.newLoginDay,
       }
-      state.updatePopupLoading = false;
+      state.dailyLoginLoading = false;
       state.updatePopupSuccess = true;
       state.isOpenDailyPopup = true;
     },
     updateDailyLoginError: (state, { payload }) => {
-      state.updatePopupLoading = false;
+      state.dailyLoginLoading = false;
       state.updatePopupSuccess = false;
       state.error = payload;
     },
@@ -583,7 +583,7 @@ export const useLeaderBoardDetails = () => useAppSelector((state) => state.user.
 export const useLeaderBoardLoading = () => useAppSelector((state) => state.user.getLeaderBoardLoading);
 export const useLeaderBoardLoadSuccess = () => useAppSelector((state) => state.user.getLeaderBoardSuccess);
 export const useIsOpenDailyPopup = () => useAppSelector((state) => state.user.isOpenDailyPopup);
-export const useUpdatePopupLoading = () => useAppSelector((state) => state.user.updatePopupLoading);
+export const useDailyLoginLoading = () => useAppSelector((state) => state.user.updatePopupLoading);
 export const useOneTimeTaskList = () => useAppSelector((state) => state.user.oneTimeTaskList);
 export const useTaskIdToComplete = () => useAppSelector((state) => state.user.taskIdToComplete);
 export const useOneTimeTaskListSuccess = () => useAppSelector((state) => state.user.getOneTimeTaskListSuccess);
