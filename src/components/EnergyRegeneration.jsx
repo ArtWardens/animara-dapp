@@ -117,16 +117,7 @@ function EnergyRegeneration({ isLeaderboardOpen, setIsLeaderboardOpen, isOneTime
       </div>
 
       {isOneTimeTaskOpen && (
-        <div
-          className={`fixed left-0 top-0 flex h-full min-h-screen w-full items-center justify-center bg-dark/90 px-4 py-5 ${
-            isOneTimeTaskOpen ? 'block' : 'hidden'
-          }`}
-          style={{
-            zIndex: 100,
-          }}
-        >
-          <TaskList setIsOneTimeTaskOpen={setIsOneTimeTaskOpen} />
-        </div>
+        <TaskList setIsOneTimeTaskOpen={setIsOneTimeTaskOpen} />
       )}
 
       {isLeaderboardOpen && (
