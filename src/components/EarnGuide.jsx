@@ -20,7 +20,6 @@ function EarnGuide({ openModal, setOpenModal, setIsOneTimeTaskOpen }) {
   const [showUpgrades, setShowUpgrades] = useState(false);
   const [showTasks, setShowTasks] = useState(false);
   const [isRecharging, setIsRecharging] = useState(false);
-  const [boosterSelected, setBoosterSelected] = useState(0);
 
   const handleUserUpgrades = () => {
     setOpenModal('upgrades');
@@ -31,7 +30,6 @@ function EarnGuide({ openModal, setOpenModal, setIsOneTimeTaskOpen }) {
   };
 
   const handleChargeEnergy = () => {
-    setBoosterSelected(0);
     if (currentUser.staminaRechargeRemaining > 0 && enableStaminaRecharge) {
       setIsRecharging(true);
       dispatch(rechargeStamina({ opType: StaminaRechargeTypeBasic }));
@@ -39,7 +37,6 @@ function EarnGuide({ openModal, setOpenModal, setIsOneTimeTaskOpen }) {
   };
 
   const handleChargeEnergyByInvite = () => {
-    setBoosterSelected(1);
     if (currentUser.inviteRechargeRemaining > 0 && enableInviteRecharge) {
       setShowPopup(true);
     }
@@ -212,7 +209,7 @@ function EarnGuide({ openModal, setOpenModal, setIsOneTimeTaskOpen }) {
           }}
         >
           <div
-            className={`relative min-w-full md:min-w-[75%] min-h-[75%] max-w-[1200px] rounded-[20px] text-center bg-cover sm:bg-contain bg-no-repeat bg-center px-8 py-8 sm:px-[4rem] sm:py-[12rem] md:px-[6rem] md:py-[10rem] lg:px-[10rem]
+            className={`relative min-w-full md:min-w-[75%] min-h-[75%] max-w-[1200px] rounded-[20px] text-center bg-cover sm:bg-contain bg-no-repeat bg-center px-8 py-8 sm:px-[4rem] sm:py-[12rem] md:px-[6rem] md:py-[10rem] lg:px-[4rem]
               ${openModal ? 'animate-slideInFromBottom' : 'animate-slideOutToBottom'}`}
             style={{
               backgroundImage: `url(/assets/images/recharge_panel.webp)`,
@@ -228,7 +225,7 @@ function EarnGuide({ openModal, setOpenModal, setIsOneTimeTaskOpen }) {
               </button>
 
               <h3 className="text-[1.5rem] md:text-[2rem] text-[#FFAA00]">Free Daily Boosters</h3>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 overflow-y-auto">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <button 
                   onClick={handleChargeEnergy} 
                   disabled={rechargeLoading}
@@ -236,19 +233,10 @@ function EarnGuide({ openModal, setOpenModal, setIsOneTimeTaskOpen }) {
                     ${currentUser?.staminaRechargeRemaining > 0 
                       ? 'dark:bg-[#003459] dark:hover:bg-[#0a4780] hover:border-1 hover:shadow-[0px_4px_4px_0px_#FFFBEF_inset,0px_-4px_4px_0px_rgba(255,249,228,0.48),0px_5px_4px_0px_rgba(232,140,72,0.48)] cursor-pointer' 
                       : 'dark:bg-gray-700 pointer-events-none'}
-                    w-full py-2 px-6 border-none text-gray-500 bg-white border-2 rounded-lg 
+                    w-full py-2 px-6 border-none text-gray-500 bg-white border-2 rounded-lg transition-all duration-300 hover:scale-105
                   `}
                 >
-                  <div className="flex items-center justify-between">
-                    <img src="/assets/images/EnergyRefresh.webp" alt="energy refresh icon" className="w-6 h-6 md:w-10 md:h-10" />
-                    {currentUser?.staminaRechargeRemaining > 0 && (
-                      boosterSelected === 0 ? (
-                        <img src="/assets/images/booster_selected.webp" alt="energy refresh icon" className="w-6 h-6 md:w-10 md:h-10" />
-                      ) : (
-                        <img src="/assets/images/booster_deselect.webp" alt="energy refresh icon" className="w-6 h-6 md:w-10 md:h-10" />
-                      )
-                    )}
-                  </div>
+                  <img src="/assets/images/EnergyRefresh.webp" alt="energy refresh icon" className="w-6 h-6 md:w-10 md:h-10" />
                   <div className="pt-2 w-full text-[1.25rem] md:text-2xl text-left text-[#80E8FF]">
                     Free Recharge
                     <div className="w-full text-[1rem] md:text-lg text-[#C5C5C5] font-outfit">
@@ -264,19 +252,10 @@ function EarnGuide({ openModal, setOpenModal, setIsOneTimeTaskOpen }) {
                    ${currentUser?.inviteRechargeRemaining > 0
                      ? 'dark:bg-[#003459] dark:hover:bg-[#0a4780] hover:border-1 hover:shadow-[0px_4px_4px_0px_#FFFBEF_inset,0px_-4px_4px_0px_rgba(255,249,228,0.48),0px_5px_4px_0px_rgba(232,140,72,0.48)] cursor-pointer' 
                      : 'dark:bg-gray-700 pointer-events-none'}
-                   w-full py-2 px-6 border-none text-gray-500 bg-white border-2 rounded-lg 
+                   w-full py-2 px-6 border-none text-gray-500 bg-white border-2 rounded-lg transition-all duration-300 hover:scale-105
                  `}
                 >
-                  <div className="flex items-center justify-between">
-                    <img src="/assets/images/inviteFriends.webp" alt="energy refresh icon" className="w-6 h-6 md:w-10 md:h-10" />
-                    {currentUser?.inviteRechargeRemaining > 0 && (
-                      boosterSelected === 1 ? (
-                        <img src="/assets/images/booster_selected.webp" alt="energy refresh icon" className="w-6 h-6 md:w-10 md:h-10" />
-                      ) : (
-                        <img src="/assets/images/booster_deselect.webp" alt="energy refresh icon" className="w-6 h-6 md:w-10 md:h-10" />
-                      )
-                    )}
-                  </div>
+                  <img src="/assets/images/inviteFriends.webp" alt="energy refresh icon" className="w-6 h-6 md:w-10 md:h-10" />
                   <div className="pt-2 w-full text-[1.25rem] md:text-2xl text-left text-[#80E8FF]">
                     Invite Friend
                     <div className="w-full text-[1rem] md:text-lg text-[#C5C5C5] font-outfit">
