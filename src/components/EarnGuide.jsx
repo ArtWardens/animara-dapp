@@ -209,10 +209,16 @@ function EarnGuide({ openModal, setOpenModal, setIsOneTimeTaskOpen }) {
           }}
         >
           <div
-            className={`relative min-w-full md:min-w-[75%] min-h-[75%] max-w-[1200px] rounded-[20px] text-center bg-cover sm:bg-contain bg-no-repeat bg-center px-8 py-8 sm:px-[4rem] sm:py-[12rem] md:px-[6rem] md:py-[10rem] lg:px-[10rem]
+            className={`
+              relative min-w-full min-h-[75%] max-w-[1200px] px-[2rem] py-[2rem] rounded-[20px] text-center bg-cover bg-no-repeat md:bg-[length:100%_70%] lg:bg-contain
+              sm:pt-[6rem]
+              md:min-w-[75%] md:px-[6rem] md:py-[10rem] 
+              lg:py-[7rem]
+              xl:py-[6rem] xl:px-[13rem]
               ${openModal ? 'animate-slideInFromBottom' : 'animate-slideOutToBottom'}`}
             style={{
               backgroundImage: `url(/assets/images/recharge_panel.webp)`,
+              backgroundPosition: "center",
             }}
           >
             <div className="text-left grid w-full gap-1 md:gap-4 mb-8 pt-[6rem] sm:pt-8">
@@ -224,7 +230,7 @@ function EarnGuide({ openModal, setOpenModal, setIsOneTimeTaskOpen }) {
                 &lt; &nbsp; Back
               </button>
 
-              <h3 className="text-[1.5rem] md:text-[2rem] text-[#FFAA00]">Free Daily Boosters</h3>
+              <h3 className="text-[1.5rem] lg:text-[2rem] text-[#FFAA00]">Free Daily Boosters</h3>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                 <button 
                   onClick={handleChargeEnergy} 
