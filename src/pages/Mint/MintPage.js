@@ -126,7 +126,7 @@ function MintPage() {
   const [showWalletBindingPanel, setShowWalletBindingPanel] = useState(false);
   const [walletBindingAnim, setWalletBindingAnim] = useState(false);
   const [ghostExcited, setGhostExcited] = useState(false);
-  const [videoSource, setVideoSource] = useState('/assets/videos/unhappy-ghost.webm');
+  const [videoSource, setVideoSource] = useState('https://storage.animara.world/unhappy-ghost.webm');
   const videoRef = useRef(null);
 
   // intro animation & fetch countdown
@@ -134,31 +134,31 @@ function MintPage() {
     // intro animations
     const timerTitle = setTimeout(() => {
       setShowTitle(true);
-    }, 500);
+    }, 250);
 
     const timerTextOne = setTimeout(() => {
       setShowTextOne(true);
-    }, 750);
+    }, 500);
 
     const timerTextTwo = setTimeout(() => {
       setShowTextTwo(true);
-    }, 1000);
+    }, 600);
 
     const timerTextThree = setTimeout(() => {
       setShowTextThree(true);
-    }, 1250);
+    }, 700);
 
     const timerSubtext = setTimeout(() => {
       setShowSubtext(true);
-    }, 1750);
+    }, 900);
 
     const timerMintPanel = setTimeout(() => {
       setSlideMintPanel(true);
-    }, 250);
+    }, 1);
 
     const timerCharacter = setTimeout(() => {
       setSlideCharacter(true);
-    }, 250);  
+    }, 1);  
 
     return () => {
       clearTimeout(timerTitle);
@@ -300,9 +300,9 @@ function MintPage() {
 
   useEffect(()=>{
     if (ghostExcited){
-      setVideoSource('/assets/videos/happy-ghost.webm');
+      setVideoSource('https://storage.animara.world/happy-ghost.webm');
     }else{
-      setVideoSource('/assets/videos/unhappy-ghost.webm');
+      setVideoSource('https://storage.animara.world/unhappy-ghost.webm');
     }
   },[ghostExcited]);
   
@@ -371,7 +371,7 @@ function MintPage() {
                     fontSize: "14px",
                   }}
                 >
-                  Register an account with Animara!
+                  Mint your NFTs and unlock your Anitap VIP Value Pass today
                 </p>
               </div>
             </div>
@@ -395,7 +395,7 @@ function MintPage() {
                     fontSize: "14px",
                   }}
                 >
-                  Mint your NFTs and unlock your Anitap VIP Value Pass today!
+                  Unlocks more locations to explore for more Explora Points!
                 </p>
               </div>
             </div>
@@ -419,7 +419,7 @@ function MintPage() {
                     fontSize: "14px",
                   }}
                 >
-                  Use your VIP Pass to join the Animara leaderboard event and
+                  Compete in the Animara leaderboard event and
                   compete to win prizes worth up to $600,000!
                 </p>
               </div>
@@ -543,7 +543,7 @@ function MintPage() {
                 <img
                   src="/assets/images/clicker-character/nft-treasureBox.webp"
                   alt="NFT Treasure Box"
-                  className="object-contain w-96 -my-10 hover:animate-treasureBoxTwerk"
+                  className="object-contain w-96 h-96 -my-10 hover:animate-treasureBoxTwerk"
                 />
 
                 {/* mint price */}
@@ -569,7 +569,7 @@ function MintPage() {
                     onMouseEnter={() => isAllowed ? setGhostExcited(true) : setGhostExcited(false)}
                     onMouseLeave={() => !mintingNFT ? setGhostExcited(false) : setGhostExcited(true)}>
                   {loadingCandyMachine ? 
-                    <span className='m-auto text-red-300 text-xl lg:text-3xl'>
+                    <span className='h-20 m-auto text-red-300 text-xl lg:text-3xl'>
                       {`Minting not available yet`}    
                     </span>
                     : 
@@ -630,7 +630,7 @@ function MintPage() {
                 </div>
                 {/* mainnet desc */}
                 <p className="text-white text-xs">
-                  You must be on the Poleygon Mainnet to mint.
+                  You must be on the Solana MainNet to mint.
                 </p>
               </div>
             </div>
@@ -638,8 +638,8 @@ function MintPage() {
 
           {/* Desktop View */}
           <div
-            className={`xl:w-[60%] hidden xl:block rounded-3xl p-3 transition-all duration-1000
-              ${slideMintPanel? `translate-y-0 opacity-100` : `translate-y-60 opacity-0`}`}
+            className={`xl:w-[60%] hidden xl:block rounded-3xl p-3 transition-all duration-500
+              ${slideMintPanel? `translate-x-0 opacity-100` : `translate-x-60 opacity-0`}`}
               style={{
               border: "2px solid var(--Color, #F4FBFF)",
               background: "rgba(155, 231, 255, 0.58)",
@@ -669,7 +669,7 @@ function MintPage() {
 
             {/* mint panel content */}
             <div
-              className="rounded-2xl place-content-center p-6 grid min-h-[60vh] lg:min-h-[80dvh] 2xl:min-h-[50dvh]"
+              className="rounded-2xl bg-opacity-75 place-content-center p-6 grid min-h-[60vh] lg:min-h-[80dvh] 2xl:min-h-[50dvh]"
               style={{
                 backgroundImage:
                   'url("/assets/images/clicker-character/mintBBG.webp")',
@@ -740,7 +740,7 @@ function MintPage() {
               <img
                 src="/assets/images/clicker-character/nft-treasureBox.webp"
                 alt="NFT Treasure Box"
-                className="object-contain w-96 -my-10 hover:animate-treasureBoxTwerk"
+                className="object-contain w-96 h-96 -my-10 hover:animate-treasureBoxTwerk"
               />
 
               {/* mint price */}
@@ -767,7 +767,7 @@ function MintPage() {
                     onMouseLeave={() => !mintingNFT ? setGhostExcited(false) : setGhostExcited(true)}
               >
                 {loadingCandyMachine ? 
-                  <span className='m-auto text-red-300 text-xl lg:text-3xl'>
+                  <span className='h-20 m-auto text-red-300 text-xl lg:text-3xl'>
                     {`Minting not available yet`}  
                   </span>
                   : 
@@ -853,7 +853,7 @@ function MintPage() {
               autoPlay
               controls={false}
             >
-              <source src="/assets/videos/Lootbox_Open Anim.mp4" type="video/mp4" />
+              <source src="https://storage.animara.world/mint-anim.mp4" type="video/mp4" />
               Your browser does not support the video tag.
             </video>
           )}
