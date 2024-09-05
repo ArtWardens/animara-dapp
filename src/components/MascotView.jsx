@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react';
 import { PropTypes } from 'prop-types';
 import useSound from 'use-sound';
+import { PropagateLoader } from 'react-spinners';
 import { useAppDispatch } from '../hooks/storeHooks.js';
 import {
   useUserDetails,
@@ -9,6 +10,9 @@ import {
   useSettleTapSessionLoading,
   consumeStamina,
   settleTapSession,
+  useRechargeLoading,
+  useUserDetailsLoading,
+  useDailyLoginLoading,
 } from '../sagaStore/slices';
 import { getAllImagePaths } from '../utils/getImagePath';
 import { mascots } from '../utils/constants';
@@ -18,7 +22,10 @@ const MascotView = ({ openModal, setOpenModal }) => {
   const currentUser = useUserDetails();
   const localCoins = useLocalCoins();
   const localStamina = useLocalStamina();
+  const rechargingStamina = useRechargeLoading();
   const settlingTapSession = useSettleTapSessionLoading();
+  const userDetailsLoading = useUserDetailsLoading();
+  const dailyLoginLoading = useDailyLoginLoading();
   const [isIinitialized, setIsIinitialized] = useState(false);
   const [imgIndex, setImgIndex] = useState(0);
   const [mascotImages, setMascotImages] = useState([]);
@@ -28,6 +35,7 @@ const MascotView = ({ openModal, setOpenModal }) => {
   const [isOpenRewardModal, setIsOpenRewardModal] = useState(false);
   const [rewardModalFading, setRewardModalFading] = useState(false);
   const [startSlide, setStartSlide] = useState(false);
+  const [showMascot, setShowMascot] = useState(false);
   const [isInteractive, setIsInteractive] = useState(false);
   const idleTimerRef = useRef(null);
   const periodicSettlerTimerRef = useRef(null);
@@ -40,14 +48,19 @@ const MascotView = ({ openModal, setOpenModal }) => {
   useEffect(() => {
     const slideTimer = setTimeout(() => {
       setStartSlide(true);
-    }, 1000);
+    }, 50);
+
+    const mascotTimer = setTimeout(() => {
+      setShowMascot(true);
+    }, 50);
 
     const interactivityTimer = setTimeout(() => {
       setIsInteractive(true);
-    }, 2000); // Adjust this delay to match the duration of your transitions
+    }, 1000); // Adjust this delay to match the duration of your transitions
 
     return () => {
       clearTimeout(slideTimer);
+      clearTimeout(mascotTimer);
       clearTimeout(interactivityTimer);
     };
   }, []);
@@ -120,7 +133,6 @@ const MascotView = ({ openModal, setOpenModal }) => {
 
     // try to settle tap session if there are any changes
     if (!settlingTapSession && (currentUser?.coins !== localCoins || currentUser?.stamina !== localStamina)) {
-      console.log('dispatch');
       dispatch(
         settleTapSession({
           newCointAmt: localCoins,
@@ -129,7 +141,7 @@ const MascotView = ({ openModal, setOpenModal }) => {
       );
     }
 
-    // set a timer to repeat this set
+    // re-setup a timer to repeat this set
     clearInterval(periodicSettlerTimerRef.current);
     periodicSettlerTimerRef.current = setInterval(() => {
       periodicSettlerTimerRef.current = null;
@@ -159,7 +171,6 @@ const MascotView = ({ openModal, setOpenModal }) => {
       }
       // set a timer to reset mascot after no action for a duration
       idleTimerRef.current = setTimeout(() => {
-        console.log('idle!');
         setImgIndex(0);
         clearInterval(periodicSettlerTimerRef.current);
         periodicSettlerTimerRef.current = null;
@@ -170,7 +181,6 @@ const MascotView = ({ openModal, setOpenModal }) => {
           !isOpenRewardModal &&
           (currentUser?.coins !== localCoins || currentUser?.stamina !== localStamina)
         ) {
-          console.log('settle');
           dispatch(
             settleTapSession({
               newCointAmt: localCoins,
@@ -227,7 +237,7 @@ const MascotView = ({ openModal, setOpenModal }) => {
 
   const handleTapUp = () => {};
 
-  // grant depletion rewards when local stamina is updated
+  // grant depletion rewards when local stamina is fully consumed
   useEffect(() => {
     // skip if user not initialized yet
     if (!currentUser) {
@@ -253,6 +263,14 @@ const MascotView = ({ openModal, setOpenModal }) => {
     setIsOpenRewardModal(true);
   }, [dispatch, localStamina, localCoins, currentUser, isOpenRewardModal, setIsOpenRewardModal]);
 
+  useEffect(() => {
+    if (!rechargingStamina) {
+      return;
+    }
+    clearInterval(periodicSettlerTimerRef.current);
+    periodicSettlerTimerRef.current = null;
+  }, [rechargingStamina]);
+
   const closeRewardModal = () => {
     setRewardModalFading(true);
     setTimeout(() => {
@@ -262,12 +280,12 @@ const MascotView = ({ openModal, setOpenModal }) => {
   };
 
   return (
-    <div className="flex justify-center items-end h-screen w-screen xl:pb-16">
+    <div
+      className={`flex justify-center items-end h-screen w-screen xl:pb-16 transition-all duration-700
+      ${startSlide ? 'translate-y-0' : 'translate-y-full'}`}
+    >
       <div
-        onMouseDown={handleTap}
-        onMouseUp={handleTapUp}
-        onMouseLeave={handleTapUp}
-        className={`cursor-pointer w-full xl:w-5/6 h-4/5 rounded-3xl p-3 `}
+        className={`w-full xl:w-5/6 h-4/5 rounded-3xl p-3`}
         style={{
           border: '2px solid var(--Color, #F4FBFF)',
           background: 'rgba(155, 231, 255, 0.58)',
@@ -298,7 +316,7 @@ const MascotView = ({ openModal, setOpenModal }) => {
           />
         </div>
         <div
-          className="flex w-full h-full rounded-2xl"
+          className="flex w-full h-full rounded-2xl bg-[#0B2852]"
           style={{
             backgroundImage: 'url("/assets/images/clicker-character/mascotBg.webp")',
             backgroundSize: 'cover',
@@ -306,41 +324,52 @@ const MascotView = ({ openModal, setOpenModal }) => {
             backgroundRepeat: 'no-repeat',
           }}
         >
-          <div className="flex justify-center items-center h-full w-full">
-            {plusOneEffect.show && (
-              <img
-                src={'/assets/images/clicker-character/plusOne.webp'}
-                alt="+1"
-                className="absolute w-40 h-40 animate-fadeInOut z-10"
-                style={{ left: `${plusOneEffect.left}%`, top: `${plusOneEffect.top}%` }}
-              />
-            )}
-            {imgIndex === 0 ? (
-              <img
-                src={mascotImages[0]}
-                alt="Game mascot"
-                className={`absolute w-full xl:w-3/4 bottom-[12rem] xl:bottom-20 transition-transform duration-1000 overflow-visible ${
-                  startSlide ? 'translate-y-0' : 'translate-y-full'
-                }`}
-              />
-            ) : imgIndex === 1 ? (
-              <img
-                src={mascotImages[1]}
-                alt="Game mascot"
-                className={`absolute w-full xl:w-3/4 bottom-[12rem] xl:bottom-20 transition-transform duration-1000 ${
-                  startSlide ? 'translate-y-0' : 'translate-y-full'
-                }`}
-              />
-            ) : (
-              <img
-                src={mascotImages[2]}
-                alt="Game mascot"
-                className={`absolute w-full xl:w-3/4 bottom-[12rem] xl:bottom-20 transition-transform duration-1000 ${
-                  startSlide ? 'translate-y-0' : 'translate-y-full'
-                }`}
-              />
-            )}
-          </div>
+          {userDetailsLoading || dailyLoginLoading ? (
+            <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center z-50">
+              <PropagateLoader color={'#FFB23F'} />
+            </div>
+          ) : (
+            <div
+              onMouseDown={handleTap}
+              onMouseUp={handleTapUp}
+              onMouseLeave={handleTapUp}
+              className="flex justify-center items-center h-full w-full cursor-pointer"
+            >
+              {plusOneEffect.show && (
+                <img
+                  src={'/assets/images/clicker-character/plusOne.webp'}
+                  alt="+1"
+                  className="absolute w-40 h-40 animate-fadeInOut z-10"
+                  style={{ left: `${plusOneEffect.left}%`, top: `${plusOneEffect.top}%` }}
+                />
+              )}
+              {imgIndex === 0 ? (
+                <img
+                  src={mascotImages[0]}
+                  alt="Game mascot"
+                  className={`absolute w-full xl:w-3/4 bottom-[12rem] xl:bottom-20 transition-all duration-1000 overflow-visible ${
+                    showMascot ? 'opacity-100' : 'opacity-0'
+                  }`}
+                />
+              ) : imgIndex === 1 ? (
+                <img
+                  src={mascotImages[1]}
+                  alt="Game mascot"
+                  className={`absolute w-full xl:w-3/4 bottom-[12rem] xl:bottom-20 transition-all duration-1000 ${
+                    showMascot ? 'opacity-100' : 'opacity-0'
+                  }`}
+                />
+              ) : (
+                <img
+                  src={mascotImages[2]}
+                  alt="Game mascot"
+                  className={`absolute w-full xl:w-3/4 bottom-[12rem] xl:bottom-20 transition-all duration-1000 ${
+                    showMascot ? 'opacity-100' : 'opacity-0'
+                  }`}
+                />
+              )}
+            </div>
+          )}
         </div>
       </div>
 
@@ -352,7 +381,7 @@ const MascotView = ({ openModal, setOpenModal }) => {
           }}
         >
           <video
-            src="/assets/images/clicker-character/depletion-rewardBox.webm"
+            src="https://storage.animara.world/depletion-reward-w-number.webm"
             autoPlay
             loop={false}
             muted

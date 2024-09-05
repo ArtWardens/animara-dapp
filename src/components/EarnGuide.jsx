@@ -15,7 +15,7 @@ function EarnGuide({ openModal, setOpenModal, setIsOneTimeTaskOpen }) {
   const [showPopup, setShowPopup] = useState(false);
   const [enableStaminaRecharge, setEnableStaminaRecharge] = useState(false);
   const [enableInviteRecharge, setEnableInviteRecharge] = useState(false);
-  const [guideSlideUp, setguideSlideUp] = useState(false);
+  const [guideSlideUp, setGuideSlideUp] = useState(false);
   const [showBoosts, setShowBoosts] = useState(false);
   const [showUpgrades, setShowUpgrades] = useState(false);
   const [showTasks, setShowTasks] = useState(false);
@@ -51,7 +51,7 @@ function EarnGuide({ openModal, setOpenModal, setIsOneTimeTaskOpen }) {
   // intro animation
   useEffect(() => {
     const guideSlide = setTimeout(() => {
-      setguideSlideUp(true);
+      setGuideSlideUp(true);
     }, 400);
 
     const boostsTimer = setTimeout(() => {
@@ -60,11 +60,11 @@ function EarnGuide({ openModal, setOpenModal, setIsOneTimeTaskOpen }) {
 
     const upgradesTimer = setTimeout(() => {
       setShowUpgrades(true);
-    }, 800);
+    }, 600);
 
     const tasksTimer = setTimeout(() => {
       setShowTasks(true);
-    }, 900);
+    }, 700);
 
     return () => {
       clearTimeout(guideSlide);
@@ -117,12 +117,12 @@ function EarnGuide({ openModal, setOpenModal, setIsOneTimeTaskOpen }) {
 
   return (
     <>
-      <div className="absolute bottom-[0rem] xl:bottom-24 flex justify-center w-full xl:w-[80%] h-[30dvh] xl:h-44 pb-8">
+      <div className="absolute bottom-0 xl:bottom-20 flex justify-center w-full xl:w-[81%] h-[30dvh] xl:h-44 pb-8">
         <img
           src={'/assets/images/clicker-character/button-footerBg.webp'}
           alt="ring"
-          className={`absolute inset-0 w-full h-full object-cover rounded-b-3xl transition-opacity duration-500 ${
-            guideSlideUp ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0'
+          className={`absolute inset-0 w-full h-full object-cover rounded-b-[0.75rem] transition-opacity duration-500 ${
+            guideSlideUp ? 'opacity-100' : 'opacity-0'
           }`}
         />
 
@@ -133,7 +133,7 @@ function EarnGuide({ openModal, setOpenModal, setIsOneTimeTaskOpen }) {
             }`}
           >
             <button
-              className="px-[3rem] py-[1rem] mb-5 tracking-wider bg-[#49DEFF] shadow-[0px_4px_4px_0px_rgba(255,210,143,0.61)_inset] rounded-full border-orange-300 justify-center items-center gap-2 flex hover:bg-[#80E8FF] hover:shadow-[0px_1px_2px_0px_rgba(198,115,1,0.66)] hover:border-[#FFC85A] cursor-pointer hover:scale-105 transition-transform duration-200 text-xl font-bold font-outfit whitespace-nowrap"
+              className="px-[3rem] py-[1rem] mx-auto tracking-wider bg-[#49DEFF] shadow-[0px_4px_4px_0px_rgba(255,210,143,0.61)_inset] rounded-full border-orange-300 justify-center items-center gap-2 flex hover:bg-[#80E8FF] hover:shadow-[0px_1px_2px_0px_rgba(198,115,1,0.66)] hover:border-[#FFC85A] cursor-pointer hover:scale-105 transition-transform duration-200 text-xl font-bold font-outfit whitespace-nowrap"
               onClick={() => setOpenModal('boosts')}
             >
               <img
@@ -151,7 +151,7 @@ function EarnGuide({ openModal, setOpenModal, setIsOneTimeTaskOpen }) {
             }`}
           >
             <button
-              className="px-[2rem] py-[1rem] mb-5 tracking-wider bg-[#FFB23F] shadow-[0px_4px_4px_0px_rgba(255,210,143,0.61)_inset] rounded-full border-orange-300 justify-center items-center gap-2 flex hover:bg-[#FFDC62] hover:shadow-[0px_1px_2px_0px_rgba(198,115,1,0.66)] hover:border-[#FFC85A] cursor-pointer hover:scale-105 transition-transform duration-200 text-xl font-bold font-outfit whitespace-nowrap"
+              className="px-[2rem] py-[1rem] mx-auto tracking-wider bg-[#FFB23F] shadow-[0px_4px_4px_0px_rgba(255,210,143,0.61)_inset] rounded-full border-orange-300 justify-center items-center gap-2 flex hover:bg-[#FFDC62] hover:shadow-[0px_1px_2px_0px_rgba(198,115,1,0.66)] hover:border-[#FFC85A] cursor-pointer hover:scale-105 transition-transform duration-200 text-xl font-bold font-outfit whitespace-nowrap"
               onClick={handleUserUpgrades}
             >
               <img src="/assets/images/clicker-character/star-icon.webp" className="h-auto w-[2dvw]" alt="star-icon" />
@@ -165,7 +165,7 @@ function EarnGuide({ openModal, setOpenModal, setIsOneTimeTaskOpen }) {
             }`}
           >
             <button
-              className="px-[2.5rem] py-[1rem] mb-5 tracking-wider bg-[#49DEFF] shadow-[0px_4px_4px_0px_rgba(255,210,143,0.61)_inset] rounded-full border-orange-300 justify-center items-center gap-2 flex hover:bg-[#80E8FF] hover:shadow-[0px_1px_2px_0px_rgba(198,115,1,0.66)] hover:border-[#FFC85A] cursor-pointer hover:scale-105 transition-transform duration-200 text-xl font-bold font-outfit whitespace-nowrap"
+              className="px-[2.5rem] py-[1rem] mx-auto tracking-wider bg-[#49DEFF] shadow-[0px_4px_4px_0px_rgba(255,210,143,0.61)_inset] rounded-full border-orange-300 justify-center items-center gap-2 flex hover:bg-[#80E8FF] hover:shadow-[0px_1px_2px_0px_rgba(198,115,1,0.66)] hover:border-[#FFC85A] cursor-pointer hover:scale-105 transition-transform duration-200 text-xl font-bold font-outfit whitespace-nowrap"
               onClick={() => setIsOneTimeTaskOpen('true')}
             >
               <img
