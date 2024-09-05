@@ -69,10 +69,6 @@ const MascotView = ({ openModal, setOpenModal }) => {
     // set intial image
     setImgIndex(0);
 
-    // Note: setup various conditions in which we attempt to
-    // settle a tap session
-    // we settle tap session by session to prevent backend overload
-    // Condition 1: when user's moves away from browser
     const handleMouseLeave = (event) => {
       if (event.clientY <= 0) {
         if (!settlingTapSession && (currentUser.coins !== localCoins || currentUser.stamina !== localStamina)) {
