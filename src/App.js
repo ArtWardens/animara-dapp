@@ -15,7 +15,7 @@ import AppLayout from './components/AppLayout';
 import { GlobalProvider } from './context/ContextProvider';
 import rootSaga from './sagas';
 import { useAppDispatch } from './hooks/storeHooks';
-import { appInit, systemUpdateNetworkConnection, setIsMobile } from './sagaStore/slices';
+import { appInit, systemUpdateNetworkConnection, setIsMobile, setIsIOS } from './sagaStore/slices';
 import { runSaga } from './sagaStore/store';
 import "@solana/wallet-adapter-react-ui/styles.css";
 import './styles/globals.css';
@@ -47,6 +47,12 @@ export const App = () => {
   useEffect(() => {
     runSaga(rootSaga);
     dispatch(appInit());
+
+    // detect platform
+    dispatch(setIsIOS(
+      /iPad|iPhone|iPod/.test(navigator.userAgent) ||
+      (navigator.userAgent.includes("Mac") && "ontouchend" in document)
+    ));
   }, [dispatch]);
 
   useEffect(() => {

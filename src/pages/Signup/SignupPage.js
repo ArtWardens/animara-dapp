@@ -10,13 +10,13 @@ import {
   loginWithTwitter,
   loginWithTelegram,
 } from "../../sagaStore/slices/userSlice.js";
-import { useIsMobile } from "../../sagaStore/slices/systemSlice.js";
+import { useIsIOS } from "../../sagaStore/slices/systemSlice.js";
 import { CSSTransition } from "react-transition-group";
 
 const SignupPage = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const isMobile = useIsMobile();
+  const isIOS = useIsIOS();
   const location = useLocation();
   const isAuthLoading = useAuthLoading();
   const isAuthenticated = useUserAuthenticated();
@@ -227,7 +227,7 @@ const SignupPage = () => {
           {/* Upper Section */}
           <div className="relative self-center gap-[1.25rem] flex">
             <div className="flex-none">
-              {isMobile?
+              {isIOS?
                 <img 
                   src="/assets/icons/AnimaraLogo.webp" alt="logo"
                   className="h-[5rem] w-[5rem]"
