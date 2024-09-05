@@ -874,7 +874,7 @@ function MintPage() {
           
             {/* Static Content */}
             <div className="relative z-[101] flex flex-col items-center justify-center p-[1rem]">
-              <div className="w-full bg-gradient-to-t from-[#78BFF2] to-[#7ADFFF] flex flex-col items-start p-[1rem] xl:p-[2rem] rounded-xl shadow-lg transition-all duration-300 hover:scale-105">
+              <div className="w-full bg-gradient-to-t from-[#78bff2e1] to-[#7ae0ffe1] flex flex-col items-start p-[1rem] xl:p-[2rem] rounded-xl shadow-lg transition-all duration-300 hover:scale-105">
                 <div className="w-full flex justify-center">
                   <span className="text-2xl xl:text-4xl text-center font-normal tracking-widest uppercase mb-[1rem] xl:mb-[2rem]">You minted</span>
                 </div>
@@ -900,7 +900,7 @@ function MintPage() {
 
           
             {/* Fade Out Overlay */}
-            <div className={`bg-white absolute z-[101] inset-0 w-screen h-screen pointer-events-none transition-all duration-500 ${mintFadeOut ? `opacity-0` : `opacity-100`}`}></div>
+            <div className={`bg-white absolute z-[101] inset-0 w-screen h-screen pointer-events-none transition-all duration-500 ${!mintFadeOut ? `opacity-0` : `opacity-100`}`}></div>
           </div>
           
           )}
