@@ -11,14 +11,14 @@ import {
   useUserDetails,
   loginWithTelegram,
 } from "../../sagaStore/slices/userSlice.js";
-import { useIsMobile } from "../../sagaStore/slices/systemSlice.js";
+import { useIsIOS } from "../../sagaStore/slices/systemSlice.js";
 import { CSSTransition } from "react-transition-group";
 
 const LoginPage = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const location = useLocation();
-  const isMobile = useIsMobile();
+  const isIOS = useIsIOS();
   const { t: tLogin } = useTranslation("login");
   const isAuthLoading = useAuthLoading();
   const currentUser = useUserDetails();
@@ -145,7 +145,7 @@ const LoginPage = () => {
           {/* Upper Section */}
           <div className="relative self-center gap-[1.25rem]">
             <div className="flex justify-center items-center">
-              {isMobile?
+              {isIOS?
                 <img 
                   src="/assets/icons/AnimaraLogo.webp" alt="logo"
                   className="h-[5rem] w-[5rem]"
