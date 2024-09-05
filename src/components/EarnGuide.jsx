@@ -126,19 +126,19 @@ function EarnGuide({ openModal, setOpenModal, setIsOneTimeTaskOpen }) {
           }`}
         />
 
-        <div className="flex flex-row justify-center space-x-[0.5rem] xl:space-x-[2rem] w-full mt-[5rem]">
+        <div className="flex flex-row items-center justify-center space-x-[0.5rem] xl:space-x-[2rem] w-full mt-[5rem]">
           <div
             className={`w-full relative rounded-3xl xl:rounded-2xl xl:w-auto flex justify-center items-center xl:items-end transition-transform duration-500 ease-in-out ${
               showBoosts ? 'translate-y-0 opacity-100' : 'translate-y-full opacity-0'
             }`}
           >
             <button
-              className="px-[3rem] py-[1rem] mb-5 tracking-wider bg-[#49DEFF] shadow-[0px_4px_4px_0px_rgba(255,210,143,0.61)_inset] rounded-full border-orange-300 justify-center items-center gap-2 flex hover:bg-[#80E8FF] hover:shadow-[0px_1px_2px_0px_rgba(198,115,1,0.66)] hover:border-[#FFC85A] cursor-pointer hover:scale-105 transition-transform duration-200 text-xl font-bold font-outfit whitespace-nowrap"
+              className="flex flex-col xl:flex-row px-[2rem] xl:px-[2.5rem] py-[2rem] xl:py-[1rem] mb-5 tracking-wider bg-[#49DEFF] shadow-[0px_4px_4px_0px_rgba(255,210,143,0.61)_inset] rounded-2xl xl:rounded-full border-orange-300 justify-center items-center gap-2 hover:bg-[#80E8FF] hover:shadow-[0px_1px_2px_0px_rgba(198,115,1,0.66)] hover:border-[#FFC85A] cursor-pointer hover:scale-105 transition-transform duration-200 text-sm xl:text-xl font-bold font-outfit xl:whitespace-nowrap"
               onClick={() => setOpenModal('boosts')}
             >
               <img
-                src="/assets/images/clicker-character/boosts-icon.webp"
-                className="h-auto w-[2dvw]"
+                src="/assets/images/clicker-character/boosts-icon.png"
+                className="h-auto w-[40%] "
                 alt="boosts-icon"
               />
               Boosts
@@ -151,10 +151,10 @@ function EarnGuide({ openModal, setOpenModal, setIsOneTimeTaskOpen }) {
             }`}
           >
             <button
-              className="px-[2rem] py-[1rem] mb-5 tracking-wider bg-[#FFB23F] shadow-[0px_4px_4px_0px_rgba(255,210,143,0.61)_inset] rounded-full border-orange-300 justify-center items-center gap-2 flex hover:bg-[#FFDC62] hover:shadow-[0px_1px_2px_0px_rgba(198,115,1,0.66)] hover:border-[#FFC85A] cursor-pointer hover:scale-105 transition-transform duration-200 text-xl font-bold font-outfit whitespace-nowrap"
+              className="flex flex-col xl:flex-row px-[2.5rem] py-[1rem] mb-5 tracking-wider bg-[#FFB23F] shadow-[0px_4px_4px_0px_rgba(255,210,143,0.61)_inset] rounded-2xl xl:rounded-full border-orange-300 justify-center items-center xl:gap-2 hover:bg-[#FFDC62] hover:shadow-[0px_1px_2px_0px_rgba(198,115,1,0.66)] hover:border-[#FFC85A] cursor-pointer hover:scale-105 transition-transform duration-200 text-sm xl:text-xl font-bold font-outfit xl:whitespace-nowrap"
               onClick={handleUserUpgrades}
             >
-              <img src="/assets/images/clicker-character/star-icon.webp" className="h-auto w-[2dvw]" alt="star-icon" />
+              <img src="/assets/images/clicker-character/star-icon.png" className="h-auto xl:w-[20%]" alt="star-icon" />
               Upgrades & Explore Animara
             </button>
           </div>
@@ -165,12 +165,12 @@ function EarnGuide({ openModal, setOpenModal, setIsOneTimeTaskOpen }) {
             }`}
           >
             <button
-              className="px-[2.5rem] py-[1rem] mb-5 tracking-wider bg-[#49DEFF] shadow-[0px_4px_4px_0px_rgba(255,210,143,0.61)_inset] rounded-full border-orange-300 justify-center items-center gap-2 flex hover:bg-[#80E8FF] hover:shadow-[0px_1px_2px_0px_rgba(198,115,1,0.66)] hover:border-[#FFC85A] cursor-pointer hover:scale-105 transition-transform duration-200 text-xl font-bold font-outfit whitespace-nowrap"
+              className="flex flex-col xl:flex-row px-[2rem] xl:px-[2.5rem] py-[2rem] xl:py-[1rem] mb-5 tracking-wider bg-[#49DEFF] shadow-[0px_4px_4px_0px_rgba(255,210,143,0.61)_inset] rounded-2xl xl:rounded-full border-orange-300 justify-center items-center gap-2 hover:bg-[#80E8FF] hover:shadow-[0px_1px_2px_0px_rgba(198,115,1,0.66)] hover:border-[#FFC85A] cursor-pointer hover:scale-105 transition-transform duration-200 text-sm xl:text-xl font-bold font-outfit xl:whitespace-nowrap"
               onClick={() => setIsOneTimeTaskOpen('true')}
             >
               <img
-                src="/assets/images/clicker-character/tasks-icon.webp"
-                className="h-auto w-[2dvw]"
+                src="/assets/images/clicker-character/tasks-icon.png"
+                className="h-auto w-[40%]"
                 alt="tasks-icon"
               />
               Tasks

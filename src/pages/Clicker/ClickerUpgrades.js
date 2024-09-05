@@ -71,9 +71,9 @@ const ClickerUpgrades = ({ onClose }) => {
 
   }, [userLocations]);
 
-  const handleLeaderboardClick = () => {
-    setIsLeaderboardOpen(true);
-  };
+  // const handleLeaderboardClick = () => {
+  //   setIsLeaderboardOpen(true);
+  // };
 
   const handleCloseLeaderboard = () => {
     setIsLeaderboardOpen(false);
@@ -105,7 +105,7 @@ const ClickerUpgrades = ({ onClose }) => {
       </div>
 
       <div
-        className="grid w-full h-full rounded-2xl"
+        className="flex flex-col w-full h-full rounded-2xl overflow-visible"
         style={{
           backgroundImage:
             'url("/assets/images/clicker-character/mascotBg.webp")',
@@ -114,58 +114,62 @@ const ClickerUpgrades = ({ onClose }) => {
           backgroundRepeat: "no-repeat",
         }}
       >
-        <div className="flex flex-col overflow-y-auto 2xl:overflow-visible">
-          {/* Leaderboard Button */}
-          <button
-            className="absolute top-[4rem] right-[4rem] hidden 2xl:flex items-center bg-[#49DEFF] rounded-full shadow-md text-white text-xl font-outfit font-bold tracking-wider p-[1.5rem] py-[1rem]"
-            onClick={handleLeaderboardClick}
-          >
-            <img
-              src="/assets/images/clicker-character/trophy.webp"
-              alt="trophy"
-              className="w-8 h-auto mr-[1rem]"
-            />
-            LeaderBoard
-          </button>
-
-          <div className="flex items-center justify-center">
+        {/* this line got problem */}
+        <div className="flex flex-col overflow-visible"> 
+          <div className="w-full flex items-center justify-center px-[4rem] ">
             <img
               src={"/assets/images/clicker-character/explore-animara.webp"}
               alt="explore-animara"
               className="w-[50%] mt-[-4rem]"
             />
           </div>
-          <div>
-            <p className="text-[#FFC85A] text-xl text-center font-normal uppercase">
-              upgrade & earn as you explore!
-            </p>
+          
+          <div className="w-full flex flex-row flex-wrap items-center justify-between mt-[2rem] px-[4rem]">
+            <div className="xl:w-[30%]">
+              <p className="cursor-pointer" onClick={onClose}>
+                &lt;&nbsp; Back
+              </p>
+            </div>
+            
+            <div className="xl:w-[40%] hidden xl:flex justify-center">
+              <p className="text-[#FFC85A] text-xl text-center font-normal uppercase">
+                upgrade & earn as you explore!
+              </p>
+            </div>
+
+            {/* Leaderboard Button */}
+            <div className="xl:w-[30%] flex justify-end">
+              <button
+                className="hidden xl:flex items-center bg-[#49DEFF] rounded-full shadow-md text-white text-xl font-outfit font-bold tracking-wider p-[1.5rem] py-[1rem]"
+                // onClick={handleLeaderboardClick}
+              >
+                <img
+                  src="/assets/images/clicker-character/trophy.webp"
+                  alt="trophy"
+                  className="w-8 h-auto mr-[1rem]"
+                />
+                LeaderBoard
+              </button>
+            </div>
           </div>
 
           {/* Show loader if loading is true, otherwise display the content */}
           {userLocationLoading ? (
             <div className="h-full flex flex-row">
-              <div className="w-[10%] items-start justify-start mt-[4rem]">
-                <p className="ml-[4rem] cursor-pointer" onClick={onClose}>
-                  &lt;&nbsp; Back
-                </p>
-              </div>
-              <div className="w-[80%] flex justify-center items-center my-auto">
+              <div className="w-full flex justify-center items-center my-auto">
                 <PropagateLoader color={"#FFB23F"} />
               </div>
             </div>
           ) : (
-            <div className="flex flex-col 2xl:flex-row justify-start mt-[4rem] xl:gap-[6rem] overflow-auto">
+            <div className="flex flex-col xl:flex-row justify-start mt-[4rem] xl:gap-[6rem] overflow-y-auto">
               {/* Menu bar */}
-              <div className="w-full 2xl:w-[13dvw] h-full flex flex-col xl:overflow-hidden">
-                <p className="ml-[4rem] cursor-pointer" onClick={onClose}>
-                  &lt;&nbsp; Back
-                </p>
-                <div className="flex flex-row 2xl:flex-col mt-[2.5rem] p-[2rem] xl:p-2 overflow-auto xl:overflow-hidden mb-[1rem] xl:mb-0">
+              <div className="w-full xl:w-[13dvw] h-full flex flex-col">
+                <div className="flex flex-row xl:flex-col mt-[2.5rem] p-[2rem] xl:p-2 overflow-auto mb-[1rem] xl:mb-0">
                 {menuOptions.map((option, index) => (
                   <div
                     key={index}
                     onClick={() => setSelectedOption(option.name)}
-                    className={`min-w-[150px] w-auto flex justify-center items-center gap-1.5 p-5 mt-0 2xl:mt-[1rem] ml-[1rem] 2xl:ml-0 rounded-[10px] border-8 border-white ${
+                    className={`min-w-[150px] w-auto flex justify-center items-center gap-1.5 p-5 mt-0 xl:mt-[1rem] ml-[1rem] xl:ml-0 rounded-[10px] border-8 border-white ${
                       selectedOption === option.name ? 'bg-[#FFB100] transform rotate-6' : 'bg-[#146CFC]'
                     } hover:pl-[24px] hover:pr-[20px] hover:rotate-6 hover:scale-105 transition-transform duration-300 ease-in-out`}
                   >
@@ -182,9 +186,9 @@ const ClickerUpgrades = ({ onClose }) => {
                 </div>
               </div>
 
-              <div className="w-full flex flex-col mr-0 2xl:mr-[2rem]">
-                <div className="w-full flex flex-row justify-center 2xl:justify-between items-center ">
-                  <div className="hidden 2xl:flex flex-row">
+              <div className="w-full flex flex-col mr-0 xl:mr-[2rem] ">
+                <div className="w-full flex flex-row flex-wrap justify-center xl:justify-between items-center ">
+                  <div className="hidden xl:flex flex-row">
                     <img
                         src={`/assets/images/clicker-character/${selectedOption}-icon.webp`}
                         alt={`${selectedOption} icon`}
@@ -196,9 +200,9 @@ const ClickerUpgrades = ({ onClose }) => {
                     </div>
                   </div>
 
-                  <div className="flex flex-col 2xl:flex-row items-center gap-[1rem]">
+                  <div className="flex flex-col xl:flex-row items-center gap-[1rem]">
                     {/* Daily Combo Section */}
-                    <div className="flex flex-col 2xl:flex-row items-center bg-[#ffa900] rounded-3xl px-[2rem] py-[1rem] shadow-[0px_4px_4px_rgba(0,0,0,0.25)]">
+                    <div className={`flex flex-col xl:flex-row items-center ${dailyComboMatched.every(item => item !== "") ? "bg-[#ffa900]" : "bg-[#684500]"} rounded-3xl px-[2rem] py-[1rem] shadow-[0px_4px_4px_rgba(0,0,0,0.25)]`}>
                       <div className="flex flex-col">
                         <div className="text-white text-2xl font-LuckiestGuy font-normal tracking-wider ">
                           DAILY COMBO
@@ -220,10 +224,10 @@ const ClickerUpgrades = ({ onClose }) => {
                       </div>
                     </div>
 
-                    {/* Profit Per 12h Section */}
-                    <div className="flex flex-row items-center bg-[#11365F] rounded-3xl px-[2rem] py-[1.3rem] shadow-[0px_4px_4px_rgba(0,0,0,0.25)]">
+                    {/* Explora Points Section */}
+                    <div className="flex flex-row items-center bg-[#11365F] rounded-3xl px-[1.5rem] py-[1.3rem] shadow-[0px_4px_4px_rgba(0,0,0,0.25)]">
                       <img src="/assets/images/clicker-character/explora-point.webp" alt="profit icon" className="w-10 h-10 mr-2" />
-                      <div className="flex flex-col mr-[5rem]">
+                      <div className="flex flex-col mr-[1rem]">
                         <div className="text-[#00E0FF] text-2xl font-LuckiestGuy font-normal tracking-wider">
                           +{currentUser.profitPerHour}
                         </div>
@@ -240,13 +244,13 @@ const ClickerUpgrades = ({ onClose }) => {
                   userLocations.filter(
                     (location) => location.region === selectedOption
                   ).length > 0 ? (
-                    <div className="grid grid-cols-1 xl:grid-cols-4 gap-4 mt-4 p-4 overflow-y-auto">
+                    <div className="h-full flex flex-col xl:flex-row flex-wrap items-center justify-start gap-4 mt-4 p-4 overflow-y-auto">
                       {userLocations.map((location, index) => {
                         if (location.region === selectedOption) {
                           return (
                             <div
                               key={index}
-                              className={`rounded-[36px] text-white flex flex-col items-center transition-all duration-200 hover:scale-105 ${
+                              className={`w-[350px] rounded-[36px] text-white flex flex-col items-center justify-center transition-all duration-200 hover:scale-105 ${
                                 location.level === -1 ? "" : "cursor-pointer"
                               }`}
                               style={{
@@ -294,7 +298,7 @@ const ClickerUpgrades = ({ onClose }) => {
                                   </div>
                                 </div>
                                 <div className="w-full border-t-2 border-blue-400 my-[0.5rem]"></div>
-                                <div className="w-full flex flex-row justify-between">
+                                <div className="w-full flex flex-row justify-between ">
                                   <p>
                                     {location.level === 0 &&
                                     location.level !== -1
@@ -326,7 +330,7 @@ const ClickerUpgrades = ({ onClose }) => {
                                   <img
                                       src="/assets/images/clicker-character/lock-chain-only.webp"
                                       style={{
-                                        backgroundSize: "cover",
+                                        backgroundSize: "contain",
                                         backgroundPosition: "center",
                                         backgroundRepeat: "no-repeat",
                                       }}
@@ -343,7 +347,7 @@ const ClickerUpgrades = ({ onClose }) => {
                     </div>
                   ) : (
                     <div className="flex justify-center items-end xl:items-center h-full">
-                      <p className="text-white text-center text-2xl mt-[4rem] 2xl:mt-0">
+                      <p className="text-white text-center text-2xl mt-[4rem] xl:mt-0">
                         No upgrades available for this region
                       </p>
                     </div>

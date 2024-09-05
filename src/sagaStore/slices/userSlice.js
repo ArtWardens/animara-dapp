@@ -359,6 +359,7 @@ export const userSlice = createSlice({
     upgradeUserLocationSuccess: (state, { payload }) => {
       // Ensure the array is empty before setting new values
       state.newlyUnlockedLocations = [];
+      state.upgradeUserLocationErrorCode = "";
 
       // Update explored location details 
       const locationIndex = state.userLocations.findIndex(
