@@ -853,7 +853,7 @@ function MintPage() {
               autoPlay
               controls={false}
             >
-              <source src="/assets/videos/Lootbox_Open Anim.mp4" type="video/mp4" />
+              <source src="https://storage.animara.world/mint-anim.mp4" type="video/mp4" />
               Your browser does not support the video tag.
             </video>
           )}
