@@ -381,7 +381,7 @@ const MascotView = ({ openModal, setOpenModal }) => {
           }}
         >
           <video
-            src="/assets/images/clicker-character/depletion-rewardBox.webm"
+            src="https://storage.animara.world/depletion-reward-w-number.webm"
             autoPlay
             loop={false}
             muted
