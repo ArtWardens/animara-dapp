@@ -155,7 +155,7 @@ const LoginPage = () => {
                   ref={videoRef}
                   className="h-[5rem] w-[5rem]"
                   autoPlay>
-                    <source src="../assets/icons/AnimaraLogoAnimated.webm" type="video/webm" />
+                    <source src="https://storage.animara.world/logo-animated.webm" type="video/webm" />
                 </video>
               }
             </div>

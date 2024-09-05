@@ -126,7 +126,7 @@ function MintPage() {
   const [showWalletBindingPanel, setShowWalletBindingPanel] = useState(false);
   const [walletBindingAnim, setWalletBindingAnim] = useState(false);
   const [ghostExcited, setGhostExcited] = useState(false);
-  const [videoSource, setVideoSource] = useState('/assets/videos/unhappy-ghost.webm');
+  const [videoSource, setVideoSource] = useState('https://storage.animara.world/unhappy-ghost.webm');
   const videoRef = useRef(null);
 
   // intro animation & fetch countdown
@@ -300,9 +300,9 @@ function MintPage() {
 
   useEffect(()=>{
     if (ghostExcited){
-      setVideoSource('/assets/videos/happy-ghost.webm');
+      setVideoSource('https://storage.animara.world/happy-ghost.webm');
     }else{
-      setVideoSource('/assets/videos/unhappy-ghost.webm');
+      setVideoSource('https://storage.animara.world/unhappy-ghost.webm');
     }
   },[ghostExcited]);
   
