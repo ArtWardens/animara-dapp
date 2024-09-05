@@ -209,7 +209,7 @@ function EarnGuide({ openModal, setOpenModal, setIsOneTimeTaskOpen }) {
           }}
         >
           <div
-            className={`relative min-w-full md:min-w-[75%] min-h-[75%] max-w-[1200px] rounded-[20px] text-center bg-cover sm:bg-contain bg-no-repeat bg-center px-8 py-8 sm:px-[4rem] sm:py-[12rem] md:px-[6rem] md:py-[10rem] lg:px-[4rem]
+            className={`relative min-w-full md:min-w-[75%] min-h-[75%] max-w-[1200px] rounded-[20px] text-center bg-cover sm:bg-contain bg-no-repeat bg-center px-8 py-8 sm:px-[4rem] sm:py-[12rem] md:px-[6rem] md:py-[10rem] lg:px-[10rem]
               ${openModal ? 'animate-slideInFromBottom' : 'animate-slideOutToBottom'}`}
             style={{
               backgroundImage: `url(/assets/images/recharge_panel.webp)`,
@@ -225,7 +225,7 @@ function EarnGuide({ openModal, setOpenModal, setIsOneTimeTaskOpen }) {
               </button>
 
               <h3 className="text-[1.5rem] md:text-[2rem] text-[#FFAA00]">Free Daily Boosters</h3>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                 <button 
                   onClick={handleChargeEnergy} 
                   disabled={rechargeLoading}
