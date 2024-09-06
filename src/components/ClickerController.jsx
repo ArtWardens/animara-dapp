@@ -38,7 +38,7 @@ const ClickerController = ({ Children }) => {
         navigate('/login');
       }
     }
-  }, [dispatch, isAuthLoading, isAuthenticated, navigate]);
+  }, [dispatch, isAuthLoading, isAuthenticated, navigate, mintDate]);
 
   // check to make sure user is using correct wallet
   useEffect(() => {

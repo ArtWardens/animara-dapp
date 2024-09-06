@@ -194,7 +194,19 @@ const MascotView = ({ openModal, setOpenModal }) => {
       clearTimeout(plusOneTimerRef.current);
     }
     plusOneTimerRef.current = setTimeout(() => setPlusOneEffect({ show: false, left: 0, top: 0 }), 500);
-  }, [dispatch, currentUser, localStamina, isInteractive, isOpenRewardModal, mascotSound]);
+  }, [
+    dispatch,
+    currentUser,
+    localStamina,
+    isInteractive,
+    isOpenRewardModal,
+    mascotSound,
+    localCoins,
+    openModal,
+    setOpenModal,
+    settlingTapSession,
+    setupSettler,
+  ]);
 
   // grant depletion rewards when local stamina is fully consumed
   useEffect(() => {
