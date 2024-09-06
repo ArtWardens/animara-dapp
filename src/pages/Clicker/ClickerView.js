@@ -106,7 +106,7 @@ const ClickerView = () => {
                 lg:px-[4rem] lg:pt-[8rem] lg:pb-[10rem]">
                 <Box>
                   <video
-                    src="/assets/videos/Daily_Reward_Anim.webm"
+                    src="https://storage.animara.world/daily-login-reward.webm"
                     autoPlay
                     loop={true}
                     className="max-w-[8rem] lg:max-w-[9rem] pt-1"
