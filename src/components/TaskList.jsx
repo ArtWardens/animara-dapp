@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { PropTypes } from "prop-types";
 import { FaInstagram, FaTwitter, FaTelegramPlane, FaYoutube, FaLink } from 'react-icons/fa';
 import { getOneTimeTaskList, completeOneTimeTask, useOneTimeTaskList, useOneTimeTaskListSuccess, useTaskIdToComplete, useUserDetails } from '../sagaStore/slices';
@@ -10,6 +10,7 @@ const TaskList = ({ setIsOneTimeTaskOpen }) => {
   const oneTimeTaskList = useOneTimeTaskList();
   const getOneTimeTaskListSuccess = useOneTimeTaskListSuccess();
   const taskIdToComplete = useTaskIdToComplete();
+  const [showTaskModal, setShowTaskModal] = useState(true);
 
   useEffect(() => {
     if(!getOneTimeTaskListSuccess){
@@ -18,7 +19,17 @@ const TaskList = ({ setIsOneTimeTaskOpen }) => {
   },[dispatch, getOneTimeTaskListSuccess, oneTimeTaskList]);
 
   const handleCloseModal = () => {
-    setIsOneTimeTaskOpen(false);
+    if(showTaskModal) {
+      setShowTaskModal(false);
+    }
+    
+    const timerPanel = setTimeout(() => {
+      setIsOneTimeTaskOpen(false);
+    }, 500);
+
+    return () => {
+      clearTimeout(timerPanel);
+    };
   };
 
   const getIconComponent = (actionType) => {
@@ -126,13 +137,13 @@ const TaskList = ({ setIsOneTimeTaskOpen }) => {
       }}
     >
       <div
-        className="
+        className={`
               relative min-w-full min-h-[75%] max-w-[1200px] px-[2rem] py-[2rem] rounded-[20px] text-center bg-cover bg-no-repeat md:bg-[length:100%_70%] lg:bg-contain
               sm:pt-[6rem]
               md:min-w-[75%] md:px-[6rem] md:py-[10rem] 
               lg:py-[7rem]
               xl:py-[6rem] xl:px-[13rem]
-              animate-slideInFromBottom"
+              ${showTaskModal ? 'animate-slideInFromBottom' : 'animate-slideOutToBottom'}`}
         style={{
           backgroundImage: `url(/assets/images/task_panel.webp)`,
           backgroundPosition: "center",

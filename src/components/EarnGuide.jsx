@@ -20,13 +20,25 @@ function EarnGuide({ openModal, setOpenModal, setIsOneTimeTaskOpen }) {
   const [showUpgrades, setShowUpgrades] = useState(false);
   const [showTasks, setShowTasks] = useState(false);
   const [isRecharging, setIsRecharging] = useState(false);
+  const [showBoostsModal, setShowBoostsModal] = useState(false);
 
   const handleUserUpgrades = () => {
     setOpenModal('upgrades');
   };
 
   const closeModal = () => {
-    setOpenModal('');
+    if (showBoostsModal) {
+      setShowBoostsModal(false);
+    }
+    
+    const timerPanel = setTimeout(() => {
+      setOpenModal('');
+    }, 500);
+
+    return () => {
+      clearTimeout(timerPanel);
+    };
+    
   };
 
   const handleChargeEnergy = () => {
@@ -134,7 +146,10 @@ function EarnGuide({ openModal, setOpenModal, setIsOneTimeTaskOpen }) {
           >
             <button
               className="px-[3rem] py-[1rem] mb-5 tracking-wider bg-[#49DEFF] shadow-[0px_4px_4px_0px_rgba(255,210,143,0.61)_inset] rounded-full border-orange-300 justify-center items-center gap-2 flex hover:bg-[#80E8FF] hover:shadow-[0px_1px_2px_0px_rgba(198,115,1,0.66)] hover:border-[#FFC85A] cursor-pointer hover:scale-105 transition-transform duration-200 text-xl font-bold font-outfit whitespace-nowrap"
-              onClick={() => setOpenModal('boosts')}
+              onClick={() => {
+                setShowBoostsModal(true);
+                setOpenModal('boosts'); 
+              }}
             >
               <img
                 src="/assets/images/clicker-character/boosts-icon.webp"
@@ -215,7 +230,7 @@ function EarnGuide({ openModal, setOpenModal, setIsOneTimeTaskOpen }) {
               md:min-w-[75%] md:px-[6rem] md:py-[10rem] 
               lg:py-[7rem]
               xl:py-[6rem] xl:px-[13rem]
-              ${openModal ? 'animate-slideInFromBottom' : 'animate-slideOutToBottom'}`}
+              ${showBoostsModal ? 'animate-slideInFromBottom' : 'animate-slideOutToBottom'}`}
             style={{
               backgroundImage: `url(/assets/images/recharge_panel.webp)`,
               backgroundPosition: "center",
