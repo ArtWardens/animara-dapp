@@ -102,7 +102,7 @@ function Header() {
               </div>
             )}
             <img
-              src={currentUser?.photoUrl ? currentUser.photoUrl : '/assets/images/clicker-character/2-initial.webp'}
+              src={currentUser?.photoUrl ? currentUser.photoUrl : '/assets/images/activeDog.webp'}
               alt="profile"
               className="justify-self-center rounded-full w-24 cursor-pointer group-hover:brightness-[0.55] transition-all duration-300"
               style={{
@@ -115,7 +115,7 @@ function Header() {
               onLoad={() => setLoadingImage(false)}
               onError={(e) => {
                 e.target.onerror = null;
-                e.target.src = '/assets/images/clicker-character/2-initial.webp';
+                e.target.src = '/assets/images/activeDog.webp';
                 setLoadingImage(false);
               }}
             />
@@ -267,7 +267,7 @@ function Header() {
               )}
 
               <img
-                src={currentUser?.photoUrl ? currentUser.photoUrl : '/assets/images/clicker-character/2-initial.webp'}
+                src={currentUser?.photoUrl ? currentUser.photoUrl : '/assets/images/activeDog.webp'}
                 alt="profile"
                 className="items-center rounded-full w-32 mx-auto mb-4"
                 style={{
