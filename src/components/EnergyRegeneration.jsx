@@ -1,18 +1,23 @@
 import React, { useState, useEffect } from 'react';
+import { PropTypes } from 'prop-types';
 import { MoonLoader } from 'react-spinners';
 import ProgressBar from './FancyProgressBar/ProgressBar.tsx';
+import { getTimeRemaining } from '../utils/getTimeRemaining';
 import { useLocalStamina, useRechargeLoading, useUserDetails, useUserDetailsLoading } from '../sagaStore/slices';
+import TaskList from '../components/TaskList.jsx';
+import LeaderBoardModal from '../components/LeaderBoardModal.jsx';
 
-function EnergyRegeneration() {
+function EnergyRegeneration({ isLeaderboardOpen, setIsLeaderboardOpen, isOneTimeTaskOpen, setIsOneTimeTaskOpen }) {
   const currentUser = useUserDetails();
   const localStamina = useLocalStamina();
   const rechargingStamina = useRechargeLoading();
   const userDetailsLoading = useUserDetailsLoading();
   const [profitPerHour, setProfitPerHour] = useState('');
   const [progressBarWidth, setProgressBarWidth] = useState(0);
-
+  const [timeRemaining, setTimeRemaining] = useState(getTimeRemaining());
   const [showFirstDiv, setShowFirstDiv] = useState(false);
   const [showProgressBar, setShowProgressBar] = useState(false);
+  const [countDownRemaining] = useState(0);
 
   // intro anim
   useEffect(() => {
@@ -28,6 +33,14 @@ function EnergyRegeneration() {
       clearTimeout(firstDivTimer);
       clearTimeout(progressBarTimer);
     };
+  }, []);
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      setTimeRemaining(getTimeRemaining());
+    }, 1000);
+
+    return () => clearInterval(intervalId);
   }, []);
 
   useEffect(() => {
@@ -120,7 +133,6 @@ function EnergyRegeneration() {
           <LeaderBoardModal
             timeRemaining={timeRemaining}
             countdown={countDownRemaining}
-            isLeaderBoardOpen={isLeaderboardOpen}
             setIsLeaderBoardOpen={setIsLeaderboardOpen}
           />
         </div>
@@ -128,5 +140,12 @@ function EnergyRegeneration() {
     </>
   );
 }
+
+EnergyRegeneration.propTypes = {
+  isLeaderboardOpen: PropTypes.bool,
+  setIsLeaderboardOpen: PropTypes.func,
+  isOneTimeTaskOpen: PropTypes.bool,
+  setIsOneTimeTaskOpen: PropTypes.func,
+};
 
 export default EnergyRegeneration;
