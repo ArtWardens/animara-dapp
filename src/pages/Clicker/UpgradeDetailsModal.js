@@ -12,7 +12,7 @@ import {
 import { MoonLoader } from "react-spinners";
 import LevelUpModal from "./LevelUpModal.js";
 import { db } from "../../firebase/firebaseConfig";
-import { doc, getDoc, updateDoc } from "firebase/firestore";
+import { doc, getDoc } from "firebase/firestore";
 
 const UpgradeDetailsModal = ({ upgrade, isMaxLevel, onClose }) => {
   const { t } = useTranslation();
@@ -92,39 +92,28 @@ const UpgradeDetailsModal = ({ upgrade, isMaxLevel, onClose }) => {
       setUserLevel(currentUser?.level);
       setShowLevelUpMessage(true);
       getLevelingSystemData();
-    } else {
+    } 
+    else {
       onClose();
     }
   };
 
   const getLevelingSystemData = async () => {
-    // Get the leveling system milestone document from the "levelingSystemData" collection
-    const levelingSystemDataRef = doc(
-      db,
-      "levelingSystemData",
-      "9MrEEGAWyyr4Y6mSD7U3"
-    );
-    const levelingSystemDataDoc = await getDoc(levelingSystemDataRef);
+    // Show reward only if user leveled up and is not at max level
+    if (currentUser?.level < currentUser?.maxLevel) {
+      const levelingSystemDataCollection = "levelingSystemData";
+      const levelingSystemDataDocId = "9MrEEGAWyyr4Y6mSD7U3";
 
-    if (!levelingSystemDataDoc.exists()) {
-      console.log("No such document!");
-      // return error
+      const levelingSystemDataRef = doc(db, levelingSystemDataCollection, levelingSystemDataDocId);
+      const levelingSystemDataDoc = await getDoc(levelingSystemDataRef);
+
+      if (!levelingSystemDataDoc.exists()) {
+        console.log("No such document!");
+        return;
+      }
+      const levelingSystemData = levelingSystemDataDoc.data();
+      setCoinReward(levelingSystemData.levelMilestone[currentUser?.level].coinReward);
     }
-    const levelingSystemData = levelingSystemDataDoc.data();
-    setCoinReward(levelingSystemData.levelMilestone[currentUser?.level].coinReward);
-
-    // Update user exploraPointsToNextLvl and coins
-    const userRef = doc(db, "users", currentUser.uid);
-    await updateDoc(userRef, {
-      exploraPointsToNextLvl:
-        levelingSystemData.levelMilestone[currentUser?.level].xp,
-      coins:
-        currentUser.coins +
-        levelingSystemData.levelMilestone[currentUser?.level].coinReward,
-      expLeftToNextLvl:
-        levelingSystemData.levelMilestone[currentUser?.level].xp -
-        currentUser.profitPerHour,
-    });
   };
 
   return (
