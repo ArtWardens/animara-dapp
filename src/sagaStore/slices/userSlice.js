@@ -53,6 +53,7 @@ const userInitialState = {
   mintDate: null,
   lockDate: null,
   earlyBirdDate: null,
+  levelUpCoinReward: 0,
 };
 
 export const userSlice = createSlice({
@@ -403,6 +404,7 @@ export const userSlice = createSlice({
         coins: payload.updatedCoins,
       }
       state.localCoins = payload.updatedCoins;
+      state.levelUpCoinReward = payload.levelUpCoinReward;
       state.userLocationsLoading = false;
     },
     upgradeUserLocationError: (state, { payload }) => {
@@ -607,6 +609,7 @@ export const useNFTMinted = () => useAppSelector((state) => state.user.nftMinted
 export const useMintDate = () => useAppSelector((state) => state.user.mintDate);
 export const useLockDate = () => useAppSelector((state) => state.user.lockDate);
 export const useEarlyBirdDate = () => useAppSelector((state) => state.user.earlyBirdDate);
+export const useLevelUpCoinReward = () => useAppSelector((state) => state.user.levelUpCoinReward);
 
 const userReducer = userSlice.reducer;
 
