@@ -1,7 +1,5 @@
 import React from "react";
 import ClickerView from "./ClickerView";
-// import backgroundImageClicker from '';
-import '../../styles/globals.css';
 
 function ClickerPage() {
   return (

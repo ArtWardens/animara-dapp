@@ -98,7 +98,7 @@ function Header() {
           <button onClick={handleEditProfile} className="group relative">
             {loadingImage && (
               <div className="h-18 flex justify-center items-center">
-                  <MoonLoader color={'#FFB23F'} />
+                <MoonLoader color={'#FFB23F'} />
               </div>
             )}
             <img
@@ -187,9 +187,7 @@ function Header() {
             onClick={() => handleButtonClick(link)}
             className={`flex w-[146px] h-[60px] p-5 justify-center items-center gap-1.5 rounded-[10px] border border-[#E59E69] shadow-[0px_4px_4px_0px_rgba(255,210,143,0.61)_inset,0px_4px_4px_0px_rgba(136,136,136,0.48)] bg-[#FFB23F] hover:bg-[#FFDC62] hover:pl-[24px] hover:pr-[20px] hover:border-1 hover:border-[#E59E69] hover:shadow-[0px_4px_4px_0px_#FFFBEF_inset,0px_-4px_4px_0px_rgba(255,249,228,0.48),0px_5px_4px_0px_rgba(232,140,72,0.48)] hover:rotate-6 hover:scale-105 transition-transform duration-300 ease-in-out ${currentPath === link ? 'transform rotate-6 bg-[#FFDC62]' : ''}`}
           >
-            <span className="text-center text-white text-xl font-normal font-['Luckiest_Guy'] capitalize leading-[18px]">
-              {name}
-            </span>
+            <span className="text-center text-white text-xl capitalize leading-[18px]">{name}</span>
           </button>
         ))}
 
@@ -231,7 +229,7 @@ function Header() {
             backgroundRepeat: 'no-repeat',
           }}
         >
-          <div className='w-full flex flex-col space-y-[4rem]'>
+          <div className="w-full flex flex-col space-y-[4rem]">
             <div className="w-full flex flex-row justify-between">
               <div className="left-[3rem] flex items-center space-x-4">
                 <img src="/assets/images/clicker-character/animara-logo.webp" alt="Animara Logo" className="h-8" />
