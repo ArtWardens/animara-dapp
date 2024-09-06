@@ -30,8 +30,7 @@ export const startCountdown = (targetDate, setTimeLeft, setIsContainerVisible) =
     const timer = setInterval(() => {
         const now = moment();
         const duration = moment.duration(countdownDate.diff(now));
-
-        const days = String(duration.days()).padStart(2, '0');
+        const days = String(Math.floor(duration.asDays())).padStart(2, '0');
         const hours = String(duration.hours()).padStart(2, '0');
         const minutes = String(duration.minutes()).padStart(2, '0');
         const seconds = String(duration.seconds()).padStart(2, '0');

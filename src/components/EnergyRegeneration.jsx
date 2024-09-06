@@ -1,21 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import { PropTypes } from 'prop-types';
+import { MoonLoader } from 'react-spinners';
 import ProgressBar from './FancyProgressBar/ProgressBar.tsx';
-import { useLocalStamina, useUserDetails } from '../sagaStore/slices';
 import { getTimeRemaining } from '../utils/getTimeRemaining';
-import LeaderBoardModal from './LeaderBoardModal';
-import TaskList from './TaskList';
+import { useLocalStamina, useRechargeLoading, useUserDetails, useUserDetailsLoading } from '../sagaStore/slices';
+import TaskList from '../components/TaskList.jsx';
+import LeaderBoardModal from '../components/LeaderBoardModal.jsx';
 
 function EnergyRegeneration({ isLeaderboardOpen, setIsLeaderboardOpen, isOneTimeTaskOpen, setIsOneTimeTaskOpen }) {
   const currentUser = useUserDetails();
   const localStamina = useLocalStamina();
+  const rechargingStamina = useRechargeLoading();
+  const userDetailsLoading = useUserDetailsLoading();
   const [profitPerHour, setProfitPerHour] = useState('');
   const [progressBarWidth, setProgressBarWidth] = useState(0);
   const [timeRemaining, setTimeRemaining] = useState(getTimeRemaining());
-  const [countDownRemaining] = useState(0);
-
   const [showFirstDiv, setShowFirstDiv] = useState(false);
   const [showProgressBar, setShowProgressBar] = useState(false);
+  const [countDownRemaining] = useState(0);
 
   // intro anim
   useEffect(() => {
@@ -44,7 +46,7 @@ function EnergyRegeneration({ isLeaderboardOpen, setIsLeaderboardOpen, isOneTime
   useEffect(() => {
     // update profit per hour
     setProfitPerHour(
-      !currentUser?.profitPerHour || currentUser?.profitPerHour === 0 ? '-' : `+${currentUser?.profitPerHour}`,
+      !currentUser?.profitPerHour || currentUser?.profitPerHour === 0 ? '-' : `${currentUser?.profitPerHour}`,
     );
 
     // update energy
@@ -60,6 +62,7 @@ function EnergyRegeneration({ isLeaderboardOpen, setIsLeaderboardOpen, isOneTime
           zIndex: 20,
         }}
       >
+        {/* explora point display */}
         <div
           className={`items-center justify-center transition-opacity duration-700 ${
             showFirstDiv ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0'
@@ -70,55 +73,53 @@ function EnergyRegeneration({ isLeaderboardOpen, setIsLeaderboardOpen, isOneTime
           }}
         >
           <div
-            className="flex gap-3 py-5 px-6 rounded-3xl"
+            className="flex gap-1 py-5 px-6 rounded-3xl"
             style={{
               background: '#0764BA',
               backgroundBlendMode: 'multiply',
               boxShadow: '3px 2px 0px 0px #60ACFF inset',
             }}
           >
-            <img
-              src={'/assets/images/clicker-character/coinTimer.webp'}
-              className="object-contain w-1/3"
-              alt="coinTimer icon"
-            />
-            <div className="justify-center flex flex-col gap-1 pt-1">
-              <div
-                className="text-3xl"
-                style={{
-                  color: 'var(--0163BE, #0163BE)',
-                  leadingTrim: 'both',
-                  textEdge: 'cap',
-                  WebkitTextStrokeWidth: '1.2px',
-                  WebkitTextStrokeColor: 'var(--Color-11, #FFF)',
-                  lineHeight: '90%',
-                  letterSpacing: '1.5px',
-                  textTransform: 'uppercase',
-                }}
-              >
-                {profitPerHour}
+            <img src="/assets/icons/explora-point.webp" alt="profit icon" className="w-16 h-16 my-auto mr-2" />
+            {userDetailsLoading ? (
+              <div className="h-18 w-16 flex justify-center items-center">
+                <MoonLoader size={25} color={'#80E8FF'} />
               </div>
-              <div className="text-sm font-outfit">Profit Per 12h</div>
-            </div>
+            ) : (
+              <div className="flex flex-col mr-[5rem] my-auto">
+                <div className="text-[#00E0FF] text-2xl font-LuckiestGuy font-normal tracking-wider">
+                  {profitPerHour}
+                </div>
+                <div className="text-white text-sm font-outfit">Explora Points</div>
+              </div>
+            )}
           </div>
         </div>
 
-        <ProgressBar
-          score={progressBarWidth}
-          label={'Stamina'}
-          progressColor="#80E8FF"
-          primaryColor="#49DEFF"
-          secondaryColor="#FAFF00"
-          darkTheme
+        {/* Stamina bar */}
+        <div
           className={`text-center border-2 border-white border-solid rounded-tl-3xl rounded-tr-md rounded-br-3xl rounded-bl-md pt-1 pb-2 transition-opacity duration-700 ${
             showProgressBar ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0'
           }`}
-        />
+        >
+          {rechargingStamina || userDetailsLoading ? (
+            <div className="h-18 flex justify-center items-center">
+              <MoonLoader size={25} color={'#80E8FF'} />
+            </div>
+          ) : (
+            <ProgressBar
+              score={progressBarWidth}
+              label={'Stamina'}
+              progressColor="#80E8FF"
+              primaryColor="#49DEFF"
+              secondaryColor="#FAFF00"
+              darkTheme
+            />
+          )}
+        </div>
       </div>
 
-      {isOneTimeTaskOpen && (
-        <TaskList setIsOneTimeTaskOpen={setIsOneTimeTaskOpen} />
-      )}
+      {isOneTimeTaskOpen && <TaskList setIsOneTimeTaskOpen={setIsOneTimeTaskOpen} />}
 
       {isLeaderboardOpen && (
         <div
@@ -132,7 +133,6 @@ function EnergyRegeneration({ isLeaderboardOpen, setIsLeaderboardOpen, isOneTime
           <LeaderBoardModal
             timeRemaining={timeRemaining}
             countdown={countDownRemaining}
-            isLeaderBoardOpen={isLeaderboardOpen}
             setIsLeaderBoardOpen={setIsLeaderboardOpen}
           />
         </div>
