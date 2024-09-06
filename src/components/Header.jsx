@@ -107,7 +107,7 @@ function Header() {
               className="justify-self-center rounded-full w-24 cursor-pointer group-hover:brightness-[0.55] transition-all duration-300"
               style={{
                 border: '4px solid var(--80E8FF, #80E8FF)',
-                background: 'lightgray 50%',
+                background: '#111928 50%',
                 backgroundSize: 'cover',
                 backgroundRepeat: 'no-repeat',
                 display: loadingImage ? 'none' : 'block',
@@ -272,7 +272,7 @@ function Header() {
                 className="items-center rounded-full w-32 mx-auto mb-4"
                 style={{
                   border: '4px solid var(--80E8FF, #80E8FF)',
-                  background: 'lightgray 50%',
+                  background: '#111928 50%',
                   backgroundSize: 'cover',
                   backgroundRepeat: 'no-repeat',
                 }}
