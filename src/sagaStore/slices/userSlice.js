@@ -38,7 +38,7 @@ const userInitialState = {
   rechargeStaminaLoading: false,
   rechargeOpType: '',
   userLocationsLoading: false,
-  userLocations: [],
+  userLocations: null,
   upgradeUserLocationErrorCode: '',
   newlyUnlockedLocations: [],
   dailyComboMatched: ["", "", ""],
@@ -349,7 +349,7 @@ export const userSlice = createSlice({
       state.userLocationsLoading = true;
     },
     getUserLocationsSuccess: (state, { payload }) => {
-      state.userLocations = payload;
+      state.userLocations = payload.userLocations;
       state.dailyComboMatched = payload.dailyComboMatched;
       state.userLocationsLoading = false;
     },
@@ -363,15 +363,16 @@ export const userSlice = createSlice({
     upgradeUserLocationSuccess: (state, { payload }) => {
       // Ensure the array is empty before setting new values
       state.newlyUnlockedLocations = [];
+      state.upgradeUserLocationErrorCode = "";
 
       // Update explored location details 
-      const locationIndex = state.userLocations.userLocations.findIndex(
+      const locationIndex = state.userLocations.findIndex(
         (location) => location.locationId === payload.locationId
       );
 
       if (locationIndex !== -1) {
-        state.userLocations.userLocations[locationIndex] = {
-          ...state.userLocations.userLocations[locationIndex],
+        state.userLocations[locationIndex] = {
+          ...state.userLocations[locationIndex],
           level: payload.locationLvl,
           currentExploraPts: payload.locationExploraPts,
           nextLevelUpgradeCost: payload.nextLevelUpgradeCost,
@@ -381,17 +382,19 @@ export const userSlice = createSlice({
 
       // Update unlocked locations details
       if (payload.unlockedLocations && payload.unlockedLocations.length > 0) {
-        payload.unlockedLocations.forEach((unlockedLocationId) => {
-          const unlockedLocationIndex = state.userLocations.userLocations.findIndex(
-            (location) => location.locationId === unlockedLocationId
+        payload.unlockedLocations.forEach((unlockedLocation) => {
+          const unlockedLocationIndex = state.userLocations.findIndex(
+            (location) => location.locationId === unlockedLocation.locationId
           );
 
           if (unlockedLocationIndex !== -1) {
             // Update the level to 0 for the unlocked location
-            state.userLocations.userLocations[unlockedLocationIndex].level = 0;
+            state.userLocations[unlockedLocationIndex].level = 0;
+            state.userLocations[unlockedLocationIndex].nextLevelUpgradeCost = unlockedLocation.nextLevelUpgradeCosts;
+            state.userLocations[unlockedLocationIndex].nextLevelExploraPts = unlockedLocation.nextLevelExploraPoints;
 
             // Add to newlyUnlockedLocations array
-            state.newlyUnlockedLocations.push(unlockedLocationId);
+            state.newlyUnlockedLocations.push(unlockedLocation.locationId);
           }
         });
       }

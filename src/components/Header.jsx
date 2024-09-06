@@ -223,7 +223,7 @@ function Header() {
       {/* Mobile Menu */}
       {mobileMenuOpen && (
         <div
-          className="fixed inset-0 z-40 flex flex-col justify-center p-[4rem]"
+          className="h-full absolute inset-0 z-40 flex flex-col items-center justify-start p-[4rem] overflow-hidden"
           style={{
             backgroundImage: 'url("/assets/images/clicker-character/clickerWall.webp")',
             backgroundSize: 'cover',
@@ -231,102 +231,104 @@ function Header() {
             backgroundRepeat: 'no-repeat',
           }}
         >
-          <div className="flex flex-row justify-between">
-            <div className="left-[3rem] flex items-center space-x-4">
-              <img src="/assets/images/clicker-character/animara-logo.webp" alt="Animara Logo" className="h-8" />
+          <div className='w-full flex flex-col space-y-[4rem]'>
+            <div className="w-full flex flex-row justify-between">
+              <div className="left-[3rem] flex items-center space-x-4">
+                <img src="/assets/images/clicker-character/animara-logo.webp" alt="Animara Logo" className="h-8" />
+              </div>
+
+              <button
+                className="transition ease-in-out hover:scale-105 xl:hidden right-[3rem] xl:right-[4rem] z-50"
+                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              >
+                <svg
+                  className="h-9 w-9 text-amber-500"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  aria-hidden="true"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d={'M6 18L18 6M6 6l12 12'} />
+                </svg>
+              </button>
             </div>
 
-            <button
-              className="transition ease-in-out hover:scale-105 xl:hidden right-[3rem] xl:right-[4rem] z-50"
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            >
-              <svg
-                className="h-9 w-9 text-amber-500"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                aria-hidden="true"
-              >
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d={'M6 18L18 6M6 6l12 12'} />
-              </svg>
-            </button>
-          </div>
-
-          <div
-            className="text-center w-auto h-full place-content-center scale-125 mt-[5rem] -z-50"
-            style={{
-              backgroundImage: 'url("/assets/images/clicker-character/sticky-Note.webp")',
-              backgroundSize: 'contain',
-              backgroundPosition: 'center',
-              backgroundRepeat: 'no-repeat',
-            }}
-          >
-            {loadingImage && (
-              <div className="flex justify-center items-center">
-                <MoonLoader color={'#FFB23F'} />
-              </div>
-            )}
-
-            <img
-              src={currentUser?.photoUrl ? currentUser.photoUrl : '/assets/images/clicker-character/2-initial.webp'}
-              alt="profile"
-              className="items-center rounded-full w-32 mx-auto mb-4"
+            <div
+              className="w-full h-full text-center scale-125 p-[6rem] -z-50"
               style={{
-                border: '4px solid var(--80E8FF, #80E8FF)',
-                background: 'lightgray 50%',
-                backgroundSize: 'cover',
+                backgroundImage: 'url("/assets/images/clicker-character/sticky-Note.webp")',
+                backgroundSize: 'contain',
+                backgroundPosition: 'center',
                 backgroundRepeat: 'no-repeat',
               }}
-              onClick={handleEditProfile}
-            />
-            {currentUser?.isKOL && (
-              <span className="bg-sky-700 rounded-lg items-center xl:ml-[1rem] p-2">
-                <span className="text-white text-xs tracking-wider font-outfit whitespace-nowrap">Certified KOL</span>
-              </span>
-            )}
-            <p className="text-lg text-[#003459] font-medium font-outfit mt-4 mb-1"> {currentUser?.name}</p>
-            <div className="gap-2 flex place-content-center">
-              <img className="w-8 object-contain" src={'/assets/images/clicker-character/gem.webp'} alt="gem" />
-              <div className="items-center justify-center">
-                <span
-                  className="text-4xl text-amber-500 tracking-normal pr-2"
-                  style={{
-                    WebkitTextStrokeWidth: '1.75px',
-                    WebkitTextStrokeColor: 'var(--Color-11, #FFF)',
-                  }}
-                >
-                  {formatNumberWithCommas(currentUser?.coins)}
+            >
+              {loadingImage && (
+                <div className="flex justify-center items-center">
+                  <MoonLoader color={'#FFB23F'} />
+                </div>
+              )}
+
+              <img
+                src={currentUser?.photoUrl ? currentUser.photoUrl : '/assets/images/clicker-character/2-initial.webp'}
+                alt="profile"
+                className="items-center rounded-full w-32 mx-auto mb-4"
+                style={{
+                  border: '4px solid var(--80E8FF, #80E8FF)',
+                  background: 'lightgray 50%',
+                  backgroundSize: 'cover',
+                  backgroundRepeat: 'no-repeat',
+                }}
+                onClick={handleEditProfile}
+              />
+              {currentUser?.isKOL && (
+                <span className="bg-sky-700 rounded-lg items-center xl:ml-[1rem] p-2">
+                  <span className="text-white text-xs tracking-wider font-outfit whitespace-nowrap">Certified KOL</span>
                 </span>
+              )}
+              <p className="text-lg text-[#003459] font-medium font-outfit mt-4 mb-1"> {currentUser?.name}</p>
+              <div className="gap-2 flex place-content-center">
+                <img className="w-6 object-contain" src={'/assets/images/clicker-character/gem.webp'} alt="gem" />
+                <div className="items-center justify-center">
+                  <span
+                    className="text-2xl xl:text-4xl text-amber-500 tracking-normal pr-2"
+                    style={{
+                      WebkitTextStrokeWidth: '1.75px',
+                      WebkitTextStrokeColor: 'var(--Color-11, #FFF)',
+                    }}
+                  >
+                    {formatNumberWithCommas(currentUser?.coins)}
+                  </span>
+                </div>
               </div>
             </div>
-          </div>
 
-          <div className="space-y-4 mt-[4rem] mb-16 z-60">
-            {navDestinations.map(({ name, link }) => (
-              <div className="flex flex-row items-center group" key={name}>
-                <button
-                  onClick={() => handleButtonClick(link)}
-                  className="block w-full text-left py-2 text-[#00b8e1] hover:text-[#ffc75a] text-4xl font-LuckiestGuy font-bold leading-9 tracking-wider transition-all duration-500"
-                >
-                  {name}
-                </button>
-                <img
-                  className="w-10 h-10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-                  src="/assets/images/clicker-character/arrow-right.webp"
-                  alt="right arrow"
-                />
-              </div>
-            ))}
-            <button
-              className="transition ease-in-out hover:scale-105 flex items-center"
-              onMouseEnter={handleMouseEnterLogout}
-              onMouseLeave={handleMouseLeaveLogout}
-              onClick={handleLogout}
-              ref={trigger}
-            >
-              <img src={imageSrcLogout} className="h-12 w-12" alt="logout" />
-              <span className="ml-2 text-4xl text-[#ff647a] capitalize leading-9">LOGOUT</span>
-            </button>
+            <div className="space-y-4 mt-[4rem] mb-16 z-60">
+              {navDestinations.map(({ name, link }) => (
+                <div className="flex flex-row items-center group" key={name}>
+                  <button
+                    onClick={() => handleButtonClick(link)}
+                    className="block w-full text-left py-2 text-[#00b8e1] hover:text-[#ffc75a] text-4xl font-LuckiestGuy font-bold leading-9 tracking-wider transition-all duration-500"
+                  >
+                    {name}
+                  </button>
+                  <img
+                    className="w-10 h-10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                    src="/assets/images/clicker-character/arrow-right.webp"
+                    alt="right arrow"
+                  />
+                </div>
+              ))}
+              <button
+                className="transition ease-in-out hover:scale-105 flex items-center"
+                onMouseEnter={handleMouseEnterLogout}
+                onMouseLeave={handleMouseLeaveLogout}
+                onClick={handleLogout}
+                ref={trigger}
+              >
+                <img src={imageSrcLogout} className="h-12 w-12" alt="logout" />
+                <span className="ml-2 text-4xl text-[#ff647a] capitalize leading-9">LOGOUT</span>
+              </button>
+            </div>
           </div>
         </div>
       )}
