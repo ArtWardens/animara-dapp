@@ -16,13 +16,6 @@ const LevelUpModal = ({ onClose, coinReward }) => {
           backgroundRepeat: "no-repeat",
         }}
       >
-        {/* Close Button */}
-        <button
-          className="w-full items-end justify-end text-white text-4xl text-right hover:brightness-75"
-          onClick={onClose}
-        >
-          &times;
-        </button>
 
         <div className="text-center tracking-wider">
           <p
