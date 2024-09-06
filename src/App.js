@@ -18,7 +18,6 @@ import { useAppDispatch } from './hooks/storeHooks';
 import { appInit, systemUpdateNetworkConnection, setIsMobile, setIsIOS } from './sagaStore/slices';
 import { runSaga } from './sagaStore/store';
 import "@solana/wallet-adapter-react-ui/styles.css";
-import './styles/globals.css';
 
 // Import Solana wallet packages
 import { WalletProvider } from '@solana/wallet-adapter-react';
