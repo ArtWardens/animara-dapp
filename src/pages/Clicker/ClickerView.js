@@ -32,7 +32,7 @@ const ClickerView = () => {
     if (isOpenDailyPopup) {
       const timerPanel = setTimeout(() => {
         setShowPanel(true);
-      }, 1000);
+      }, 500);
   
       return () => {
         clearTimeout(timerPanel);
@@ -44,7 +44,7 @@ const ClickerView = () => {
     setShowPanel(false);
     const timerPanel = setTimeout(() => {
       dispatch(closeDailyPopup());
-    }, 1000);
+    }, 500);
 
     return () => {
       clearTimeout(timerPanel);
@@ -84,7 +84,8 @@ const ClickerView = () => {
           className="h-screen w-screen flex flex-1 overflow-x-hidden overflow-y-auto"
         >
           <div className="fixed inset-0 bg-transparent backdrop-blur-xl rounded-xl flex justify-center items-center z-[200] overflow-hidden">
-            <div className={`min-h-[800px] md:min-h-[unset] daily-reward-bg relative rounded-xl w-[100%] lg:max-w-[1100px] bg-no-repeat bg-cover md:bg-[length:100%_70%] lg:bg-contain transition-all duration-1000
+            <div className={`min-h-[800px] md:min-h-[unset] daily-reward-bg relative rounded-xl w-[100%] lg:max-w-[1100px] bg-no-repeat bg-cover md:bg-[length:100%_70%] lg:bg-contain 
+            transition-all ease-in-out duration-500
             ${showPanel ? `scale-100` : `scale-0`}`}
               style={{
                 backgroundImage: `url("/assets/images/clicker-character/upgrades-details-bg.webp")`,
