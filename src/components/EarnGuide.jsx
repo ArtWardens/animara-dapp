@@ -33,7 +33,7 @@ function EarnGuide({ openModal, setOpenModal, setIsOneTimeTaskOpen }) {
     
     const timerPanel = setTimeout(() => {
       setOpenModal('');
-    }, 500);
+    }, 300);
 
     return () => {
       clearTimeout(timerPanel);
