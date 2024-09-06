@@ -25,7 +25,7 @@ const TaskList = ({ setIsOneTimeTaskOpen }) => {
     
     const timerPanel = setTimeout(() => {
       setIsOneTimeTaskOpen(false);
-    }, 500);
+    }, 300);
 
     return () => {
       clearTimeout(timerPanel);
