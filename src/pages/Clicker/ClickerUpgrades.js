@@ -70,7 +70,7 @@ const ClickerUpgrades = ({ onClose }) => {
       clearTimeout(timerUpgrades);
     };
 
-  }, [userLocations]);
+  }, [userLocations, dispatch, userLocationLoading]);
 
   const handleLeaderboardClick = () => {
     // setIsLeaderboardOpen(true);
