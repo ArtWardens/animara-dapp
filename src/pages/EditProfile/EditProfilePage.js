@@ -167,10 +167,10 @@ const EditProfilePage = () => {
                     <img
                       src={imageData || user?.photoUrl}
                       alt="pfp"
-                      className="group-hover:brightness-75 h-full w-full object-cover"
+                      className="bg-[#111928] group-hover:brightness-75 h-full w-full object-cover"
                       onError={(e) => {
                         e.target.onerror = null;
-                        e.target.src = "/assets/images/clicker-character/2-initial.webp";
+                        e.target.src = "/assets/images/activeDog.webp";
                       }}
                     />
                   ) : (
