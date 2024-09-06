@@ -96,7 +96,7 @@ function Header() {
 
   return (
     <>
-      {/* Desktop Menu */}
+      {/* User Card */}
       <div
         className={`flex flex-row absolute top-[3rem] z-10 p-1 pr-4 gap-2 left-[1rem] xl:left-[4rem] ${
           mobileMenuOpen ? 'hidden' : ''
@@ -166,6 +166,7 @@ function Header() {
         </div>
       </div>
 
+      {/* Desktop Navigation Bar */}
       <div
         className="hidden xl:flex absolute top-16 gap-2 right-[4rem] z-96 items-center"
         style={{
@@ -217,7 +218,7 @@ function Header() {
         </button>
       </div>
 
-      {/* Mobile Menu Button */}
+      {/* Mobile Hamburger Menu Button */}
       <button
         className="transition ease-in-out hover:scale-105 xl:hidden absolute top-[5rem] right-[2rem] xl:right-[4rem] z-50"
         onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
