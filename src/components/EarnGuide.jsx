@@ -138,7 +138,7 @@ function EarnGuide({ openModal, setOpenModal, setIsOneTimeTaskOpen }) {
             >
               <img
                 src="/assets/images/clicker-character/boosts-icon.png"
-                className="h-auto w-[40%] "
+                className="h-auto w-[60%] xl:w-[40%] "
                 alt="boosts-icon"
               />
               Boosts
@@ -170,7 +170,7 @@ function EarnGuide({ openModal, setOpenModal, setIsOneTimeTaskOpen }) {
             >
               <img
                 src="/assets/images/clicker-character/tasks-icon.png"
-                className="h-auto w-[40%]"
+                className="h-auto w-[60%] xl:w-[40%]"
                 alt="tasks-icon"
               />
               Tasks

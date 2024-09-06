@@ -114,16 +114,16 @@ const ClickerUpgrades = ({ onClose }) => {
           backgroundRepeat: "no-repeat",
         }}
       >
-        {/* this line got problem */}
-        <div className="flex flex-col overflow-visible"> 
-          <div className="w-full flex items-center justify-center px-[4rem] ">
+        <div className="absolute top-0 flex items-center justify-center px-[4rem] pointer-events-none">
             <img
               src={"/assets/images/clicker-character/explore-animara.webp"}
               alt="explore-animara"
-              className="w-[50%] mt-[-4rem]"
+              className="w-[100%] xl:w-[50%] mt-[-1rem] xl:mt-[-2rem] overflow-visible"
             />
-          </div>
-          
+        </div>
+
+        {/* this line got problem */}
+        <div className="h-full flex flex-col justify-start overflow-y-auto mt-[3rem]"> 
           <div className="w-full flex flex-row flex-wrap items-center justify-between mt-[2rem] px-[4rem]">
             <div className="xl:w-[30%]">
               <p className="cursor-pointer" onClick={onClose}>
@@ -155,21 +155,19 @@ const ClickerUpgrades = ({ onClose }) => {
 
           {/* Show loader if loading is true, otherwise display the content */}
           {userLocationLoading ? (
-            <div className="h-full flex flex-row">
-              <div className="w-full flex justify-center items-center my-auto">
-                <PropagateLoader color={"#FFB23F"} />
-              </div>
+            <div className="h-full flex justify-center items-center ">
+              <PropagateLoader color={"#FFB23F"} />
             </div>
           ) : (
-            <div className="flex flex-col xl:flex-row justify-start mt-[4rem] xl:gap-[6rem] overflow-y-auto">
+            <div className="flex flex-col xl:flex-row justify-start mt-[2rem] xl:mt-[4rem] xl:gap-[6rem] overflow-y-auto">
               {/* Menu bar */}
-              <div className="w-full xl:w-[13dvw] h-full flex flex-col">
-                <div className="flex flex-row xl:flex-col mt-[2.5rem] p-[2rem] xl:p-2 overflow-auto mb-[1rem] xl:mb-0">
+              <div className="w-full xl:w-[16dvw] h-full flex flex-col">
+                <div className="flex flex-row xl:flex-col xl:mt-[2.5rem] p-[2rem] xl:p-2 overflow-auto mb-[1rem] xl:mb-0">
                 {menuOptions.map((option, index) => (
                   <div
                     key={index}
                     onClick={() => setSelectedOption(option.name)}
-                    className={`min-w-[150px] w-auto flex justify-center items-center gap-1.5 p-5 mt-0 xl:mt-[1rem] ml-[1rem] xl:ml-0 rounded-[10px] border-8 border-white ${
+                    className={`max-w-[200px] w-auto flex justify-center items-center gap-1.5 p-5 mt-0 xl:mt-[1rem] ml-[1rem] xl:ml-0 rounded-[10px] border-8 border-white ${
                       selectedOption === option.name ? 'bg-[#FFB100] transform rotate-6' : 'bg-[#146CFC]'
                     } hover:pl-[24px] hover:pr-[20px] hover:rotate-6 hover:scale-105 transition-transform duration-300 ease-in-out`}
                   >
@@ -178,7 +176,7 @@ const ClickerUpgrades = ({ onClose }) => {
                       alt={`${option.name} icon`}
                       className="w-6 h-6 mr-4"
                     />
-                    <span className="text-white text-xl capitalize leading-[18px]">
+                    <span className="text-white text-base xl:text-xl capitalize leading-[18px]">
                       {option.name}
                     </span>
                   </div>
@@ -203,17 +201,17 @@ const ClickerUpgrades = ({ onClose }) => {
                   <div className="flex flex-col xl:flex-row items-center gap-[1rem]">
                     {/* Daily Combo Section */}
                     <div className={`flex flex-col xl:flex-row items-center ${dailyComboMatched.every(item => item !== "") ? "bg-[#ffa900]" : "bg-[#684500]"} rounded-3xl px-[2rem] py-[1rem] shadow-[0px_4px_4px_rgba(0,0,0,0.25)]`}>
-                      <div className="flex flex-col">
-                        <div className="text-white text-2xl font-LuckiestGuy font-normal tracking-wider ">
+                      <div className="flex flex-col mb-2 xl:mb-0">
+                        <div className="text-white text-base xl:text-xl font-LuckiestGuy font-normal tracking-wider ">
                           DAILY COMBO
                         </div>
-                        <div className="flex flex-row items-center text-white text-lg ">
-                          <img src="/assets/images/clicker-character/gem.webp" alt="currency icon" className="w-6 h-6" />
+                        <div className="flex flex-row items-center text-white text-sm xl:text-lg ">
+                          <img src="/assets/images/clicker-character/gem.webp" alt="currency icon" className="w-4 xl:w-6 h-auto" />
                           <span className="mx-2">{totalProfit}</span>
                           <img 
                             src={`/assets/images/clicker-character/${dailyComboMatched.every(item => item !== "") ? "checked" : "unchecked"}.webp`} 
                             alt={`${dailyComboMatched.every(item => item !== "") ? "checked" : "unchecked"} icon`} 
-                            className="w-6 h-6 ml-2" 
+                            className="w-4 h-4 ml-2" 
                           />
                         </div>
                       </div>
@@ -244,7 +242,7 @@ const ClickerUpgrades = ({ onClose }) => {
                   userLocations.filter(
                     (location) => location.region === selectedOption
                   ).length > 0 ? (
-                    <div className="h-full flex flex-col xl:flex-row flex-wrap items-center justify-start gap-4 mt-4 p-4 overflow-y-auto">
+                    <div className="h-full flex flex-col xl:flex-row flex-wrap items-center justify-start gap-4 amt-4 p-4 overflow-y-auto">
                       {userLocations.map((location, index) => {
                         if (location.region === selectedOption) {
                           return (
