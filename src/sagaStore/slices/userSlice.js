@@ -168,6 +168,8 @@ export const userSlice = createSlice({
     updateProfileSuccess: (state, { payload }) => {
       state.updateProfileLoading = false;
       state.user = payload;
+      state.localStamina = payload.stamina;
+      state.localCoins = payload.coins;
     },
     updateProfileError: (state, { payload }) => {
       state.error = payload;
