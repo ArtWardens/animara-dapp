@@ -1,4 +1,4 @@
-const basePath = '/assets/images/clicker-character';
+const basePath = '/assets/images/clicker-character/ani-character-leveling';
 
 export const getAllImagePaths = (currentUser) => {
   const currentLevel = currentUser?.level || 1;
@@ -9,4 +9,3 @@ export const getAllImagePaths = (currentUser) => {
     `${basePath}/${currentLevel}-hits-2.webp`,
   ];
 };
-  
