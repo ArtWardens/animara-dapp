@@ -138,7 +138,7 @@ const ClickerUpgrades = ({ onClose }) => {
           <div className="h-full flex flex-col justify-start overflow-y-auto"> 
             <div className="w-full flex flex-row flex-wrap items-center justify-between mt-[2rem] px-[4rem]">
               <div className="xl:w-[30%]">
-                <p className="cursor-pointer" onClick={handleBack}>
+                <p className="cursor-pointer hover:scale-105 transition-all duration-300" onClick={handleBack}>
                   &lt;&nbsp; Back
                 </p>
               </div>
