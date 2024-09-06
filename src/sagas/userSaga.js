@@ -439,7 +439,6 @@ export function* getUserLocationsSaga() {
   try {
     const userLocation = yield call(getUserLocationImpl);
     yield put(getUserLocationsSuccess(userLocation));
-    toast.success("Location level loaded successfully. ");
     return userLocation;
   } 
   catch (error) {
