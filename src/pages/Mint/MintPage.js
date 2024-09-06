@@ -128,6 +128,10 @@ function MintPage() {
   const [ghostExcited, setGhostExcited] = useState(false);
   const [videoSource, setVideoSource] = useState('https://storage.animara.world/unhappy-ghost.webm');
   const videoRef = useRef(null);
+  const isMobileApp = useState(
+    /android|iPad|iPhone|iPod/i.test(navigator.userAgent) ||
+    (navigator.userAgent.includes("Mac") && "ontouchend" in document)
+  );
 
   // intro animation & fetch countdown
   useEffect(() => {
@@ -568,9 +572,9 @@ function MintPage() {
                     ${(isAllowed && !mintingNFT) || !walletAddr ? `hover:scale-105` : ``}`}
                     onMouseEnter={() => isAllowed ? setGhostExcited(true) : setGhostExcited(false)}
                     onMouseLeave={() => !mintingNFT ? setGhostExcited(false) : setGhostExcited(true)}>
-                  {loadingCandyMachine ? 
+                  {isMobileApp || loadingCandyMachine ? 
                     <span className='h-20 m-auto text-red-300 text-xl lg:text-3xl'>
-                      {`Minting not available yet`}    
+                      {`Loading`}    
                     </span>
                     : 
                     <button
@@ -766,9 +770,9 @@ function MintPage() {
                     onMouseEnter={() => isAllowed ? setGhostExcited(true) : setGhostExcited(false)}
                     onMouseLeave={() => !mintingNFT ? setGhostExcited(false) : setGhostExcited(true)}
               >
-                {loadingCandyMachine ? 
+                {isMobileApp || loadingCandyMachine ? 
                   <span className='h-20 m-auto text-red-300 text-xl lg:text-3xl'>
-                    {`Minting not available yet`}  
+                    {`Loading`}  
                   </span>
                   : 
                   <button
