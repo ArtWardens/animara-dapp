@@ -82,7 +82,7 @@ export const App = () => {
     window.addEventListener('resize', handleResize);
 
     return () => window.removeEventListener('resize', handleResize);
-  }, [dispatch, setIsMobile]);
+  }, [dispatch]);
 
   return (
     <NoInternetConnection>
