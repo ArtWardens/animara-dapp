@@ -79,6 +79,21 @@ function Header() {
     return number ? number.toLocaleString() : '0';
   };
 
+  const getProfilePic = () => {
+    // default placeholder image
+    if (!currentUser) {
+      return '/assets/images/activeDog.webp';
+    }
+
+    let photoUrl = currentUser.photoUrl;
+    // process google user content
+    if (photoUrl.indexOf('googleusercontent.com') !== -1) {
+      photoUrl = `${photoUrl}?alt=media`;
+    }
+
+    return photoUrl;
+  };
+
   return (
     <>
       {/* Desktop Menu */}
@@ -102,7 +117,7 @@ function Header() {
               </div>
             )}
             <img
-              src={currentUser?.photoUrl ? currentUser.photoUrl : '/assets/images/activeDog.webp'}
+              src={getProfilePic()}
               alt="profile"
               className="justify-self-center rounded-full w-24 cursor-pointer group-hover:brightness-[0.55] transition-all duration-300"
               style={{
@@ -267,7 +282,7 @@ function Header() {
               )}
 
               <img
-                src={currentUser?.photoUrl ? currentUser.photoUrl : '/assets/images/activeDog.webp'}
+                src={getProfilePic()}
                 alt="profile"
                 className="items-center rounded-full w-32 mx-auto mb-4"
                 style={{
