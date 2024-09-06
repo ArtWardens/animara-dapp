@@ -57,7 +57,7 @@ function EnergyRegeneration({ isLeaderboardOpen, setIsLeaderboardOpen, isOneTime
   return (
     <>
       <div
-        className="absolute flex flex-col xl:grid grid-cols-3 gap-3 justify-center items-center w-full mx-auto my-4 p-4 xl:p-12 top-[8rem] xl:top-60"
+        className="absolute flex flex-col xl:grid grid-cols-3 gap-3 justify-center items-center w-full mx-auto pt-8 xl:px-12 top-[8rem] xl:top-60"
         style={{
           zIndex: 20,
         }}
@@ -98,7 +98,7 @@ function EnergyRegeneration({ isLeaderboardOpen, setIsLeaderboardOpen, isOneTime
 
         {/* Stamina bar */}
         <div
-          className={`text-center border-2 border-white border-solid rounded-tl-3xl rounded-tr-md rounded-br-3xl rounded-bl-md pt-1 pb-2 transition-opacity duration-700 ${
+          className={`w-full px-6 transition-opacity duration-700 ${
             showProgressBar ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0'
           }`}
         >
@@ -114,6 +114,7 @@ function EnergyRegeneration({ isLeaderboardOpen, setIsLeaderboardOpen, isOneTime
               primaryColor="#49DEFF"
               secondaryColor="#FAFF00"
               darkTheme
+              className="text-center border-2 border-white border-solid rounded-tl-3xl rounded-tr-md rounded-br-3xl rounded-bl-md pt-1 pb-2"
             />
           )}
         </div>
