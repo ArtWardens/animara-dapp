@@ -105,6 +105,26 @@ function EnergyRegeneration() {
           )}
         </div>
       </div>
+
+      {isOneTimeTaskOpen && <TaskList setIsOneTimeTaskOpen={setIsOneTimeTaskOpen} />}
+
+      {isLeaderboardOpen && (
+        <div
+          className={`fixed left-0 top-0 flex h-full min-h-screen w-full items-center justify-center bg-dark/90 px-4 py-5 ${
+            isLeaderboardOpen ? 'block' : 'hidden'
+          }`}
+          style={{
+            zIndex: 100,
+          }}
+        >
+          <LeaderBoardModal
+            timeRemaining={timeRemaining}
+            countdown={countDownRemaining}
+            isLeaderBoardOpen={isLeaderboardOpen}
+            setIsLeaderBoardOpen={setIsLeaderboardOpen}
+          />
+        </div>
+      )}
     </>
   );
 }

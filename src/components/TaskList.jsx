@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { PropTypes } from "prop-types";
-import { Box, Modal } from '@mui/material';
-import { getOneTimeTaskList, completeOneTimeTask, useOneTimeTaskList, useOneTimeTaskListSuccess, useUserDetails } from '../sagaStore/slices';
+import { FaInstagram, FaTwitter, FaTelegramPlane, FaYoutube, FaLink } from 'react-icons/fa';
+import { getOneTimeTaskList, completeOneTimeTask, useOneTimeTaskList, useOneTimeTaskListSuccess, useTaskIdToComplete, useUserDetails } from '../sagaStore/slices';
 import { useAppDispatch } from '../hooks/storeHooks';
 
 const TaskList = ({ setIsOneTimeTaskOpen }) => {
@@ -9,44 +9,57 @@ const TaskList = ({ setIsOneTimeTaskOpen }) => {
   const currentUser = useUserDetails();
   const oneTimeTaskList = useOneTimeTaskList();
   const getOneTimeTaskListSuccess = useOneTimeTaskListSuccess();
-  const [openTaskModal, setOpenTaskModal] = useState(false);
-  const [currentTask, setCurrentTask] = useState({});
+  const taskIdToComplete = useTaskIdToComplete();
+  const [showTaskModal, setShowTaskModal] = useState(true);
 
   useEffect(() => {
     if(!getOneTimeTaskListSuccess){
       dispatch(getOneTimeTaskList());
     }
-  },[dispatch, getOneTimeTaskListSuccess]);
+  },[dispatch, getOneTimeTaskListSuccess, oneTimeTaskList]);
 
   const handleCloseModal = () => {
-    setIsOneTimeTaskOpen(false);
-    setCurrentTask({});
+    if(showTaskModal) {
+      setShowTaskModal(false);
+    }
+    
+    const timerPanel = setTimeout(() => {
+      setIsOneTimeTaskOpen(false);
+    }, 500);
+
+    return () => {
+      clearTimeout(timerPanel);
+    };
   };
 
-  const handleOpenTaskModal = (modal) => {
-    setOpenTaskModal(modal);
+  const getIconComponent = (actionType) => {
+    switch (actionType) {
+        case 'youtube':
+            return FaYoutube;
+        case 'instagram':
+            return FaInstagram;
+        case 'twitter':
+            return FaTwitter;
+        case 'telegram':
+            return FaTelegramPlane;
+        default:
+            return FaLink;
+    }
   };
-
-  const handleModalTask = () => {
-    window.open(currentTask.url, '_blank');
-    dispatch(completeOneTimeTask({
-      taskId: currentTask.taskId,
-    }));
-    setIsOneTimeTaskOpen(false);
-  };
-
   const renderOneTimeTaskList = useMemo(() => {
-    const handleLinkTask = (task) => {
+    const handleTaskClick = (task) => {
       window.open(task.url, '_blank');
-      const newCompletedTaskArr = currentUser?.completedTask.concat([task.taskId])
+      const newCompletedTaskArr = currentUser?.completedTask.concat([task.taskId]);
       dispatch(completeOneTimeTask({
         uid: currentUser?.uid,
         coins: task.coins,
+        taskId: task.taskId,
         completedTask: newCompletedTaskArr,
       }));
     };
 
-    const completedTask = currentUser?.completedTask;
+    // Safeguard to ensure `completedTask` is an array to prevent error
+    const completedTask = Array.isArray(currentUser?.completedTask) ? currentUser.completedTask : [];
     const sortedTaskList = [...oneTimeTaskList].sort((a, b) => a.index - b.index);
     const sortedCompletedTask = sortedTaskList.sort((a, b) => {
       const aCompleted = completedTask.includes(a.taskId);
@@ -55,106 +68,99 @@ const TaskList = ({ setIsOneTimeTaskOpen }) => {
     });
     
     return (
-      sortedCompletedTask.map((item, index) => {
-        const disabled = completedTask?.includes(item.taskId)
+      sortedCompletedTask.map((task, index) => {
+        const IconComponent = getIconComponent(task.actionType);
+        const isTaskCompleted = completedTask?.includes(task.taskId);
         return(
           <div
             key={index}
-            className={`${disabled ? "opacity-50" : "opacity-100"} bg-gray/20 w-full py-2 px-3.5 rounded-md items-center flex space-x-6`}
-            onClick={() => {
-              if(!disabled){
-                switch(item.actionType){
-                  case "url":
-                    handleLinkTask(item);
-                    break;
-                  case "modal":
-                    handleOpenTaskModal(item.modal);
-                    break;
-                  default:
-                    break;
-                }
-                setCurrentTask(item);
-              }
-            }}
+            disabled={taskIdToComplete !== ''}
+            className={`${isTaskCompleted ? "" : "dark:hover:bg-[#0a4780] hover:border-1 hover:shadow-[0px_4px_4px_0px_#FFFBEF_inset,0px_-4px_4px_0px_rgba(255,249,228,0.48),0px_5px_4px_0px_rgba(232,140,72,0.48)] transition-all duration-300 hover:scale-105"} 
+            bg-[#003459] w-full py-2 px-3.5 rounded-md items-center flex space-x-6`}
+            onClick={() => isTaskCompleted ? null : handleTaskClick(task)}
           >
-            <div className="bg-yellow-400 size-7" />
-            <div className="flex flex-col">
-              <p>{item.title}</p>
+            <div className="w-[15%] flex justify-center items-center">
+                <IconComponent className={`w-8 h-8 ${isTaskCompleted ? 'text-[#ffc75a]' : 'text-white'}`} />
+            </div>
+            <div className="flex flex-col grow">
+              <p className="text-[1.25rem] md:text-2xl text-left text-[#80E8FF]">{task.title}</p>
               <div className="flex items-center ">
-                <img src="/assets/images/gem2.webp" className="cursor-pointer h-4" alt="gem2" />
-                <div className="pl-2 flex items-center">
-                  <p className="text-blue-200">
-                    +{item.coins}
-                    {item.description && <span className="text-zinc-400 pl-3">{item.description}</span>}
+                <div className="flex items-center">
+                  <p className="text-[1rem] md:text-lg text-[#C5C5C5] font-outfit">
+                    <span className="relative top-1 inline-flex items-center text-[#FFC85A] text-[1rem] md:text-lg font-LuckiestGuy">
+                      <img src="/assets/images/coin.webp" alt="coin" className="w-5 h-5 mr-2" />
+                      {task.coins} &nbsp;
+                    </span> 
+                    {task.description}
                   </p>
                 </div>
               </div>
+            </div>
+            <div className="w-[15%] flex justify-center items-center">
+            {(taskIdToComplete !== '' && taskIdToComplete === task.taskId) ?
+                // loader
+                <div>
+                    <svg
+                        aria-hidden="true"
+                        className="w-8 h-8 text-Fuchsia-200 animate-spin dark:text-Fuchsia-200 fill-yellow-600"
+                        viewBox="0 0 100 101"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                    >
+                        <path
+                        d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+                        fill="currentColor"
+                        />
+                        <path
+                        d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+                        fill="currentFill"
+                        />
+                    </svg>
+                </div>:
+                <img
+                    className={isTaskCompleted ? "w-10" : "w-9"}
+                    src={isTaskCompleted ? "/assets/images/clicker-character/checkedBox.webp" : "/assets/images/clicker-character/checkBox.webp"}
+                    alt={isTaskCompleted ? "Checked Checkbox" : "Unchecked Checkbox"}
+                />}
             </div>
           </div>
         )
       })
     );
-  },[dispatch, oneTimeTaskList, currentUser?.uid, currentUser?.completedTask]);
+  },[dispatch, oneTimeTaskList, currentUser?.uid, currentUser?.completedTask, taskIdToComplete]);
 
   return (
-    <div className="fixed inset-0 overflow-y-auto z-[10000]">
-      <div className="absolute inset-0 bg-pink-300 z-[100001]">
-        <div
-          className="absolute inset-0 bg-cover bg-no-repeat z-[100001]"
-          style={{ backgroundImage: 'url(/assets/images/Light.webp)' }}
-        >
-          <div className="absolute top-4 left-4">
-            <img src="/assets/images/username.webp" className="cursor-pointer h-16" alt="username" />
-            <p className="text-white absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/3 w-20 truncate">
-              <span>{`${currentUser?.first_name} ${currentUser?.last_name}`}</span>
-            </p>
-          </div>
-          <div className="w-screen h-screen flex ">
-            <div className="relative bg-black h-full max-h-[80%] w-full max-w-screen-sm m-auto flex justify-center rounded-2xl">
-              <div onClick={handleCloseModal} className="absolute -top-4 -right-6">
-                <img src="/assets/images/x.webp" width={50} height={50} className="cursor-pointer" alt="x" />
-              </div>
-              <div className="flex flex-1 flex-col space-y-5 max-w-[80%] py-10">
-                <p className="flex items-center justify-center space-x-3 text-lg">
-                  <img src="/assets/images/gem2.webp" className="cursor-pointer h-8" alt="gem2" />
-                  <span>{currentUser.coins}</span>
-                </p>
-                <p className="text-lg px-3.5">available tasks</p>
-                <div className="max-h-[80%] h-full overflow-y-auto px-3.5 space-y-2 one-time-scrollbar">
-                  {renderOneTimeTaskList}
-                </div>
-                <Modal
-                  open={openTaskModal === "promo-video"}
-                  onClose={() => setOpenTaskModal(false)}
-                  aria-labelledby="task-modal-title"
-                  aria-describedby="task-modal-description"
-                  ond
-                >
-                  <Box
-                    className="bg-black items-center justify-center flex flex-col space-y-10 w-fit min-w-64 py-8"
-                    sx={{
-                      position: 'absolute',
-                      top: '50%',
-                      left: '50%',
-                      transform: 'translate(-50%, -50%)',
-                      boxShadow: 24,
-                      borderRadius: 6,
-                    }}
-                  >
-                    <div className="flex space-y-4 flex-col items-center">
-                      <div className="size-20 bg-gray-500"></div>
-                      <div className="text-center">
-                        <h2 id="task-modal-title">{currentTask?.title}</h2>
-                        <p id="task-modal-description">{currentTask?.description}</p>
-                      </div>
-                    </div>
-                    <button className="bg-blue-500 rounded px-3.5 py-2 max-w-28 text-sm" onClick={handleModalTask}>
-                      Watch Video to complete task
-                    </button>
-                  </Box>
-                </Modal>
-              </div>
-            </div>
+    <div
+      className={`fixed left-0 top-0 flex h-full min-h-screen w-full items-center justify-center bg-dark/90 px-4 py-4`}
+      style={{
+        zIndex: 90,
+      }}
+    >
+      <div
+        className={`
+              relative min-w-full min-h-[75%] max-w-[1200px] px-[2rem] py-[2rem] rounded-[20px] text-center bg-cover bg-no-repeat md:bg-[length:100%_70%] lg:bg-contain
+              sm:pt-[6rem]
+              md:min-w-[75%] md:px-[6rem] md:py-[10rem] 
+              lg:py-[7rem]
+              xl:py-[6rem] xl:px-[13rem]
+              ${showTaskModal ? 'animate-slideInFromBottom' : 'animate-slideOutToBottom'}`}
+        style={{
+          backgroundImage: `url(/assets/images/task_panel.webp)`,
+          backgroundPosition: "center",
+        }}
+      >
+        <div className="text-left grid w-full gap-1 md:gap-4 mb-8 pt-[6rem] sm:pt-8">
+          <button
+            className="w-[4rem] text-[#80E8FF] font-outfit font-semibold hover:brightness-75 ml-6"
+            type="button"
+            onClick={handleCloseModal}
+          >
+            &lt; &nbsp; Back
+          </button>
+
+          <h3 className="text-[1.5rem] lg:text-[2rem] text-[#FFAA00] pl-6">Complete missions to earn free coins</h3>
+          <div className="max-h-[500px] md:max-h-[280px] lg:max-h-[300px] xl:max-h-[350px] grid grid-cols-1 gap-3 py-2 pl-6 pr-8 overflow-y-auto custom-scrollbar">
+            {renderOneTimeTaskList}
           </div>
         </div>
       </div>
