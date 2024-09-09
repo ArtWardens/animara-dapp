@@ -1,5 +1,6 @@
 import React from "react";
 import ClickerView from "./ClickerView";
+import Header from "../../components/Header.jsx";
 
 function ClickerPage() {
   return (
@@ -12,10 +13,11 @@ function ClickerPage() {
         backgroundPosition: 'center',
       }}
     >
-      <div className="flex items-center justify-center h-full gap-4">
-        
-        <ClickerView />
+          
+      <Header />
 
+      <div className="flex items-center justify-center h-full gap-4">
+        <ClickerView />
       </div>
     </div>
   );
