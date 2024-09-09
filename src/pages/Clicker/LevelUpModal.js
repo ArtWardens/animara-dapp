@@ -16,13 +16,6 @@ const LevelUpModal = ({ onClose, coinReward }) => {
           backgroundRepeat: "no-repeat",
         }}
       >
-        {/* Close Button */}
-        <button
-          className="w-full items-end justify-end text-white text-4xl text-right hover:brightness-75"
-          onClick={onClose}
-        >
-          &times;
-        </button>
 
         <div className="text-center tracking-wider">
           <p
@@ -35,30 +28,41 @@ const LevelUpModal = ({ onClose, coinReward }) => {
           >
             LEVEL UP!
           </p>
-          <div className="mt-[2rem]">
-            <p className="text-[2rem] text-white font-bold tracking-wider mb-[1rem]">
-              LV{currentUser.level - 1} -&gt; LV{currentUser.level}
-            </p>
-            <p className="text-[1.25rem] text-white font-bold tracking-wider">
-              YOU GAINED
-            </p>
-          </div>
-          <div className="gap-2 flex items-center justify-center">
-            <img
-              className="w-[2.5rem] h-[2.5rem] object-contain my-auto"
-              src={"/assets/images/clicker-character/gem.webp"}
-              alt="gem"
-            />
-            <p
-              className="text-[2.25rem] text-[#FFAA00] tracking-normal overflow-hidden text-left ml-3"
-              style={{
-                WebkitTextStrokeWidth: "1.75px",
-                WebkitTextStrokeColor: "var(--Color-11, #FFF)",
-              }}
-            >
-              {coinReward}
-            </p>
-          </div>
+          {currentUser?.level < currentUser?.maxLevel ? (
+            <>
+              <div className="mt-[2rem]">
+                <p className="text-[2rem] text-white font-bold tracking-wider mb-[1rem]">
+                  LV{currentUser.level - 1} -&gt; LV{currentUser.level}
+                </p>
+                <p className="text-[1.25rem] text-white font-bold tracking-wider">
+                  YOU GAINED
+                </p>
+              </div>
+              <div className="gap-2 flex items-center justify-center">
+                <img
+                  className="w-[2.5rem] h-[2.5rem] object-contain my-auto"
+                  src={"/assets/images/clicker-character/gem.webp"}
+                  alt="gem"
+                />
+                <p
+                  className="text-[2.25rem] text-[#FFAA00] tracking-normal overflow-hidden text-left ml-3"
+                  style={{
+                    WebkitTextStrokeWidth: "1.75px",
+                    WebkitTextStrokeColor: "var(--Color-11, #FFF)",
+                  }}
+                >
+                  {coinReward}
+                </p>
+              </div>
+            </>
+          ) : (
+            <div className="mt-[2rem]">
+              <p className="text-[2rem] text-white font-bold tracking-wider mb-[1rem]">
+                Your LEVEL IS MAXED OUT!
+              </p>
+            </div>
+          ) }
+          
         </div>
 
         <div className="w-full flex items-center justify-center">

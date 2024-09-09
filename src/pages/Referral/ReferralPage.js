@@ -6,7 +6,7 @@ import { getReferralStats, useUserDetails, useReferralStatLoading, useNFTPurchas
 import { useAppDispatch } from "../../hooks/storeHooks.js";
 import StyledQRCode from "../../components/StyledQRCode";
 import Header from "../../components/Header.jsx";
-import { PropagateLoader } from "react-spinners"; // Import the loader
+import { PropagateLoader } from "react-spinners";
 
 function ReferralPage (){
   const dispatch = useAppDispatch();
@@ -78,23 +78,23 @@ function ReferralPage (){
   useEffect(() => {
     const timerTitle = setTimeout(() => {
       setShowTitle(true);
-    }, 50);
+    }, 1);
 
     const timerRefOne = setTimeout(() => {
       setShowRefOne(true);
-    }, 50);
+    }, 1);
 
     const timerRefTwo = setTimeout(() => {
       setShowRefTwo(true);
-    }, 50);
+    }, 1);
 
     const timerRefThree = setTimeout(() => {
       setShowRefThree(true);
-    }, 250);
+    }, 200);
 
     const timerPanel = setTimeout(() => {
       setShowPanel(true);
-    }, 250);
+    }, 50);
 
     return () => {
       clearTimeout(timerTitle);
@@ -180,6 +180,7 @@ function ReferralPage (){
     <>
       <Header />
 
+      {/* background image */}
       <div
         className="flex flex-col items-center pb-4 xl:px-[2rem] min-h-screen"
         style={{
@@ -190,9 +191,16 @@ function ReferralPage (){
           backgroundAttachment: 'fixed',
         }}
       >
-        <div className={`container flex flex-col items-center gap-6 pt-40 tracking-wider transition-opacity duration-1000
-               ${showTitle ? `opacity-100` : `opacity-0`}`}>
+        {/* content */}
+        <div 
+          className={`container flex flex-col items-center gap-6 pt-40 tracking-wider transition-opacity duration-1000
+          ${showTitle ? `opacity-100` : `opacity-0`}`}
+        >
+
+          {/* title */}
           <div className="text-center text-white text-3xl uppercase">Refer Friends</div>
+          
+          {/* subtitle */}
           <span
             className="text-center text-amber-500 text-6xl uppercase tracking-normal pb-2"
             style={{
@@ -205,10 +213,11 @@ function ReferralPage (){
 
           {/* Desktop view */}
           <div className="hidden xl:grid grid-cols-3 gap-12">
-            <div className={`w-full h-full flex flex-col justify-center items-center hover:scale-110 transition-all duration-500
+            {/* left section */}
+            <div className={`w-[75%] h-full mx-auto flex flex-col justify-center items-center hover:scale-110 transition-all duration-500
                ${showRefOne ? `opacity-100` : `opacity-0`}`}>
               <img
-                className="w-4/5 h-auto origin-top-left shadow"
+                className="w-4/5 h-48 origin-top-left shadow"
                 src="/assets/images/clicker-character/ref01.webp"
                 alt="Invite Rewards"
               />
@@ -216,15 +225,16 @@ function ReferralPage (){
                 <div className="text-center text-white text-2xl uppercase leading-relaxed">
                   Invite Rewards
                 </div>
-                <div className="w-[350px] origin-top-left text-center text-stone-300 font-outfit text-[12px] leading-tight tracking-wide">
+                <div className="w-full origin-top-left text-center text-stone-300 font-outfit text-[12px] leading-tight tracking-wide">
                   Get a boost of currencies to use in our Tap-to-Earn game when anyone signs up with your code.
                 </div>
               </div>
             </div>
-            <div className={`w-full h-full flex flex-col justify-center items-center hover:scale-110 transition-all duration-500
+            {/* mid section */}
+            <div className={`w-[75%] h-full mx-auto flex flex-col justify-center items-center hover:scale-110 transition-all duration-500
                ${showRefThree ? `opacity-100` : `opacity-0`}`}>
               <img
-                className="w-full h-auto origin-top-left shadow"
+                className="w-full h-64 origin-top-left shadow"
                 src="/assets/images/clicker-character/ref02.webp"
                 alt="NFT Cashback"
               />
@@ -232,15 +242,16 @@ function ReferralPage (){
                 <div className="text-center text-white text-2xl uppercase leading-relaxed">
                   NFT Cashback
                 </div>
-                <div className="w-[350px] origin-top-left text-center text-stone-300 font-outfit text-[12px] leading-tight tracking-wide">
+                <div className="w-full origin-top-left text-center text-stone-300 font-outfit text-[12px] leading-tight tracking-wide">
                   Accumulate USDT rewards when anyone you invite purchases a piece of our NFT! Maybe you can snatch one for yourself too if you invite enough people...
                 </div>
               </div>
             </div>
-            <div className={`w-full h-full flex flex-col justify-center items-center hover:scale-110 transition-all duration-500
+            {/* right section */}
+            <div className={`w-[75%] h-full mx-auto flex flex-col justify-center items-center hover:scale-110 transition-all duration-500
                ${showRefTwo ? `opacity-100` : `opacity-0`}`}>
               <img
-                className="w-4/5 h-auto origin-top-left shadow"
+                className="w-4/5 h-48 origin-top-left shadow"
                 src="/assets/images/clicker-character/ref03.webp"
                 alt="Rank Up Rewards"
               />
@@ -248,7 +259,7 @@ function ReferralPage (){
                 <div className="text-center text-white text-2xl uppercase leading-relaxed">
                   Rank Up Rewards
                 </div>
-                <div className="w-[350px] origin-top-left text-center text-stone-300 font-outfit text-[12px] leading-tight tracking-wide">
+                <div className="w-full origin-top-left text-center text-stone-300 font-outfit text-[12px] leading-tight tracking-wide">
                   Earn MORE currencies in our Tap-to-Earn game when friends you invite hit certain level milestones in our Tap-to-Earn game.
                 </div>
               </div>
@@ -302,7 +313,7 @@ function ReferralPage (){
           </div>
 
           {/* Desktop bottom panel */}
-          <div className={`hidden xl:flex w-full transition-all duration-1000
+          <div className={`hidden xl:flex w-full items-center transition-all duration-1000
                ${showPanel ? `opacity-100 scale-100` : `opacity-0 scale-0`}`}>
             {/* referral stats & cashback */}
             <div className="w-[62%] hover:scale-105 transition-all duration-500"
@@ -310,8 +321,9 @@ function ReferralPage (){
               <div className="flex w-full">
                 {/* Referral stats */}
                 <div className="w-[65%] border-dashed border-r-4 border-transparent">
+                  {/* card background */}
                   <div
-                    className="w-full h-full p-12 items-center"
+                    className="w-full h-full items-center"
                     style={{
                       backgroundImage: 'url("/assets/images/clicker-character/ticketWeb02.webp")',
                       backgroundSize: 'contain',
@@ -320,12 +332,12 @@ function ReferralPage (){
                     }}
                   >
                     {/* Title */}
-                    <div className="text-neutral-700 text-xl tracking-wider pb-3">
+                    <div className="text-neutral-700 text-xl tracking-wider pt-9 pb-3 ml-9">
                       YOUR REFERRAL STATS
                     </div>
 
                     {/* referral stat content */}
-                    <div className="flex w-full gap-8 min-h-[160px]">
+                    <div className="flex w-full ml-9 gap-8 min-h-[160px]">
                       {loadingReferralStats ?
                       <div className="w-full h-full flex justify-center items-center my-auto">
                         <PropagateLoader color={"#FFB23F"} />
@@ -355,7 +367,7 @@ function ReferralPage (){
                             >
                               NFT PURCHASE
                             </p>
-                            <div className="text-neutral-700 text-xs font-semibold font-outfit">
+                            <div className="w-[80%] text-neutral-700 text-xs font-semibold font-outfit">
                               How many friend you invited have minted an NFT
                             </div>
                           </div>
@@ -383,7 +395,7 @@ function ReferralPage (){
                             >
                               FRIENDS INVITED
                             </p>
-                            <div className="text-neutral-700 text-xs font-semibold font-outfit">
+                            <div className="w-[80%] text-neutral-700 text-xs font-semibold font-outfit">
                               The number of friends who have accepted your invitation to Animara
                             </div>
                           </div>
@@ -738,8 +750,8 @@ function ReferralPage (){
               </div>
             </div>
           </div>
-        </div >
-      </div >
+        </div>
+      </div>
     </>
 );
 }
