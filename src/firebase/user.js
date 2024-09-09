@@ -88,7 +88,7 @@ const updateUserProfileImpl = async (
 
     const idToken = await auth.currentUser.getIdToken(/* forceRefresh */ false);
 
-    if (inviteCode !== "") {
+    if (inviteCode && inviteCode !== "") {
       await firstLoginLinkReferral({ idToken: idToken, referralCode: inviteCode });
     }
 

@@ -318,7 +318,7 @@ export const buildTx = (
   );
 
   tx = tx.prepend(setComputeUnitLimit(umi, { units }));
-  tx = tx.prepend(setComputeUnitPrice(umi, { microLamports: parseInt(process.env.REACT_APP__MICROLAMPORTS ?? "1001") }));
+  tx = tx.prepend(setComputeUnitPrice(umi, { microLamports: parseInt(process.env.REACT_APP_MICROLAMPORTS ?? "1001") }));
   tx = tx.setAddressLookupTables(luts);
   tx = tx.setBlockhash(latestBlockhash);
   return tx.build(umi);

@@ -1,12 +1,10 @@
 import React from "react";
 import ClickerView from "./ClickerView";
-// import backgroundImageClicker from '';
-import '../../styles/globals.css';
 
 function ClickerPage() {
   return (
     <div
-      className="w-full mx-auto bg-clicker-game bg-no-repeat bg-cover h-screen relative cursor-pointer -z-99"
+      className="w-full mx-auto bg-clicker-game bg-no-repeat bg-cover h-screen relative -z-99"
       style={{
         backgroundImage: `url(/assets/images/clicker-character/clickerBg.webp)`,
         backgroundSize: 'cover',

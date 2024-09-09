@@ -14,14 +14,14 @@ const LockPage = () => {
 
 
     useEffect(() => {
-        const timer1 = setTimeout(() => setShowLeftChain(true), 500);
-        const timer2 = setTimeout(() => setShowRightChain(true), 1500);
+        const timer1 = setTimeout(() => setShowLeftChain(true), 1);
+        const timer2 = setTimeout(() => setShowRightChain(true), 1);
         const timer3 = setTimeout(() => {
             setShowLock(true);
-        }, 2500);
+        }, 500);
         const timer4 = setTimeout(() => {
             setShowCountdown(true);
-        }, 3500);
+        }, 500);
 
         return () => {
             clearTimeout(timer1);

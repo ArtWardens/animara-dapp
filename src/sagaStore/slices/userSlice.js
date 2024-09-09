@@ -14,7 +14,7 @@ const userInitialState = {
   updateProfile: [],
   updateProfileLoading: false,
   getUserLoading: false,
-  updatePopupLoading: false,
+  dailyLoginLoading: false,
   getLeaderBoardLoading: false,
   getLeaderBoardSuccess: false,
   leaderBoard: [],
@@ -38,10 +38,10 @@ const userInitialState = {
   rechargeStaminaLoading: false,
   rechargeOpType: '',
   userLocationsLoading: false,
-  userLocations: [],
+  userLocations: null,
   upgradeUserLocationErrorCode: '',
   newlyUnlockedLocations: [],
-  dailyComboMatched: [],
+  dailyComboMatched: ["", "", ""],
   referralStatLoading: false,
   referralCount: 0,
   nftPurchasedReferralCount: 0,
@@ -53,6 +53,7 @@ const userInitialState = {
   mintDate: null,
   lockDate: null,
   earlyBirdDate: null,
+  levelUpCoinReward: 0,
 };
 
 export const userSlice = createSlice({
@@ -168,6 +169,8 @@ export const userSlice = createSlice({
     updateProfileSuccess: (state, { payload }) => {
       state.updateProfileLoading = false;
       state.user = payload;
+      state.localStamina = payload.stamina;
+      state.localCoins = payload.coins;
     },
     updateProfileError: (state, { payload }) => {
       state.error = payload;
@@ -191,7 +194,7 @@ export const userSlice = createSlice({
       state.user = payload;
     },
     updateDailyLogin: (state) => {
-      state.updatePopupLoading = true;
+      state.dailyLoginLoading = true;
       state.updatePopupSuccess = false;
     },
     updateDailyLoginSuccess: (state, { payload }) => {
@@ -203,12 +206,12 @@ export const userSlice = createSlice({
         loggedInToday: true,
         loginDays: payload.newLoginDay,
       }
-      state.updatePopupLoading = false;
+      state.dailyLoginLoading = false;
       state.updatePopupSuccess = true;
       state.isOpenDailyPopup = true;
     },
     updateDailyLoginError: (state, { payload }) => {
-      state.updatePopupLoading = false;
+      state.dailyLoginLoading = false;
       state.updatePopupSuccess = false;
       state.error = payload;
     },
@@ -302,16 +305,20 @@ export const userSlice = createSlice({
       }
       state.localCoins = payload.newCoins + coinDiff;
       state.localStamina = payload.newStamina + staminaDiff;
-      state.settleTapSessionLoading = true;
+      state.settleTapSessionLoading = false;
     },
     settleTapSessionError: (state, { payload }) => {
-      console.log(`failed to settle tap session with error; ${payload}`);
-      // check if is desync error
-      const currentUser = current(state.user);
-      state.localStamina = currentUser.stamina;
-      state.localCoins = currentUser.coins;
+      // check & handle desync error
+      if (payload.error === "too-fast"){
+        // reset stamina and coin amt to server values
+        state.user.stamina = payload.stamina;
+        state.user.coins = payload.coins;
+
+        state.localStamina = payload.stamina;
+        state.localCoins = payload.coins;
+      }
       state.error = payload;
-      state.settleTapSessionLoading = true;
+      state.settleTapSessionLoading = false;
     },
     rechargeStamina: (state, { payload }) => {
       state.rechargeStaminaLoading = true;
@@ -345,7 +352,8 @@ export const userSlice = createSlice({
       state.userLocationsLoading = true;
     },
     getUserLocationsSuccess: (state, { payload }) => {
-      state.userLocations = payload;
+      state.userLocations = payload.userLocations;
+      state.dailyComboMatched = payload.dailyComboMatched;
       state.userLocationsLoading = false;
     },
     getUserLocationsError: (state, { payload }) => {
@@ -358,15 +366,16 @@ export const userSlice = createSlice({
     upgradeUserLocationSuccess: (state, { payload }) => {
       // Ensure the array is empty before setting new values
       state.newlyUnlockedLocations = [];
+      state.upgradeUserLocationErrorCode = "";
 
       // Update explored location details 
-      const locationIndex = state.userLocations.userLocations.findIndex(
+      const locationIndex = state.userLocations.findIndex(
         (location) => location.locationId === payload.locationId
       );
 
       if (locationIndex !== -1) {
-        state.userLocations.userLocations[locationIndex] = {
-          ...state.userLocations.userLocations[locationIndex],
+        state.userLocations[locationIndex] = {
+          ...state.userLocations[locationIndex],
           level: payload.locationLvl,
           currentExploraPts: payload.locationExploraPts,
           nextLevelUpgradeCost: payload.nextLevelUpgradeCost,
@@ -376,22 +385,24 @@ export const userSlice = createSlice({
 
       // Update unlocked locations details
       if (payload.unlockedLocations && payload.unlockedLocations.length > 0) {
-        payload.unlockedLocations.forEach((unlockedLocationId) => {
-          const unlockedLocationIndex = state.userLocations.userLocations.findIndex(
-            (location) => location.locationId === unlockedLocationId
+        payload.unlockedLocations.forEach((unlockedLocation) => {
+          const unlockedLocationIndex = state.userLocations.findIndex(
+            (location) => location.locationId === unlockedLocation.locationId
           );
 
           if (unlockedLocationIndex !== -1) {
             // Update the level to 0 for the unlocked location
-            state.userLocations.userLocations[unlockedLocationIndex].level = 0;
+            state.userLocations[unlockedLocationIndex].level = 0;
+            state.userLocations[unlockedLocationIndex].nextLevelUpgradeCost = unlockedLocation.nextLevelUpgradeCosts;
+            state.userLocations[unlockedLocationIndex].nextLevelExploraPts = unlockedLocation.nextLevelExploraPoints;
 
             // Add to newlyUnlockedLocations array
-            state.newlyUnlockedLocations.push(unlockedLocationId);
+            state.newlyUnlockedLocations.push(unlockedLocation.locationId);
           }
         });
       }
 
-      state.dailyComboMatched = payload.completedDailyCombos || [];
+      state.dailyComboMatched = payload.completedDailyCombos;
 
       // Update user details
       const currentUser = current(state.user);
@@ -402,6 +413,7 @@ export const userSlice = createSlice({
         coins: payload.updatedCoins,
       }
       state.localCoins = payload.updatedCoins;
+      state.levelUpCoinReward = payload.levelUpCoinReward;
       state.userLocationsLoading = false;
     },
     upgradeUserLocationError: (state, { payload }) => {
@@ -579,7 +591,7 @@ export const useLeaderBoardDetails = () => useAppSelector((state) => state.user.
 export const useLeaderBoardLoading = () => useAppSelector((state) => state.user.getLeaderBoardLoading);
 export const useLeaderBoardLoadSuccess = () => useAppSelector((state) => state.user.getLeaderBoardSuccess);
 export const useIsOpenDailyPopup = () => useAppSelector((state) => state.user.isOpenDailyPopup);
-export const useUpdatePopupLoading = () => useAppSelector((state) => state.user.updatePopupLoading);
+export const useDailyLoginLoading = () => useAppSelector((state) => state.user.updatePopupLoading);
 export const useOneTimeTaskList = () => useAppSelector((state) => state.user.oneTimeTaskList);
 export const useTaskIdToComplete = () => useAppSelector((state) => state.user.taskIdToComplete);
 export const useOneTimeTaskListSuccess = () => useAppSelector((state) => state.user.getOneTimeTaskListSuccess);
@@ -606,6 +618,7 @@ export const useNFTMinted = () => useAppSelector((state) => state.user.nftMinted
 export const useMintDate = () => useAppSelector((state) => state.user.mintDate);
 export const useLockDate = () => useAppSelector((state) => state.user.lockDate);
 export const useEarlyBirdDate = () => useAppSelector((state) => state.user.earlyBirdDate);
+export const useLevelUpCoinReward = () => useAppSelector((state) => state.user.levelUpCoinReward);
 
 const userReducer = userSlice.reducer;
 

@@ -4,7 +4,7 @@ import { useWalletModal } from '@solana/wallet-adapter-react-ui';
 import { useWalletMultiButton } from '@solana/wallet-adapter-base-ui';
 import { useAppDispatch } from '../hooks/storeHooks';
 import { useNavigate } from 'react-router-dom/dist';
-import { getUser, fetchDates } from '../sagaStore/slices';
+import { getUser, fetchDates, useMintDate } from '../sagaStore/slices';
 import { useUserDetails, useBindWalletLoading, useUserAuthenticated, useAuthLoading } from '../sagaStore/slices';
 import { toast } from 'react-toastify';
 
@@ -14,6 +14,7 @@ const ClickerController = ({ Children }) => {
   const isAuthenticated = useUserAuthenticated();
   const isAuthLoading = useAuthLoading();
   const currentUser = useUserDetails();
+  const mintDate = useMintDate();
   const bindingWallet = useBindWalletLoading();
   const {
     publicKey,
@@ -30,12 +31,14 @@ const ClickerController = ({ Children }) => {
     if (!isAuthLoading) {
       if (isAuthenticated) {
         dispatch(getUser());
-        dispatch(fetchDates());
+        if (!mintDate) {
+          dispatch(fetchDates());
+        }
       } else {
         navigate('/login');
       }
     }
-  }, [dispatch, isAuthLoading, isAuthenticated, navigate]);
+  }, [dispatch, isAuthLoading, isAuthenticated, navigate, mintDate]);
 
   // check to make sure user is using correct wallet
   useEffect(() => {
