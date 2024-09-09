@@ -20,8 +20,11 @@ const ClickerView = () => {
 
   // Initialize
   useEffect(() => {
+    if (!currentUser) {
+      return;
+    }
     // check and popup daily login
-    if (currentUser && !currentUser?.loggedInToday) {
+    if (!currentUser?.loggedInToday) {
       dispatch(updateDailyLogin());
     }
   }, [currentUser, dispatch]);

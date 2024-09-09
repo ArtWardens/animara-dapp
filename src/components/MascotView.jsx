@@ -62,6 +62,7 @@ const MascotView = ({ openModal, setOpenModal }) => {
   // Initial setup for loading images and user-specific data
   useEffect(() => {
     if (isInitialized) return;
+    if (!currentUser) return;
 
     // Determine current mascot based on the user's level
     const mascotIndex = mascots.findIndex((mascot) => (currentUser?.level || 0) <= mascot.maxLevel);
@@ -82,6 +83,7 @@ const MascotView = ({ openModal, setOpenModal }) => {
 
   // Handle tap session settling when leaving or closing the window
   useEffect(() => {
+    if (!currentUser) return;
     const handleMouseLeave = (event) => {
       if (
         event.clientY <= 0 &&
@@ -114,6 +116,7 @@ const MascotView = ({ openModal, setOpenModal }) => {
 
   // periodic tap session settler
   const setupSettler = useCallback(() => {
+    if (!currentUser) return;
     // skip setup settler if already present
     if (periodicSettlerTimerRef.current) {
       return;
