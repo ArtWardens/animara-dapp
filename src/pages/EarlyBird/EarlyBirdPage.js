@@ -4,6 +4,7 @@ import { useDispatch } from "react-redux";
 import Header from "../../components/Header.jsx";
 import { FaInstagram, FaTwitter, FaTelegramPlane, FaYoutube, FaLink } from 'react-icons/fa';
 import { useEarlyBirdDate, useUserDetails,getEarlyBirdOneTimeTaskList, useEarlyBirdOneTimeTaskList, useTaskIdToComplete, useEarlyBirdOneTimeTaskListSuccess, completeOneTimeTask } from "../../sagaStore/slices/userSlice.js";
+import { useMobileMenuOpen } from '../../sagaStore/slices';
 import { startCountdown } from '../../firebase/countDown';
 
 const EarlyBirdPage = () => {
@@ -11,6 +12,7 @@ const EarlyBirdPage = () => {
     const dispatch = useDispatch();
     const currentUser = useUserDetails();
     const earlyBirdDate = useEarlyBirdDate();
+    const mobileMenuOpen = useMobileMenuOpen();
     const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
     const [isContainerVisible, setIsContainerVisible] = useState(true);
     const earlyBirdOneTimeTaskList = useEarlyBirdOneTimeTaskList();
@@ -110,8 +112,10 @@ const EarlyBirdPage = () => {
     return (
         <>
             <Header />
+            
             <div
-                className="flex-grow flex flex-col place-content-center items-center px-24 pb-4 min-h-screen"
+                className={`flex-grow flex flex-col place-content-center items-center px-24 pb-4 min-h-screen 
+                    ${mobileMenuOpen ? `hidden` : ``}`}
                 style={{
                     backgroundImage: 'url("/assets/images/clicker-character/clickerWall.webp")',
                     backgroundSize: 'cover',

@@ -10,6 +10,7 @@ import {
   updateProfile,
   useUpdateProfileLoading,
 } from "../../sagaStore/slices/userSlice.js";
+import { useMobileMenuOpen } from '../../sagaStore/slices';
 import Header from "../../components/Header.jsx";
 import WalletBindingPanel from "../../components/SolanaWallet/WalletBindingPanel.jsx";
 import "./EditProfile.css";
@@ -17,6 +18,7 @@ import "./EditProfile.css";
 const EditProfilePage = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const mobileMenuOpen = useMobileMenuOpen();
   const resetPasswordLoading = useResetPasswordLoading();
   const updateProfileLoading = useUpdateProfileLoading();
   const user = useUserDetails();
@@ -116,7 +118,8 @@ const EditProfilePage = () => {
           <Header />
 
           {/* content */}
-          <div className="flex flex-col 2xl:flex-row w-full mt-[5rem] lg:mt-0 gap-20">
+          <div className={`flex flex-col 2xl:flex-row w-full mt-[5rem] lg:mt-0 gap-20 
+            ${mobileMenuOpen ? `hidden` : ``}`}>
             {/* details panel */}
             <div className="w-full px-[2rem]">
               {/* header */}

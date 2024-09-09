@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { useLocation, useNavigate } from 'react-router-dom/dist';
 import { MoonLoader } from 'react-spinners';
-import { logOut, useUserDetails, useLocalCoins } from '../sagaStore/slices';
+import { logOut, useUserDetails, useLocalCoins, setMobileMenuOpen, useMobileMenuOpen } from '../sagaStore/slices';
 
 const lngs = {
   en: { nativeName: 'English' },
@@ -12,6 +12,7 @@ const lngs = {
 
 function Header() {
   const { i18n } = useTranslation();
+  const mobileMenuOpen = useMobileMenuOpen();
   const [langDropdownOpen, setLangDropdownOpen] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -34,6 +35,7 @@ function Header() {
     { name: 'REFERRAL', link: '/referral' },
   ];
   const handleButtonClick = (link) => {
+    dispatch(setMobileMenuOpen(false));
     if (link) {
       navigate(link);
     }
@@ -50,9 +52,6 @@ function Header() {
   const handleLogout = () => {
     dispatch(logOut());
   };
-
-  // State for mobile menu
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   // State for loading profile image
   const [loadingImage, setLoadingImage] = useState(true);
@@ -223,7 +222,7 @@ function Header() {
       {/* Mobile Hamburger Menu Button */}
       <button
         className="transition ease-in-out hover:scale-105 xl:hidden absolute top-[5rem] right-[2rem] xl:right-[4rem] z-50"
-        onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+        onClick={() => dispatch(setMobileMenuOpen(!mobileMenuOpen))}
       >
         <svg
           className={`h-9 w-9 text-amber-500 ${mobileMenuOpen ? 'hidden' : 'block'}`}
@@ -255,7 +254,7 @@ function Header() {
 
               <button
                 className="transition ease-in-out hover:scale-105 xl:hidden right-[3rem] xl:right-[4rem] z-50"
-                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                onClick={() => dispatch(setMobileMenuOpen(!mobileMenuOpen))}
               >
                 <svg
                   className="h-9 w-9 text-amber-500"
