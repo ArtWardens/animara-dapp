@@ -424,7 +424,7 @@ function MintPage() {
                   }}
                 >
                   Compete in the Animara leaderboard event and
-                  compete to win prizes worth up to $600,000!
+                  compete to win prizes worth up to 365k USDC!
                 </p>
               </div>
             </div>
