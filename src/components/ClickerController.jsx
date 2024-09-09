@@ -53,6 +53,14 @@ const ClickerController = ({ Children }) => {
       return;
     }
 
+    // skip enhforcing wallet binding if is mobile
+    if (
+      /android|iPad|iPhone|iPod/i.test(navigator.userAgent) ||
+      (navigator.userAgent.includes('Mac') && 'ontouchend' in document)
+    ) {
+      return;
+    }
+
     // extract wallet address
     // Note: has to use public key as a string or else its an object
     const walletAddr = `${publicKey || ''}`;
