@@ -579,11 +579,16 @@ function MintPage() {
                     ${(isAllowed && !mintingNFT) || !walletAddr ? `hover:scale-105` : ``}`}
                     onMouseEnter={() => isAllowed ? setGhostExcited(true) : setGhostExcited(false)}
                     onMouseLeave={() => !mintingNFT ? setGhostExcited(false) : setGhostExcited(true)}>
-                  {isMobileApp || loadingCandyMachine ? 
+                  {isMobileApp ? 
+                    <span className='h-20 m-auto text-red-300 text-xl lg:text-3xl'>
+                      {`Cannot mint on mobile`}    
+                    </span>
+                  : 
+                    loadingCandyMachine ? 
                     <span className='h-20 m-auto text-red-300 text-xl lg:text-3xl'>
                       {`Loading`}    
                     </span>
-                    : 
+                    :
                     <button
                       className={`h-[80px] w-[250px] rounded-full border justify-center items-center inline-flex shadow-[0px_4px_4px_0px_#FFFBEF_inset,0px_-4px_4px_0px_rgba(255,249,228,0.48),0px_5px_4px_0px_rgba(232,140,72,0.48)] 
                         ${isAllowed || !walletAddr ?
@@ -604,7 +609,7 @@ function MintPage() {
                             <span className="">{!walletAddr ? `Connect Wallet` : isAllowed ? `Mint Now` : insufficentBalance ? `Insufficient Funds` : `Mint Disabled`}</span>
                           </div>
                         }
-                    </button>    
+                    </button>  
                   }
                 </div>
                 
