@@ -6,7 +6,7 @@ import { getReferralStats, useUserDetails, useReferralStatLoading, useNFTPurchas
 import { useAppDispatch } from "../../hooks/storeHooks.js";
 import StyledQRCode from "../../components/StyledQRCode";
 import Header from "../../components/Header.jsx";
-import { PropagateLoader } from "react-spinners"; // Import the loader
+import { PropagateLoader } from "react-spinners";
 
 function ReferralPage (){
   const dispatch = useAppDispatch();
@@ -94,7 +94,7 @@ function ReferralPage (){
 
     const timerPanel = setTimeout(() => {
       setShowPanel(true);
-    }, 200);
+    }, 50);
 
     return () => {
       clearTimeout(timerTitle);
@@ -217,7 +217,7 @@ function ReferralPage (){
             <div className={`w-[75%] h-full mx-auto flex flex-col justify-center items-center hover:scale-110 transition-all duration-500
                ${showRefOne ? `opacity-100` : `opacity-0`}`}>
               <img
-                className="w-4/5 h-auto origin-top-left shadow"
+                className="w-4/5 h-48 origin-top-left shadow"
                 src="/assets/images/clicker-character/ref01.webp"
                 alt="Invite Rewards"
               />
@@ -234,7 +234,7 @@ function ReferralPage (){
             <div className={`w-[75%] h-full mx-auto flex flex-col justify-center items-center hover:scale-110 transition-all duration-500
                ${showRefThree ? `opacity-100` : `opacity-0`}`}>
               <img
-                className="w-full h-auto origin-top-left shadow"
+                className="w-full h-64 origin-top-left shadow"
                 src="/assets/images/clicker-character/ref02.webp"
                 alt="NFT Cashback"
               />
@@ -251,7 +251,7 @@ function ReferralPage (){
             <div className={`w-[75%] h-full mx-auto flex flex-col justify-center items-center hover:scale-110 transition-all duration-500
                ${showRefTwo ? `opacity-100` : `opacity-0`}`}>
               <img
-                className="w-4/5 h-auto origin-top-left shadow"
+                className="w-4/5 h-48 origin-top-left shadow"
                 src="/assets/images/clicker-character/ref03.webp"
                 alt="Rank Up Rewards"
               />

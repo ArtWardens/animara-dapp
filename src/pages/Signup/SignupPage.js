@@ -10,11 +10,13 @@ import {
   loginWithTwitter,
   loginWithTelegram,
 } from "../../sagaStore/slices/userSlice.js";
-import {  CSSTransition } from "react-transition-group";
+import { useIsIOS } from "../../sagaStore/slices/systemSlice.js";
+import { CSSTransition } from "react-transition-group";
 
 const SignupPage = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const isIOS = useIsIOS();
   const location = useLocation();
   const isAuthLoading = useAuthLoading();
   const isAuthenticated = useUserAuthenticated();
@@ -225,12 +227,19 @@ const SignupPage = () => {
           {/* Upper Section */}
           <div className="relative self-center gap-[1.25rem] flex">
             <div className="flex-none">
-              <video 
-                ref={videoRef}
-                className="h-[5rem] w-[5rem]"
-                autoPlay>
-                  <source src="../assets/icons/AnimaraLogoAnimated.webm" type="video/webm" />
-              </video>
+              {isIOS?
+                <img 
+                  src="/assets/icons/AnimaraLogo.webp" alt="logo"
+                  className="h-[5rem] w-[5rem]"
+                />
+                :
+                <video 
+                  ref={videoRef}
+                  className="h-[5rem] w-[5rem]"
+                  autoPlay>
+                    <source src="https://storage.animara.world/logo-animated.webm" type="video/webm" />
+                </video>
+              }
             </div>
             <div className="grow">
               <p className="text-[2.5rem] leading-[2.75rem] text-[#FFC85A]">Sign up</p>
@@ -372,6 +381,7 @@ const SignupPage = () => {
           {/* Social Login Buttons Section */}
           <button 
             type="button" 
+            disabled={isAuthLoading}
             className="w-full max-h-[4rem] font-outfit text-[1rem] leading-[1rem] text-[#C5C5C5] rounded-[0.625rem] py-[0.875rem] px-[1rem] gap-[1.25rem] bg-[#0A4169] hover:brightness-75 text-center inline-flex items-center justify-center"
             onClick={handleLoginWithGoogle} 
           >
@@ -383,6 +393,7 @@ const SignupPage = () => {
           </button>
           <button 
             type="button" 
+            disabled={isAuthLoading}
             className="mt-1 max-h-[4rem] w-full font-outfit text-[1rem] leading-[1rem] text-[#C5C5C5] rounded-[0.625rem] py-[0.875rem] px-[1rem] gap-[1.25rem] bg-[#0A4169] hover:brightness-75 text-center inline-flex items-center justify-center"
             onClick={handleLoginWithTwitter} 
           >
