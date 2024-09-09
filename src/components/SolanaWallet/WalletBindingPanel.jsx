@@ -100,7 +100,7 @@ const WalletBindingPanel = () => {
           </span>
 
           {/* items */}
-          <ul className="text-white text-center text-sm xl:text-2xl font-normal transition-all duration-300 uppercase  mx-auto max-w-md list-none list-inside">
+          <ul className="text-white text-center text-sm xl:text-2xl font-normal transition-all duration-300 uppercase mx-auto max-w-md list-none list-inside">
             <li className="mb-2 ">
               <div className="flex flex-row items-center justify-center">
                 <img src={'/assets/images/clicker-character/gem.webp'} alt="gem" className="w-6 h-6 mr-[1rem]" />
@@ -123,7 +123,7 @@ const WalletBindingPanel = () => {
         </div>
 
         {/* wallet info */}
-        <div className="flex flex-col h-auto my-6">
+        <div className="flex flex-col h-auto my-6 p-6">
           {/* wallet binding info */}
           {user?.walletAddr ? (
             <div className="flex flex-col mb-6">
