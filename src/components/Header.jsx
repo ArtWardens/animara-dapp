@@ -81,9 +81,9 @@ function Header() {
 
   return (
     <>
-      {/* Desktop Menu */}
+      {/* Header */}
       <div
-        className={`flex flex-row absolute top-[3rem] z-10 p-1 pr-4 gap-2 left-[1rem] xl:left-[4rem] ${
+        className={`flex flex-row absolute max-w-[70dvw] top-[3rem] z-10 p-1 pr-4 gap-2 left-[1rem] xl:left-[4rem] ${
           mobileMenuOpen ? 'hidden' : ''
         }`}
         style={{
@@ -94,6 +94,7 @@ function Header() {
           zIndex: 91,
         }}
       >
+        {/* profile picture */}
         <div className="p-1 w-20 h-20 relative">
           <button onClick={handleEditProfile} className="group relative">
             {loadingImage && (
@@ -102,7 +103,7 @@ function Header() {
               </div>
             )}
             <img
-              src={currentUser?.photoUrl ? currentUser.photoUrl : '/assets/images/clicker-character/2-initial.webp'}
+              src={currentUser?.photoUrl ? currentUser.photoUrl : '/assets/active/activeDog.webp'}
               alt="profile"
               className="justify-self-center rounded-full w-24 cursor-pointer group-hover:brightness-[0.55] transition-all duration-300"
               style={{
@@ -115,7 +116,7 @@ function Header() {
               onLoad={() => setLoadingImage(false)}
               onError={(e) => {
                 e.target.onerror = null;
-                e.target.src = '/assets/images/clicker-character/2-initial.webp';
+                e.target.src = '/assets/active/activeDog.webp';
                 setLoadingImage(false);
               }}
             />
@@ -127,7 +128,8 @@ function Header() {
           </button>
         </div>
 
-        <div className="flex flex-col place-content-center">
+        {/* user details */}
+        <div className="flex flex-col place-content-center flex-shrink">
           <div className="font-outfit text-md flex">
             <p>{currentUser?.name || 'Animara User'}</p>
             <p className="ml-4 font-LuckiestGuy text-[#F46700]">LV.{currentUser?.level}</p>
@@ -135,7 +137,7 @@ function Header() {
 
           <div className="gap-2 flex">
             <img className="w-8 object-contain" src={'/assets/images/clicker-character/gem.webp'} alt="gem" />
-            <div className="relative flex items-center justify-center w-44">
+            <div className="relative flex items-center justify-center max-w-44">
               <span
                 ref={coinsDisplayRef}
                 className="relative text-3xl text-amber-500 tracking-normal w-full overflow-hidden text-left"
@@ -151,6 +153,7 @@ function Header() {
         </div>
       </div>
 
+      {/* desktop navigation bar */}
       <div
         className="hidden xl:flex absolute top-16 gap-2 right-[4rem] z-96 items-center"
         style={{
@@ -267,7 +270,7 @@ function Header() {
               )}
 
               <img
-                src={currentUser?.photoUrl ? currentUser.photoUrl : '/assets/images/clicker-character/2-initial.webp'}
+                src={currentUser?.photoUrl ? currentUser.photoUrl : '/assets/active/activeDog.webp'}
                 alt="profile"
                 className="items-center rounded-full w-32 mx-auto mb-4"
                 style={{
