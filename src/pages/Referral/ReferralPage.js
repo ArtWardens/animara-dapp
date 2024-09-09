@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { FaCopy, FaShareFromSquare } from "react-icons/fa6";
 import { getReferralStats, useUserDetails, useReferralStatLoading, useNFTPurchasedReferralCount, useReferralCount, useBasicClaimable, useNftClaimable } from "../../sagaStore/slices";
+import { useMobileMenuOpen } from '../../sagaStore/slices';
 import { useAppDispatch } from "../../hooks/storeHooks.js";
 import StyledQRCode from "../../components/StyledQRCode";
 import Header from "../../components/Header.jsx";
@@ -12,6 +13,7 @@ function ReferralPage (){
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const currentUser = useUserDetails();
+  const mobileMenuOpen = useMobileMenuOpen();
   const [hasReferralStat, setHasReferralStat] = useState(false);
   const loadingReferralStats = useReferralStatLoading();
   const referralCount = useReferralCount();
@@ -182,7 +184,8 @@ function ReferralPage (){
 
       {/* background image */}
       <div
-        className="flex flex-col items-center pb-4 xl:px-[2rem] min-h-screen"
+        className={`flex flex-col items-center pb-4 xl:px-[2rem] min-h-screen 
+          ${mobileMenuOpen ? `hidden` : ``}`}
         style={{
           backgroundImage: 'url("/assets/images/clicker-character/clickerWall.webp")',
           backgroundSize: 'cover',

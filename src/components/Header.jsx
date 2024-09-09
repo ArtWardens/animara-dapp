@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { useLocation, useNavigate } from 'react-router-dom/dist';
 import { MoonLoader } from 'react-spinners';
-import { logOut, useUserDetails, useLocalCoins } from '../sagaStore/slices';
+import { logOut, useUserDetails, useLocalCoins, setMobileMenuOpen, useMobileMenuOpen } from '../sagaStore/slices';
 
 const lngs = {
   en: { nativeName: 'English' },
@@ -12,6 +12,7 @@ const lngs = {
 
 function Header() {
   const { i18n } = useTranslation();
+  const mobileMenuOpen = useMobileMenuOpen();
   const [langDropdownOpen, setLangDropdownOpen] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -34,6 +35,7 @@ function Header() {
     { name: 'REFERRAL', link: '/referral' },
   ];
   const handleButtonClick = (link) => {
+    dispatch(setMobileMenuOpen(false));
     if (link) {
       navigate(link);
     }
@@ -50,9 +52,6 @@ function Header() {
   const handleLogout = () => {
     dispatch(logOut());
   };
-
-  // State for mobile menu
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   // State for loading profile image
   const [loadingImage, setLoadingImage] = useState(true);
@@ -223,7 +222,7 @@ function Header() {
       {/* Mobile Hamburger Menu Button */}
       <button
         className="transition ease-in-out hover:scale-105 xl:hidden absolute top-[5rem] right-[2rem] xl:right-[4rem] z-50"
-        onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+        onClick={() => dispatch(setMobileMenuOpen(!mobileMenuOpen))}
       >
         <svg
           className={`h-9 w-9 text-amber-500 ${mobileMenuOpen ? 'hidden' : 'block'}`}
@@ -239,7 +238,7 @@ function Header() {
       {/* Mobile Menu */}
       {mobileMenuOpen && (
         <div
-          className="h-full absolute inset-0 z-40 flex flex-col items-center justify-start p-[4rem] overflow-hidden"
+          className="h-full absolute inset-0 z-40 flex flex-col items-center justify-start py-[2rem] px-[4rem] overflow-hidden"
           style={{
             backgroundImage: 'url("/assets/images/clicker-character/clickerWall.webp")',
             backgroundSize: 'cover',
@@ -247,15 +246,17 @@ function Header() {
             backgroundRepeat: 'no-repeat',
           }}
         >
-          <div className="w-full flex flex-col space-y-[4rem]">
+          <div className={`w-full flex flex-col 
+            ${window.innerHeight < 768 ? "space-y-2" : "space-y-4" }  
+          `}>
             <div className="w-full flex flex-row justify-between">
-              <div className="left-[3rem] flex items-center space-x-4">
+              <div className="flex items-center space-x-3">
                 <img src="/assets/images/clicker-character/animara-logo.webp" alt="Animara Logo" className="h-8" />
               </div>
 
               <button
                 className="transition ease-in-out hover:scale-105 xl:hidden right-[3rem] xl:right-[4rem] z-50"
-                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                onClick={() => dispatch(setMobileMenuOpen(!mobileMenuOpen))}
               >
                 <svg
                   className="h-9 w-9 text-amber-500"
@@ -270,7 +271,7 @@ function Header() {
             </div>
 
             <div
-              className="w-full h-full text-center scale-125 p-[6rem] -z-50"
+              className="w-full h-full text-center scale-125 p-[5rem] -z-50"
               style={{
                 backgroundImage: 'url("/assets/images/clicker-character/sticky-Note.webp")',
                 backgroundSize: 'contain',
@@ -318,12 +319,16 @@ function Header() {
               </div>
             </div>
 
-            <div className="space-y-4 mt-[4rem] mb-16 z-60">
+            <div
+              className={`mt-[4rem] mb-16 z-60
+              ${window.innerHeight < 768 ? "space-y-2" : "space-y-4" }  
+            `}>
               {navDestinations.map(({ name, link }) => (
                 <div className="flex flex-row items-center group" key={name}>
                   <button
                     onClick={() => handleButtonClick(link)}
-                    className="block w-full text-left py-2 text-[#00b8e1] hover:text-[#ffc75a] text-4xl font-LuckiestGuy font-bold leading-9 tracking-wider transition-all duration-500"
+                    className={`block w-full text-left py-2 text-[#00b8e1] hover:text-[#ffc75a] font-LuckiestGuy font-bold leading-8 tracking-wider transition-all duration-500 
+                    ${window.innerHeight < 768 ? "text-3xl" : "text-4xl" }`}
                   >
                     {name}
                   </button>

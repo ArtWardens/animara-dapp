@@ -3,7 +3,6 @@ import { Box } from '@mui/material';
 import Modal from '@mui/material/Modal';
 import { useAppDispatch } from '../../hooks/storeHooks';
 import { useUserDetails, closeDailyPopup, updateDailyLogin, useIsOpenDailyPopup } from '../../sagaStore/slices';
-import Header from "../../components/Header.jsx";
 import MascotView from '../../components/MascotView';
 import EarnGuide from '../../components/EarnGuide';
 import EnergyRegeneration from '../../components/EnergyRegeneration';
@@ -53,8 +52,6 @@ const ClickerView = () => {
 
   return (
     <>
-    
-      <Header />
 
       <div className="max-w-full flex justify-center items-center relative">
         <EnergyRegeneration 
