@@ -238,7 +238,7 @@ function Header() {
       {/* Mobile Menu */}
       {mobileMenuOpen && (
         <div
-          className="h-full absolute inset-0 z-40 flex flex-col items-center justify-start p-[4rem] overflow-hidden"
+          className="h-full absolute inset-0 z-40 flex flex-col items-center justify-start py-[2rem] px-[4rem] overflow-hidden"
           style={{
             backgroundImage: 'url("/assets/images/clicker-character/clickerWall.webp")',
             backgroundSize: 'cover',
@@ -246,9 +246,11 @@ function Header() {
             backgroundRepeat: 'no-repeat',
           }}
         >
-          <div className="w-full flex flex-col space-y-[4rem]">
+          <div className={`w-full flex flex-col 
+            ${window.innerHeight < 768 ? "space-y-2" : "space-y-4" }  
+          `}>
             <div className="w-full flex flex-row justify-between">
-              <div className="left-[3rem] flex items-center space-x-4">
+              <div className="flex items-center space-x-3">
                 <img src="/assets/images/clicker-character/animara-logo.webp" alt="Animara Logo" className="h-8" />
               </div>
 
@@ -269,7 +271,7 @@ function Header() {
             </div>
 
             <div
-              className="w-full h-full text-center scale-125 p-[6rem] -z-50"
+              className="w-full h-full text-center scale-125 p-[5rem] -z-50"
               style={{
                 backgroundImage: 'url("/assets/images/clicker-character/sticky-Note.webp")',
                 backgroundSize: 'contain',
@@ -317,12 +319,16 @@ function Header() {
               </div>
             </div>
 
-            <div className="space-y-4 mt-[4rem] mb-16 z-60">
+            <div
+              className={`mt-[4rem] mb-16 z-60
+              ${window.innerHeight < 768 ? "space-y-2" : "space-y-4" }  
+            `}>
               {navDestinations.map(({ name, link }) => (
                 <div className="flex flex-row items-center group" key={name}>
                   <button
                     onClick={() => handleButtonClick(link)}
-                    className="block w-full text-left py-2 text-[#00b8e1] hover:text-[#ffc75a] text-4xl font-LuckiestGuy font-bold leading-9 tracking-wider transition-all duration-500"
+                    className={`block w-full text-left py-2 text-[#00b8e1] hover:text-[#ffc75a] font-LuckiestGuy font-bold leading-8 tracking-wider transition-all duration-500 
+                    ${window.innerHeight < 768 ? "text-3xl" : "text-4xl" }`}
                   >
                     {name}
                   </button>
