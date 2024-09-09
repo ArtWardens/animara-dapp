@@ -2,9 +2,11 @@ import React, { useEffect, useState } from "react";
 import Header from "../../components/Header.jsx";
 import { startCountdown } from '../../firebase/countDown';
 import { useLockDate } from "../../sagaStore/slices/userSlice.js";
+import { useMobileMenuOpen } from '../../sagaStore/slices';
 
 const LockPage = () => {
     const lockDate = useLockDate();
+    const mobileMenuOpen = useMobileMenuOpen();
     const [showLeftChain, setShowLeftChain] = useState(false);
     const [showRightChain, setShowRightChain] = useState(false);
     const [showLock, setShowLock] = useState(false);
@@ -47,7 +49,8 @@ const LockPage = () => {
             <Header />
 
             <div
-                className="relative flex-grow flex flex-col place-content-center items-center xl:px-[6rem] pb-4 min-h-screen bg-cover bg-center bg-no-repeat bg-fixed"
+                className={`relative flex-grow flex flex-col place-content-center items-center xl:px-[6rem] pb-4 min-h-screen bg-cover bg-center bg-no-repeat bg-fixed 
+                    ${mobileMenuOpen ? `hidden` : ``}`}
                 style={{
                     backgroundImage: 'url("/assets/images/clicker-character/clickerBg.webp")',
                 }}

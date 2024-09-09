@@ -12,6 +12,7 @@ import WalletInfo from "../../components/SolanaWallet/WalletInfo.jsx";
 import WalletBindingPanel from "../../components/SolanaWallet/WalletBindingPanel.jsx";
 import { useAppDispatch } from "../../hooks/storeHooks.js";
 import { mintNFT, useMintingNFT, useNFTMinted, resetMintedNFT, useBindWalletLoading, useUserDetails, useMintDate } from "../../sagaStore/slices/userSlice.js";
+import { useMobileMenuOpen } from '../../sagaStore/slices';
 import { startCountdown } from "../../firebase/countDown";
 
 const useCandyMachine = (
@@ -74,6 +75,7 @@ const useCandyMachine = (
 
 function MintPage() {
   const dispatch = useAppDispatch();
+  const mobileMenuOpen = useMobileMenuOpen();
   const currentUser = useUserDetails();
   const mintDate = useMintDate();
   const bindingWallet = useBindWalletLoading();
@@ -316,7 +318,8 @@ function MintPage() {
 
       {/* page background */}
       <div
-        className="flex flex-col xl:flex-row items-center min-h-screen w-full"
+        className={`flex flex-col xl:flex-row items-center min-h-screen w-full 
+          ${mobileMenuOpen ? `hidden`: ``}`}
         style={{
           backgroundImage:
             'url("/assets/images/clicker-character/clickerWall.webp")',
