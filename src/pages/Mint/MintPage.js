@@ -304,11 +304,11 @@ function MintPage() {
 
   useEffect(()=>{
     if (ghostExcited){
-      setVideoSource('https://storage.animara.world/happy-ghost.webm');
+      setVideoSource(isMobileApp[0] ? '/assets/images/happy-ghost.webp' : 'https://storage.animara.world/happy-ghost.webm');
     }else{
-      setVideoSource('https://storage.animara.world/unhappy-ghost.webm');
+      setVideoSource(isMobileApp[0] ? '/assets/images/unhappy-ghost.webp' : 'https://storage.animara.world/unhappy-ghost.webm');
     }
-  },[ghostExcited]);
+  },[ghostExcited, isMobileApp]);
   
   return (
     <>
@@ -430,23 +430,30 @@ function MintPage() {
             </div>
 
             {/* Mobile Ghost character view */}
-            <div className="max-h-[50dvh] flex xl:hidden items-center mt-[-4rem] mb-[-13rem] animate-pulse">
-              <video
-                key={videoSource}
-                className="rounded-3xl"
-                controls={false}
-                autoPlay
-                loop
-                muted
-              >
-                <source src={videoSource} type="video/webm" />
-                Your browser does not support the video tag.
-              </video>
+            <div className="z-0 max-h-[50dvh] flex xl:hidden items-center mt-[-4rem] mb-[-13rem] animate-pulse">
+              {isMobileApp[0]?
+                <img 
+                  src={videoSource} alt="ghost"
+                  className="rounded-3xl"
+                />
+                :
+                <video
+                  key={videoSource}
+                  className="rounded-3xl"
+                  controls={false}
+                  autoPlay
+                  loop
+                  muted
+                >
+                  <source src={videoSource} type="video/webm" />
+                  Your browser does not support the video tag.
+                </video>
+              }
             </div>
 
             {/* Mobile view mint card */}
             <div
-              className="w-full block xl:hidden rounded-3xl p-3 mt-[2rem] text-white"
+              className="z-10 w-full block xl:hidden rounded-3xl p-3 mt-[2rem] text-white"
               style={{
                 border: "2px solid var(--Color, #F4FBFF)",
                 background: "rgba(155, 231, 255, 0.58)",
