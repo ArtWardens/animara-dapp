@@ -98,7 +98,7 @@ function Header() {
     <>
       {/* User Card */}
       <div
-        className={`flex flex-row absolute top-[3rem] z-10 p-1 pr-4 gap-2 left-[1rem] xl:left-[4rem] ${
+        className={`flex flex-row absolute max-w-[70dvw] top-[3rem] z-10 p-1 pr-4 gap-2 left-[1rem] xl:left-[4rem] ${
           mobileMenuOpen ? 'hidden' : ''
         }`}
         style={{
@@ -109,6 +109,7 @@ function Header() {
           zIndex: 91,
         }}
       >
+        {/* profile picture */}
         <div className="p-1 w-20 h-20 relative">
           <button onClick={handleEditProfile} className="group relative">
             {loadingImage && (
@@ -142,7 +143,8 @@ function Header() {
           </button>
         </div>
 
-        <div className="flex flex-col place-content-center">
+        {/* user details */}
+        <div className="flex flex-col place-content-center flex-shrink">
           <div className="font-outfit text-md flex">
             <p>{currentUser?.name || 'Animara User'}</p>
             <p className="ml-4 font-LuckiestGuy text-[#F46700]">LV.{currentUser?.level}</p>
@@ -150,7 +152,7 @@ function Header() {
 
           <div className="gap-2 flex">
             <img className="w-8 object-contain" src={'/assets/images/clicker-character/gem.webp'} alt="gem" />
-            <div className="relative flex items-center justify-center w-44">
+            <div className="relative flex items-center justify-center max-w-44">
               <span
                 ref={coinsDisplayRef}
                 className="relative text-3xl text-amber-500 tracking-normal w-full overflow-hidden text-left"
