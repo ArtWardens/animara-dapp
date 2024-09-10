@@ -19,11 +19,13 @@ import { useNavigate } from "react-router-dom";
     >
       {/* Logo */}
       <div className="absolute top-[2rem] xl:top-[4rem] left-[3rem] lg:left-[6rem] xl:left-[12rem]">
-        <img
-          src={"/assets/images/clicker-character/animara-logo.webp"}
-          alt="animara logo"
-          className="w-[35%] xl:w-[50%] h-auto"
-        />
+        <a href="https://animara.world" target="_blank" rel="noopener noreferrer">
+          <img
+            src={"/assets/images/clicker-character/animara-logo.webp"}
+            alt="animara logo"
+            className="w-[35%] xl:w-[50%] h-auto"
+          />
+        </a>
       </div>
 
       {/* Content */}
