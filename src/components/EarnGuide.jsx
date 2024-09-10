@@ -148,7 +148,7 @@ function EarnGuide({ openModal, setOpenModal, setIsOneTimeTaskOpen }) {
                 setShowBoostsModal(true);
                 setOpenModal('boosts');
               }}
-              className="flex flex-col xl:flex-row px-[2rem] xl:px-[2.5rem] py-[2rem] xl:py-[1rem] mb-5 tracking-wider bg-[#49DEFF] shadow-[0px_4px_4px_0px_rgba(255,210,143,0.61)_inset] rounded-2xl xl:rounded-full border-orange-300 justify-center items-center gap-2 hover:bg-[#80E8FF] hover:shadow-[0px_1px_2px_0px_rgba(198,115,1,0.66)] hover:border-[#FFC85A] cursor-pointer hover:scale-105 transition-transform duration-200 text-sm xl:text-xl font-bold font-outfit xl:whitespace-nowrap"
+              className="flex flex-col xl:flex-row px-[2rem] xl:px-[2.5rem] py-[2rem] xl:py-[1rem] mb-5 tracking-wider bg-[#49DEFF] shadow-[0px_4px_4px_0px_rgba(255,210,143,0.61)_inset] rounded-2xl xl:rounded-full border-orange-300 justify-center items-center gap-2 hover:bg-[#80E8FF] hover:shadow-[0px_1px_2px_0px_rgba(198,115,1,0.66)] hover:border-[#FFC85A]  hover:scale-105 transition-transform duration-200 text-sm xl:text-xl font-bold font-outfit xl:whitespace-nowrap"
             >
               <img
                 src="/assets/images/clicker-character/boosts-icon.png"
@@ -165,7 +165,7 @@ function EarnGuide({ openModal, setOpenModal, setIsOneTimeTaskOpen }) {
             }`}
           >
             <button
-              className="flex flex-col xl:flex-row px-[2.5rem] py-[1rem] mb-5 tracking-wider bg-[#FFB23F] shadow-[0px_4px_4px_0px_rgba(255,210,143,0.61)_inset] rounded-2xl xl:rounded-full border-orange-300 justify-center items-center xl:gap-2 hover:bg-[#FFDC62] hover:shadow-[0px_1px_2px_0px_rgba(198,115,1,0.66)] hover:border-[#FFC85A] cursor-pointer hover:scale-105 transition-transform duration-200 text-sm xl:text-xl font-bold font-outfit xl:whitespace-nowrap"
+              className="flex flex-col xl:flex-row px-[2.5rem] py-[1rem] mb-5 tracking-wider bg-[#FFB23F] shadow-[0px_4px_4px_0px_rgba(255,210,143,0.61)_inset] rounded-2xl xl:rounded-full border-orange-300 justify-center items-center xl:gap-2 hover:bg-[#FFDC62] hover:shadow-[0px_1px_2px_0px_rgba(198,115,1,0.66)] hover:border-[#FFC85A]  hover:scale-105 transition-transform duration-200 text-sm xl:text-xl font-bold font-outfit xl:whitespace-nowrap"
               onClick={handleUserUpgrades}
             >
               <img src="/assets/images/clicker-character/star-icon.png" className="h-auto xl:w-[20%]" alt="star-icon" />
@@ -179,7 +179,7 @@ function EarnGuide({ openModal, setOpenModal, setIsOneTimeTaskOpen }) {
             }`}
           >
             <button
-              className="flex flex-col xl:flex-row px-[2rem] xl:px-[2.5rem] py-[2rem] xl:py-[1rem] mb-5 tracking-wider bg-[#49DEFF] shadow-[0px_4px_4px_0px_rgba(255,210,143,0.61)_inset] rounded-2xl xl:rounded-full border-orange-300 justify-center items-center gap-2 hover:bg-[#80E8FF] hover:shadow-[0px_1px_2px_0px_rgba(198,115,1,0.66)] hover:border-[#FFC85A] cursor-pointer hover:scale-105 transition-transform duration-200 text-sm xl:text-xl font-bold font-outfit xl:whitespace-nowrap"
+              className="flex flex-col xl:flex-row px-[2rem] xl:px-[2.5rem] py-[2rem] xl:py-[1rem] mb-5 tracking-wider bg-[#49DEFF] shadow-[0px_4px_4px_0px_rgba(255,210,143,0.61)_inset] rounded-2xl xl:rounded-full border-orange-300 justify-center items-center gap-2 hover:bg-[#80E8FF] hover:shadow-[0px_1px_2px_0px_rgba(198,115,1,0.66)] hover:border-[#FFC85A]  hover:scale-105 transition-transform duration-200 text-sm xl:text-xl font-bold font-outfit xl:whitespace-nowrap"
               onClick={() => setIsOneTimeTaskOpen('true')}
             >
               <img
@@ -273,7 +273,7 @@ function EarnGuide({ openModal, setOpenModal, setIsOneTimeTaskOpen }) {
                     className={`
                     ${
                       currentUser?.staminaRechargeRemaining > 0
-                        ? 'dark:bg-[#003459] dark:hover:bg-[#0a4780] hover:border-1 hover:shadow-[0px_4px_4px_0px_#FFFBEF_inset,0px_-4px_4px_0px_rgba(255,249,228,0.48),0px_5px_4px_0px_rgba(232,140,72,0.48)] cursor-pointer'
+                        ? 'dark:bg-[#003459] dark:hover:bg-[#0a4780] hover:border-1 hover:shadow-[0px_4px_4px_0px_#FFFBEF_inset,0px_-4px_4px_0px_rgba(255,249,228,0.48),0px_5px_4px_0px_rgba(232,140,72,0.48)] '
                         : 'dark:bg-gray-700 pointer-events-none'
                     }
                     w-full py-2 px-6 border-none text-gray-500 bg-white border-2 rounded-lg transition-all duration-300 hover:scale-105
@@ -298,7 +298,7 @@ function EarnGuide({ openModal, setOpenModal, setIsOneTimeTaskOpen }) {
                     className={`
                    ${
                      currentUser?.inviteRechargeRemaining > 0
-                       ? 'dark:bg-[#003459] dark:hover:bg-[#0a4780] hover:border-1 hover:shadow-[0px_4px_4px_0px_#FFFBEF_inset,0px_-4px_4px_0px_rgba(255,249,228,0.48),0px_5px_4px_0px_rgba(232,140,72,0.48)] cursor-pointer'
+                       ? 'dark:bg-[#003459] dark:hover:bg-[#0a4780] hover:border-1 hover:shadow-[0px_4px_4px_0px_#FFFBEF_inset,0px_-4px_4px_0px_rgba(255,249,228,0.48),0px_5px_4px_0px_rgba(232,140,72,0.48)] '
                        : 'dark:bg-gray-700 pointer-events-none'
                    }
                    w-full py-2 px-6 border-none text-gray-500 bg-white border-2 rounded-lg transition-all duration-300 hover:scale-105

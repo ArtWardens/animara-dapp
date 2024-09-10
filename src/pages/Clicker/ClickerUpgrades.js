@@ -137,7 +137,7 @@ const ClickerUpgrades = ({ onClose }) => {
           <div className="h-full flex flex-col justify-start overflow-y-auto mt-[3rem]"> 
             <div className="w-full flex flex-row flex-wrap items-center justify-between mt-[2rem] px-[4rem]">
               <div className="xl:w-[30%]">
-                <p className="cursor-pointer" onClick={handleBack}>
+                <p className="" onClick={handleBack}>
                   &lt;&nbsp; Back
                 </p>
               </div>
@@ -260,7 +260,7 @@ const ClickerUpgrades = ({ onClose }) => {
                               <div
                                 key={index}
                                 className={`w-[350px] rounded-[36px] text-white flex flex-col items-center justify-center transition-all duration-200 hover:scale-105 ${
-                                  location.level === -1 ? "" : "cursor-pointer"
+                                  location.level === -1 ? "" : ""
                                 }`}
                                 style={{
                                   position: "relative",
