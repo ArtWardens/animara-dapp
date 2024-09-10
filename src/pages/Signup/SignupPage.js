@@ -1,14 +1,11 @@
 import React, { useEffect, useState, useRef } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-// import { LoginButton } from "@telegram-auth/react";
 import { useAppDispatch } from "../../hooks/storeHooks.js";
 import {
   useAuthLoading,
   useUserAuthenticated,
   signupWithEmail,
-  loginWithGoogle,
   loginWithTwitter,
-  // loginWithTelegram,
 } from "../../sagaStore/slices/userSlice.js";
 import { useIsIOS } from "../../sagaStore/slices/systemSlice.js";
 import { CSSTransition } from "react-transition-group";
@@ -70,9 +67,9 @@ const SignupPage = () => {
     dispatch(signupWithEmail({ email, password, username, referralCode }));
   };
 
-  const handleLoginWithGoogle = async () => {
-    dispatch(loginWithGoogle());
-  };
+  // const handleLoginWithGoogle = async () => {
+  //   dispatch(loginWithGoogle());
+  // };
 
   const handleLoginWithTwitter = async () => {
     dispatch(loginWithTwitter());
@@ -239,7 +236,7 @@ const SignupPage = () => {
                   ref={videoRef}
                   className="h-[5rem] w-[5rem]"
                   autoPlay
-                  playsinline>
+                  playsInline>
                     <source src="https://storage.animara.world/logo-animated.webm" type="video/webm" />
                 </video>
               }
@@ -382,7 +379,7 @@ const SignupPage = () => {
           </div>
 
           {/* Social Login Buttons Section */}
-          <button 
+          {/* <button 
             type="button" 
             disabled={isAuthLoading}
             className="w-full max-h-[4rem] font-outfit text-[1rem] leading-[1rem] text-[#C5C5C5] rounded-[0.625rem] py-[0.875rem] px-[1rem] gap-[1.25rem] bg-[#0A4169] hover:brightness-75 text-center inline-flex items-center justify-center"
@@ -393,7 +390,7 @@ const SignupPage = () => {
               className="max-h-[2.5rem] max-w-[2.5rem]"
             />
             Continue With Google
-          </button>
+          </button> */}
           <button 
             type="button" 
             disabled={isAuthLoading}
