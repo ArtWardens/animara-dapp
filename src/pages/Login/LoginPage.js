@@ -8,8 +8,8 @@ import {
   loginWithEmail,
   loginWithGoogle,
   loginWithTwitter,
-  useUserDetails,
   loginWithTelegram,
+  useUserAuthenticated,
 } from "../../sagaStore/slices/userSlice.js";
 import { useIsIOS } from "../../sagaStore/slices/systemSlice.js";
 import { CSSTransition } from "react-transition-group";
@@ -21,7 +21,7 @@ const LoginPage = () => {
   const isIOS = useIsIOS();
   const { t: tLogin } = useTranslation("login");
   const isAuthLoading = useAuthLoading();
-  const currentUser = useUserDetails();
+  const isAuthenticated = useUserAuthenticated();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -55,10 +55,10 @@ const LoginPage = () => {
   }, [navigate]);
 
   useEffect(() => {
-    if (currentUser) {
+    if (isAuthenticated) {
       navigate("/anitap");
     }
-  }, [navigate, currentUser]);
+  }, [navigate, isAuthenticated]);
 
   const togglePasswordVisiblity = () => {
     setShowPassword(!showPassword);
