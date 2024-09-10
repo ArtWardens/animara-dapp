@@ -20,8 +20,11 @@ const ClickerView = () => {
 
   // Initialize
   useEffect(() => {
+    if (!currentUser) {
+      return;
+    }
     // check and popup daily login
-    if (currentUser && !currentUser?.loggedInToday) {
+    if (!currentUser?.loggedInToday) {
       dispatch(updateDailyLogin());
     }
   }, [currentUser, dispatch]);
@@ -106,6 +109,7 @@ const ClickerView = () => {
                   <video
                     src="https://storage.animara.world/daily-login-reward.webm"
                     autoPlay
+                    playsinline
                     loop={true}
                     className="max-w-[8rem] lg:max-w-[9rem] pt-1"
                   />

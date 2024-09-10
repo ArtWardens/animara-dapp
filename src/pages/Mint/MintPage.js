@@ -130,7 +130,7 @@ function MintPage() {
   const [ghostExcited, setGhostExcited] = useState(false);
   const [videoSource, setVideoSource] = useState('https://storage.animara.world/unhappy-ghost.webm');
   const videoRef = useRef(null);
-  const isMobileApp = useState(
+  const [isMobileApp] = useState(
     /android|iPad|iPhone|iPod/i.test(navigator.userAgent) ||
     (navigator.userAgent.includes("Mac") && "ontouchend" in document)
   );
@@ -306,9 +306,9 @@ function MintPage() {
 
   useEffect(()=>{
     if (ghostExcited){
-      setVideoSource(isMobileApp[0] ? '/assets/images/happy-ghost.webp' : 'https://storage.animara.world/happy-ghost.webm');
+      setVideoSource(isMobileApp ? '/assets/images/happy-ghost.webp' : 'https://storage.animara.world/happy-ghost.webm');
     }else{
-      setVideoSource(isMobileApp[0] ? '/assets/images/unhappy-ghost.webp' : 'https://storage.animara.world/unhappy-ghost.webm');
+      setVideoSource(isMobileApp ? '/assets/images/unhappy-ghost.webp' : 'https://storage.animara.world/unhappy-ghost.webm');
     }
   },[ghostExcited, isMobileApp]);
   
@@ -434,7 +434,7 @@ function MintPage() {
 
             {/* Mobile Ghost character view */}
             <div className="z-0 max-h-[50dvh] flex xl:hidden items-center mt-[-4rem] mb-[-13rem] animate-pulse">
-              {isMobileApp[0]?
+              {isMobileApp?
                 <img 
                   src={videoSource} alt="ghost"
                   className="rounded-3xl"
@@ -447,6 +447,7 @@ function MintPage() {
                   autoPlay
                   loop
                   muted
+                  playsinline
                 >
                   <source src={videoSource} type="video/webm" />
                   Your browser does not support the video tag.
@@ -588,31 +589,31 @@ function MintPage() {
                     </span>
                   : 
                     loadingCandyMachine ? 
-                    <span className='h-20 m-auto text-red-300 text-xl lg:text-3xl'>
-                      {`Loading`}    
-                    </span>
-                    :
-                    <button
-                      className={`h-[80px] w-[250px] rounded-full border justify-center items-center inline-flex shadow-[0px_4px_4px_0px_#FFFBEF_inset,0px_-4px_4px_0px_rgba(255,249,228,0.48),0px_5px_4px_0px_rgba(232,140,72,0.48)] 
-                        ${isAllowed || !walletAddr ?
-                          `bg-[#FFDC62] border-[#E59E69] cursor-pointer`
-                          :
-                          `bg-slate-400 border-slate-400`}`}
-                      disabled={(!isAllowed || mintingNFT) && walletAddr}
-                      onClick={handleMintOrConnect}>
-                        {mintingNFT? 
-                          <MoonLoader color={"#E59E69"} size={40} />
-                          :
-                          <div
-                            className="text-center text-white text-2xl font-normal"
-                            style={{
-                              textShadow: "0px 2px 0.6px rgba(240, 139, 0, 0.66)",
-                            }}
-                          >
-                            <span className="">{!walletAddr ? `Connect Wallet` : isAllowed ? `Mint Now` : insufficentBalance ? `Insufficient Funds` : `Mint Disabled`}</span>
-                          </div>
-                        }
-                    </button>  
+                      <span className='h-20 m-auto text-red-300 text-xl lg:text-3xl'>
+                        {`Loading`} 
+                      </span>
+                      :
+                      <button
+                        className={`h-[80px] w-[250px] rounded-full border justify-center items-center inline-flex shadow-[0px_4px_4px_0px_#FFFBEF_inset,0px_-4px_4px_0px_rgba(255,249,228,0.48),0px_5px_4px_0px_rgba(232,140,72,0.48)] 
+                          ${isAllowed || !walletAddr ?
+                            `bg-[#FFDC62] border-[#E59E69] cursor-pointer`
+                            :
+                            `bg-slate-400 border-slate-400`}`}
+                        disabled={(!isAllowed || mintingNFT) && walletAddr}
+                        onClick={handleMintOrConnect}>
+                          {mintingNFT? 
+                            <MoonLoader color={"#E59E69"} size={40} />
+                            :
+                            <div
+                              className="text-center text-white text-2xl font-normal"
+                              style={{
+                                textShadow: "0px 2px 0.6px rgba(240, 139, 0, 0.66)",
+                              }}
+                            >
+                              <span className="">{!walletAddr ? `Connect Wallet` : isAllowed ? `Mint Now` : insufficentBalance ? `Insufficient Funds` : `Mint Disabled`}</span>
+                            </div>
+                          }
+                      </button>  
                   }
                 </div>
                 
@@ -785,32 +786,37 @@ function MintPage() {
                     onMouseEnter={() => isAllowed ? setGhostExcited(true) : setGhostExcited(false)}
                     onMouseLeave={() => !mintingNFT ? setGhostExcited(false) : setGhostExcited(true)}
               >
-                {isMobileApp || loadingCandyMachine ? 
+                {isMobileApp ? 
                   <span className='h-20 m-auto text-red-300 text-xl lg:text-3xl'>
-                    {`Loading`}  
+                    {`Cannot mint on mobile`}    
                   </span>
-                  : 
-                  <button
-                    className={`h-[80px] w-[250px] rounded-full border justify-center items-center inline-flex shadow-[0px_4px_4px_0px_#FFFBEF_inset,0px_-4px_4px_0px_rgba(255,249,228,0.48),0px_5px_4px_0px_rgba(232,140,72,0.48)] 
-                      ${isAllowed || !walletAddr ?
-                        `bg-[#FFDC62] border-[#E59E69] cursor-pointer`
-                        :
-                        `bg-slate-400 border-slate-400`}`}
-                    disabled={(!isAllowed || mintingNFT) && walletAddr}
-                    onClick={handleMintOrConnect}>
-                      {mintingNFT? 
-                        <MoonLoader color={"#E59E69"} size={40} />
-                        :
-                        <div
-                          className="text-center text-white text-2xl font-normal"
-                          style={{
-                            textShadow: "0px 2px 0.6px rgba(240, 139, 0, 0.66)",
-                          }}
-                        >
-                          <span className="">{!walletAddr ? `Connect Wallet` : isAllowed ? `Mint Now` : insufficentBalance ? `Insufficient Funds` : `Mint Disabled`}</span>
-                        </div>
-                      }
-                  </button>  
+                  :
+                  loadingCandyMachine ?
+                    <span className='h-20 m-auto text-red-300 text-xl lg:text-3xl'>
+                      {`Loading`}  
+                    </span>
+                    : 
+                    <button
+                      className={`h-[80px] w-[250px] rounded-full border justify-center items-center inline-flex shadow-[0px_4px_4px_0px_#FFFBEF_inset,0px_-4px_4px_0px_rgba(255,249,228,0.48),0px_5px_4px_0px_rgba(232,140,72,0.48)] 
+                        ${isAllowed || !walletAddr ?
+                          `bg-[#FFDC62] border-[#E59E69] cursor-pointer`
+                          :
+                          `bg-slate-400 border-slate-400`}`}
+                      disabled={(!isAllowed || mintingNFT) && walletAddr}
+                      onClick={handleMintOrConnect}>
+                        {mintingNFT? 
+                          <MoonLoader color={"#E59E69"} size={40} />
+                          :
+                          <div
+                            className="text-center text-white text-2xl font-normal"
+                            style={{
+                              textShadow: "0px 2px 0.6px rgba(240, 139, 0, 0.66)",
+                            }}
+                          >
+                            <span className="">{!walletAddr ? `Connect Wallet` : isAllowed ? `Mint Now` : insufficentBalance ? `Insufficient Funds` : `Mint Disabled`}</span>
+                          </div>
+                        }
+                    </button>  
                 }
               </div>
 
@@ -828,6 +834,7 @@ function MintPage() {
               autoPlay
               loop
               muted
+              playsinline
             >
               <source src={videoSource} type="video/webm" />
               Your browser does not support the video tag.
@@ -870,6 +877,7 @@ function MintPage() {
               className={`w-full h-full object-cover transition-all duration-300 ${mintVideoAnim ? `scale-100` : `scale-0`}`}
               onEnded={handleVideoEnd}
               autoPlay
+              playsinline
               controls={false}
             >
               <source src="https://storage.animara.world/mint-anim.mp4" type="video/mp4" />

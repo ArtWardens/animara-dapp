@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { useLocation, useNavigate } from 'react-router-dom/dist';
@@ -78,7 +78,7 @@ function Header() {
     return number ? number.toLocaleString() : '0';
   };
 
-  const getProfilePic = () => {
+  const getProfilePic = useCallback(() => {
     // default placeholder image
     if (!currentUser) {
       return '/assets/images/activeDog.webp';
@@ -91,7 +91,7 @@ function Header() {
     }
 
     return photoUrl;
-  };
+  }, [currentUser]);
 
   return (
     <>
@@ -246,12 +246,16 @@ function Header() {
             backgroundRepeat: 'no-repeat',
           }}
         >
-          <div className={`w-full flex flex-col 
-            ${window.innerHeight < 768 ? "space-y-2" : "space-y-4" }  
-          `}>
+          <div
+            className={`w-full flex flex-col 
+            ${window.innerHeight < 768 ? 'space-y-2' : 'space-y-4'}  
+          `}
+          >
             <div className="w-full flex flex-row justify-between">
               <div className="flex items-center space-x-3">
-                <img src="/assets/images/clicker-character/animara-logo.webp" alt="Animara Logo" className="h-8" />
+                <a className="cursor-pointer" href="https://animara.world" target="_blank" rel="noopener noreferrer">
+                  <img src="/assets/icons/logo.webp" alt="Animara Logo" className="h-12" />
+                </a>
               </div>
 
               <button
@@ -321,14 +325,15 @@ function Header() {
 
             <div
               className={`mt-[4rem] mb-16 z-60
-              ${window.innerHeight < 768 ? "space-y-2" : "space-y-4" }  
-            `}>
+              ${window.innerHeight < 768 ? 'space-y-2' : 'space-y-4'}  
+            `}
+            >
               {navDestinations.map(({ name, link }) => (
                 <div className="flex flex-row items-center group" key={name}>
                   <button
                     onClick={() => handleButtonClick(link)}
                     className={`block w-full text-left py-2 text-[#00b8e1] hover:text-[#ffc75a] font-LuckiestGuy font-bold leading-8 tracking-wider transition-all duration-500 
-                    ${window.innerHeight < 768 ? "text-3xl" : "text-4xl" }`}
+                    ${window.innerHeight < 768 ? 'text-3xl' : 'text-4xl'}`}
                   >
                     {name}
                   </button>

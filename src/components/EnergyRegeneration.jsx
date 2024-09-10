@@ -44,6 +44,8 @@ function EnergyRegeneration({ isLeaderboardOpen, setIsLeaderboardOpen, isOneTime
   }, []);
 
   useEffect(() => {
+    if (!currentUser) return;
+
     // update profit per hour
     setProfitPerHour(
       !currentUser?.profitPerHour || currentUser?.profitPerHour === 0 ? '-' : `${currentUser?.profitPerHour}`,

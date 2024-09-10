@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { LoginButton } from "@telegram-auth/react";
+// import { LoginButton } from "@telegram-auth/react";
 import { useAppDispatch } from "../../hooks/storeHooks.js";
 import {
   useAuthLoading,
@@ -8,7 +8,7 @@ import {
   signupWithEmail,
   loginWithGoogle,
   loginWithTwitter,
-  loginWithTelegram,
+  // loginWithTelegram,
 } from "../../sagaStore/slices/userSlice.js";
 import { useIsIOS } from "../../sagaStore/slices/systemSlice.js";
 import { CSSTransition } from "react-transition-group";
@@ -78,13 +78,13 @@ const SignupPage = () => {
     dispatch(loginWithTwitter());
   };
 
-  const handleTelegramAuth = async (telegramUser) => {
-    dispatch(loginWithTelegram(telegramUser));
-  };
+  // const handleTelegramAuth = async (telegramUser) => {
+  //   dispatch(loginWithTelegram(telegramUser));
+  // };
 
   useEffect(() => {
     if (!isAuthLoading && isAuthenticated) {
-      navigate("/clicker-lock");
+      navigate("/anitap");
     }
   }, [isAuthLoading, isAuthenticated, navigate]);
 
@@ -216,10 +216,12 @@ const SignupPage = () => {
 
         {/* Header */}
         <header className="absolute py-[2rem] px-[12rem] h-[6rem] w-full hidden lg:block">
-          <img 
-            src="/assets/icons/logo.webp" alt="logo"
-            className="max-h-[2rem]"
-          />
+          <a className="cursor-pointer" href="https://animara.world" target="_blank" rel="noopener noreferrer">
+            <img 
+              src="/assets/icons/logo.webp" alt="logo"
+              className="max-h-[4rem]"
+            />
+          </a>
         </header>
 
         {/* Sign up Card Latest */}
@@ -229,14 +231,15 @@ const SignupPage = () => {
             <div className="flex-none">
               {isIOS?
                 <img 
-                  src="/assets/icons/AnimaraLogo.webp" alt="logo"
+                  src="/assets/icons/logo.webp" alt="logo"
                   className="h-[5rem] w-[5rem]"
                 />
                 :
                 <video 
                   ref={videoRef}
                   className="h-[5rem] w-[5rem]"
-                  autoPlay>
+                  autoPlay
+                  playsinline>
                     <source src="https://storage.animara.world/logo-animated.webm" type="video/webm" />
                 </video>
               }
@@ -404,10 +407,10 @@ const SignupPage = () => {
             Continue With X
           </button>
           <div className="flex items-center justify-center">
-            <LoginButton
-              botUsername="ReactTonBot"
+            {/* <LoginButton
+              botUsername={process.env.REACT_APP_TELEGRAM_BOT_NAME}
               onAuthCallback={handleTelegramAuth}
-            />
+            /> */}
           </div>
 
 
