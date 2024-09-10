@@ -160,7 +160,7 @@ const WalletBindingPanel = () => {
           )}
 
           <div className="flex w-full h-auto items-center justify-center mt-4">
-            {user?.walletAddr === `${publicKey}` ? (
+            {(publicKey && user?.walletAddr === `${publicKey}`) || (!publicKey && user?.walletAddr) ? (
               bindingWallet || disconnectingWallet ? (
                 <MoonLoader color={'#FFB23F'} size={40} />
               ) : (
