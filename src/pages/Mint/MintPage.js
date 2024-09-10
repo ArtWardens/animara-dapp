@@ -131,8 +131,9 @@ function MintPage() {
   const [videoSource, setVideoSource] = useState('https://storage.animara.world/unhappy-ghost.webm');
   const videoRef = useRef(null);
   const [isMobileApp] = useState(
-    /android|iPad|iPhone|iPod/i.test(navigator.userAgent) ||
-    (navigator.userAgent.includes("Mac") && "ontouchend" in document)
+    // /android|iPad|iPhone|iPod/i.test(navigator.userAgent) ||
+    // (navigator.userAgent.includes("Mac") && "ontouchend" in document)
+    false
   );
 
   // intro animation & fetch countdown
@@ -333,11 +334,11 @@ function MintPage() {
         <div className="w-full flex flex-col xl:flex-row justify-between container pt-[10rem] xl:pt-[6rem] tracking-wider">
 
           {/* Mint info section */}
-          <div className={`xl:w-[30%]  text-amber-500 grid gap-8 transition-all duration-1000
+          <div className={`w-full xl:w-[30%] text-amber-500 transition-all duration-1000
             ${showTitle ? `opacity-100` : `opacity-0`}`
           }>
             {/* title */}
-            <div className="py-4 text-center xl:text-left">
+            <div className="w-full py-4 mb-8 text-center xl:text-left">
               <span
                 className="text-5xl"
                 style={{
@@ -360,17 +361,17 @@ function MintPage() {
             </div>
 
             {/* step 1 text */}
-            <div className={`transition-all duration-1000
+            <div className={`w-full mb-8 transition-all duration-1000
                 ${showTextOne ? `opacity-100` : `opacity-0`}
               `}>
-              <div className="transition-all duration-500 hover:scale-110">
+              <div className="transition-all duration-500 hover:scale-105">
                 <div className="flex items-center gap-8 pb-2">
                   <img
                     src={"/assets/images/clicker-character/gem.webp"}
                     alt="gem"
                     className="ml-2 w-6 h-6"
                   />
-                  <h3 className="text-2xl text-white w-full">STEP 1</h3>
+                  <h3 className="w-full text-2xl text-white text-wrap ">STEP 1</h3>
                 </div>
                 <p
                   className="leading-normal tracking-normal text-white font-outfit text-justify"
@@ -384,20 +385,20 @@ function MintPage() {
             </div>
 
             {/* step 2 text */}
-            <div className={`transition-all duration-1000
+            <div className={`w-full mb-8 transition-all duration-1000
                 ${showTextTwo ? `opacity-100` : `opacity-0`}
               `}>
-              <div className="transition-all duration-500 hover:scale-110">
+              <div className="transition-all duration-500 hover:scale-105">
                 <div className="flex items-center gap-8 pb-2">
                   <img
                     src={"/assets/images/clicker-character/gem.webp"}
                     alt="gem"
                     className="ml-2 w-6 h-6"
                   />
-                  <h3 className="text-2xl text-white w-full">STEP 2</h3>
+                  <h3 className="w-full text-2xl text-white text-wrap ">STEP 2</h3>
                 </div>
                 <p
-                  className="leading-normal tracking-normal text-white font-outfit text-justify"
+                  className="leading-normal tracking-normal text-white font-outfit"
                   style={{
                     fontSize: "14px",
                   }}
@@ -408,20 +409,20 @@ function MintPage() {
             </div>
 
             {/* step 3 text */}
-            <div className={`pb-6 transition-all duration-1000
+            <div className={`mb-8 pb-6 transition-all duration-1000
                 ${showTextThree ? `opacity-100` : `opacity-0`}
               `}>
-              <div className="transition-all duration-500 hover:scale-110">
+              <div className="transition-all duration-500 hover:scale-105">
                 <div className="flex items-center gap-8 pb-2">
                   <img
                     src={"/assets/images/clicker-character/gem.webp"}
                     alt="gem"
                     className="ml-2 w-6 h-6"
                   />
-                  <h3 className="text-2xl text-white w-full">STEP 3</h3>
+                  <h3 className="w-full text-2xl text-white text-wrap ">STEP 3</h3>
                 </div>
                 <p
-                  className="leading-normal tracking-normal text-white font-outfit text-justify"
+                  className="leading-normal tracking-normal text-white font-outfit"
                   style={{
                     fontSize: "14px",
                   }}
@@ -433,16 +434,17 @@ function MintPage() {
             </div>
 
             {/* Mobile Ghost character view */}
-            <div className="z-0 max-h-[50dvh] flex xl:hidden items-center mt-[-4rem] mb-[-13rem] animate-pulse">
-              {isMobileApp ?
-                <img
-                  src={videoSource} alt="ghost"
-                  className="rounded-3xl"
+            <div className="w-full z-0 max-h-[50dvh] flex xl:hidden items-center mt-[-4rem] mb-[-10rem] animate-pulse">
+              {isMobileApp?
+                <img 
+                  src={videoSource}
+                  alt="ghost"
+                  className="mx-auto rounded-3xl"
                 />
                 :
                 <video
                   key={videoSource}
-                  className="rounded-3xl"
+                  className="mx-auto rounded-3xl"
                   controls={false}
                   autoPlay
                   loop
@@ -587,10 +589,10 @@ function MintPage() {
                     <span className='h-20 m-auto text-red-300 text-xl lg:text-3xl'>
                       {`Cannot mint on mobile`}
                     </span>
-                    :
-                    loadingCandyMachine ?
-                      <span className='h-20 m-auto text-red-300 text-xl lg:text-3xl'>
-                        {`Loading`}
+                  : 
+                    loadingCandyMachine ? 
+                      <span className='h-20 m-auto text-amber-300 text-xl lg:text-3xl animate-pulse'>
+                        {`Loading`} 
                       </span>
                       :
                       <button
@@ -793,8 +795,8 @@ function MintPage() {
                   </span>
                   :
                   loadingCandyMachine ?
-                    <span className='h-20 m-auto text-red-300 text-xl lg:text-3xl'>
-                      {`Loading`}
+                    <span className='h-20 m-auto text-amber-300 text-xl lg:text-3xl animate-pulse'>
+                      {`Loading`}  
                     </span>
                     :
                     <button
@@ -845,9 +847,12 @@ function MintPage() {
       </div>
 
       {/* Bind Wallet Modal */}
-      {showWalletBindingPanel ?
-        <div className={`fixed z-[100] inset-0 w-screen h-screen flex flex-col items-center justify-center bg-black/50 backdrop-blur-lg transition-all duration-300 
-          ${walletBindingAnim ? `opacity-0` : `opacity-100`}`}>
+      {showWalletBindingPanel? 
+        <div className={`fixed z-[100] inset-0 w-screen h-screen flex items-center justify-center bg-black/50 backdrop-blur-lg transition-all duration-300 
+          ${walletBindingAnim ? `opacity-0` : `opacity-100`}
+          ${window.innerHeight < 800 
+            ? window.innerWidth > 500  ? '': 'flex-col'
+            : `flex-col`}`}>
           {/* wallet binding panel */}
           <div className="flex">
             <WalletBindingPanel className="w-full lx:w-1/2 my-auto p-12" />
@@ -855,7 +860,7 @@ function MintPage() {
 
           {!bindingWallet ?
             <button
-              className={`text-2xl rounded-lg m-4 mt-8 py-2 px-8 hover:scale-110 transition-all duration-300
+              className={`text-2xl rounded-lg m-8 mt-0 py-2 px-8 hover:scale-110 transition-all duration-300
                 ${walletAddr && !bindingWallet ? `bg-amber-400` : `bg-red-400 `}`}
               onClick={handleBackToMint}
             >
