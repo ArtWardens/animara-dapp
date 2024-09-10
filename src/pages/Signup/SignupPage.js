@@ -326,7 +326,7 @@ const SignupPage = () => {
               onChange={(e) => setAgreeTNC(e.target.checked)}
               className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:accent-[#49DEFF] dark:focus:accent-[#49DEFF] dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
             <label htmlFor="link-checkbox" className="ms-2 text-sm font-outfit text-gray-900 dark:text-gray-300">
-              By signing up, I agree to Animara&#39;s <Link to="/" className="text-[#49DEFF] dark:text-[#49DEFF] hover:underline">Terms & Condition</Link>
+              By signing up, I agree to Animara&#39;s <Link to="/" className="text-[#49DEFF] dark:text-[#49DEFF] hover:underline bg-transparent">Terms & Condition</Link>
             </label>
           </div>
 
@@ -369,7 +369,7 @@ const SignupPage = () => {
               Already have an account? &nbsp;
               <Link
                 to="/login"
-                className="font-semibold hover:brightness-75 text-[#FFB23F]"
+                className="font-semibold hover:brightness-75 text-[#FFB23F] bg-transparent custom-active"
               >
                 Login
               </Link>
@@ -417,9 +417,9 @@ const SignupPage = () => {
 
           {/* Policies */}
           <div className="mt-3 flex gap-8 font-outfit text-[#C5C5C5] text-[1rem] text-center justify-center">
-            <Link to="https://animara.world/privacy-policy" className="hover:brightness-75">Privacy Policy</Link>
+            <Link to="https://animara.world/privacy-policy" className="hover:brightness-75 bg-transparent">Privacy Policy</Link>
             <span>|</span>
-            <Link to="https://animara.world/terms-and-conditions" className="hover:brightness-75">Terms & Conditions</Link>
+            <Link to="https://animara.world/terms-and-conditions" className="hover:brightness-75 bg-transparent">Terms & Conditions</Link>
           </div>
         </div>
       </div>

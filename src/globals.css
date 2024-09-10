@@ -90,13 +90,14 @@
   * {
     @apply border-border;
   }
+
   body, a, button {
     @apply bg-background text-foreground;
     cursor: url('../public/assets/icons/cursor_01.svg') 6 12, auto !important;
   }
 
-  .cursor-pointer {
-    cursor: url('../public/assets/icons/cursor_01.svg') 6 12, auto !important;
+  body, a, button:active {
+    cursor: url('../public/assets/icons/cursor_07.svg') 6 12, auto !important;
   }
 
   .gradient-blue-transparent-fuschia-bottomRight {
@@ -124,11 +125,11 @@
 body {
   font-family: "LuckiestGuy", sans-serif;
   font-weight: 300;
-  cursor: url('../public/assets/icons/cursor_01.svg') 5 10, auto !important;
+  cursor: url('../public/assets/icons/cursor_01.svg') 6 12, auto !important;
 }
 
-.cursor-pointer {
-  cursor: url('../public/assets/icons/cursor_01.svg') 5 10, auto !important;
+body:active {
+  cursor: url('../public/assets/icons/cursor_07.svg') 6 12, auto !important;
 }
 
 /* React Transition Group Animation */

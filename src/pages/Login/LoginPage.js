@@ -227,7 +227,7 @@ const LoginPage = () => {
               Don&#39;t have an account? &nbsp;
               <Link
                 to="/signup"
-                className="font-semibold hover:brightness-75 text-[#FFB23F]"
+                className="font-semibold hover:brightness-75 text-[#FFB23F] bg-transparent"
               >
                 Sign Up
               </Link>
@@ -275,9 +275,9 @@ const LoginPage = () => {
           </div>
 
           <div className="mt-3 flex gap-8 font-outfit text-[#C5C5C5] text-[1rem] text-center justify-center">
-            <Link to="https://animara.world/privacy-policy" className="hover:brightness-75">Privacy Policy</Link>
+            <Link to="https://animara.world/privacy-policy" className="hover:brightness-75 bg-transparent">Privacy Policy</Link>
             <span>|</span>
-            <Link to="https://animara.world/terms-and-conditions" className="hover:brightness-75">Terms & Conditions</Link>
+            <Link to="https://animara.world/terms-and-conditions" className="hover:brightness-75 bg-transparent">Terms & Conditions</Link>
           </div>
         </div>
       </div>

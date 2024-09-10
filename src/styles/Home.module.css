@@ -1,12 +1,3 @@
-html,
-body {
-  cursor: url('../../public/assets/icons/cursor_01.svg'), auto !important;
-}
-
-body {
-  cursor: url('../../public/assets/icons/cursor_01.svg'), auto !important;
-}
-
 .wallet { 
   display: flex;
   padding: 3rem;
