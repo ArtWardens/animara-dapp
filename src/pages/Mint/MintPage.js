@@ -591,7 +591,7 @@ function MintPage() {
                     </span>
                   : 
                     loadingCandyMachine ? 
-                      <span className='h-20 m-auto text-red-300 text-xl lg:text-3xl'>
+                      <span className='h-20 m-auto text-amber-300 text-xl lg:text-3xl animate-pulse'>
                         {`Loading`} 
                       </span>
                       :
@@ -794,7 +794,7 @@ function MintPage() {
                   </span>
                   :
                   loadingCandyMachine ?
-                    <span className='h-20 m-auto text-red-300 text-xl lg:text-3xl'>
+                    <span className='h-20 m-auto text-amber-300 text-xl lg:text-3xl animate-pulse'>
                       {`Loading`}  
                     </span>
                     : 
@@ -847,8 +847,9 @@ function MintPage() {
       
       {/* Bind Wallet Modal */}
       {showWalletBindingPanel? 
-        <div className={`fixed z-[100] inset-0 w-screen h-screen flex flex-col items-center justify-center bg-black/50 backdrop-blur-lg transition-all duration-300 
-          ${walletBindingAnim ? `opacity-0` : `opacity-100`}`}>
+        <div className={`fixed z-[100] inset-0 w-screen h-screen flex items-center justify-center bg-black/50 backdrop-blur-lg transition-all duration-300 
+          ${walletBindingAnim ? `opacity-0` : `opacity-100`}
+          ${window.innerHeight < 800 ? `` : `flex-col`}`}>
           {/* wallet binding panel */}
           <div className="flex">
             <WalletBindingPanel className="w-full lx:w-1/2 my-auto p-12" />
@@ -856,7 +857,7 @@ function MintPage() {
 
           {!bindingWallet?
             <button
-              className={`text-2xl rounded-lg m-4 mt-8 py-2 px-8 hover:scale-110 transition-all duration-300
+              className={`text-2xl rounded-lg m-8 mt-0 py-2 px-8 hover:scale-110 transition-all duration-300
                 ${walletAddr && !bindingWallet ? `bg-amber-400` : `bg-red-400 `}`}
               onClick={handleBackToMint}
             >
