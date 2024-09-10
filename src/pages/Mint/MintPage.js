@@ -447,6 +447,7 @@ function MintPage() {
                   autoPlay
                   loop
                   muted
+                  playsinline
                 >
                   <source src={videoSource} type="video/webm" />
                   Your browser does not support the video tag.
@@ -833,6 +834,7 @@ function MintPage() {
               autoPlay
               loop
               muted
+              playsinline
             >
               <source src={videoSource} type="video/webm" />
               Your browser does not support the video tag.
@@ -875,6 +877,7 @@ function MintPage() {
               className={`w-full h-full object-cover transition-all duration-300 ${mintVideoAnim ? `scale-100` : `scale-0`}`}
               onEnded={handleVideoEnd}
               autoPlay
+              playsinline
               controls={false}
             >
               <source src="https://storage.animara.world/mint-anim.mp4" type="video/mp4" />
