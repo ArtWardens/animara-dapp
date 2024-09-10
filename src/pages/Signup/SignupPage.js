@@ -251,6 +251,7 @@ const SignupPage = () => {
 
           {/* Username */}
           <input
+            disabled={isAuthLoading}
             type="text"
             placeholder="Username"
             value={username}
@@ -261,6 +262,7 @@ const SignupPage = () => {
 
           {/* Email */}
           <input
+            disabled={isAuthLoading}
             type="email"
             placeholder="Email"
             value={email}
