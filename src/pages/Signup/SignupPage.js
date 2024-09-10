@@ -233,7 +233,7 @@ const SignupPage = () => {
             <div className="flex-none">
               {isIOS?
                 <img 
-                  src="/assets/icons/logo.webp" alt="logo"
+                  src="/assets/icons/AnimaraLogo.webp" alt="logo"
                   className="h-[5rem] w-[5rem]"
                 />
                 :
@@ -369,7 +369,7 @@ const SignupPage = () => {
               Already have an account? &nbsp;
               <Link
                 to="/login"
-                className="font-semibold hover:brightness-75 text-[#FFB23F] bg-transparent custom-active"
+                className="font-semibold hover:brightness-75 text-[#FFB23F] bg-transparent"
               >
                 Login
               </Link>

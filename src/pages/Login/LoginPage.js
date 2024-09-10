@@ -149,7 +149,7 @@ const LoginPage = () => {
             <div className="flex justify-center items-center">
               {isIOS?
                 <img 
-                  src="/assets/icons/logo.webp" alt="logo"
+                  src="/assets/icons/AnimaraLogo.webp" alt="logo"
                   className="h-[5rem] w-[5rem]"
                 />
                 :
