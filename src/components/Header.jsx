@@ -253,7 +253,9 @@ function Header() {
           >
             <div className="w-full flex flex-row justify-between">
               <div className="flex items-center space-x-3">
-                <img src="/assets/images/clicker-character/animara-logo.webp" alt="Animara Logo" className="h-8" />
+                <a className="cursor-pointer" href="https://animara.world" target="_blank" rel="noopener noreferrer">
+                  <img src="/assets/icons/logo.webp" alt="Animara Logo" className="h-12" />
+                </a>
               </div>
 
               <button
