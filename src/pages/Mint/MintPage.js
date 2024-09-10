@@ -333,11 +333,11 @@ function MintPage() {
         <div className="w-full flex flex-col xl:flex-row justify-between container pt-[10rem] xl:pt-[6rem] tracking-wider">
           
           {/* Mint info section */}
-          <div className={`xl:w-[30%]  text-amber-500 grid gap-8 transition-all duration-1000
+          <div className={`w-full xl:w-[30%] text-amber-500 transition-all duration-1000
             ${showTitle ? `opacity-100` : `opacity-0`}`
           }>
             {/* title */}
-            <div className="py-4 text-center xl:text-left">
+            <div className="w-full py-4 mb-8 text-center xl:text-left">
               <span
                 className="text-5xl"
                 style={{
@@ -360,17 +360,17 @@ function MintPage() {
             </div>
 
             {/* step 1 text */}
-            <div className={`transition-all duration-1000
+            <div className={`w-full mb-8 transition-all duration-1000
                 ${showTextOne ? `opacity-100` : `opacity-0`}
               `}>
-              <div className="transition-all duration-500 hover:scale-110">
+              <div className="transition-all duration-500 hover:scale-105">
                 <div className="flex items-center gap-8 pb-2">
                   <img
                     src={"/assets/images/clicker-character/gem.webp"}
                     alt="gem"
                     className="ml-2 w-6 h-6"
                   />
-                  <h3 className="text-2xl text-white w-full">STEP 1</h3>
+                  <h3 className="w-full text-2xl text-white text-wrap ">STEP 1</h3>
                 </div>
                 <p
                   className="leading-normal tracking-normal text-white font-outfit text-justify"
@@ -384,20 +384,20 @@ function MintPage() {
             </div>
 
             {/* step 2 text */}
-            <div className={`transition-all duration-1000
+            <div className={`w-full mb-8 transition-all duration-1000
                 ${showTextTwo ? `opacity-100` : `opacity-0`}
               `}>
-              <div className="transition-all duration-500 hover:scale-110">
+              <div className="transition-all duration-500 hover:scale-105">
                 <div className="flex items-center gap-8 pb-2">
                   <img
                     src={"/assets/images/clicker-character/gem.webp"}
                     alt="gem"
                     className="ml-2 w-6 h-6"
                   />
-                  <h3 className="text-2xl text-white w-full">STEP 2</h3>
+                  <h3 className="w-full text-2xl text-white text-wrap ">STEP 2</h3>
                 </div>
                 <p
-                  className="leading-normal tracking-normal text-white font-outfit text-justify"
+                  className="leading-normal tracking-normal text-white font-outfit"
                   style={{
                     fontSize: "14px",
                   }}
@@ -408,20 +408,20 @@ function MintPage() {
             </div>
 
             {/* step 3 text */}
-            <div className={`pb-6 transition-all duration-1000
+            <div className={`mb-8 pb-6 transition-all duration-1000
                 ${showTextThree ? `opacity-100` : `opacity-0`}
               `}>
-              <div className="transition-all duration-500 hover:scale-110">
+              <div className="transition-all duration-500 hover:scale-105">
                 <div className="flex items-center gap-8 pb-2">
                   <img
                     src={"/assets/images/clicker-character/gem.webp"}
                     alt="gem"
                     className="ml-2 w-6 h-6"
                   />
-                  <h3 className="text-2xl text-white w-full">STEP 3</h3>
+                  <h3 className="w-full text-2xl text-white text-wrap ">STEP 3</h3>
                 </div>
                 <p
-                  className="leading-normal tracking-normal text-white font-outfit text-justify"
+                  className="leading-normal tracking-normal text-white font-outfit"
                   style={{
                     fontSize: "14px",
                   }}
@@ -433,7 +433,7 @@ function MintPage() {
             </div>
 
             {/* Mobile Ghost character view */}
-            <div className="z-0 max-h-[50dvh] flex xl:hidden items-center mt-[-4rem] mb-[-13rem] animate-pulse">
+            <div className="z-0 max-h-[50dvh] flex xl:hidden items-center mt-[-4rem] mb-[-10rem] animate-pulse">
               {isMobileApp?
                 <img 
                   src={videoSource} alt="ghost"
