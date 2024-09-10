@@ -163,6 +163,7 @@ const LoginPage = () => {
             <p className="text-center text-[#C5C5C5] font-outfit">Please enter your details to login</p>
             {/* Email */}
             <input
+              disabled={isAuthLoading}
               type="email"
               placeholder={tLogin("email")}
               value={email}
@@ -173,6 +174,7 @@ const LoginPage = () => {
             {/* Password */}
             <div className="relative mt-2">
               <input
+                disabled={isAuthLoading}
                 type={showPassword ? "text" : "password"}
                 placeholder={tLogin("password")}
                 value={password}
