@@ -119,6 +119,18 @@ export const userSlice = createSlice({
       state.error = payload;
       state.authLoading = false;
     },
+    checkLoginWithRedirect: (state, { payload }) => {
+      state.authLoading = true;
+    },
+    checkLoginWithRedirectSuccess: (state, { payload }) => {
+      state.isAuthenticated = true;
+      state.authLoading = false;
+    },
+    checkLoginWithRedirectError: (state, { payload }) => {
+      state.isAuthenticated = false;
+      state.error = payload;
+      state.authLoading = false;
+    },
     loginWithTelegram: (state, { payload }) => {
       state.authLoading = true;
     },
@@ -501,6 +513,9 @@ export const {
   loginWithTwitter,
   loginWithTwitterSuccess,
   loginWithTwitterError,
+  checkLoginWithRedirect,
+  checkLoginWithRedirectSuccess,
+  checkLoginWithRedirectError,
   loginWithTelegram,
   loginWithTelegramSuccess,
   loginWithTelegramError,

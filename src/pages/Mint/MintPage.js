@@ -39,7 +39,7 @@ const useCandyMachine = (
         try {
           candyMachine = await fetchCandyMachine(umi, publicKey(candyMachineId));
           //verify CM Version
-          if (candyMachine.version !==AccountVersion.V2) {
+          if (candyMachine.version !== AccountVersion.V2) {
             toast("Wrong candy machine account version!");
             return;
           }
@@ -103,7 +103,7 @@ function MintPage() {
   }, []);
   const [checkEligibility] = useState(true);
   const [firstRun, setFirstRun] = useState(true);
-  const {candyMachine, candyGuard} = useCandyMachine(umi, candyMachineId, checkEligibility, firstRun, setFirstRun);
+  const { candyMachine, candyGuard } = useCandyMachine(umi, candyMachineId, checkEligibility, firstRun, setFirstRun);
   const [isAllowed, setIsAllowed] = useState(false);
   const [loadingCandyMachine, setLoadingCandyMachine] = useState(true);
   const [isContainerVisible, setIsContainerVisible] = useState(true);
@@ -131,8 +131,9 @@ function MintPage() {
   const [videoSource, setVideoSource] = useState('https://storage.animara.world/unhappy-ghost.webm');
   const videoRef = useRef(null);
   const [isMobileApp] = useState(
-    /android|iPad|iPhone|iPod/i.test(navigator.userAgent) ||
-    (navigator.userAgent.includes("Mac") && "ontouchend" in document)
+    // /android|iPad|iPhone|iPod/i.test(navigator.userAgent) ||
+    // (navigator.userAgent.includes("Mac") && "ontouchend" in document)
+    false
   );
 
   // intro animation & fetch countdown
@@ -164,7 +165,7 @@ function MintPage() {
 
     const timerCharacter = setTimeout(() => {
       setSlideCharacter(true);
-    }, 1);  
+    }, 1);
 
     return () => {
       clearTimeout(timerTitle);
@@ -177,7 +178,7 @@ function MintPage() {
     };
   }, []);
 
-  useEffect(()=>{
+  useEffect(() => {
     // start minting deadline
     const fetchAndStartCountdown = async () => {
       if (mintDate) {
@@ -190,7 +191,7 @@ function MintPage() {
       }
     };
     fetchAndStartCountdown();
-  },[mintDate]);
+  }, [mintDate]);
 
   // minting setup
   useEffect(() => {
@@ -211,7 +212,7 @@ function MintPage() {
       let allowed = false;
       setInsufficentBalance(false);
       for (const guard of guardReturn) {
-        if (guard.reason === "Not enough SOL!"){
+        if (guard.reason === "Not enough SOL!") {
           setInsufficentBalance(true);
         }
         if (guard.allowed) {
@@ -228,11 +229,11 @@ function MintPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [umi, checkEligibility, firstRun, currentUser]);
 
-  const handleMintOrConnect = () =>{
-    if (!walletAddr){
+  const handleMintOrConnect = () => {
+    if (!walletAddr) {
       setShowWalletBindingPanel(true);
       setWalletBindingAnim(true);
-      setTimeout(()=>{
+      setTimeout(() => {
         setWalletBindingAnim(false);
       }, 300);
       return;
@@ -247,7 +248,7 @@ function MintPage() {
       return;
     }
     if (filteredGuardlist.length > 1) {
-      filteredGuardlist = guards.filter((elem) => elem.label !=="default");
+      filteredGuardlist = guards.filter((elem) => elem.label !== "default");
     }
     filteredGuardlist = filteredGuardlist.slice(-1); //additional add for showing the latest Mint
     const buttonGuard = {
@@ -270,48 +271,48 @@ function MintPage() {
     }));
   }
 
-  const handleBackToMint = () =>{
+  const handleBackToMint = () => {
     setWalletBindingAnim(true);
-    setTimeout(()=>{
+    setTimeout(() => {
       setWalletBindingAnim(false);
       setShowWalletBindingPanel(false);
     }, 300);
   }
 
-  const onShowNftClose = () =>{
+  const onShowNftClose = () => {
     setIsShowNftOpen(false);
     dispatch(resetMintedNFT());
   }
 
-  useEffect(()=>{
-    if (!mintingNFT || !nftMinted){
+  useEffect(() => {
+    if (!mintingNFT || !nftMinted) {
       setGhostExcited(false);
       return;
     }
     setGhostExcited(true);
     setIsVideoEnded(false);
     setIsShowNftOpen(true);
-    setTimeout(()=>{
+    setTimeout(() => {
       setMintVideoAnim(true);
-    },300);
+    }, 300);
   }, [nftMinted, mintingNFT]);
-  
+
   const handleVideoEnd = () => {
     setIsVideoEnded(true);
     setMintFadeOut(false);
-    setTimeout(()=>{
+    setTimeout(() => {
       setMintFadeOut(true);
-    },500);
+    }, 500);
   };
 
-  useEffect(()=>{
-    if (ghostExcited){
+  useEffect(() => {
+    if (ghostExcited) {
       setVideoSource(isMobileApp ? '/assets/images/happy-ghost.webp' : 'https://storage.animara.world/happy-ghost.webm');
-    }else{
+    } else {
       setVideoSource(isMobileApp ? '/assets/images/unhappy-ghost.webp' : 'https://storage.animara.world/unhappy-ghost.webm');
     }
-  },[ghostExcited, isMobileApp]);
-  
+  }, [ghostExcited, isMobileApp]);
+
   return (
     <>
       <Header />
@@ -319,7 +320,7 @@ function MintPage() {
       {/* page background */}
       <div
         className={`flex flex-col xl:flex-row items-center min-h-screen w-full 
-          ${mobileMenuOpen ? `hidden`: ``}`}
+          ${mobileMenuOpen ? `hidden` : ``}`}
         style={{
           backgroundImage:
             'url("/assets/images/clicker-character/clickerWall.webp")',
@@ -331,13 +332,13 @@ function MintPage() {
       >
         {/* Page Content */}
         <div className="w-full flex flex-col xl:flex-row justify-between container pt-[10rem] xl:pt-[6rem] tracking-wider">
-          
+
           {/* Mint info section */}
-          <div className={`xl:w-[30%]  text-amber-500 grid gap-8 transition-all duration-1000
+          <div className={`w-full xl:w-[30%] text-amber-500 transition-all duration-1000
             ${showTitle ? `opacity-100` : `opacity-0`}`
           }>
             {/* title */}
-            <div className="py-4 text-center xl:text-left">
+            <div className="w-full py-4 mb-8 text-center xl:text-left">
               <span
                 className="text-5xl"
                 style={{
@@ -360,17 +361,17 @@ function MintPage() {
             </div>
 
             {/* step 1 text */}
-            <div className={`transition-all duration-1000
+            <div className={`w-full mb-8 transition-all duration-1000
                 ${showTextOne ? `opacity-100` : `opacity-0`}
               `}>
-              <div className="transition-all duration-500 hover:scale-110">
+              <div className="transition-all duration-500 hover:scale-105">
                 <div className="flex items-center gap-8 pb-2">
                   <img
                     src={"/assets/images/clicker-character/gem.webp"}
                     alt="gem"
                     className="ml-2 w-6 h-6"
                   />
-                  <h3 className="text-2xl text-white w-full">STEP 1</h3>
+                  <h3 className="w-full text-2xl text-white text-wrap ">STEP 1</h3>
                 </div>
                 <p
                   className="leading-normal tracking-normal text-white font-outfit text-justify"
@@ -384,20 +385,20 @@ function MintPage() {
             </div>
 
             {/* step 2 text */}
-            <div className={`transition-all duration-1000
+            <div className={`w-full mb-8 transition-all duration-1000
                 ${showTextTwo ? `opacity-100` : `opacity-0`}
               `}>
-              <div className="transition-all duration-500 hover:scale-110">
+              <div className="transition-all duration-500 hover:scale-105">
                 <div className="flex items-center gap-8 pb-2">
                   <img
                     src={"/assets/images/clicker-character/gem.webp"}
                     alt="gem"
                     className="ml-2 w-6 h-6"
                   />
-                  <h3 className="text-2xl text-white w-full">STEP 2</h3>
+                  <h3 className="w-full text-2xl text-white text-wrap ">STEP 2</h3>
                 </div>
                 <p
-                  className="leading-normal tracking-normal text-white font-outfit text-justify"
+                  className="leading-normal tracking-normal text-white font-outfit"
                   style={{
                     fontSize: "14px",
                   }}
@@ -408,20 +409,20 @@ function MintPage() {
             </div>
 
             {/* step 3 text */}
-            <div className={`pb-6 transition-all duration-1000
+            <div className={`mb-8 pb-6 transition-all duration-1000
                 ${showTextThree ? `opacity-100` : `opacity-0`}
               `}>
-              <div className="transition-all duration-500 hover:scale-110">
+              <div className="transition-all duration-500 hover:scale-105">
                 <div className="flex items-center gap-8 pb-2">
                   <img
                     src={"/assets/images/clicker-character/gem.webp"}
                     alt="gem"
                     className="ml-2 w-6 h-6"
                   />
-                  <h3 className="text-2xl text-white w-full">STEP 3</h3>
+                  <h3 className="w-full text-2xl text-white text-wrap ">STEP 3</h3>
                 </div>
                 <p
-                  className="leading-normal tracking-normal text-white font-outfit text-justify"
+                  className="leading-normal tracking-normal text-white font-outfit"
                   style={{
                     fontSize: "14px",
                   }}
@@ -433,21 +434,22 @@ function MintPage() {
             </div>
 
             {/* Mobile Ghost character view */}
-            <div className="z-0 max-h-[50dvh] flex xl:hidden items-center mt-[-4rem] mb-[-13rem] animate-pulse">
+            <div className="w-full z-0 max-h-[50dvh] flex xl:hidden items-center mt-[-4rem] mb-[-10rem] animate-pulse">
               {isMobileApp?
                 <img 
-                  src={videoSource} alt="ghost"
-                  className="rounded-3xl"
+                  src={videoSource}
+                  alt="ghost"
+                  className="mx-auto rounded-3xl"
                 />
                 :
                 <video
                   key={videoSource}
-                  className="rounded-3xl"
+                  className="mx-auto rounded-3xl"
                   controls={false}
                   autoPlay
                   loop
                   muted
-                  playsinline
+                  playsInline
                 >
                   <source src={videoSource} type="video/webm" />
                   Your browser does not support the video tag.
@@ -581,46 +583,46 @@ function MintPage() {
                 <div
                   className={`justify-center items-center inline-flex transition-transform duration-200 
                     ${(isAllowed && !mintingNFT) || !walletAddr ? `hover:scale-105` : ``}`}
-                    onMouseEnter={() => isAllowed ? setGhostExcited(true) : setGhostExcited(false)}
-                    onMouseLeave={() => !mintingNFT ? setGhostExcited(false) : setGhostExcited(true)}>
-                  {isMobileApp ? 
+                  onMouseEnter={() => isAllowed ? setGhostExcited(true) : setGhostExcited(false)}
+                  onMouseLeave={() => !mintingNFT ? setGhostExcited(false) : setGhostExcited(true)}>
+                  {isMobileApp ?
                     <span className='h-20 m-auto text-red-300 text-xl lg:text-3xl'>
-                      {`Cannot mint on mobile`}    
+                      {`Cannot mint on mobile`}
                     </span>
                   : 
                     loadingCandyMachine ? 
-                      <span className='h-20 m-auto text-red-300 text-xl lg:text-3xl'>
+                      <span className='h-20 m-auto text-amber-300 text-xl lg:text-3xl animate-pulse'>
                         {`Loading`} 
                       </span>
                       :
                       <button
                         className={`h-[80px] w-[250px] rounded-full border justify-center items-center inline-flex shadow-[0px_4px_4px_0px_#FFFBEF_inset,0px_-4px_4px_0px_rgba(255,249,228,0.48),0px_5px_4px_0px_rgba(232,140,72,0.48)] 
                           ${isAllowed || !walletAddr ?
-                            `bg-[#FFDC62] border-[#E59E69] cursor-pointer`
+                            `bg-[#FFDC62] border-[#E59E69] `
                             :
                             `bg-slate-400 border-slate-400`}`}
                         disabled={(!isAllowed || mintingNFT) && walletAddr}
                         onClick={handleMintOrConnect}>
-                          {mintingNFT? 
-                            <MoonLoader color={"#E59E69"} size={40} />
-                            :
-                            <div
-                              className="text-center text-white text-2xl font-normal"
-                              style={{
-                                textShadow: "0px 2px 0.6px rgba(240, 139, 0, 0.66)",
-                              }}
-                            >
-                              <span className="">{!walletAddr ? `Connect Wallet` : isAllowed ? `Mint Now` : insufficentBalance ? `Insufficient Funds` : `Mint Disabled`}</span>
-                            </div>
-                          }
-                      </button>  
+                        {mintingNFT ?
+                          <MoonLoader color={"#E59E69"} size={40} />
+                          :
+                          <div
+                            className="text-center text-white text-2xl font-normal"
+                            style={{
+                              textShadow: "0px 2px 0.6px rgba(240, 139, 0, 0.66)",
+                            }}
+                          >
+                            <span className="">{!walletAddr ? `Connect Wallet` : isAllowed ? `Mint Now` : insufficentBalance ? `Insufficient Funds` : `Mint Disabled`}</span>
+                          </div>
+                        }
+                      </button>
                   }
                 </div>
-                
-                <WalletInfo label="Using Wallet"/>
+
+                <WalletInfo label="Using Wallet" />
               </div>
             </div>
-          
+
             {/* footer */}
             <div className={`border-2 border-transparent border-t-sky-300 border-dashed py-8 mt-4 font-outfit text-md
               ${showTextSubtext ? `opacity-100` : `opacity-0`}`
@@ -628,25 +630,26 @@ function MintPage() {
               <div className="flex flex-col items-center xl:items-start">
                 {/* Web3 links */}
                 <div className="flex">
-                  <span className="text-amber-500 transition-all duration-300 hover:scale-105">
-                    <a
-                      href="https://solscan.io/"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      Solscan
-                    </a>
-                  </span>
+                  <a
+                    className="text-amber-500 transition-all duration-300 hover:scale-105 hover:font-bold hover:text-amber-400 bg-transparent mb-2"
+                    href="https://solscan.io/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Solscan
+                  </a>
+
                   <span className="text-white">&nbsp;&nbsp;|&nbsp;&nbsp;</span>
-                  <span className="text-amber-500 transition-all duration-300  hover:scale-105">
-                    <a
-                      href="https://wallet.magiceden.io/"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      Magic Eden
-                    </a>
-                  </span>
+
+                  <a
+                    className="text-amber-500 transition-all duration-300 hover:scale-105 hover:font-bold hover:text-amber-400 bg-transparent mb-2"
+                    href="https://wallet.magiceden.io/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Magic Eden
+                  </a>
+
                 </div>
                 {/* mainnet desc */}
                 <p className="text-white text-xs">
@@ -659,8 +662,8 @@ function MintPage() {
           {/* Desktop View */}
           <div
             className={`xl:w-[60%] hidden xl:block rounded-3xl p-3 transition-all duration-500
-              ${slideMintPanel? `translate-x-0 opacity-100` : `translate-x-60 opacity-0`}`}
-              style={{
+              ${slideMintPanel ? `translate-x-0 opacity-100` : `translate-x-60 opacity-0`}`}
+            style={{
               border: "2px solid var(--Color, #F4FBFF)",
               background: "rgba(155, 231, 255, 0.58)",
               boxShadow:
@@ -781,47 +784,47 @@ function MintPage() {
 
               {/* Mint button */}
               <div
-                  className={`justify-center items-center inline-flex transition-transform duration-200 
+                className={`justify-center items-center inline-flex transition-transform duration-200 
                     ${(isAllowed && !mintingNFT) || !walletAddr ? `hover:scale-105` : ``}`}
-                    onMouseEnter={() => isAllowed ? setGhostExcited(true) : setGhostExcited(false)}
-                    onMouseLeave={() => !mintingNFT ? setGhostExcited(false) : setGhostExcited(true)}
+                onMouseEnter={() => isAllowed ? setGhostExcited(true) : setGhostExcited(false)}
+                onMouseLeave={() => !mintingNFT ? setGhostExcited(false) : setGhostExcited(true)}
               >
-                {isMobileApp ? 
+                {isMobileApp ?
                   <span className='h-20 m-auto text-red-300 text-xl lg:text-3xl'>
-                    {`Cannot mint on mobile`}    
+                    {`Cannot mint on mobile`}
                   </span>
                   :
                   loadingCandyMachine ?
-                    <span className='h-20 m-auto text-red-300 text-xl lg:text-3xl'>
+                    <span className='h-20 m-auto text-amber-300 text-xl lg:text-3xl animate-pulse'>
                       {`Loading`}  
                     </span>
-                    : 
+                    :
                     <button
                       className={`h-[80px] w-[250px] rounded-full border justify-center items-center inline-flex shadow-[0px_4px_4px_0px_#FFFBEF_inset,0px_-4px_4px_0px_rgba(255,249,228,0.48),0px_5px_4px_0px_rgba(232,140,72,0.48)] 
                         ${isAllowed || !walletAddr ?
-                          `bg-[#FFDC62] border-[#E59E69] cursor-pointer`
+                          `bg-[#FFDC62] border-[#E59E69] `
                           :
                           `bg-slate-400 border-slate-400`}`}
                       disabled={(!isAllowed || mintingNFT) && walletAddr}
                       onClick={handleMintOrConnect}>
-                        {mintingNFT? 
-                          <MoonLoader color={"#E59E69"} size={40} />
-                          :
-                          <div
-                            className="text-center text-white text-2xl font-normal"
-                            style={{
-                              textShadow: "0px 2px 0.6px rgba(240, 139, 0, 0.66)",
-                            }}
-                          >
-                            <span className="">{!walletAddr ? `Connect Wallet` : isAllowed ? `Mint Now` : insufficentBalance ? `Insufficient Funds` : `Mint Disabled`}</span>
-                          </div>
-                        }
-                    </button>  
+                      {mintingNFT ?
+                        <MoonLoader color={"#E59E69"} size={40} />
+                        :
+                        <div
+                          className="text-center text-white text-2xl font-normal"
+                          style={{
+                            textShadow: "0px 2px 0.6px rgba(240, 139, 0, 0.66)",
+                          }}
+                        >
+                          <span className="">{!walletAddr ? `Connect Wallet` : isAllowed ? `Mint Now` : insufficentBalance ? `Insufficient Funds` : `Mint Disabled`}</span>
+                        </div>
+                      }
+                    </button>
                 }
               </div>
 
               {/* wallet info */}
-              <WalletInfo label="Using Wallet"/>
+              <WalletInfo label="Using Wallet" />
             </div>
           </div>
 
@@ -834,7 +837,7 @@ function MintPage() {
               autoPlay
               loop
               muted
-              playsinline
+              playsInline
             >
               <source src={videoSource} type="video/webm" />
               Your browser does not support the video tag.
@@ -842,19 +845,22 @@ function MintPage() {
           </div>
         </div>
       </div>
-      
+
       {/* Bind Wallet Modal */}
       {showWalletBindingPanel? 
-        <div className={`fixed z-[100] inset-0 w-screen h-screen flex flex-col items-center justify-center bg-black/50 backdrop-blur-lg transition-all duration-300 
-          ${walletBindingAnim ? `opacity-0` : `opacity-100`}`}>
+        <div className={`fixed z-[100] inset-0 w-screen h-screen flex items-center justify-center bg-black/50 backdrop-blur-lg transition-all duration-300 
+          ${walletBindingAnim ? `opacity-0` : `opacity-100`}
+          ${window.innerHeight < 800 
+            ? window.innerWidth > 500  ? '': 'flex-col'
+            : `flex-col`}`}>
           {/* wallet binding panel */}
           <div className="flex">
             <WalletBindingPanel className="w-full lx:w-1/2 my-auto p-12" />
           </div>
 
-          {!bindingWallet?
+          {!bindingWallet ?
             <button
-              className={`text-2xl rounded-lg m-4 mt-8 py-2 px-8 hover:scale-110 transition-all duration-300
+              className={`text-2xl rounded-lg m-8 mt-0 py-2 px-8 hover:scale-110 transition-all duration-300
                 ${walletAddr && !bindingWallet ? `bg-amber-400` : `bg-red-400 `}`}
               onClick={handleBackToMint}
             >
@@ -869,7 +875,7 @@ function MintPage() {
       }
 
       {/* NFT modal */}
-      {isShowNftOpen?
+      {isShowNftOpen ?
         <div className="fixed z-[100] inset-0 w-screen h-screen flex items-center justify-center bg-black/50 backdrop-blur-lg">
           {!isVideoEnded && nftMinted && (
             <video
@@ -877,59 +883,59 @@ function MintPage() {
               className={`w-full h-full object-cover transition-all duration-300 ${mintVideoAnim ? `scale-100` : `scale-0`}`}
               onEnded={handleVideoEnd}
               autoPlay
-              playsinline
+              playsInline
               controls={false}
             >
               <source src="https://storage.animara.world/mint-anim.mp4" type="video/mp4" />
               Your browser does not support the video tag.
             </video>
           )}
-  
+
           {isVideoEnded && (
             <div className="fixed inset-0 bg-transparent backdrop-blur-xl rounded-xl flex justify-center items-center z-[200] overflow-hidden">
-            {/* Background Image with spinning animation */}
-            <div
-              className={`absolute w-[2000px] h-[2000px] rotate-image`}
-              style={{
-                backgroundImage: `url("/assets/images/clicker-character/light-element.webp")`,
-                backgroundSize: "cover",
-                backgroundPosition: "center",
-                backgroundRepeat: "no-repeat",
-              }}
-            ></div>
+              {/* Background Image with spinning animation */}
+              <div
+                className={`absolute w-[2000px] h-[2000px] rotate-image`}
+                style={{
+                  backgroundImage: `url("/assets/images/clicker-character/light-element.webp")`,
+                  backgroundSize: "cover",
+                  backgroundPosition: "center",
+                  backgroundRepeat: "no-repeat",
+                }}
+              ></div>
 
-          
-            {/* Static Content */}
-            <div className="relative z-[101] flex flex-col items-center justify-center p-[1rem]">
-              <div className="w-full bg-gradient-to-t from-[#78bff2e1] to-[#7ae0ffe1] flex flex-col items-start p-[1rem] xl:p-[2rem] rounded-xl shadow-lg transition-all duration-300 hover:scale-105">
-                <div className="w-full flex justify-center">
-                  <span className="text-2xl xl:text-4xl text-center font-normal tracking-widest uppercase mb-[1rem] xl:mb-[2rem]">You minted</span>
+
+              {/* Static Content */}
+              <div className="relative z-[101] flex flex-col items-center justify-center p-[1rem]">
+                <div className="w-full bg-gradient-to-t from-[#78bff2e1] to-[#7ae0ffe1] flex flex-col items-start p-[1rem] xl:p-[2rem] rounded-xl shadow-lg transition-all duration-300 hover:scale-105">
+                  <div className="w-full flex justify-center">
+                    <span className="text-2xl xl:text-4xl text-center font-normal tracking-widest uppercase mb-[1rem] xl:mb-[2rem]">You minted</span>
+                  </div>
+                  <div className="w-full flex justify-center">
+                    <img
+                      className="w-[20rem] xl:w-[26rem] h-[20rem] xl:h-[26rem] mb-4"
+                      src={nftMinted.offChainMetadata.image}
+                      alt="NFT Minted"
+                    />
+                  </div>
+                  <span className="text-2xl xl:text-4xl text-left font-normal uppercase">{nftMinted.offChainMetadata.name}</span>
                 </div>
-                <div className="w-full flex justify-center">
-                  <img 
-                    className="w-[20rem] xl:w-[26rem] h-[20rem] xl:h-[26rem] mb-4"
-                    src={nftMinted.offChainMetadata.image}
-                    alt="NFT Minted"
-                  />
+
+                <div>
+                  <button
+                    className="mt-[4rem] text-base xl:text-xl px-[3rem] py-[1rem] flex justify-center items-center rounded-full border border-[#E59E69] shadow-[0px_4px_4px_0px_rgba(255,210,143,0.61)_inset,0px_4px_4px_0px_rgba(136,136,136,0.48)] bg-amber-400 hover:bg-amber-300 hover:scale-110 uppercase transition-transform duration-300 ease-in-out"
+                    onClick={onShowNftClose}
+                  >
+                    awesome!
+                  </button>
                 </div>
-                <span className="text-2xl xl:text-4xl text-left font-normal uppercase">{nftMinted.offChainMetadata.name}</span>
               </div>
 
-              <div>
-                <button
-                  className="mt-[4rem] text-base xl:text-xl px-[3rem] py-[1rem] flex justify-center items-center rounded-full border border-[#E59E69] shadow-[0px_4px_4px_0px_rgba(255,210,143,0.61)_inset,0px_4px_4px_0px_rgba(136,136,136,0.48)] bg-amber-400 hover:bg-amber-300 hover:scale-110 uppercase transition-transform duration-300 ease-in-out"
-                  onClick={onShowNftClose}
-                >
-                  awesome!
-                </button>
-              </div>
+
+              {/* Fade Out Overlay */}
+              <div className={`bg-white absolute z-[101] inset-0 w-screen h-screen pointer-events-none transition-all duration-500 ${!mintFadeOut ? `opacity-0` : `opacity-100`}`}></div>
             </div>
 
-          
-            {/* Fade Out Overlay */}
-            <div className={`bg-white absolute z-[101] inset-0 w-screen h-screen pointer-events-none transition-all duration-500 ${!mintFadeOut ? `opacity-0` : `opacity-100`}`}></div>
-          </div>
-          
           )}
         </div>
         :

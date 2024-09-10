@@ -85,7 +85,7 @@ const ReferPopup = ({ onClose }) => {
         <p>Your Invite Code</p>
         <div className="p-2 rounded text-center flex items-center">
           <code className="mr-3">{currentUser.referralCode}</code>
-          <BsCopy onClick={handleCopyToClipboard} className="cursor-pointer" />
+          <BsCopy onClick={handleCopyToClipboard} className="" />
         </div>
         <div>
           <StyledQRCode value={inviteLink} />

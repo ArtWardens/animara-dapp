@@ -7,6 +7,8 @@ import {
   signInWithEmailAndPassword,
   signInWithPopup,
   signInWithCustomToken,
+  signInWithRedirect,
+  getRedirectResult,
 } from "firebase/auth";
 import {
   auth,
@@ -99,7 +101,7 @@ const loginWithGoogleImpl = async () => {
 const loginWithTwitterImpl = async () => {
   const provider = new TwitterAuthProvider();
   try {
-    const result = await signInWithPopup(auth, provider);
+    const result = await signInWithRedirect(auth, provider);
     const { user } = result;
     return user;
   } catch (error) {
@@ -123,6 +125,15 @@ const loginWithTelegramImpl = async (telegramUser) => {
     return error;
   }
 };
+
+const checkLoginWithRedirectImpl = async () =>{
+  console.log(`checkLoginWithRedirectImpl`);
+  const result = await getRedirectResult(auth);
+  if (result){
+    return result.user || auth.currentUser;
+  }
+  return null;
+}
 
 const logoutImpl = async () => {
     return await auth.signOut();
@@ -151,4 +162,5 @@ export {
   logoutImpl,
   resetPasswordImpl,
   getCurrentUserIdImpl,
+  checkLoginWithRedirectImpl,
 };

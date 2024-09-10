@@ -88,7 +88,7 @@ const WalletBindingPanel = () => {
         }}
       >
         {/* hint */}
-        <div className="flex flex-col select-none hover:cursor-default">
+        <div className="flex flex-col select-none">
           {/* title */}
           <span className="text-xl xl:text-3xl text-[#ffa900] mb-6">Wallet Binding</span>
 
@@ -141,7 +141,7 @@ const WalletBindingPanel = () => {
                     <button
                       type="button"
                       onClick={copyWalletAddr}
-                      className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-[#FA0] shadow-[0px_4px_4px_0px_rgba(255,210,143,0.61)_inset] border-[1px] border-[#FFAA00] rounded-lg flex items-center justify-center w-[64x] h-[30px] text-xs tracking-wide px-2 hover:bg-[#FFC85A] hover:shadow-[0px_1px_2px_0px_rgba(198,115,1,0.66)] hover:border-[#FFC85A] cursor-pointer hover:scale-105 transition-transform duration-200"
+                      className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-[#FA0] shadow-[0px_4px_4px_0px_rgba(255,210,143,0.61)_inset] border-[1px] border-[#FFAA00] rounded-lg flex items-center justify-center w-[64x] h-[30px] text-xs tracking-wide px-2 hover:bg-[#FFC85A] hover:shadow-[0px_1px_2px_0px_rgba(198,115,1,0.66)] hover:border-[#FFC85A]  hover:scale-105 transition-transform duration-200"
                       style={{
                         boxShadow: '0px 4px 4px 0px rgba(255, 210, 143, 0.61) inset',
                       }}
@@ -189,7 +189,7 @@ const WalletBindingPanel = () => {
 
       {/* Mobile wallet panel */}
       <div
-        className="w-full h-full block xl:hidden my-auto rounded-2xl text-white text-center bg-contain"
+        className="w-full h-full xl:hidden flex flex-col items-center justify-center my-auto rounded-2xl text-white text-center bg-contain p-[4rem] apy-[6rem] xs:p-[6rem]"
         style={{
           backgroundImage: `url("/assets/images/clicker-character/wallet-binding-mobile-bg.webp")`,
           backgroundPosition: 'center',
@@ -197,12 +197,12 @@ const WalletBindingPanel = () => {
         }}
       >
         {/* hint */}
-        <div className="flex flex-col select-none hover:cursor-default pt-[6rem]">
+        <div className="w-[80%] flex flex-col select-none hover:cursor-default pt-[0rem] xs:pt-[6rem]">
           {/* title */}
-          <span className="text-xl xl:text-3xl text-[#ffa900] mb-6">Wallet Binding</span>
+          <span className="text-xl xl:text-3xl text-[#ffa900] mb-3 xs:mb-6">Wallet Binding</span>
 
           {/* disclaimer 1 */}
-          <span className="text-sm xl:text-base font-outfit font-normal mb-6">
+          <span className="text-sm xl:text-base text-center font-outfit font-normal mb-3 xs:mb-6">
             Everything in Animara are linked to your wallet.
             <br />
             You need to bind your wallet in order to:
@@ -232,10 +232,10 @@ const WalletBindingPanel = () => {
         </div>
 
         {/* wallet info */}
-        <div className="flex flex-col h-auto my-6 pb-[6rem]">
+        <div className="flex flex-col items-center h-auto my-2 xs:my-6 pb-[2rem] xs:pb-[6rem]">
           {/* wallet binding info */}
           {user?.walletAddr ? (
-            <div className="flex flex-col mb-6">
+            <div className="flex flex-col mb-3 xs:mb-6">
               <span className="text-amber-500 text-xl xl:text-2xl mb-6">Current Wallet</span>
               {!bindingWallet ? (
                 <span className="flex flex-col items-center justify-center gap-2">
@@ -252,7 +252,7 @@ const WalletBindingPanel = () => {
                     <button
                       type="button"
                       onClick={copyWalletAddr}
-                      className=" bg-[#FA0] shadow-[0px_4px_4px_0px_rgba(255,210,143,0.61)_inset] border-[1px] border-[#FFAA00] rounded-lg flex items-center justify-center w-[256px] h-[40px] text-xs tracking-wide px-2 hover:bg-[#FFC85A] hover:shadow-[0px_1px_2px_0px_rgba(198,115,1,0.66)] hover:border-[#FFC85A] cursor-pointer hover:scale-105 transition-transform duration-200"
+                      className=" bg-[#FA0] shadow-[0px_4px_4px_0px_rgba(255,210,143,0.61)_inset] border-[1px] border-[#FFAA00] rounded-lg flex items-center justify-center w-[256px] h-[40px] text-xs tracking-wide px-2 hover:bg-[#FFC85A] hover:shadow-[0px_1px_2px_0px_rgba(198,115,1,0.66)] hover:border-[#FFC85A]  hover:scale-105 transition-transform duration-200"
                       style={{
                         boxShadow: '0px 4px 4px 0px rgba(255, 210, 143, 0.61) inset',
                       }}
@@ -267,10 +267,10 @@ const WalletBindingPanel = () => {
               )}
             </div>
           ) : (
-            <span className="text-sm xl:text-base">This account is NOT bound to any wallet</span>
+            <span className="w-[50%] text-sm xl:text-base">This account is NOT bound to any wallet</span>
           )}
 
-          <div className="flex w-full h-auto items-center justify-center mt-4">
+          <div className="flex w-full h-auto items-center justify-center mt-2 xl:mt-4">
             {user?.walletAddr === `${publicKey}` ? (
               bindingWallet || disconnectingWallet ? (
                 <MoonLoader color={'#FFB23F'} size={40} />
@@ -314,21 +314,21 @@ const WalletBindingPanel = () => {
               backgroundRepeat: 'no-repeat',
             }}
           >
-            <h2 className="text-xl text-center mb-4 text-red-400">Unbind Wallet</h2>
-            <p className="mb-6 font-outfit">
+            <h2 className="text-lg xs:text-xl text-center mb-4 text-red-400">Unbind Wallet</h2>
+            <p className="text-sm xs:text-base mb-6 font-outfit">
               Are you sure you want to unbind your wallet?
               <br />
               All your NFT related benefits will be disabled.
             </p>
             <div className="flex justify-end">
               <button
-                className="bg-[#ffa900] text-slate-100 mr-auto py-2 px-4 rounded-2xl hover:scale-110 transition-all duration-500"
+                className="bg-[#ffa900] text-slate-100 text-sm xs:text-base mr-auto py-2 px-4 rounded-2xl hover:scale-110 transition-all duration-500"
                 onClick={handleCloseDisconnectPrompt}
               >
                 Keep my benefits
               </button>
               <button
-                className="bg-red-400 hover:bg-red-700 py-2 px-4 rounded-2xl hover:scale-110 transition-all duration-500"
+                className="bg-red-400 hover:bg-red-700 text-sm xs:text-base py-2 px-4 rounded-2xl hover:scale-110 transition-all duration-500"
                 onClick={handleConfirmDisconnect}
               >
                 Unbind
