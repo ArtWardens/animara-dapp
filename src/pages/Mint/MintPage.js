@@ -131,10 +131,10 @@ function MintPage() {
   const [videoSource, setVideoSource] = useState('https://storage.animara.world/unhappy-ghost.webm');
   const videoRef = useRef(null);
   const [isMobileApp] = useState(
-    // /android|iPad|iPhone|iPod/i.test(navigator.userAgent) ||
-    // (navigator.userAgent.includes("Mac") && "ontouchend" in document)
-    false
+    /android|iPad|iPhone|iPod/i.test(navigator.userAgent) ||
+    (navigator.userAgent.includes("Mac") && "ontouchend" in document)
   );
+  const [isPhantomInstalled] = useState(window.phantom?.solana?.isPhantom);
 
   // intro animation & fetch countdown
   useEffect(() => {
@@ -583,11 +583,11 @@ function MintPage() {
                 <div
                   className={`justify-center items-center inline-flex transition-transform duration-200 
                     ${(isAllowed && !mintingNFT) || !walletAddr ? `hover:scale-105` : ``}`}
-                  onMouseEnter={() => isAllowed ? setGhostExcited(true) : setGhostExcited(false)}
-                  onMouseLeave={() => !mintingNFT ? setGhostExcited(false) : setGhostExcited(true)}>
-                  {isMobileApp ?
+                    onMouseEnter={() => isAllowed ? setGhostExcited(true) : setGhostExcited(false)}
+                    onMouseLeave={() => !mintingNFT ? setGhostExcited(false) : setGhostExcited(true)}>
+                  {!isPhantomInstalled ? 
                     <span className='h-20 m-auto text-red-300 text-xl lg:text-3xl'>
-                      {`Cannot mint on mobile`}
+                      {`Open our dapp in Phantom Wallet's in-app browers to mint`}    
                     </span>
                   : 
                     loadingCandyMachine ? 
@@ -789,9 +789,9 @@ function MintPage() {
                 onMouseEnter={() => isAllowed ? setGhostExcited(true) : setGhostExcited(false)}
                 onMouseLeave={() => !mintingNFT ? setGhostExcited(false) : setGhostExcited(true)}
               >
-                {isMobileApp ?
+                {!isPhantomInstalled ? 
                   <span className='h-20 m-auto text-red-300 text-xl lg:text-3xl'>
-                    {`Cannot mint on mobile`}
+                    {`Open our dapp in Phantom Wallet's in-app browers to mint`}    
                   </span>
                   :
                   loadingCandyMachine ?
