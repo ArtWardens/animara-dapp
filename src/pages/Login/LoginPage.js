@@ -134,10 +134,12 @@ const LoginPage = () => {
 
         {/* Header */}
         <header className="absolute py-[2rem] px-[12rem] h-[6rem] w-full hidden lg:block">
-          <img 
-            src="/assets/icons/logo.webp" alt="logo"
-            className="max-h-[2rem]"
-          />
+          <a className="cursor-pointer" href="https://animara.world" target="_blank" rel="noopener noreferrer">
+            <img 
+              src="/assets/icons/logo.webp" alt="logo"
+              className="max-h-[4rem]"
+            />
+          </a>
         </header>
 
         {/* Login Card Latest */}
@@ -147,7 +149,7 @@ const LoginPage = () => {
             <div className="flex justify-center items-center">
               {isIOS?
                 <img 
-                  src="/assets/icons/AnimaraLogo.webp" alt="logo"
+                  src="/assets/icons/logo.webp" alt="logo"
                   className="h-[5rem] w-[5rem]"
                 />
                 :
