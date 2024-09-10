@@ -131,7 +131,7 @@ const LoginPage = () => {
 
         {/* Header */}
         <header className="absolute py-[2rem] px-[12rem] h-[6rem] w-full hidden lg:block">
-          <a className="cursor-pointer" href="https://animara.world" target="_blank" rel="noopener noreferrer">
+          <a className="" href="https://animara.world" target="_blank" rel="noopener noreferrer">
             <img 
               src="/assets/icons/logo.webp" alt="logo"
               className="max-h-[4rem]"
@@ -146,7 +146,7 @@ const LoginPage = () => {
             <div className="flex justify-center items-center">
               {isIOS?
                 <img 
-                  src="/assets/icons/logo.webp" alt="logo"
+                  src="/assets/icons/AnimaraLogo.webp" alt="logo"
                   className="h-[5rem] w-[5rem]"
                 />
                 :
@@ -184,7 +184,7 @@ const LoginPage = () => {
                 onClick={togglePasswordVisiblity}
                 src="../assets/images/eye.svg"
                 alt="show password"
-                className="absolute top-1/2 right-3 -translate-y-1/2 -translate-x-3 cursor-pointer"
+                className="absolute top-1/2 right-3 -translate-y-1/2 -translate-x-3 "
               />
             </div>
             {/* Login Button */}
@@ -225,7 +225,7 @@ const LoginPage = () => {
               Don&#39;t have an account? &nbsp;
               <Link
                 to="/signup"
-                className="font-semibold hover:brightness-75 text-[#FFB23F]"
+                className="font-semibold hover:brightness-75 text-[#FFB23F] bg-transparent"
               >
                 Sign Up
               </Link>
@@ -272,9 +272,9 @@ const LoginPage = () => {
           </div>
 
           <div className="mt-3 flex gap-8 font-outfit text-[#C5C5C5] text-[1rem] text-center justify-center">
-            <Link to="https://animara.world/privacy-policy" className="hover:brightness-75">Privacy Policy</Link>
+            <Link to="https://animara.world/privacy-policy" className="hover:brightness-75 bg-transparent">Privacy Policy</Link>
             <span>|</span>
-            <Link to="https://animara.world/terms-and-conditions" className="hover:brightness-75">Terms & Conditions</Link>
+            <Link to="https://animara.world/terms-and-conditions" className="hover:brightness-75 bg-transparent">Terms & Conditions</Link>
           </div>
         </div>
       </div>
