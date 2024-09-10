@@ -19,7 +19,7 @@ const VerifyEmailPage = () => {
     >
       {/* Logo */}
       <div className="absolute top-[2rem] xl:top-[4rem] left-[3rem] lg:left-[6rem] xl:left-[12rem]">
-        <a href="https://animara.world" target="_blank" rel="noopener noreferrer">
+        <a className="cursor-pointer" href="https://animara.world" target="_blank" rel="noopener noreferrer">
           <img
             src={"/assets/images/clicker-character/animara-logo.webp"}
             alt="animara logo"
