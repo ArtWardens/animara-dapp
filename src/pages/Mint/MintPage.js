@@ -433,16 +433,17 @@ function MintPage() {
             </div>
 
             {/* Mobile Ghost character view */}
-            <div className="z-0 max-h-[50dvh] flex xl:hidden items-center mt-[-4rem] mb-[-10rem] animate-pulse">
+            <div className="w-full z-0 max-h-[50dvh] flex xl:hidden items-center mt-[-4rem] mb-[-10rem] animate-pulse">
               {isMobileApp?
                 <img 
-                  src={videoSource} alt="ghost"
-                  className="rounded-3xl"
+                  src={videoSource}
+                  alt="ghost"
+                  className="mx-auto rounded-3xl"
                 />
                 :
                 <video
                   key={videoSource}
-                  className="rounded-3xl"
+                  className="mx-auto rounded-3xl"
                   controls={false}
                   autoPlay
                   loop
