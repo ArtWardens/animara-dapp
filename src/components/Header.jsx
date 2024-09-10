@@ -110,7 +110,7 @@ function Header() {
       >
         {/* profile picture */}
         <div className="p-1 w-20 h-20 relative">
-          <button onClick={handleEditProfile} className="group relative">
+          <button onClick={handleEditProfile} className="group relative bg-transparent">
             {loadingImage && (
               <div className="h-18 flex justify-center items-center">
                 <MoonLoader color={'#FFB23F'} />
@@ -119,7 +119,7 @@ function Header() {
             <img
               src={getProfilePic()}
               alt="profile"
-              className="justify-self-center rounded-full w-24 cursor-pointer group-hover:brightness-[0.55] transition-all duration-300"
+              className="justify-self-center rounded-full w-24  group-hover:brightness-[0.55] transition-all duration-300"
               style={{
                 border: '4px solid var(--80E8FF, #80E8FF)',
                 background: '#111928 50%',
@@ -177,7 +177,7 @@ function Header() {
         <div className="relative">
           <img
             src="/assets/images/clicker-character/locale.webp"
-            className="w-[3dvw] xl:w-[1.5dvw] cursor-pointer"
+            className="w-[3dvw] xl:w-[1.5dvw] "
             onClick={() => setLangDropdownOpen(!langDropdownOpen)}
             alt="change locale"
           />
@@ -209,7 +209,7 @@ function Header() {
         ))}
 
         <button
-          className="transition ease-in-out p-2 hover:scale-105"
+          className="transition ease-in-out p-2 hover:scale-105 bg-transparent"
           onMouseEnter={handleMouseEnterLogout}
           onMouseLeave={handleMouseLeaveLogout}
           onClick={handleLogout}
@@ -251,7 +251,7 @@ function Header() {
           `}>
             <div className="w-full flex flex-row justify-between">
               <div className="flex items-center space-x-3">
-                <a className="cursor-pointer" href="https://animara.world" target="_blank" rel="noopener noreferrer">
+                <a className="" href="https://animara.world" target="_blank" rel="noopener noreferrer">
                   <img src="/assets/icons/logo.webp" alt="Animara Logo" className="h-12" />
                 </a>
               </div>

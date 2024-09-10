@@ -94,7 +94,7 @@ const ClickerView = () => {
             >
               {/* Close Button */}
               <button
-                className="absolute top-[4rem] md:top-[13rem] lg:top-[10rem] xl:top-[8rem] right-[2.5rem] md:right-[5rem] text-white text-4xl hover:brightness-75"
+                className="absolute top-[4rem] md:top-[13rem] lg:top-[10rem] xl:top-[8rem] right-[2.5rem] md:right-[5rem] text-white text-4xl bg-transparent hover:brightness-75"
                 onClick={handleClose}
               >
                 &times;

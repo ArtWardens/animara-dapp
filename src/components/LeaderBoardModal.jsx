@@ -44,7 +44,7 @@ const LeaderBoardModal = ({ setIsLeaderBoardOpen, countdown, timeRemaining }) =>
           style={{ backgroundImage: 'url(/assets/images/Light.webp)' }}
         >
           <div className="absolute top-4 left-4">
-            <img src="/assets/images/username.webp" className="cursor-pointer h-16" alt="username" />{' '}
+            <img src="/assets/images/username.webp" className=" h-16" alt="username" />{' '}
             <p className="text-white absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/3 w-20 truncate">
               <span>{`${userDetails?.first_name} ${userDetails?.last_name}`}</span>
             </p>
@@ -58,7 +58,7 @@ const LeaderBoardModal = ({ setIsLeaderBoardOpen, countdown, timeRemaining }) =>
                 alt="leaderboard"
               />
               <div onClick={handleCloseModal} className="absolute top-4 -right-10">
-                <img src="/assets/images/x.webp" width={50} height={50} className="cursor-pointer" alt="x" />
+                <img src="/assets/images/x.webp" width={50} height={50} className="" alt="x" />
               </div>
 
               {leaderBoardData?.length > 0 ? (
@@ -90,7 +90,7 @@ const LeaderBoardModal = ({ setIsLeaderBoardOpen, countdown, timeRemaining }) =>
                             src="/assets/images/hamar2.webp"
                             width={50}
                             height={50}
-                            className="cursor-pointer w-[25px] h-[25px]"
+                            className=" w-[25px] h-[25px]"
                             alt="x"
                           />
                         </div>
@@ -100,7 +100,7 @@ const LeaderBoardModal = ({ setIsLeaderBoardOpen, countdown, timeRemaining }) =>
                             src="/assets/images/gem3.webp"
                             width={50}
                             height={50}
-                            className="cursor-pointer w-[20px] h-[20px]"
+                            className=" w-[20px] h-[20px]"
                             alt="x"
                           />
                         </div>
@@ -121,7 +121,7 @@ const LeaderBoardModal = ({ setIsLeaderBoardOpen, countdown, timeRemaining }) =>
                     <span className="text-white">until reset</span>
                   </h3>
                   <div>
-                    <img src="/assets/images/timer.webp" width={50} height={50} className="cursor-pointer" alt="x" />
+                    <img src="/assets/images/timer.webp" width={50} height={50} className="" alt="x" />
                   </div>
                 </div>
                 <h4 className="text-white font-light pt-1.5">Leaderboard refreshes in {countdown} seconds</h4>
