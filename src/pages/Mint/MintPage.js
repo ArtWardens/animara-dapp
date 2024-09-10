@@ -849,7 +849,9 @@ function MintPage() {
       {showWalletBindingPanel? 
         <div className={`fixed z-[100] inset-0 w-screen h-screen flex items-center justify-center bg-black/50 backdrop-blur-lg transition-all duration-300 
           ${walletBindingAnim ? `opacity-0` : `opacity-100`}
-          ${window.innerHeight < 800 ? `` : `flex-col`}`}>
+          ${window.innerHeight < 800 
+            ? window.innerWidth > 500  ? '': 'flex-col'
+            : `flex-col`}`}>
           {/* wallet binding panel */}
           <div className="flex">
             <WalletBindingPanel className="w-full lx:w-1/2 my-auto p-12" />
