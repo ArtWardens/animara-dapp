@@ -131,8 +131,9 @@ function MintPage() {
   const [videoSource, setVideoSource] = useState('https://storage.animara.world/unhappy-ghost.webm');
   const videoRef = useRef(null);
   const [isMobileApp] = useState(
-    /android|iPad|iPhone|iPod/i.test(navigator.userAgent) ||
-    (navigator.userAgent.includes("Mac") && "ontouchend" in document)
+    // /android|iPad|iPhone|iPod/i.test(navigator.userAgent) ||
+    // (navigator.userAgent.includes("Mac") && "ontouchend" in document)
+    false
   );
 
   // intro animation & fetch countdown
