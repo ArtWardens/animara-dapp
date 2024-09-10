@@ -332,7 +332,7 @@ const MascotView = ({ openModal, setOpenModal }) => {
             autoPlay
             loop={false}
             muted
-            playsinline
+            playsInline
             onEnded={closeRewardModal}
             className="absolute inset-0 object-cover w-full h-full"
           />
