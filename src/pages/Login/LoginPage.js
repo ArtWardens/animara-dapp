@@ -134,7 +134,7 @@ const LoginPage = () => {
 
         {/* Header */}
         <header className="absolute py-[2rem] px-[12rem] h-[6rem] w-full hidden lg:block">
-          <a className="cursor-pointer" href="https://animara.world" target="_blank" rel="noopener noreferrer">
+          <a className="" href="https://animara.world" target="_blank" rel="noopener noreferrer">
             <img 
               src="/assets/icons/logo.webp" alt="logo"
               className="max-h-[4rem]"
@@ -186,7 +186,7 @@ const LoginPage = () => {
                 onClick={togglePasswordVisiblity}
                 src="../assets/images/eye.svg"
                 alt="show password"
-                className="absolute top-1/2 right-3 -translate-y-1/2 -translate-x-3 cursor-pointer"
+                className="absolute top-1/2 right-3 -translate-y-1/2 -translate-x-3 "
               />
             </div>
             {/* Login Button */}

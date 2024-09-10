@@ -126,12 +126,12 @@ const EditProfilePage = () => {
               <div className="w-full xl:w-[100%] header flex justify-between items-center space-x-[2rem] lg:space-x-[8rem]">
                 <span className="flex gap-2">
                   <div className="flex flex-col">
-                    <span
+                    <a
                       onClick={handleBackClick}
-                      className="text-white text-sm font-outfit tracking-wide hover:text-amber-500 transition-colors cursor-pointer"
+                      className="text-white text-sm font-outfit tracking-wide hover:text-amber-500 transition-colors bg-transparent"
                     >
                       &lt;&nbsp;Back
-                    </span>
+                    </a>
                     <div className="flex flex-col xl:flex-row">
                       <div
                         className="w-full text-left text-amber-500 text-5xl font-normal font-['Luckiest Guy'] uppercase leading-[54px]"

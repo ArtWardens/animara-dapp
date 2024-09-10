@@ -65,7 +65,7 @@ const EarlyBirdPage = () => {
                     <div
                         key={idx}
                         disabled={taskIdToComplete !== ''}
-                        className={`flex w-full transition-transform duration-200 px-4 cursor-pointer ${isTaskCompleted ? '' : 'hover:scale-105'}`}
+                        className={`flex w-full transition-transform duration-200 px-4  ${isTaskCompleted ? '' : 'hover:scale-105'}`}
                         onClick={() => isTaskCompleted ? null : handleTaskClick(task)}
                         style={{ pointerEvents: isTaskCompleted ? 'none' : 'auto' }}
                     >
@@ -233,10 +233,10 @@ const EarlyBirdPage = () => {
 
                                 <div
 
-                                    className="w-[240px] h-[80px] flex justify-self-center items-center mt-4 hover:scale-105 transition-transform duration-200 cursor-pointer"
+                                    className="w-[240px] h-[80px] flex justify-self-center items-center mt-4 hover:scale-105 transition-transform duration-200 "
                                     onClick={() => navigate('/mint')}
                                 >
-                                    <div className="bg-[#ffb23e] rounded-full border border-[#e59e69] flex justify-center items-center w-full h-full hover:bg-[#FFDC62] hover:shadow-[0px_4px_4px_0px_rgba(255,210,143,0.61)_inset,0px_4px_4px_0px_rgba(232,140,72,0.48)] cursor-pointer">
+                                    <div className="bg-[#ffb23e] rounded-full border border-[#e59e69] flex justify-center items-center w-full h-full hover:bg-[#FFDC62] hover:shadow-[0px_4px_4px_0px_rgba(255,210,143,0.61)_inset,0px_4px_4px_0px_rgba(232,140,72,0.48)] ">
                                         <div
 
                                             className="text-center text-white text-3xl"

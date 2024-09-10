@@ -149,9 +149,6 @@ const tailwinConfig = {
         LuckiestGuy: ['LuckiestGuy'], 
         bignoodle: ['BigNoodleTitling', 'sans-serif'],
       },
-      cursor: {
-        "360deg": "url('./public/assets/icons/360deg.svg'), pointer",
-      },
       boxShadow: {
         inplace_fuschia_500: "0 0px 10px 5px rgba(217, 70,239, 0.5)",
       },
