@@ -542,7 +542,7 @@ function ReferralPage (){
                 {/* Referral stats */}
                 <div className="w-full flex flex-col border-dashed border-r-4 border-transparent">
                   <div
-                    className="w-full h-full items-center p-[4.5rem]"
+                    className="w-full h-full items-center p-[5rem]"
                     style={{
                       backgroundImage: 'url("/assets/images/clicker-character/ticket-mobile-white.webp")',
                       backgroundSize: 'contain',
@@ -639,7 +639,7 @@ function ReferralPage (){
                       backgroundRepeat: 'no-repeat',
                     }}
                   >
-                    {(getTotalClaimable() <= `0 sol`) ?
+                    {(getTotalClaimable() >= `0 sol`) ?
                       <div className="w-full h-full flex-col place-content-center gap-4 inline-flex p-[6rem] sm:p-[6.5rem]">
                         <span className="text-center w-full">Nothing to claim yet</span>
                         <span className="text-center w-full text-xs font-outfit">Get your referrals to mint an NFT now!</span>
@@ -742,11 +742,18 @@ function ReferralPage (){
 
                 <div className="w-full flex justify-center">
                   <button
-                    className="w-[16rem] h-9 px-[1rem] py-[1.5rem] mb-5 text-sm tracking-wider bg-amber-400 shadow-[0px_4px_4px_0px_rgba(255,210,143,0.61)_inset] rounded-full border-orange-300 justify-center items-center gap-2 flex hover:bg-[#FFC85A] hover:shadow-[0px_1px_2px_0px_rgba(198,115,1,0.66)] hover:border-[#FFC85A]  hover:scale-105 transition-transform duration-200"
+                    className="hidden lg:flex w-[16rem] h-9 px-[1rem] py-[1.5rem] mb-5 text-sm tracking-wider bg-amber-400 shadow-[0px_4px_4px_0px_rgba(255,210,143,0.61)_inset] rounded-full border-orange-300 justify-center items-center gap-2 hover:bg-[#FFC85A] hover:shadow-[0px_1px_2px_0px_rgba(198,115,1,0.66)] hover:border-[#FFC85A] cursor-pointer hover:scale-105 transition-transform duration-200"
                     onClick={shareInviteLink}
                   >
                     <FaShareFromSquare className="w-4 h-4 mr-2" />
                     Share to Social Networks Now!
+                  </button>
+                  <button
+                    className="w-[16rem] h-9 px-[1rem] py-[1.5rem] mb-5 text-sm tracking-wider bg-amber-400 shadow-[0px_4px_4px_0px_rgba(255,210,143,0.61)_inset] rounded-full border-orange-300 justify-center items-center gap-2 flex lg:hidden hover:bg-[#FFC85A] hover:shadow-[0px_1px_2px_0px_rgba(198,115,1,0.66)] hover:border-[#FFC85A] cursor-pointer hover:scale-105 transition-transform duration-200"
+                    onClick={shareInviteLink}
+                  >
+                    <FaShareFromSquare className="w-4 h-4 mr-2" />
+                    Share Now!
                   </button>
                 </div>
 
