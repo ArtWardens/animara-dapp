@@ -109,6 +109,7 @@ const ClickerView = () => {
                   <video
                     src="https://storage.animara.world/daily-login-reward.webm"
                     autoPlay
+                    playsinline
                     loop={true}
                     className="max-w-[8rem] lg:max-w-[9rem] pt-1"
                   />
