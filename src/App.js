@@ -18,6 +18,7 @@ import { appInit, systemUpdateNetworkConnection, setIsMobile, setIsIOS } from '.
 import { checkLoginWithRedirect } from "./sagaStore/slices/userSlice.js";
 import { runSaga } from './sagaStore/store';
 import "@solana/wallet-adapter-react-ui/styles.css";
+import './globals.css';
 
 // Import Solana wallet packages
 import { WalletProvider } from '@solana/wallet-adapter-react';

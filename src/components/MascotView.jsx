@@ -241,7 +241,7 @@ const MascotView = ({ openModal, setOpenModal }) => {
       ${startSlide ? 'translate-y-0' : 'translate-y-full'}`}
     >
       <div
-        className="cursor-pointer w-full xl:w-5/6 h-4/5 rounded-3xl p-3"
+        className=" w-full xl:w-5/6 h-4/5 rounded-3xl p-3"
         style={{
           border: '2px solid var(--Color, #F4FBFF)',
           background: 'rgba(155, 231, 255, 0.58)',

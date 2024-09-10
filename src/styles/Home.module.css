@@ -33,7 +33,6 @@
 }
 
 .form button:hover {
-  cursor: pointer;
   background-color: rgb(var(--darker-accent-rgb));
 }
 
@@ -90,7 +89,6 @@
 }
 
 .success {
-  cursor: pointer;
   display: flex;
   flex-direction: row;
   align-items: flex-start;
