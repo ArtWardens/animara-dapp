@@ -90,9 +90,17 @@
   * {
     @apply border-border;
   }
-  body {
+
+  body, a, button {
     @apply bg-background text-foreground;
+    cursor: url('../public/assets/icons/cursor_01.svg') 6 12, auto !important;
+    text-decoration: none;
   }
+
+  body, a, button:active {
+    cursor: url('../public/assets/icons/cursor_07.svg') 6 12, auto !important;
+  }
+
   .gradient-blue-transparent-fuschia-bottomRight {
     background: linear-gradient(
       to bottom right,
@@ -111,13 +119,18 @@
     clip-path: polygon(10% 0, 100% 0, 100% 80%, 90% 100%, 0 100%, 0 20%);
   }
   .cut-topleft-corner {
-    clip-path: polygon(80% 0, 100% 20%, 100% 100%, 0 100%, 0 0);
+    clip-path: polygon(80% 0, 100% 20%, 100% 100%, 0 100%, 0 10);
   }
 }
 
 body {
   font-family: "LuckiestGuy", sans-serif;
   font-weight: 300;
+  cursor: url('../public/assets/icons/cursor_01.svg') 6 12, auto !important;
+}
+
+body:active {
+  cursor: url('../public/assets/icons/cursor_07.svg') 6 12, auto !important;
 }
 
 /* React Transition Group Animation */

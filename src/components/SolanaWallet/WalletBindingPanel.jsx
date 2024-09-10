@@ -88,7 +88,7 @@ const WalletBindingPanel = () => {
         }}
       >
         {/* hint */}
-        <div className="flex flex-col select-none hover:cursor-default">
+        <div className="flex flex-col select-none">
           {/* title */}
           <span className="text-xl xl:text-3xl text-[#ffa900] mb-6">Wallet Binding</span>
 
@@ -141,7 +141,7 @@ const WalletBindingPanel = () => {
                     <button
                       type="button"
                       onClick={copyWalletAddr}
-                      className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-[#FA0] shadow-[0px_4px_4px_0px_rgba(255,210,143,0.61)_inset] border-[1px] border-[#FFAA00] rounded-lg flex items-center justify-center w-[64x] h-[30px] text-xs tracking-wide px-2 hover:bg-[#FFC85A] hover:shadow-[0px_1px_2px_0px_rgba(198,115,1,0.66)] hover:border-[#FFC85A] cursor-pointer hover:scale-105 transition-transform duration-200"
+                      className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-[#FA0] shadow-[0px_4px_4px_0px_rgba(255,210,143,0.61)_inset] border-[1px] border-[#FFAA00] rounded-lg flex items-center justify-center w-[64x] h-[30px] text-xs tracking-wide px-2 hover:bg-[#FFC85A] hover:shadow-[0px_1px_2px_0px_rgba(198,115,1,0.66)] hover:border-[#FFC85A]  hover:scale-105 transition-transform duration-200"
                       style={{
                         boxShadow: '0px 4px 4px 0px rgba(255, 210, 143, 0.61) inset',
                       }}
@@ -197,7 +197,7 @@ const WalletBindingPanel = () => {
         }}
       >
         {/* hint */}
-        <div className="flex flex-col select-none hover:cursor-default pt-[6rem]">
+        <div className="flex flex-col select-none pt-[6rem]">
           {/* title */}
           <span className="text-xl xl:text-3xl text-[#ffa900] mb-6">Wallet Binding</span>
 
@@ -252,7 +252,7 @@ const WalletBindingPanel = () => {
                     <button
                       type="button"
                       onClick={copyWalletAddr}
-                      className=" bg-[#FA0] shadow-[0px_4px_4px_0px_rgba(255,210,143,0.61)_inset] border-[1px] border-[#FFAA00] rounded-lg flex items-center justify-center w-[256px] h-[40px] text-xs tracking-wide px-2 hover:bg-[#FFC85A] hover:shadow-[0px_1px_2px_0px_rgba(198,115,1,0.66)] hover:border-[#FFC85A] cursor-pointer hover:scale-105 transition-transform duration-200"
+                      className=" bg-[#FA0] shadow-[0px_4px_4px_0px_rgba(255,210,143,0.61)_inset] border-[1px] border-[#FFAA00] rounded-lg flex items-center justify-center w-[256px] h-[40px] text-xs tracking-wide px-2 hover:bg-[#FFC85A] hover:shadow-[0px_1px_2px_0px_rgba(198,115,1,0.66)] hover:border-[#FFC85A]  hover:scale-105 transition-transform duration-200"
                       style={{
                         boxShadow: '0px 4px 4px 0px rgba(255, 210, 143, 0.61) inset',
                       }}
