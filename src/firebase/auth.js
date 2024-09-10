@@ -128,15 +128,11 @@ const loginWithTelegramImpl = async (telegramUser) => {
 
 const checkLoginWithRedirectImpl = async () =>{
   console.log(`checkLoginWithRedirectImpl`);
-  // try{
-    const result = await getRedirectResult(auth);
-    if (result){
-      console.log(`result ${result}`);
-      return result.user || auth.currentUser;
-    }
-  // }catch (err){
-  //  // throw err;
-  // }
+  const result = await getRedirectResult(auth);
+  if (result){
+    return result.user || auth.currentUser;
+  }
+  return null;
 }
 
 const logoutImpl = async () => {
