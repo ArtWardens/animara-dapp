@@ -94,6 +94,7 @@
   body, a, button {
     @apply bg-background text-foreground;
     cursor: url('../public/assets/icons/cursor_01.svg') 6 12, auto !important;
+    text-decoration: none;
   }
 
   body, a, button:active {
