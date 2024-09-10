@@ -146,15 +146,15 @@ function Header() {
         <div className="flex flex-col place-content-center flex-shrink">
           <div className="font-outfit text-md flex">
             <p>{currentUser?.name || 'Animara User'}</p>
-            <p className="ml-4 font-LuckiestGuy text-[#F46700]">LV.{currentUser?.level}</p>
+            <p className="ml-2 xs:ml-4 font-LuckiestGuy text-[#F46700] text-md">LV.{currentUser?.level}</p>
           </div>
 
-          <div className="gap-2 flex">
-            <img className="w-8 object-contain" src={'/assets/images/clicker-character/gem.webp'} alt="gem" />
+          <div className="gap-1 xs:gap-2 flex">
+            <img className="w-6 xs:w-8 object-contain" src={'/assets/images/clicker-character/gem.webp'} alt="gem" />
             <div className="relative flex items-center justify-center max-w-44">
               <span
                 ref={coinsDisplayRef}
-                className="relative text-3xl text-amber-500 tracking-normal w-full overflow-hidden text-left"
+                className="relative text-2xl xs:text-3xl text-amber-500 tracking-normal w-full overflow-hidden text-left"
                 style={{
                   WebkitTextStrokeWidth: '1.75px',
                   WebkitTextStrokeColor: 'var(--Color-11, #FFF)',

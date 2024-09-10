@@ -189,7 +189,7 @@ const WalletBindingPanel = () => {
 
       {/* Mobile wallet panel */}
       <div
-        className="w-full h-full block xl:hidden my-auto rounded-2xl text-white text-center bg-contain"
+        className="w-full h-full block xl:hidden my-auto rounded-2xl text-white text-center bg-contain p-[4rem] xs:p-[6rem]"
         style={{
           backgroundImage: `url("/assets/images/clicker-character/wallet-binding-mobile-bg.webp")`,
           backgroundPosition: 'center',
