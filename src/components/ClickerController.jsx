@@ -111,11 +111,14 @@ const ClickerController = ({ Children }) => {
       console.log("Cleared timeout with in init: ", timeoutIdRef.current);
     }
 
+    //random wait time between 0 - 5 seconds
+    const randomWaitTime = Math.floor(Math.random() * 5000);
+    console.log("randomWaitTime: ", randomWaitTime);
     timeoutIdRef.current = setTimeout(() => {
       console.log("Dispatching scheduled check interval");
       dispatch(checkUserLastPeriodicBatchTime());     
 
-    }, timeUntilNextInterval);
+    }, timeUntilNextInterval + randomWaitTime);
   }
 
   const calculateNextInterval = () => {
