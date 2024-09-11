@@ -313,6 +313,14 @@ function MintPage() {
     }
   }, [ghostExcited, isMobileApp]);
 
+  const openPhantom = () =>{
+    // Get the current URL
+    const currentUrl = encodeURIComponent(window.location.href);
+    
+    // tries to open phantom wallet's in-app browser
+    window.location.href = `https://phantom.app/ul/browse/${currentUrl}?ref=`;
+  }
+
   return (
     <>
       <Header />
@@ -586,9 +594,13 @@ function MintPage() {
                     onMouseEnter={() => isAllowed ? setGhostExcited(true) : setGhostExcited(false)}
                     onMouseLeave={() => !mintingNFT ? setGhostExcited(false) : setGhostExcited(true)}>
                   {!isPhantomInstalled ? 
-                    <span className='h-20 m-auto text-red-300 text-xl lg:text-3xl'>
-                      {`Open our dapp in Phantom Wallet's in-app browers to mint`}    
-                    </span>
+                    <button
+                      className="h-[80px] w-[250px] m-auto bg-[#FFDC62] border-[#E59E69] rounded-full border justify-center items-center inline-flex shadow-[0px_4px_4px_0px_#FFFBEF_inset,0px_-4px_4px_0px_rgba(255,249,228,0.48),0px_5px_4px_0px_rgba(232,140,72,0.48)]"
+                      onClick={openPhantom}>
+                      <span className=' text-white text-center text-xl lg:text-3xl font-normal'>
+                        {`Open in Phantom Wallet`}    
+                      </span>
+                    </button>
                   : 
                     loadingCandyMachine ? 
                       <span className='h-20 m-auto text-amber-300 text-xl lg:text-3xl animate-pulse'>
@@ -790,9 +802,13 @@ function MintPage() {
                 onMouseLeave={() => !mintingNFT ? setGhostExcited(false) : setGhostExcited(true)}
               >
                 {!isPhantomInstalled ? 
-                  <span className='h-20 m-auto text-red-300 text-xl lg:text-3xl'>
-                    {`Open our dapp in Phantom Wallet's in-app browers to mint`}    
-                  </span>
+                  <button
+                    className="h-[80px] w-[250px] m-auto"
+                    onClick={openPhantom}>
+                    <span className=' text-red-300 text-center text-xl lg:text-3xl'>
+                      {`Open Phantom Wallet`}    
+                    </span>
+                  </button>
                   :
                   loadingCandyMachine ?
                     <span className='h-20 m-auto text-amber-300 text-xl lg:text-3xl animate-pulse'>
