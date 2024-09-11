@@ -54,6 +54,8 @@ const userInitialState = {
   lockDate: null,
   earlyBirdDate: null,
   levelUpCoinReward: 0,
+  getUserLastPeriodicBatchTimeLoading: false,
+  userLastPeriodicBatchTime: null,
 };
 
 export const userSlice = createSlice({
@@ -186,6 +188,7 @@ export const userSlice = createSlice({
       state.user = payload;
       state.localStamina = payload.stamina;
       state.localCoins = payload.coins;
+      state.userLastPeriodicBatchTime = payload.periodicBatchTime;
     },
     getUserError: (state, { payload }) => {
       state.getUserLoading = false;
@@ -483,6 +486,17 @@ export const userSlice = createSlice({
     },
     fetchDatesError: (state, { payload }) => {
     },
+    checkUserLastPeriodicBatchTime: (state, { payload }) => {
+      state.getUserLastPeriodicBatchTimeLoading = true;
+    },
+    checkUserLastPeriodicBatchTimeSuccess: (state, { payload }) => {
+      state.userLastPeriodicBatchTime = payload.periodicBatchTime;
+      state.getUserLastPeriodicBatchTimeLoading = false;
+    },
+    checkUserLastPeriodicBatchTimeError: (state, { payload }) => {
+      state.error = payload;
+      state.getUserLastPeriodicBatchTimeLoading = false;
+    },
   },
 });
 
@@ -566,6 +580,9 @@ export const {
   fetchDates,
   fetchDatesSuccess,
   fetchDatesError,
+  checkUserLastPeriodicBatchTime,
+  checkUserLastPeriodicBatchTimeSuccess,
+  checkUserLastPeriodicBatchTimeError,
 } = userSlice.actions;
 
 export const useAuthLoading = () => useAppSelector((state) => state.user.authLoading);
@@ -617,6 +634,8 @@ export const useMintDate = () => useAppSelector((state) => state.user.mintDate);
 export const useLockDate = () => useAppSelector((state) => state.user.lockDate);
 export const useEarlyBirdDate = () => useAppSelector((state) => state.user.earlyBirdDate);
 export const useLevelUpCoinReward = () => useAppSelector((state) => state.user.levelUpCoinReward);
+export const useUserLastPeriodicBatchTimeLoading = () => useAppSelector((state) => state.user.getUserLastPeriodicBatchTimeLoading);
+export const useUserLastPeriodicBatchTime = () => useAppSelector((state) => state.user.userLastPeriodicBatchTime);
 
 const userReducer = userSlice.reducer;
 
