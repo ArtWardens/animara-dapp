@@ -79,12 +79,19 @@ function Header() {
   };
 
   const getProfilePic = useCallback(() => {
-    // default placeholder image
+    // use placeholder image if user not loaded yet
     if (!currentUser) {
       return '/assets/images/activeDog.webp';
     }
 
+    // get user profile picture
     let photoUrl = currentUser.photoUrl;
+
+    // returns placeholder if profile picture is not set yet
+    if (photoUrl === ''){
+      photoUrl = '/assets/images/activeDog.webp';
+    }
+
     // process google user content
     if (photoUrl.indexOf('googleusercontent.com') !== -1) {
       photoUrl = `${photoUrl}?alt=media`;
@@ -119,7 +126,7 @@ function Header() {
             <img
               src={getProfilePic()}
               alt="profile"
-              className="justify-self-center rounded-full w-24  group-hover:brightness-[0.55] transition-all duration-300"
+              className="justify-self-center rounded-full w-24 group-hover:brightness-[0.55] transition-all duration-300"
               style={{
                 border: '4px solid var(--80E8FF, #80E8FF)',
                 background: '#111928 50%',
