@@ -97,8 +97,12 @@
     background-color: transparent;
   }
 
-  body, a, button:active {
-    cursor: url('../public/assets/icons/cursor_07.svg') 6 12, auto !important;
+  a:hover, a:focus, button:hover, button:focus {
+    cursor: url('../public/assets/icons/cursor_01.svg') 6 12, auto !important; /* Maintain default cursor */
+  }
+  
+  a:active, button:active {
+    cursor: url('../public/assets/icons/cursor_07.svg') 6 12, auto !important; /* Change cursor on active click */
   }
 
   .gradient-blue-transparent-fuschia-bottomRight {
