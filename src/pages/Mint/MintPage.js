@@ -631,7 +631,7 @@ function MintPage() {
                 {/* Web3 links */}
                 <div className="flex">
                   <a
-                    className="text-amber-500 transition-all duration-300 hover:scale-105 hover:font-bold hover:text-amber-400 bg-transparent mb-2"
+                    className="text-amber-500 transition-all duration-300 hover:scale-105 hover:font-bold hover:text-amber-400  mb-2"
                     href="https://solscan.io/"
                     target="_blank"
                     rel="noopener noreferrer"
@@ -642,7 +642,7 @@ function MintPage() {
                   <span className="text-white">&nbsp;&nbsp;|&nbsp;&nbsp;</span>
 
                   <a
-                    className="text-amber-500 transition-all duration-300 hover:scale-105 hover:font-bold hover:text-amber-400 bg-transparent mb-2"
+                    className="text-amber-500 transition-all duration-300 hover:scale-105 hover:font-bold hover:text-amber-400  mb-2"
                     href="https://wallet.magiceden.io/"
                     target="_blank"
                     rel="noopener noreferrer"
@@ -892,7 +892,7 @@ function MintPage() {
           )}
 
           {isVideoEnded && (
-            <div className="fixed inset-0 bg-transparent backdrop-blur-xl rounded-xl flex justify-center items-center z-[200] overflow-hidden">
+            <div className="fixed inset-0  backdrop-blur-xl rounded-xl flex justify-center items-center z-[200] overflow-hidden">
               {/* Background Image with spinning animation */}
               <div
                 className={`absolute w-[2000px] h-[2000px] rotate-image`}
