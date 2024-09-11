@@ -110,7 +110,7 @@ function Header() {
       >
         {/* profile picture */}
         <div className="p-1 w-20 h-20 relative">
-          <button onClick={handleEditProfile} className="group relative bg-transparent">
+          <button onClick={handleEditProfile} className="group relative ">
             {loadingImage && (
               <div className="h-18 flex justify-center items-center">
                 <MoonLoader color={'#FFB23F'} />
@@ -209,7 +209,7 @@ function Header() {
         ))}
 
         <button
-          className="transition ease-in-out p-2 hover:scale-105 bg-transparent"
+          className="transition ease-in-out p-2 hover:scale-105 "
           onMouseEnter={handleMouseEnterLogout}
           onMouseLeave={handleMouseLeaveLogout}
           onClick={handleLogout}

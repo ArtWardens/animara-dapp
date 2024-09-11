@@ -169,7 +169,7 @@ const LoginPage = () => {
               value={email}
               required
               onChange={(e) => setEmail(e.target.value)}
-              className="mt-3 w-full outline-none bg-transparent rounded-[0.625rem] border border-[#245F89] py-[0.875rem] px-[1rem] font-outfit text-[#C5C5C5]"
+              className="mt-3 w-full outline-none  rounded-[0.625rem] border border-[#245F89] py-[0.875rem] px-[1rem] font-outfit text-[#C5C5C5]"
             />
             {/* Password */}
             <div className="relative mt-2">
@@ -179,7 +179,7 @@ const LoginPage = () => {
                 placeholder={tLogin("password")}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full outline-none bg-transparent rounded-[0.625rem] border border-[#245F89] py-[0.875rem] px-[1rem] font-outfit text-[#C5C5C5]"
+                className="w-full outline-none  rounded-[0.625rem] border border-[#245F89] py-[0.875rem] px-[1rem] font-outfit text-[#C5C5C5]"
                 required
               />
               <img
@@ -227,7 +227,7 @@ const LoginPage = () => {
               Don&#39;t have an account? &nbsp;
               <Link
                 to="/signup"
-                className="font-semibold hover:brightness-75 text-[#FFB23F] bg-transparent"
+                className="font-semibold hover:brightness-75 text-[#FFB23F] "
               >
                 Sign Up
               </Link>
@@ -274,9 +274,9 @@ const LoginPage = () => {
           </div>
 
           <div className="mt-3 flex gap-8 font-outfit text-[#C5C5C5] text-[1rem] text-center justify-center">
-            <Link to="https://animara.world/privacy-policy" className="hover:brightness-75 bg-transparent">Privacy Policy</Link>
+            <Link to="https://animara.world/privacy-policy" className="hover:brightness-75 ">Privacy Policy</Link>
             <span>|</span>
-            <Link to="https://animara.world/terms-and-conditions" className="hover:brightness-75 bg-transparent">Terms & Conditions</Link>
+            <Link to="https://animara.world/terms-and-conditions" className="hover:brightness-75 ">Terms & Conditions</Link>
           </div>
         </div>
       </div>
