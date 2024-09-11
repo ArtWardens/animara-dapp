@@ -25,7 +25,7 @@ import {
   handleCompletedOneTimeTask,
 } from "../firebase/oneTimeTask";
 import {
-  handleCheckUserLastPeriodicBatchTime
+  checkUserLastPeriodicBatchTimeImpl,
 } from "../firebase/periodicTask";
 import {
   settleTapSessionImpl,
@@ -575,7 +575,7 @@ export function* fetchDatesSaga() {
 
 export function* checkUserLastPeriodicBatchTimeSaga() {
   try {
-    const userBatchTime = yield call(handleCheckUserLastPeriodicBatchTime);
+    const userBatchTime = yield call(checkUserLastPeriodicBatchTimeImpl);
     yield put(checkUserLastPeriodicBatchTimeSuccess(userBatchTime));
     return userBatchTime;
   } 

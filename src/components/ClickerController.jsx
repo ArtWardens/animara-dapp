@@ -5,7 +5,7 @@ import { useWalletMultiButton } from '@solana/wallet-adapter-base-ui';
 import { useAppDispatch } from '../hooks/storeHooks';
 import { useNavigate } from 'react-router-dom/dist';
 import { getUser, fetchDates, useMintDate, checkUserLastPeriodicBatchTime } from '../sagaStore/slices';
-import { useUserDetails, useBindWalletLoading, useUserAuthenticated, useAuthLoading, useUserLastPeriodicBatchTime } from '../sagaStore/slices';
+import { useUserDetails, useBindWalletLoading, useUserAuthenticated, useAuthLoading, useUserLastPeriodicBatchTime, useUserLastPeriodicBatchTimeLoading } from '../sagaStore/slices';
 import { toast } from 'react-toastify';
 import {Timestamp} from 'firebase/firestore'
 
@@ -25,9 +25,9 @@ const ClickerController = ({ Children }) => {
     onSelectWallet() {},
   });
   const { visible: isModalVisible, setVisible: setModalVisible } = useWalletModal();
-  // const userLastPeriodicBatchTimeLoading = useUserLastPeriodicBatchTimeLoading();
+  const userLastPeriodicBatchTimeLoading = useUserLastPeriodicBatchTimeLoading();
   const lastPeriodicBatchTime = useUserLastPeriodicBatchTime();
-  const [currentPeriodicBatchTime, setCurrentPeriodicBatchTime] = useState(currentUser?.periodicBatchTime?.toDate().toISOString());
+  const [currentPeriodicBatchTime, setCurrentPeriodicBatchTime] = useState(null);
   const timeoutIdRef = useRef(null);
   const retryCountRef = useRef(0);
 
@@ -93,22 +93,26 @@ const ClickerController = ({ Children }) => {
     console.log("init countdown");
     // reset retry count
     retryCountRef.current = 0
-
     let lastBatchTimeRef;
     if ((lastPeriodicBatchTime instanceof Timestamp === false)) {
       lastBatchTimeRef = lastPeriodicBatchTime;
     } else {
       lastBatchTimeRef = lastPeriodicBatchTime.toDate().toISOString();
     }
+    // console.log("init lastBatchTimeRef: ", lastBatchTimeRef);
     setCurrentPeriodicBatchTime(lastBatchTimeRef);
 
     // Schedule the next check for the next 5-minute interval
     const timeUntilNextInterval = calculateTimeUntilNext5MinuteMark();
     console.log("timeUntilNextInterval: ", timeUntilNextInterval);
+
+    if (timeoutIdRef.current) {
+      clearTimeout(timeoutIdRef.current);
+      console.log("Cleared timeout with in init: ", timeoutIdRef.current);
+    }
+
     timeoutIdRef.current = setTimeout(() => {
-      console.log("Scheduled check after 5 minutes");
-      
-      console.log("Dispatching check for user's last periodic batch time");
+      console.log("Dispatching scheduled check after 5 minutes");
       dispatch(checkUserLastPeriodicBatchTime());     
 
     }, timeUntilNextInterval);
@@ -159,6 +163,12 @@ const ClickerController = ({ Children }) => {
       lastBatchTimeRef = lastPeriodicBatchTime.toDate().toISOString();
     }
 
+    if (!currentPeriodicBatchTime) {
+      console.log("currentPeriodicBatchTime was null, call init");
+      initCountdownForNextInterval();
+      return;
+    }
+
     console.log("currentPeriodicBatchTime: ", currentPeriodicBatchTime);
     console.log("lastPeriodicBatchTime: ", lastBatchTimeRef); 
 
@@ -169,15 +179,23 @@ const ClickerController = ({ Children }) => {
 
       if (retryCountRef.current === 1) {
         console.log("Batch hasn't finished updating, recall in 10 seconds");
+        if (timeoutIdRef.current) {
+          clearTimeout(timeoutIdRef.current);
+          console.log("Cleared timeout in 10 seconds check: ", timeoutIdRef.current);
+        }
         timeoutIdRef.current = setTimeout(() => {
-          console.log("Scheduled check after 10 seconds");
+          console.log("Dispatching scheduled check after 10 seconds");
           dispatch(checkUserLastPeriodicBatchTime()); 
         }, 10 * 1000); // 10 seconds
       } else if (retryCountRef.current === 2) {
         console.log("Batch still hasn't finished, recall in 30 seconds");
+        if (timeoutIdRef.current) {
+          clearTimeout(timeoutIdRef.current);
+          console.log("Cleared timeout in 30 seconds check: ", timeoutIdRef.current);
+        }
         timeoutIdRef.current = setTimeout(() => {
-          console.log("Scheduled check after 30 seconds");
-          dispatch(checkUserLastPeriodicBatchTime()); // why is this not called?
+          console.log("Dispatching scheduled check after 30 seconds");
+          dispatch(checkUserLastPeriodicBatchTime());
         }, 30 * 1000); // 30 seconds
       } else {
         console.error("Batch is up to data / Batch failed to update, possible backend update has failed.");
@@ -192,17 +210,26 @@ const ClickerController = ({ Children }) => {
   };
 
   useEffect(() => {
-    // lastPeriodicBatchTime has cache issue?
-    console.log("lastPeriodicBatchTime updated after dispatch: ", lastPeriodicBatchTime);
-    if (!lastPeriodicBatchTime) return;
+    // console.log("Loading: ", userLastPeriodicBatchTimeLoading);
+    // console.log("lastPeriodicBatchTime null? : ", lastPeriodicBatchTime);
+    if (!lastPeriodicBatchTime || userLastPeriodicBatchTimeLoading) return;
     scheduleCheckForNextInterval();
     return () => {
       if (timeoutIdRef.current) {
         clearTimeout(timeoutIdRef.current);
-        console.log("Cleared timeout with ID: ", timeoutIdRef.current);
+        // console.log("Cleared timeout with ID: ", timeoutIdRef.current);
       }
     };
-  }, [dispatch, lastPeriodicBatchTime]);
+  }, [dispatch, userLastPeriodicBatchTimeLoading, lastPeriodicBatchTime]);
+
+  // // To debug if changes did happen
+  // useEffect(() => {
+  //   console.log("currentPeriodicBatchTime updated: ", currentPeriodicBatchTime);
+  // }, [currentPeriodicBatchTime]);
+  
+  // useEffect(() => {
+  //   console.log("lastPeriodicBatchTime updated: ", lastPeriodicBatchTime);
+  // }, [lastPeriodicBatchTime]);
 
   return (
     <div className="overflow-hidden">
