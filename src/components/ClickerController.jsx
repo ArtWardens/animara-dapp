@@ -183,47 +183,33 @@ const ClickerController = ({ Children }) => {
     }
 
     if (!currentPeriodicBatchTime) {
-      console.log("currentPeriodicBatchTime was null, call init");
       initCountdownForNextInterval();
       return;
     }
 
-    console.log("currentPeriodicBatchTime: ", currentPeriodicBatchTime);
-    console.log("lastPeriodicBatchTime: ", lastBatchTimeRef); 
-
     if (currentPeriodicBatchTime === lastBatchTimeRef) {
       // If the batch hasn't finished, apply retry logic with increasing delay
       retryCountRef.current++;
-      console.log("retryCountRef.current: ", retryCountRef.current);
 
       if (retryCountRef.current === 1) {
-        console.log("Batch hasn't finished updating, recall in 10 seconds");
         if (timeoutIdRef.current) {
           clearTimeout(timeoutIdRef.current);
-          console.log("Cleared timeout in 10 seconds check: ", timeoutIdRef.current);
         }
         timeoutIdRef.current = setTimeout(() => {
-          console.log("Dispatching scheduled check after 10 seconds");
           dispatch(checkUserLastPeriodicBatchTime()); 
         }, 10 * 1000); // 10 seconds
       } else if (retryCountRef.current === 2) {
-        console.log("Batch still hasn't finished, recall in 30 seconds");
         if (timeoutIdRef.current) {
           clearTimeout(timeoutIdRef.current);
-          console.log("Cleared timeout in 30 seconds check: ", timeoutIdRef.current);
         }
         timeoutIdRef.current = setTimeout(() => {
-          console.log("Dispatching scheduled check after 30 seconds");
           dispatch(checkUserLastPeriodicBatchTime());
         }, 30 * 1000); // 30 seconds
       } else {
-        console.error("Batch is up to data / Batch failed to update, possible backend update has failed.");
-        // Handle error or notify the user
         initCountdownForNextInterval();
       }
     } else {
-      // If batch is finished, reset the retry counter
-      console.log("Periodic Batch finished updating, scheduling next check.");
+      // If batch success and is finished, reset the retry counter
       dispatch(getUser());
       initCountdownForNextInterval();
     }
@@ -241,24 +227,6 @@ const ClickerController = ({ Children }) => {
       }
     };
   }, [dispatch, userLastPeriodicBatchTimeLoading, lastPeriodicBatchTime]);
-
-  // // To debug if changes did happen
-  // useEffect(() => {
-  //   console.log("currentPeriodicBatchTime updated: ", currentPeriodicBatchTime);
-  // }, [currentPeriodicBatchTime]);
-  
-  // useEffect(() => {
-  //   console.log("lastPeriodicBatchTime updated: ", lastPeriodicBatchTime);
-  // }, [lastPeriodicBatchTime]);
-  // useEffect(() => {
-  //   let timeUntilNextInterval = calculateNextInterval();
-  //   console.log("test new interval: ", timeUntilNextInterval);
-
-  //   setTimeout(() => {
-  //     timeUntilNextInterval = calculateNextInterval();
-  //     console.log(timeUntilNextInterval);
-  //   }, timeUntilNextInterval);
-  // }, []);
 
   return (
     <div className="overflow-hidden">
