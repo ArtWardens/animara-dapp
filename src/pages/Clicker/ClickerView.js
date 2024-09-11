@@ -83,7 +83,7 @@ const ClickerView = () => {
           open={isOpenDailyPopup}
           className="h-screen w-screen flex flex-1 overflow-x-hidden overflow-y-auto"
         >
-          <div className="fixed inset-0 bg-transparent backdrop-blur-xl rounded-xl flex justify-center items-center z-[200] overflow-hidden">
+          <div className="fixed inset-0  backdrop-blur-xl rounded-xl flex justify-center items-center z-[200] overflow-hidden">
             <div className={`min-h-[800px] md:min-h-[unset] daily-reward-bg relative rounded-xl w-[100%] lg:max-w-[1100px] bg-no-repeat bg-cover md:bg-[length:100%_70%] lg:bg-contain 
             transition-all ease-in-out duration-500
             ${showPanel ? `scale-100` : `scale-0`}`}
@@ -94,7 +94,7 @@ const ClickerView = () => {
             >
               {/* Close Button */}
               <button
-                className="absolute top-[4rem] md:top-[13rem] lg:top-[10rem] xl:top-[8rem] right-[2.5rem] md:right-[5rem] text-white text-4xl bg-transparent hover:brightness-75"
+                className="absolute top-[4rem] md:top-[13rem] lg:top-[10rem] xl:top-[8rem] right-[2.5rem] md:right-[5rem] text-white text-4xl  hover:brightness-75"
                 onClick={handleClose}
               >
                 &times;
