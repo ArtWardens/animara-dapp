@@ -1,7 +1,7 @@
 import { auth, checkUserLastPeriodicBatchTime } from './firebaseConfig';
 
 // Call this on login or every 12 noon
-const handleCheckUserLastPeriodicBatchTime = async () => {
+const checkUserLastPeriodicBatchTimeImpl = async () => {
   try {
     const idToken = await auth.currentUser.getIdToken(false);
     const { data } = await checkUserLastPeriodicBatchTime({ idToken: idToken });
@@ -11,4 +11,4 @@ const handleCheckUserLastPeriodicBatchTime = async () => {
   }
 };
 
-export { handleCheckUserLastPeriodicBatchTime };
+export { checkUserLastPeriodicBatchTimeImpl };
