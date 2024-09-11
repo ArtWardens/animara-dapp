@@ -115,7 +115,7 @@ const ClickerView = () => {
                   />
                 </Box>
                 <div className="space-y-1 flex flex-col items-center pb-3">
-                  <p className="text-[#FFAA00] text-sm xs:text-[3rem] lg:text-[3.75rem] font-base text-center">Daily reward</p>
+                  <p className="text-[#FFAA00] text-sm xs:text-[3rem] lg:text-[3.75rem] font-base text-center pb-3">Daily reward</p>
                   <span className="text-white text-sm xs:text-base font-outfit text-center font-normal">
                     Accure Coins For Loggin Into The Game Daily Without Skipping
                   </span>
