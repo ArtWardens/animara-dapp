@@ -3,6 +3,12 @@
 @tailwind components;
 @tailwind utilities;
 
+@supports (-webkit-touch-callout: none) {
+  .safari-hidden {
+    display: none !important; /* Force hide */
+  }
+}
+
 @font-face {
   font-family: "LuckiestGuy";
   src: url("/public/fonts/luckiestguy/LuckiestGuy-Regular.ttf")
@@ -94,7 +100,6 @@
   body, a, button {
     @apply text-foreground;
     cursor: url('../public/assets/icons/cursor_01.svg') 6 12, auto !important;
-    background-color: transparent;
   }
 
   a:hover, a:focus, button:hover, button:focus {
