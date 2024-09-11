@@ -62,6 +62,7 @@ const MascotView = ({ openModal, setOpenModal }) => {
   // Initial setup for loading images and user-specific data
   useEffect(() => {
     if (isInitialized) return;
+    if (!currentUser) return;
 
     // Determine current mascot based on the user's level
     const mascotIndex = mascots.findIndex((mascot) => (currentUser?.level || 0) <= mascot.maxLevel);
@@ -82,6 +83,7 @@ const MascotView = ({ openModal, setOpenModal }) => {
 
   // Handle tap session settling when leaving or closing the window
   useEffect(() => {
+    if (!currentUser) return;
     const handleMouseLeave = (event) => {
       if (
         event.clientY <= 0 &&
@@ -114,6 +116,7 @@ const MascotView = ({ openModal, setOpenModal }) => {
 
   // periodic tap session settler
   const setupSettler = useCallback(() => {
+    if (!currentUser) return;
     // skip setup settler if already present
     if (periodicSettlerTimerRef.current) {
       return;
@@ -194,7 +197,19 @@ const MascotView = ({ openModal, setOpenModal }) => {
       clearTimeout(plusOneTimerRef.current);
     }
     plusOneTimerRef.current = setTimeout(() => setPlusOneEffect({ show: false, left: 0, top: 0 }), 500);
-  }, [dispatch, currentUser, localStamina, isInteractive, isOpenRewardModal, mascotSound]);
+  }, [
+    dispatch,
+    currentUser,
+    localStamina,
+    isInteractive,
+    isOpenRewardModal,
+    mascotSound,
+    localCoins,
+    openModal,
+    setOpenModal,
+    settlingTapSession,
+    setupSettler,
+  ]);
 
   // grant depletion rewards when local stamina is fully consumed
   useEffect(() => {
@@ -226,7 +241,7 @@ const MascotView = ({ openModal, setOpenModal }) => {
       ${startSlide ? 'translate-y-0' : 'translate-y-full'}`}
     >
       <div
-        className="cursor-pointer w-full xl:w-5/6 h-4/5 rounded-3xl p-3"
+        className=" w-full xl:w-5/6 h-4/5 rounded-3xl p-3"
         style={{
           border: '2px solid var(--Color, #F4FBFF)',
           background: 'rgba(155, 231, 255, 0.58)',
@@ -294,7 +309,7 @@ const MascotView = ({ openModal, setOpenModal }) => {
                   <img
                     src={src}
                     alt={`Game mascot ${index}`}
-                    className={`transition-opacity w-full xl:w-3/4
+                    className={`transition-opacity min-w-[50rem] w-3/4 xl:w-3/4 mb-[-4rem] xl:mb-0
                       ${imgIndex === index ? 'block' : 'hidden'}
                     `}
                   />
@@ -317,6 +332,7 @@ const MascotView = ({ openModal, setOpenModal }) => {
             autoPlay
             loop={false}
             muted
+            playsInline
             onEnded={closeRewardModal}
             className="absolute inset-0 object-cover w-full h-full"
           />

@@ -2,9 +2,11 @@ import React, { useEffect, useState } from "react";
 import Header from "../../components/Header.jsx";
 import { startCountdown } from '../../firebase/countDown';
 import { useLockDate } from "../../sagaStore/slices/userSlice.js";
+import { useMobileMenuOpen } from '../../sagaStore/slices';
 
 const LockPage = () => {
     const lockDate = useLockDate();
+    const mobileMenuOpen = useMobileMenuOpen();
     const [showLeftChain, setShowLeftChain] = useState(false);
     const [showRightChain, setShowRightChain] = useState(false);
     const [showLock, setShowLock] = useState(false);
@@ -47,7 +49,8 @@ const LockPage = () => {
             <Header />
 
             <div
-                className="relative flex-grow flex flex-col place-content-center items-center xl:px-[6rem] pb-4 min-h-screen bg-cover bg-center bg-no-repeat bg-fixed"
+                className={`relative flex-grow flex flex-col place-content-center items-center xl:px-[6rem] pb-4 min-h-screen bg-cover bg-center bg-no-repeat bg-fixed 
+                    ${mobileMenuOpen ? `hidden` : ``}`}
                 style={{
                     backgroundImage: 'url("/assets/images/clicker-character/clickerBg.webp")',
                 }}
@@ -80,7 +83,7 @@ const LockPage = () => {
                 />
             </div>
 
-            <div className={`absolute bottom-52 left-1/2 -translate-x-1/2 w-80 p-4 pb-6 bg-[#003260] rounded-3xl shadow-inner border border-[#7fc1ff] flex flex-col items-center gap-3 transition-transform duration-500 delay-150 transform ${showCountdown ? (reverse ? "scale-0 opacity-0" : "scale-105 opacity-100") : "scale-0 opacity-0"}`}>
+            <div className={`absolute bottom-40 lg:bottom-52 left-1/2 -translate-x-1/2 w-80 p-4 pb-6 bg-[#003260] rounded-3xl shadow-inner border border-[#7fc1ff] flex flex-col items-center gap-3 transition-transform duration-500 delay-150 transform ${showCountdown ? (reverse ? "scale-0 opacity-0" : "scale-105 opacity-100") : "scale-0 opacity-0"}`}>
                 <p className="text-lg text-white">
                     Unlocks In
                 </p>

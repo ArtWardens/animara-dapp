@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { FaCopy, FaShareFromSquare } from "react-icons/fa6";
 import { getReferralStats, useUserDetails, useReferralStatLoading, useNFTPurchasedReferralCount, useReferralCount, useBasicClaimable, useNftClaimable } from "../../sagaStore/slices";
+import { useMobileMenuOpen } from '../../sagaStore/slices';
 import { useAppDispatch } from "../../hooks/storeHooks.js";
 import StyledQRCode from "../../components/StyledQRCode";
 import Header from "../../components/Header.jsx";
@@ -12,6 +13,7 @@ function ReferralPage (){
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const currentUser = useUserDetails();
+  const mobileMenuOpen = useMobileMenuOpen();
   const [hasReferralStat, setHasReferralStat] = useState(false);
   const loadingReferralStats = useReferralStatLoading();
   const referralCount = useReferralCount();
@@ -182,7 +184,8 @@ function ReferralPage (){
 
       {/* background image */}
       <div
-        className="flex flex-col items-center pb-4 xl:px-[2rem] min-h-screen"
+        className={`flex flex-col items-center pb-4 xl:px-[2rem] min-h-screen 
+          ${mobileMenuOpen ? `hidden` : ``}`}
         style={{
           backgroundImage: 'url("/assets/images/clicker-character/clickerWall.webp")',
           backgroundSize: 'cover',
@@ -449,7 +452,7 @@ function ReferralPage (){
                         :
                         <div className="justify-start items-center gap-0.5 inline-flex">
                           <span className="w-[130px] text-white text-xs font-outfit">Get additional <span className="text-white font-LuckiestGuy text-xs tracking-wide">{getAdditionalClaimable()}</span>, if you own NFT!</span>
-                          <div className="flex justify-center items-center p-2 rounded-lg bg-[#FFC85A] shadow-[0px_1px_2px_0px_rgba(198,115,1,0.66)] hover:bg-[#FFAA00] hover:shadow-[0px_4px_4px_0px_rgba(255,210,143,0.61)_inset,0px_4px_4px_0px_rgba(232,140,72,0.48)] cursor-pointer hover:scale-105 transition-transform duration-200">
+                          <div className="flex justify-center items-center p-2 rounded-lg bg-[#FFC85A] shadow-[0px_1px_2px_0px_rgba(198,115,1,0.66)] hover:bg-[#FFAA00] hover:shadow-[0px_4px_4px_0px_rgba(255,210,143,0.61)_inset,0px_4px_4px_0px_rgba(232,140,72,0.48)]  hover:scale-105 transition-transform duration-200">
                             <div
                               className="text-orange-50 text-xs"
                               onClick={() => navigate('/mint')}
@@ -499,7 +502,7 @@ function ReferralPage (){
                       <button
                         type="button"
                         onClick={copyInviteCode}
-                        className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-[#FA0] shadow-[0px_4px_4px_0px_rgba(255,210,143,0.61)_inset] border-[1px] border-[#FFAA00] rounded-lg flex items-center justify-center w-[64x] h-[30px] text-xs tracking-wide px-2 hover:bg-[#FFC85A] hover:shadow-[0px_1px_2px_0px_rgba(198,115,1,0.66)] hover:border-[#FFC85A] cursor-pointer hover:scale-105 transition-transform duration-200"
+                        className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-[#FA0] shadow-[0px_4px_4px_0px_rgba(255,210,143,0.61)_inset] border-[1px] border-[#FFAA00] rounded-lg flex items-center justify-center w-[64x] h-[30px] text-xs tracking-wide px-2 hover:bg-[#FFC85A] hover:shadow-[0px_1px_2px_0px_rgba(198,115,1,0.66)] hover:border-[#FFC85A]  hover:scale-105 transition-transform duration-200"
                         style={{
                           boxShadow: '0px 4px 4px 0px rgba(255, 210, 143, 0.61) inset',
                         }}
@@ -518,7 +521,7 @@ function ReferralPage (){
 
                 <div className="w-full flex justify-center">
                   <button
-                    className="w-[24rem] h-9 px-[1rem] py-[1.5rem] mb-5 text-sm tracking-wider bg-amber-400 shadow-[0px_4px_4px_0px_rgba(255,210,143,0.61)_inset] rounded-full border-orange-300 justify-center items-center gap-2 flex hover:bg-[#FFC85A] hover:shadow-[0px_1px_2px_0px_rgba(198,115,1,0.66)] hover:border-[#FFC85A] cursor-pointer hover:scale-105 transition-transform duration-200 whitespace-nowrap"
+                    className="w-[24rem] h-9 px-[1rem] py-[1.5rem] mb-5 text-sm tracking-wider bg-amber-400 shadow-[0px_4px_4px_0px_rgba(255,210,143,0.61)_inset] rounded-full border-orange-300 justify-center items-center gap-2 flex hover:bg-[#FFC85A] hover:shadow-[0px_1px_2px_0px_rgba(198,115,1,0.66)] hover:border-[#FFC85A]  hover:scale-105 transition-transform duration-200 whitespace-nowrap"
                     onClick={shareInviteLink}
                   >
                     <FaShareFromSquare className="w-4 h-4 mr-2" />
@@ -539,7 +542,7 @@ function ReferralPage (){
                 {/* Referral stats */}
                 <div className="w-full flex flex-col border-dashed border-r-4 border-transparent">
                   <div
-                    className="w-full h-full items-center p-[4.5rem]"
+                    className="w-full h-full items-center p-[5rem]"
                     style={{
                       backgroundImage: 'url("/assets/images/clicker-character/ticket-mobile-white.webp")',
                       backgroundSize: 'contain',
@@ -636,7 +639,7 @@ function ReferralPage (){
                       backgroundRepeat: 'no-repeat',
                     }}
                   >
-                    {(getTotalClaimable() <= `0 sol`) ?
+                    {(getTotalClaimable() >= `0 sol`) ?
                       <div className="w-full h-full flex-col place-content-center gap-4 inline-flex p-[6rem] sm:p-[6.5rem]">
                         <span className="text-center w-full">Nothing to claim yet</span>
                         <span className="text-center w-full text-xs font-outfit">Get your referrals to mint an NFT now!</span>
@@ -669,7 +672,7 @@ function ReferralPage (){
                         :
                         <div className="justify-start items-center gap-0.5 inline-flex">
                           <span className="w-[130px] text-white text-xs font-outfit">Get additional <span className="text-white font-LuckiestGuy text-xs tracking-wide">{getAdditionalClaimable()}</span>, if you own NFT!</span>
-                          <div className="flex justify-center items-center p-2 rounded-lg bg-[#FFC85A] shadow-[0px_1px_2px_0px_rgba(198,115,1,0.66)] hover:bg-[#FFAA00] hover:shadow-[0px_4px_4px_0px_rgba(255,210,143,0.61)_inset,0px_4px_4px_0px_rgba(232,140,72,0.48)] cursor-pointer hover:scale-105 transition-transform duration-200">
+                          <div className="flex justify-center items-center p-2 rounded-lg bg-[#FFC85A] shadow-[0px_1px_2px_0px_rgba(198,115,1,0.66)] hover:bg-[#FFAA00] hover:shadow-[0px_4px_4px_0px_rgba(255,210,143,0.61)_inset,0px_4px_4px_0px_rgba(232,140,72,0.48)]  hover:scale-105 transition-transform duration-200">
                             <div
                               className="text-orange-50 text-xs"
                               onClick={() => navigate('/mint')}
@@ -720,7 +723,7 @@ function ReferralPage (){
                       <button
                         type="button"
                         onClick={copyInviteCode}
-                        className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-[#FA0] shadow-[0px_4px_4px_0px_rgba(255,210,143,0.61)_inset] border-[1px] border-[#FFAA00] rounded-lg flex items-center justify-center w-[64x] h-[30px] text-xs tracking-wide px-2 hover:bg-[#FFC85A] hover:shadow-[0px_1px_2px_0px_rgba(198,115,1,0.66)] hover:border-[#FFC85A] cursor-pointer hover:scale-105 transition-transform duration-200"
+                        className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-[#FA0] shadow-[0px_4px_4px_0px_rgba(255,210,143,0.61)_inset] border-[1px] border-[#FFAA00] rounded-lg flex items-center justify-center w-[64x] h-[30px] text-xs tracking-wide px-2 hover:bg-[#FFC85A] hover:shadow-[0px_1px_2px_0px_rgba(198,115,1,0.66)] hover:border-[#FFC85A]  hover:scale-105 transition-transform duration-200"
                         style={{
                           boxShadow: '0px 4px 4px 0px rgba(255, 210, 143, 0.61) inset',
                         }}
@@ -739,11 +742,18 @@ function ReferralPage (){
 
                 <div className="w-full flex justify-center">
                   <button
-                    className="w-[16rem] h-9 px-[1rem] py-[1.5rem] mb-5 text-sm tracking-wider bg-amber-400 shadow-[0px_4px_4px_0px_rgba(255,210,143,0.61)_inset] rounded-full border-orange-300 justify-center items-center gap-2 flex hover:bg-[#FFC85A] hover:shadow-[0px_1px_2px_0px_rgba(198,115,1,0.66)] hover:border-[#FFC85A] cursor-pointer hover:scale-105 transition-transform duration-200"
+                    className="hidden lg:flex w-[16rem] h-9 px-[1rem] py-[1.5rem] mb-5 text-sm tracking-wider bg-amber-400 shadow-[0px_4px_4px_0px_rgba(255,210,143,0.61)_inset] rounded-full border-orange-300 justify-center items-center gap-2 hover:bg-[#FFC85A] hover:shadow-[0px_1px_2px_0px_rgba(198,115,1,0.66)] hover:border-[#FFC85A] cursor-pointer hover:scale-105 transition-transform duration-200"
                     onClick={shareInviteLink}
                   >
                     <FaShareFromSquare className="w-4 h-4 mr-2" />
                     Share to Social Networks Now!
+                  </button>
+                  <button
+                    className="w-[16rem] h-9 px-[1rem] py-[1.5rem] mb-5 text-sm tracking-wider bg-amber-400 shadow-[0px_4px_4px_0px_rgba(255,210,143,0.61)_inset] rounded-full border-orange-300 justify-center items-center gap-2 flex lg:hidden hover:bg-[#FFC85A] hover:shadow-[0px_1px_2px_0px_rgba(198,115,1,0.66)] hover:border-[#FFC85A] cursor-pointer hover:scale-105 transition-transform duration-200"
+                    onClick={shareInviteLink}
+                  >
+                    <FaShareFromSquare className="w-4 h-4 mr-2" />
+                    Share Now!
                   </button>
                 </div>
 

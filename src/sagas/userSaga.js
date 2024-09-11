@@ -8,6 +8,7 @@ import {
   loginWithTwitterImpl,
   loginWithTelegramImpl,
   resetPasswordImpl,
+  checkLoginWithRedirectImpl,
   logoutImpl,
   getCurrentUserIdImpl,
 } from "../firebase/auth";
@@ -65,6 +66,9 @@ import {
   loginWithTwitter,
   loginWithTwitterSuccess,
   loginWithTwitterError,
+  checkLoginWithRedirect,
+  checkLoginWithRedirectSuccess,
+  checkLoginWithRedirectError,
   completeOneTimeTask,
   completeOneTimeTaskSuccess,
   completeOneTimeTaskError,
@@ -257,6 +261,19 @@ export function* loginWithTelegramSaga(telegramUser) {
   } catch (error) {
     toast.error("Failed to sign in with Telegram");
     yield put(loginWithTelegramError(error));
+  }
+}
+
+export function* checkLoginWithRedirectSaga() {
+  try {
+    const IsLoggedIn = yield call(checkLoginWithRedirectImpl);
+    if (IsLoggedIn){
+      yield put(checkLoginWithRedirectSuccess());
+    }else{
+      yield put(checkLoginWithRedirectError());
+    }
+  } catch (error) {
+    yield put(checkLoginWithRedirectError(error));
   }
 }
 
@@ -575,6 +592,7 @@ export function* userSagaWatcher() {
   yield takeLatest(loginWithTwitter.type, loginWithTwitterSaga);
   yield takeLatest(loginWithTelegram.type, loginWithTelegramSaga);
   yield takeLatest(resetPassword.type, resetPasswordSaga);
+  yield takeLatest(checkLoginWithRedirect.type, checkLoginWithRedirectSaga);
   yield takeLatest(getUser.type, getUserSaga);
   yield takeLatest(logOut.type, logOutSaga);
   yield takeLatest(updateDailyLogin.type, updateDailyLoginSaga);

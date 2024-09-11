@@ -89,7 +89,6 @@ export const userSlice = createSlice({
     },
     loginWithEmailSuccess: (state, { payload }) => {
       addToLocalStorage("uid", payload.uid);
-      state.user = payload;
       state.isAuthenticated = true;
       state.authLoading = false;
     },
@@ -104,7 +103,6 @@ export const userSlice = createSlice({
     loginWithGoogleSuccess: (state, { payload }) => {
       state.isAuthenticated = true;
       state.authLoading = false;
-      state.user = payload;
     },
     loginWithGoogleError: (state, { payload }) => {
       state.isAuthenticated = false;
@@ -117,9 +115,20 @@ export const userSlice = createSlice({
     loginWithTwitterSuccess: (state, { payload }) => {
       state.isAuthenticated = true;
       state.authLoading = false;
-      state.user = payload;
     },
     loginWithTwitterError: (state, { payload }) => {
+      state.isAuthenticated = false;
+      state.error = payload;
+      state.authLoading = false;
+    },
+    checkLoginWithRedirect: (state, { payload }) => {
+      state.authLoading = true;
+    },
+    checkLoginWithRedirectSuccess: (state, { payload }) => {
+      state.isAuthenticated = true;
+      state.authLoading = false;
+    },
+    checkLoginWithRedirectError: (state, { payload }) => {
       state.isAuthenticated = false;
       state.error = payload;
       state.authLoading = false;
@@ -130,7 +139,6 @@ export const userSlice = createSlice({
     loginWithTelegramSuccess: (state, { payload }) => {
       state.isAuthenticated = true;
       state.authLoading = false;
-      state.user = payload;
     },
     loginWithTelegramError: (state, { payload }) => {
       state.isAuthenticated = false;
@@ -158,7 +166,6 @@ export const userSlice = createSlice({
     },
     resetPasswordSuccess: (state, { payload }) => {
       state.resetPasswordLoading = false;
-      state.user = payload;
     },
     resetPasswordError: (state, { payload }) => {
       state.error = payload;
@@ -171,6 +178,8 @@ export const userSlice = createSlice({
     updateProfileSuccess: (state, { payload }) => {
       state.updateProfileLoading = false;
       state.user = payload;
+      state.localStamina = payload.stamina;
+      state.localCoins = payload.coins;
     },
     updateProfileError: (state, { payload }) => {
       state.error = payload;
@@ -192,7 +201,6 @@ export const userSlice = createSlice({
     },
     getUserError: (state, { payload }) => {
       state.getUserLoading = false;
-      state.user = payload;
     },
     updateDailyLogin: (state) => {
       state.dailyLoginLoading = true;
@@ -519,6 +527,9 @@ export const {
   loginWithTwitter,
   loginWithTwitterSuccess,
   loginWithTwitterError,
+  checkLoginWithRedirect,
+  checkLoginWithRedirectSuccess,
+  checkLoginWithRedirectError,
   loginWithTelegram,
   loginWithTelegramSuccess,
   loginWithTelegramError,

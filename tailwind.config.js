@@ -149,12 +149,17 @@ const tailwinConfig = {
         LuckiestGuy: ['LuckiestGuy'], 
         bignoodle: ['BigNoodleTitling', 'sans-serif'],
       },
-      cursor: {
-        "360deg": "url('./public/assets/icons/360deg.svg'), pointer",
-      },
       boxShadow: {
         inplace_fuschia_500: "0 0px 10px 5px rgba(217, 70,239, 0.5)",
       },
+    },
+    screens: {
+      'xs': { 'raw': '(min-width: 530px) and (orientation: portrait)' },
+      'sm': { 'raw': '(min-width: 640px) and (orientation: portrait)' },
+      'md': { 'raw': '(min-width: 768px) and (orientation: portrait)' },
+      'lg': { 'raw': '(min-width: 1024px) and (orientation: landscape)' },
+      'xl': { 'raw': '(min-width: 1280px) and (orientation: landscape)' },
+      '2xl': { 'raw': '(min-width: 1536px) and (orientation: landscape)' },
     },
   },
   plugins: [
