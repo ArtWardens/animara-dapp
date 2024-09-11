@@ -103,7 +103,7 @@ const ClickerController = ({ Children }) => {
     setCurrentPeriodicBatchTime(lastBatchTimeRef);
 
     // Schedule the next check for the next 5-minute interval
-    const timeUntilNextInterval = calculateTimeUntilNext5MinuteMark();
+    const timeUntilNextInterval = calculateNextInterval();
     console.log("timeUntilNextInterval: ", timeUntilNextInterval);
 
     if (timeoutIdRef.current) {
@@ -112,47 +112,66 @@ const ClickerController = ({ Children }) => {
     }
 
     timeoutIdRef.current = setTimeout(() => {
-      console.log("Dispatching scheduled check after 5 minutes");
+      console.log("Dispatching scheduled check interval");
       dispatch(checkUserLastPeriodicBatchTime());     
 
     }, timeUntilNextInterval);
   }
 
-  // const calculateTimeUntilNoon = () => {
-    //   const now = new Date();
-    //   const noon = new Date();
-
-    //   // Set noon time for today or tomorrow if it's already past noon
-    //   noon.setHours(12, 0, 0, 0); // Set hours, minutes, seconds, milliseconds to 12:00:00
-    //   if (now.getTime() > noon.getTime()) {
-    //     // If it's past noon, schedule for the next day
-    //     noon.setDate(noon.getDate() + 1);
-    //   }
-
-    //   const timeUntilNoon = noon.getTime() - now.getTime();
-    //   return timeUntilNoon;
-    // };
-
-  // for 5 mins testing interval
-  const calculateTimeUntilNext5MinuteMark = () => {
+  const calculateNextInterval = () => {
     const now = new Date();
     const nextInterval = new Date();
 
-    let minutes = Math.ceil(now.getMinutes() / 5) * 5;
-    // Handle the transition from 55 to the next hour (0 minute mark)
-    if (minutes === 60) {
-      minutes = 0;
-      nextInterval.setHours(nextInterval.getHours() + 1); // Move to the next hour
-    }
+    // Get schedule parameters from env
+    const scheduleHours = process.env.REACT_APP_SCHEDULE_INTERVAL_HOURS || "*";
+    const scheduleMinutes = process.env.REACT_APP_SCHEDULE_INTERVAL_MINUTES || "*";
 
-    nextInterval.setMinutes(minutes, 0, 0);
-    
-    if (nextInterval.getTime() <= now.getTime()) {
-      nextInterval.setMinutes(minutes + 5, 0, 0); // Move to the next interval
-    }
+    console.log("scheduleHours", scheduleHours);
+    console.log("scheduleHours === *", scheduleHours === "*");
 
-    const timeUntilNextInterval = nextInterval.getTime() - now.getTime();
-    return timeUntilNextInterval;
+    if (scheduleHours === "*") {
+      const minutesInterval = scheduleMinutes === "*" ? 1 : parseInt(scheduleMinutes, 10);
+      let minutes = Math.ceil(now.getUTCMinutes() / minutesInterval) * minutesInterval;
+      // following firebase cron job logic
+      if (minutes >= 60) {
+        minutes = 0;
+        nextInterval.setUTCHours(nextInterval.getUTCHours() + 1); // Move to the next hour
+      }
+      nextInterval.setUTCMinutes(minutes, 0, 0);
+      
+      // If the next interval is the current time or earlier, move to the next interval block
+      if (nextInterval.getTime() <= now.getTime()) {
+        console.log("same interval, move to next");
+        nextInterval.setUTCMinutes(nextInterval.getUTCMinutes() + minutesInterval, 0, 0);
+      }
+      console.log("minutesInterval", minutesInterval);
+      console.log("test next minute: ", minutes);
+      
+      // Calculate time until the next interval
+      const timeUntilNextInterval = nextInterval.getTime() - now.getTime();
+      return timeUntilNextInterval;
+    } else {
+      const hoursInterval = parseInt(scheduleHours, 10);
+      let hours = Math.ceil(now.getUTCHours() / hoursInterval) * hoursInterval;
+
+      // following firebase cron job logic
+      if (hours >= 24) {
+        hours = 0;
+        nextInterval.setUTCDate(nextInterval.getUTCDate() + 1); // Move to the next day
+      }
+      nextInterval.setUTCHours(hours, 0, 0, 0);
+
+      // If the next interval is the current time or earlier, move to the next interval block
+      if (nextInterval.getTime() <= now.getTime()) {
+        console.log("same interval, move to next");
+        nextInterval.setUTCHours(nextInterval.getUTCHours() + hoursInterval, 0, 0, 0);
+      }
+      console.log("test next hour: ", hours);
+      
+      // Calculate time until the next interval
+      const timeUntilNextInterval = nextInterval.getTime() - now.getTime();
+      return timeUntilNextInterval;
+    }
   };
 
   const scheduleCheckForNextInterval = () => {
@@ -231,6 +250,15 @@ const ClickerController = ({ Children }) => {
   // useEffect(() => {
   //   console.log("lastPeriodicBatchTime updated: ", lastPeriodicBatchTime);
   // }, [lastPeriodicBatchTime]);
+  // useEffect(() => {
+  //   let timeUntilNextInterval = calculateNextInterval();
+  //   console.log("test new interval: ", timeUntilNextInterval);
+
+  //   setTimeout(() => {
+  //     timeUntilNextInterval = calculateNextInterval();
+  //     console.log(timeUntilNextInterval);
+  //   }, timeUntilNextInterval);
+  // }, []);
 
   return (
     <div className="overflow-hidden">
