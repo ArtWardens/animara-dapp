@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { PropTypes } from 'prop-types';
 import { useWalletModal } from '@solana/wallet-adapter-react-ui';
 import { useWalletMultiButton } from '@solana/wallet-adapter-base-ui';
@@ -24,6 +24,7 @@ const ClickerController = ({ Children }) => {
     onSelectWallet() {},
   });
   const { visible: isModalVisible, setVisible: setModalVisible } = useWalletModal();
+  const [isPhantomInstalled] = useState(window.phantom?.solana?.isPhantom);
 
   // prevent unauthenticated access
   // auto featch user details if authenticated
@@ -53,11 +54,8 @@ const ClickerController = ({ Children }) => {
       return;
     }
 
-    // skip enhforcing wallet binding if is mobile
-    if (
-      /android|iPad|iPhone|iPod/i.test(navigator.userAgent) ||
-      (navigator.userAgent.includes('Mac') && 'ontouchend' in document)
-    ) {
+    // skip enhforcing wallet binding if no access to phantom
+    if (!isPhantomInstalled) {
       return;
     }
 
