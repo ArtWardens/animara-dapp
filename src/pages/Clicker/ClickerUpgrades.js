@@ -254,8 +254,10 @@ const ClickerUpgrades = ({ onClose }) => {
                       (location) => location.region === selectedOption
                     ).length > 0 ? (
                       <div className="h-full flex flex-col xl:flex-row flex-wrap items-center justify-start gap-4 amt-4 p-4 overflow-y-auto">
-                        {userLocations.map((location, index) => {
-                          if (location.region === selectedOption) {
+                        {userLocations
+                          .filter((location) => location.region === selectedOption)
+                          .sort((a, b) => (a.level >= 0 && b.level === -1 ? -1 : 1)) // Sort unlocked locations first
+                          .map((location, index) => {
                             return (
                               <div
                                 key={index}
@@ -280,9 +282,7 @@ const ClickerUpgrades = ({ onClose }) => {
                                     <p>{t(location.locationId)} &nbsp;</p>
                                     <p className="text-[#ffa900]">
                                       LV.{" "}
-                                      {location.level === -1
-                                        ? "-"
-                                        : location.level}
+                                      {location.level === -1 ? "-" : location.level}
                                     </p>
                                   </div>
                                   <div className="w-full flex flex-row items-center justify-between">
@@ -291,16 +291,13 @@ const ClickerUpgrades = ({ onClose }) => {
                                     </p>
                                     <div className="flex flex-row">
                                       <img
-                                        src={
-                                          "/assets/images/clicker-character/explora-point.webp"
-                                        }
+                                        src={"/assets/icons/explora-point.webp"}
                                         alt="icon2"
                                         className="w-6 h-6 mr-1"
                                       />
                                       <p className="text-[#00E0FF]">
                                         +
-                                        {location.level === 0 &&
-                                        location.level !== -1
+                                        {location.level === 0 && location.level !== -1
                                           ? location.nextLevelExploraPts
                                           : location.currentExploraPts}
                                       </p>
@@ -309,8 +306,7 @@ const ClickerUpgrades = ({ onClose }) => {
                                   <div className="w-full border-t-2 border-blue-400 my-[0.5rem]"></div>
                                   <div className="w-full flex flex-row justify-between ">
                                     <p>
-                                      {location.level === 0 &&
-                                      location.level !== -1
+                                      {location.level === 0 && location.level !== -1
                                         ? "Explore"
                                         : "Upgrade with"}
                                     </p>
@@ -335,24 +331,22 @@ const ClickerUpgrades = ({ onClose }) => {
 
                                 {location.level === -1 && (
                                   <>
-                                    <div className="absolute inset-0 bg-gradient-to-b from-[rgba(0,0,0,0.5)] to-[rgba(0,0,0,0.8)] flex justify-center items-center opacity-70 rounded-[36px] backdrop-blur-lg" ></div>
+                                    <div className="absolute inset-0 bg-gradient-to-b from-[rgba(0,0,0,0.5)] to-[rgba(0,0,0,0.8)] flex justify-center items-center opacity-70 rounded-[36px] backdrop-blur-lg"></div>
                                     <img
-                                        src="/assets/images/clicker-character/lock-chain-only.webp"
-                                        style={{
-                                          backgroundSize: "contain",
-                                          backgroundPosition: "center",
-                                          backgroundRepeat: "no-repeat",
-                                        }}
-                                        alt="Locked"
-                                        className="w-full h-full absolute inset-0"
-                                      />
+                                      src="/assets/images/clicker-character/lock-chain-only.webp"
+                                      style={{
+                                        backgroundSize: "contain",
+                                        backgroundPosition: "center",
+                                        backgroundRepeat: "no-repeat",
+                                      }}
+                                      alt="Locked"
+                                      className="w-full h-full absolute inset-0"
+                                    />
                                   </>
                                 )}
                               </div>
                             );
-                          }
-                          return null;
-                        })}
+                          })}
                       </div>
                     ) : (
                       <div className="flex justify-center items-end xl:items-center h-full">
@@ -366,6 +360,7 @@ const ClickerUpgrades = ({ onClose }) => {
                       No upgrades available
                     </p>
                   )}
+
                 </div>
               </div>
             )}
