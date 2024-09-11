@@ -24,6 +24,9 @@ import {
   handleCompletedOneTimeTask,
 } from "../firebase/oneTimeTask";
 import {
+  handleCheckUserLastPeriodicBatchTime
+} from "../firebase/periodicTask";
+import {
   settleTapSessionImpl,
   rechargeEnergyImpl,
   rechargeEnergyByInviteImpl,
@@ -105,6 +108,9 @@ import {
   fetchDates,
   fetchDatesSuccess,
   fetchDatesError,
+  checkUserLastPeriodicBatchTime,
+  checkUserLastPeriodicBatchTimeSuccess,
+  checkUserLastPeriodicBatchTimeError,
 } from "../sagaStore/slices";
 import {
   StaminaRechargeTypeBasic,
@@ -550,6 +556,18 @@ export function* fetchDatesSaga() {
   }
 }
 
+export function* checkUserLastPeriodicBatchTimeSaga() {
+  try {
+    const userBatchTime = yield call(handleCheckUserLastPeriodicBatchTime);
+    yield put(checkUserLastPeriodicBatchTimeSuccess(userBatchTime));
+    return userBatchTime;
+  } 
+  catch (error) {
+    yield put(checkUserLastPeriodicBatchTimeError(error));
+    toast.error("Failed to check user batch time. Please try again. ");
+  }
+}
+
 export function* userSagaWatcher() {
   yield takeLatest(signupWithEmail.type, signupWithEmailSaga);
   yield takeLatest(loginWithEmail.type, loginWithEmailSaga);
@@ -576,4 +594,5 @@ export function* userSagaWatcher() {
   yield takeLatest(unbindWallet.type, unbindWalletSaga);
   yield takeLatest(mintNFT.type, mintNFTSaga);
   yield takeLatest(fetchDates.type, fetchDatesSaga);
+  yield takeLatest(checkUserLastPeriodicBatchTime.type, checkUserLastPeriodicBatchTimeSaga);
 }
