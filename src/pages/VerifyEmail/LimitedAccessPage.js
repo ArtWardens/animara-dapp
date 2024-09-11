@@ -19,11 +19,13 @@ import { useNavigate } from "react-router-dom";
     >
       {/* Logo */}
       <div className="absolute top-[2rem] xl:top-[4rem] left-[3rem] lg:left-[6rem] xl:left-[12rem]">
-        <img
-          src={"/assets/images/clicker-character/animara-logo.webp"}
-          alt="animara logo"
-          className="w-[35%] xl:w-[50%] h-auto"
-        />
+        <a className="" href="https://animara.world" target="_blank" rel="noopener noreferrer">
+          <img
+            src={"/assets/icons/logo.webp"}
+            alt="animara logo"
+            className="w-[35%] xl:w-[50%] h-auto"
+          />
+        </a>
       </div>
 
       {/* Content */}
@@ -47,7 +49,7 @@ import { useNavigate } from "react-router-dom";
             If you have already verified your email,{" "}
             <span
               onClick={handleLoginRedirect}
-              className="text-[#00b8e1] font-LuckiestGuy cursor-pointer "
+              className="text-[#00b8e1] font-LuckiestGuy  "
             >
               click here
             </span>{" "}

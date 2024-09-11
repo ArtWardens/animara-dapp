@@ -1,9 +1,9 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { useLocation, useNavigate } from 'react-router-dom/dist';
 import { MoonLoader } from 'react-spinners';
-import { logOut, useUserDetails, useLocalCoins } from '../sagaStore/slices';
+import { logOut, useUserDetails, useLocalCoins, setMobileMenuOpen, useMobileMenuOpen } from '../sagaStore/slices';
 
 const lngs = {
   en: { nativeName: 'English' },
@@ -12,6 +12,7 @@ const lngs = {
 
 function Header() {
   const { i18n } = useTranslation();
+  const mobileMenuOpen = useMobileMenuOpen();
   const [langDropdownOpen, setLangDropdownOpen] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -34,6 +35,7 @@ function Header() {
     { name: 'REFERRAL', link: '/referral' },
   ];
   const handleButtonClick = (link) => {
+    dispatch(setMobileMenuOpen(false));
     if (link) {
       navigate(link);
     }
@@ -50,9 +52,6 @@ function Header() {
   const handleLogout = () => {
     dispatch(logOut());
   };
-
-  // State for mobile menu
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   // State for loading profile image
   const [loadingImage, setLoadingImage] = useState(true);
@@ -79,11 +78,26 @@ function Header() {
     return number ? number.toLocaleString() : '0';
   };
 
+  const getProfilePic = useCallback(() => {
+    // default placeholder image
+    if (!currentUser) {
+      return '/assets/images/activeDog.webp';
+    }
+
+    let photoUrl = currentUser.photoUrl;
+    // process google user content
+    if (photoUrl.indexOf('googleusercontent.com') !== -1) {
+      photoUrl = `${photoUrl}?alt=media`;
+    }
+
+    return photoUrl;
+  }, [currentUser]);
+
   return (
     <>
-      {/* Desktop Menu */}
+      {/* User Card */}
       <div
-        className={`flex flex-row absolute top-[3rem] z-10 p-1 pr-4 gap-2 left-[1rem] xl:left-[4rem] ${
+        className={`flex flex-row absolute max-w-[70dvw] top-[3rem] z-10 p-1 pr-4 gap-2 left-[1rem] xl:left-[4rem] ${
           mobileMenuOpen ? 'hidden' : ''
         }`}
         style={{
@@ -94,17 +108,18 @@ function Header() {
           zIndex: 91,
         }}
       >
+        {/* profile picture */}
         <div className="p-1 w-20 h-20 relative">
-          <button onClick={handleEditProfile} className="group relative">
+          <button onClick={handleEditProfile} className="group relative bg-transparent">
             {loadingImage && (
               <div className="h-18 flex justify-center items-center">
                 <MoonLoader color={'#FFB23F'} />
               </div>
             )}
             <img
-              src={currentUser?.photoUrl ? currentUser.photoUrl : '/assets/images/activeDog.webp'}
+              src={getProfilePic()}
               alt="profile"
-              className="justify-self-center rounded-full w-24 cursor-pointer group-hover:brightness-[0.55] transition-all duration-300"
+              className="justify-self-center rounded-full w-24  group-hover:brightness-[0.55] transition-all duration-300"
               style={{
                 border: '4px solid var(--80E8FF, #80E8FF)',
                 background: '#111928 50%',
@@ -127,18 +142,19 @@ function Header() {
           </button>
         </div>
 
-        <div className="flex flex-col place-content-center">
+        {/* user details */}
+        <div className="flex flex-col place-content-center flex-shrink">
           <div className="font-outfit text-md flex">
             <p>{currentUser?.name || 'Animara User'}</p>
-            <p className="ml-4 font-LuckiestGuy text-[#F46700]">LV.{currentUser?.level}</p>
+            <p className="ml-2 xs:ml-4 font-LuckiestGuy text-[#F46700] text-md">LV.{currentUser?.level}</p>
           </div>
 
-          <div className="gap-2 flex">
-            <img className="w-8 object-contain" src={'/assets/images/clicker-character/gem.webp'} alt="gem" />
-            <div className="relative flex items-center justify-center w-44">
+          <div className="gap-1 xs:gap-2 flex">
+            <img className="w-6 xs:w-8 object-contain" src={'/assets/images/clicker-character/gem.webp'} alt="gem" />
+            <div className="relative flex items-center justify-center max-w-44">
               <span
                 ref={coinsDisplayRef}
-                className="relative text-3xl text-amber-500 tracking-normal w-full overflow-hidden text-left"
+                className="relative text-2xl xs:text-3xl text-amber-500 tracking-normal w-full overflow-hidden text-left"
                 style={{
                   WebkitTextStrokeWidth: '1.75px',
                   WebkitTextStrokeColor: 'var(--Color-11, #FFF)',
@@ -151,6 +167,7 @@ function Header() {
         </div>
       </div>
 
+      {/* Desktop Navigation Bar */}
       <div
         className="hidden xl:flex absolute top-16 gap-2 right-[4rem] z-96 items-center"
         style={{
@@ -160,7 +177,7 @@ function Header() {
         <div className="relative">
           <img
             src="/assets/images/clicker-character/locale.webp"
-            className="w-[3dvw] xl:w-[1.5dvw] cursor-pointer"
+            className="w-[3dvw] xl:w-[1.5dvw] "
             onClick={() => setLangDropdownOpen(!langDropdownOpen)}
             alt="change locale"
           />
@@ -192,7 +209,7 @@ function Header() {
         ))}
 
         <button
-          className="transition ease-in-out p-2 hover:scale-105"
+          className="transition ease-in-out p-2 hover:scale-105 bg-transparent"
           onMouseEnter={handleMouseEnterLogout}
           onMouseLeave={handleMouseLeaveLogout}
           onClick={handleLogout}
@@ -202,10 +219,10 @@ function Header() {
         </button>
       </div>
 
-      {/* Mobile Menu Button */}
+      {/* Mobile Hamburger Menu Button */}
       <button
         className="transition ease-in-out hover:scale-105 xl:hidden absolute top-[5rem] right-[2rem] xl:right-[4rem] z-50"
-        onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+        onClick={() => dispatch(setMobileMenuOpen(!mobileMenuOpen))}
       >
         <svg
           className={`h-9 w-9 text-amber-500 ${mobileMenuOpen ? 'hidden' : 'block'}`}
@@ -221,7 +238,7 @@ function Header() {
       {/* Mobile Menu */}
       {mobileMenuOpen && (
         <div
-          className="h-full absolute inset-0 z-40 flex flex-col items-center justify-start p-[4rem] overflow-hidden"
+          className="h-full absolute inset-0 z-40 flex flex-col items-center justify-start py-[2rem] px-[4rem] overflow-hidden"
           style={{
             backgroundImage: 'url("/assets/images/clicker-character/clickerWall.webp")',
             backgroundSize: 'cover',
@@ -229,15 +246,21 @@ function Header() {
             backgroundRepeat: 'no-repeat',
           }}
         >
-          <div className="w-full flex flex-col space-y-[4rem]">
+          <div
+            className={`w-full flex flex-col 
+            ${window.innerHeight < 768 ? 'space-y-2' : 'space-y-4'}  
+          `}
+          >
             <div className="w-full flex flex-row justify-between">
-              <div className="left-[3rem] flex items-center space-x-4">
-                <img src="/assets/images/clicker-character/animara-logo.webp" alt="Animara Logo" className="h-8" />
+              <div className="flex items-center space-x-3">
+                <a className="" href="https://animara.world" target="_blank" rel="noopener noreferrer">
+                  <img src="/assets/icons/logo.webp" alt="Animara Logo" className="h-12" />
+                </a>
               </div>
 
               <button
                 className="transition ease-in-out hover:scale-105 xl:hidden right-[3rem] xl:right-[4rem] z-50"
-                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                onClick={() => dispatch(setMobileMenuOpen(!mobileMenuOpen))}
               >
                 <svg
                   className="h-9 w-9 text-amber-500"
@@ -252,7 +275,7 @@ function Header() {
             </div>
 
             <div
-              className="w-full h-full text-center scale-125 p-[6rem] -z-50"
+              className="w-full h-full text-center scale-125 p-[5rem] -z-50"
               style={{
                 backgroundImage: 'url("/assets/images/clicker-character/sticky-Note.webp")',
                 backgroundSize: 'contain',
@@ -267,7 +290,7 @@ function Header() {
               )}
 
               <img
-                src={currentUser?.photoUrl ? currentUser.photoUrl : '/assets/images/activeDog.webp'}
+                src={getProfilePic()}
                 alt="profile"
                 className="items-center rounded-full w-32 mx-auto mb-4"
                 style={{
@@ -300,12 +323,17 @@ function Header() {
               </div>
             </div>
 
-            <div className="space-y-4 mt-[4rem] mb-16 z-60">
+            <div
+              className={`mt-[4rem] mb-16 z-60
+              ${window.innerHeight < 768 ? 'space-y-2' : 'space-y-4'}  
+            `}
+            >
               {navDestinations.map(({ name, link }) => (
                 <div className="flex flex-row items-center group" key={name}>
                   <button
                     onClick={() => handleButtonClick(link)}
-                    className="block w-full text-left py-2 text-[#00b8e1] hover:text-[#ffc75a] text-4xl font-LuckiestGuy font-bold leading-9 tracking-wider transition-all duration-500"
+                    className={`block w-full text-left py-2 text-[#00b8e1] hover:text-[#ffc75a] font-LuckiestGuy font-bold leading-8 tracking-wider transition-all duration-500 
+                    ${window.innerHeight < 768 ? 'text-3xl' : 'text-4xl'}`}
                   >
                     {name}
                   </button>

@@ -3,7 +3,6 @@ import { Box } from '@mui/material';
 import Modal from '@mui/material/Modal';
 import { useAppDispatch } from '../../hooks/storeHooks';
 import { useUserDetails, closeDailyPopup, updateDailyLogin, useIsOpenDailyPopup } from '../../sagaStore/slices';
-import Header from "../../components/Header.jsx";
 import MascotView from '../../components/MascotView';
 import EarnGuide from '../../components/EarnGuide';
 import EnergyRegeneration from '../../components/EnergyRegeneration';
@@ -21,8 +20,11 @@ const ClickerView = () => {
 
   // Initialize
   useEffect(() => {
+    if (!currentUser) {
+      return;
+    }
     // check and popup daily login
-    if (currentUser && !currentUser?.loggedInToday) {
+    if (!currentUser?.loggedInToday) {
       dispatch(updateDailyLogin());
     }
   }, [currentUser, dispatch]);
@@ -53,8 +55,6 @@ const ClickerView = () => {
 
   return (
     <>
-    
-      <Header />
 
       <div className="max-w-full flex justify-center items-center relative">
         <EnergyRegeneration 
@@ -94,7 +94,7 @@ const ClickerView = () => {
             >
               {/* Close Button */}
               <button
-                className="absolute top-[4rem] md:top-[13rem] lg:top-[10rem] xl:top-[8rem] right-[2.5rem] md:right-[5rem] text-white text-4xl hover:brightness-75"
+                className="absolute top-[4rem] md:top-[13rem] lg:top-[10rem] xl:top-[8rem] right-[2.5rem] md:right-[5rem] text-white text-4xl bg-transparent hover:brightness-75"
                 onClick={handleClose}
               >
                 &times;
@@ -109,13 +109,14 @@ const ClickerView = () => {
                   <video
                     src="https://storage.animara.world/daily-login-reward.webm"
                     autoPlay
+                    playsInline
                     loop={true}
                     className="max-w-[8rem] lg:max-w-[9rem] pt-1"
                   />
                 </Box>
                 <div className="space-y-1 flex flex-col items-center pb-3">
-                  <p className="text-[#FFAA00] text-[3rem] lg:text-[3.75rem] font-base text-center">Daily reward</p>
-                  <span className="text-white font-outfit text-center font-">
+                  <p className="text-[#FFAA00] text-sm xs:text-[3rem] lg:text-[3.75rem] font-base text-center">Daily reward</p>
+                  <span className="text-white text-sm xs:text-base font-outfit text-center font-normal">
                     Accure Coins For Loggin Into The Game Daily Without Skipping
                   </span>
                 </div>

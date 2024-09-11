@@ -18,6 +18,7 @@ const initialState = {
   loading: false,
   isMobile: false,
   isIOS: false,
+  mobileMenuOpen: false,
 };
 
 export const systemSlice = createSlice({
@@ -42,11 +43,14 @@ export const systemSlice = createSlice({
     },
     setIsIOS: (state, { payload }) => {
       state.isIOS = payload;
+    },
+    setMobileMenuOpen: (state, { payload }) => {
+      state.mobileMenuOpen = payload;
     }
   },
 });
 
-export const { systemUpdateNetworkConnection, systemUpdatePageFocus, systemAddError, setTimezone, systemDispatch, setIsMobile, setIsIOS } =
+export const { systemUpdateNetworkConnection, systemUpdatePageFocus, systemAddError, setTimezone, systemDispatch, setIsMobile, setIsIOS, setMobileMenuOpen } =
   systemSlice.actions;
 
 export const useSystemNetworkConnection = () => useAppSelector((state) => state.system);
@@ -56,6 +60,7 @@ export const useTimezone = () => useAppSelector((state) => state.system.timeZone
 export const useSystemError = () => useAppSelector((state) => state.system.error);
 export const useIsMobile = () => useAppSelector((state) => state.system.isMobile);
 export const useIsIOS = () => useAppSelector((state) => state.system.isIOS);
+export const useMobileMenuOpen = () => useAppSelector((state) => state.system.mobileMenuOpen);
 
 const systemReducer = systemSlice.reducer;
 export default systemReducer;

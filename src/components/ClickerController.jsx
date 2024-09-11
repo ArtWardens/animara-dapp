@@ -44,7 +44,7 @@ const ClickerController = ({ Children }) => {
         navigate('/login');
       }
     }
-  }, [dispatch, isAuthLoading, isAuthenticated, navigate]);
+  }, [dispatch, isAuthLoading, isAuthenticated, navigate, mintDate]);
 
   // check to make sure user is using correct wallet
   useEffect(() => {
@@ -56,6 +56,14 @@ const ClickerController = ({ Children }) => {
     }
 
     if (!connectingWallet && isModalVisible) {
+      return;
+    }
+
+    // skip enhforcing wallet binding if is mobile
+    if (
+      /android|iPad|iPhone|iPod/i.test(navigator.userAgent) ||
+      (navigator.userAgent.includes('Mac') && 'ontouchend' in document)
+    ) {
       return;
     }
 

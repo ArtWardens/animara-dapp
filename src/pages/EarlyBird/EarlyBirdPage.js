@@ -4,6 +4,7 @@ import { useDispatch } from "react-redux";
 import Header from "../../components/Header.jsx";
 import { FaInstagram, FaTwitter, FaTelegramPlane, FaYoutube, FaLink } from 'react-icons/fa';
 import { useEarlyBirdDate, useUserDetails,getEarlyBirdOneTimeTaskList, useEarlyBirdOneTimeTaskList, useTaskIdToComplete, useEarlyBirdOneTimeTaskListSuccess, completeOneTimeTask } from "../../sagaStore/slices/userSlice.js";
+import { useMobileMenuOpen } from '../../sagaStore/slices';
 import { startCountdown } from '../../firebase/countDown';
 
 const EarlyBirdPage = () => {
@@ -11,6 +12,7 @@ const EarlyBirdPage = () => {
     const dispatch = useDispatch();
     const currentUser = useUserDetails();
     const earlyBirdDate = useEarlyBirdDate();
+    const mobileMenuOpen = useMobileMenuOpen();
     const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
     const [isContainerVisible, setIsContainerVisible] = useState(true);
     const earlyBirdOneTimeTaskList = useEarlyBirdOneTimeTaskList();
@@ -63,7 +65,7 @@ const EarlyBirdPage = () => {
                     <div
                         key={idx}
                         disabled={taskIdToComplete !== ''}
-                        className={`flex w-full transition-transform duration-200 px-4 cursor-pointer ${isTaskCompleted ? '' : 'hover:scale-105'}`}
+                        className={`flex w-full transition-transform duration-200 px-4  ${isTaskCompleted ? '' : 'hover:scale-105'}`}
                         onClick={() => isTaskCompleted ? null : handleTaskClick(task)}
                         style={{ pointerEvents: isTaskCompleted ? 'none' : 'auto' }}
                     >
@@ -110,8 +112,10 @@ const EarlyBirdPage = () => {
     return (
         <>
             <Header />
+            
             <div
-                className="flex-grow flex flex-col place-content-center items-center px-24 pb-4 min-h-screen"
+                className={`flex-grow flex flex-col place-content-center items-center px-24 pb-4 min-h-screen 
+                    ${mobileMenuOpen ? `hidden` : ``}`}
                 style={{
                     backgroundImage: 'url("/assets/images/clicker-character/clickerWall.webp")',
                     backgroundSize: 'cover',
@@ -229,10 +233,10 @@ const EarlyBirdPage = () => {
 
                                 <div
 
-                                    className="w-[240px] h-[80px] flex justify-self-center items-center mt-4 hover:scale-105 transition-transform duration-200 cursor-pointer"
+                                    className="w-[240px] h-[80px] flex justify-self-center items-center mt-4 hover:scale-105 transition-transform duration-200 "
                                     onClick={() => navigate('/mint')}
                                 >
-                                    <div className="bg-[#ffb23e] rounded-full border border-[#e59e69] flex justify-center items-center w-full h-full hover:bg-[#FFDC62] hover:shadow-[0px_4px_4px_0px_rgba(255,210,143,0.61)_inset,0px_4px_4px_0px_rgba(232,140,72,0.48)] cursor-pointer">
+                                    <div className="bg-[#ffb23e] rounded-full border border-[#e59e69] flex justify-center items-center w-full h-full hover:bg-[#FFDC62] hover:shadow-[0px_4px_4px_0px_rgba(255,210,143,0.61)_inset,0px_4px_4px_0px_rgba(232,140,72,0.48)] ">
                                         <div
 
                                             className="text-center text-white text-3xl"

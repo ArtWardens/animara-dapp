@@ -10,6 +10,7 @@ import {
   updateProfile,
   useUpdateProfileLoading,
 } from "../../sagaStore/slices/userSlice.js";
+import { useMobileMenuOpen } from '../../sagaStore/slices';
 import Header from "../../components/Header.jsx";
 import WalletBindingPanel from "../../components/SolanaWallet/WalletBindingPanel.jsx";
 import "./EditProfile.css";
@@ -17,6 +18,7 @@ import "./EditProfile.css";
 const EditProfilePage = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const mobileMenuOpen = useMobileMenuOpen();
   const resetPasswordLoading = useResetPasswordLoading();
   const updateProfileLoading = useUpdateProfileLoading();
   const user = useUserDetails();
@@ -116,19 +118,20 @@ const EditProfilePage = () => {
           <Header />
 
           {/* content */}
-          <div className="flex flex-col 2xl:flex-row w-full mt-[5rem] lg:mt-0 gap-20">
+          <div className={`flex flex-col 2xl:flex-row w-full mt-[5rem] lg:mt-0 gap-20 
+            ${mobileMenuOpen ? `hidden` : ``}`}>
             {/* details panel */}
             <div className="w-full px-[2rem]">
               {/* header */}
               <div className="w-full xl:w-[100%] header flex justify-between items-center space-x-[2rem] lg:space-x-[8rem]">
                 <span className="flex gap-2">
                   <div className="flex flex-col">
-                    <span
+                    <a
                       onClick={handleBackClick}
-                      className="text-white text-sm font-outfit tracking-wide hover:text-amber-500 transition-colors cursor-pointer"
+                      className="text-white text-sm font-outfit tracking-wide hover:text-amber-500 transition-colors bg-transparent"
                     >
                       &lt;&nbsp;Back
-                    </span>
+                    </a>
                     <div className="flex flex-col xl:flex-row">
                       <div
                         className="w-full text-left text-amber-500 text-5xl font-normal font-['Luckiest Guy'] uppercase leading-[54px]"
