@@ -205,6 +205,7 @@ const ClickerController = ({ Children }) => {
     } else {
       // If batch is finished, reset the retry counter
       console.log("Periodic Batch finished updating, scheduling next check.");
+      dispatch(getUser());
       initCountdownForNextInterval();
     }
   };
