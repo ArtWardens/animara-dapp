@@ -100,7 +100,7 @@ const UpgradeDetailsModal = ({ upgrade, isMaxLevel, onClose }) => {
 
   return (
     <>
-      <div className="fixed inset-0 bg-transparent backdrop-blur-xl rounded-xl flex justify-center items-center z-[200] overflow-hidden">
+      <div className="fixed inset-0  backdrop-blur-xl rounded-xl flex justify-center items-center z-[200] overflow-hidden">
         {!isUserLocationLoading &&
         (showMaxLevelMessage || isExploredSuccessfully) ? (
           <>

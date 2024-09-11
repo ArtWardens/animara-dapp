@@ -131,10 +131,10 @@ function MintPage() {
   const [videoSource, setVideoSource] = useState('https://storage.animara.world/unhappy-ghost.webm');
   const videoRef = useRef(null);
   const [isMobileApp] = useState(
-    // /android|iPad|iPhone|iPod/i.test(navigator.userAgent) ||
-    // (navigator.userAgent.includes("Mac") && "ontouchend" in document)
-    false
+    /android|iPad|iPhone|iPod/i.test(navigator.userAgent) ||
+    (navigator.userAgent.includes("Mac") && "ontouchend" in document)
   );
+  const [isPhantomInstalled] = useState(window.phantom?.solana?.isPhantom);
 
   // intro animation & fetch countdown
   useEffect(() => {
@@ -312,6 +312,14 @@ function MintPage() {
       setVideoSource(isMobileApp ? '/assets/images/unhappy-ghost.webp' : 'https://storage.animara.world/unhappy-ghost.webm');
     }
   }, [ghostExcited, isMobileApp]);
+
+  const openPhantom = () =>{
+    // Get the current URL
+    const currentUrl = encodeURIComponent(window.location.href);
+    
+    // tries to open phantom wallet's in-app browser
+    window.location.href = `https://phantom.app/ul/browse/${currentUrl}?ref=`;
+  }
 
   return (
     <>
@@ -583,12 +591,16 @@ function MintPage() {
                 <div
                   className={`justify-center items-center inline-flex transition-transform duration-200 
                     ${(isAllowed && !mintingNFT) || !walletAddr ? `hover:scale-105` : ``}`}
-                  onMouseEnter={() => isAllowed ? setGhostExcited(true) : setGhostExcited(false)}
-                  onMouseLeave={() => !mintingNFT ? setGhostExcited(false) : setGhostExcited(true)}>
-                  {isMobileApp ?
-                    <span className='h-20 m-auto text-red-300 text-xl lg:text-3xl'>
-                      {`Cannot mint on mobile`}
-                    </span>
+                    onMouseEnter={() => isAllowed ? setGhostExcited(true) : setGhostExcited(false)}
+                    onMouseLeave={() => !mintingNFT ? setGhostExcited(false) : setGhostExcited(true)}>
+                  {!isPhantomInstalled ? 
+                    <button
+                      className="h-[80px] w-[250px] m-auto bg-[#FFDC62] border-[#E59E69] rounded-full border justify-center items-center inline-flex shadow-[0px_4px_4px_0px_#FFFBEF_inset,0px_-4px_4px_0px_rgba(255,249,228,0.48),0px_5px_4px_0px_rgba(232,140,72,0.48)]"
+                      onClick={openPhantom}>
+                      <span className=' text-white text-center text-xl lg:text-3xl font-normal'>
+                        {`Open in Phantom Wallet`}    
+                      </span>
+                    </button>
                   : 
                     loadingCandyMachine ? 
                       <span className='h-20 m-auto text-amber-300 text-xl lg:text-3xl animate-pulse'>
@@ -631,7 +643,7 @@ function MintPage() {
                 {/* Web3 links */}
                 <div className="flex">
                   <a
-                    className="text-amber-500 transition-all duration-300 hover:scale-105 hover:font-bold hover:text-amber-400 bg-transparent mb-2"
+                    className="text-amber-500 transition-all duration-300 hover:scale-105 hover:font-bold hover:text-amber-400  mb-2"
                     href="https://solscan.io/"
                     target="_blank"
                     rel="noopener noreferrer"
@@ -642,7 +654,7 @@ function MintPage() {
                   <span className="text-white">&nbsp;&nbsp;|&nbsp;&nbsp;</span>
 
                   <a
-                    className="text-amber-500 transition-all duration-300 hover:scale-105 hover:font-bold hover:text-amber-400 bg-transparent mb-2"
+                    className="text-amber-500 transition-all duration-300 hover:scale-105 hover:font-bold hover:text-amber-400  mb-2"
                     href="https://wallet.magiceden.io/"
                     target="_blank"
                     rel="noopener noreferrer"
@@ -789,10 +801,14 @@ function MintPage() {
                 onMouseEnter={() => isAllowed ? setGhostExcited(true) : setGhostExcited(false)}
                 onMouseLeave={() => !mintingNFT ? setGhostExcited(false) : setGhostExcited(true)}
               >
-                {isMobileApp ?
-                  <span className='h-20 m-auto text-red-300 text-xl lg:text-3xl'>
-                    {`Cannot mint on mobile`}
-                  </span>
+                {!isPhantomInstalled ? 
+                  <button
+                    className="h-[80px] w-[250px] m-auto"
+                    onClick={openPhantom}>
+                    <span className=' text-red-300 text-center text-xl lg:text-3xl'>
+                      {`Open Phantom Wallet`}    
+                    </span>
+                  </button>
                   :
                   loadingCandyMachine ?
                     <span className='h-20 m-auto text-amber-300 text-xl lg:text-3xl animate-pulse'>
@@ -892,7 +908,7 @@ function MintPage() {
           )}
 
           {isVideoEnded && (
-            <div className="fixed inset-0 bg-transparent backdrop-blur-xl rounded-xl flex justify-center items-center z-[200] overflow-hidden">
+            <div className="fixed inset-0  backdrop-blur-xl rounded-xl flex justify-center items-center z-[200] overflow-hidden">
               {/* Background Image with spinning animation */}
               <div
                 className={`absolute w-[2000px] h-[2000px] rotate-image`}

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useCallback } from "react";
 import PhoneInput from "react-phone-number-input";
 import { useNavigate } from "react-router-dom";
 import "react-phone-number-input/style.css";
@@ -99,6 +99,28 @@ const EditProfilePage = () => {
     }
   };
 
+  const getProfilePic = useCallback(() => {
+    // use placeholder image if user not loaded yet
+    if (!user) {
+      return '/assets/images/activeDog.webp';
+    }
+
+    // get user profile picture
+    let photoUrl = user.photoUrl;
+
+    // returns placeholder if profile picture is not set yet
+    if (photoUrl === ''){
+      photoUrl = '/assets/images/activeDog.webp';
+    }
+
+    // process google user content
+    if (photoUrl.indexOf('googleusercontent.com') !== -1) {
+      photoUrl = `${photoUrl}?alt=media`;
+    }
+
+    return photoUrl;
+  }, [user]);
+
   return (
     // background
     <div className="relative w-full min-h-screen">
@@ -128,7 +150,7 @@ const EditProfilePage = () => {
                   <div className="flex flex-col">
                     <a
                       onClick={handleBackClick}
-                      className="text-white text-sm font-outfit tracking-wide hover:text-amber-500 transition-colors bg-transparent"
+                      className="text-white text-sm font-outfit tracking-wide hover:text-amber-500 transition-colors "
                     >
                       &lt;&nbsp;Back
                     </a>
@@ -163,14 +185,20 @@ const EditProfilePage = () => {
                     flexShrink: 0,
                     borderRadius: "500px",
                     border: "2.5px solid var(--80E8FF, #80E8FF)",
-                    background: `url(${imageData || user?.photoUrl}) lightgray 50% / cover no-repeat`,
+                    background: `url(${imageData || user?.photoUrl}) black 50% / cover no-repeat`,
                   }}
                 >
                   {user?.photoUrl ? (
                     <img
-                      src={imageData || user?.photoUrl}
+                      src={imageData || getProfilePic()}
                       alt="pfp"
-                      className="bg-[#111928] group-hover:brightness-75 h-full w-full object-cover"
+                      className="group-hover:brightness-75 h-full w-full object-cover"
+                      style={{
+                        border: '4px solid var(--80E8FF, #80E8FF)',
+                        background: '#111928 50%',
+                        backgroundSize: 'cover',
+                        backgroundRepeat: 'no-repeat',
+                      }}
                       onError={(e) => {
                         e.target.onerror = null;
                         e.target.src = "/assets/images/activeDog.webp";
@@ -178,13 +206,20 @@ const EditProfilePage = () => {
                     />
                   ) : (
                     <img
-                      src="..//assets/images/lock.webp"
+                      src="/assets/images/activeDog.webp"
                       alt="pfp"
-                      className="group-hover:brightness-75 h-full w-full object-cover"
+                      className="justify-self-center rounded-full w-24 group-hover:brightness-[0.55] transition-all duration-300"
+                      style={{
+                        border: '4px solid var(--80E8FF, #80E8FF)',
+                        background: '#111928 50%',
+                        backgroundSize: 'auto',
+                        backgroundRepeat: 'repeat',
+                        display: 'block',
+                      }}
                     />
                   )}
                   <img
-                    src=".//assets/icons/edit.webp"
+                    src="/assets/icons/edit.webp"
                     alt="edit"
                     className="invisible group-hover:visible absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 text-white fill-white"
                   />
