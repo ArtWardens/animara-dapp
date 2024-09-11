@@ -128,7 +128,7 @@ const EditProfilePage = () => {
                   <div className="flex flex-col">
                     <a
                       onClick={handleBackClick}
-                      className="text-white text-sm font-outfit tracking-wide hover:text-amber-500 transition-colors bg-transparent"
+                      className="text-white text-sm font-outfit tracking-wide hover:text-amber-500 transition-colors "
                     >
                       &lt;&nbsp;Back
                     </a>
