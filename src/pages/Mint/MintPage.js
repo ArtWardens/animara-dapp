@@ -933,7 +933,7 @@ function MintPage() {
 
 
               {/* Fade Out Overlay */}
-              <div className={`bg-white absolute z-[101] inset-0 w-screen h-screen pointer-events-none transition-all duration-500 ${!mintFadeOut ? `opacity-0` : `opacity-100`}`}></div>
+              <div className={`bg-white absolute z-[101] inset-0 w-screen h-screen pointer-events-none transition-all duration-500 ${mintFadeOut ? `opacity-0` : `opacity-100`}`}></div>
             </div>
 
           )}
