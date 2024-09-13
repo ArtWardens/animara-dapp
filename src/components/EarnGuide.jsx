@@ -224,18 +224,20 @@ function EarnGuide({ openModal, setOpenModal, setIsOneTimeTaskOpen }) {
         >
           <div
             className={`
-              relative min-w-full min-h-[75%] max-w-[1200px] px-[2rem] py-[2rem] rounded-[20px] text-center bg-cover bg-no-repeat md:bg-[length:100%_70%] lg:bg-contain
-              sm:pt-[6rem]
-              md:min-w-[75%] md:px-[6rem] md:py-[10rem] 
-              lg:py-[7rem]
-              xl:py-[6rem] xl:px-[13rem]
+              relative w-[100%] max-w-[1000px] max-h-[95%] px-[2rem] py-[6rem] rounded-[20px] text-center 
+              bg-cover bg-no-repeat 
+              md:px-[4rem] md:py-[14rem] md:bg-contain md:min-h-[750px] 
+              lg:px-[10rem] lg:py-[14rem] lg:bg-contain lg:min-h-[750px]
               ${showBoostsModal ? 'animate-slideInFromBottom' : 'animate-slideOutToBottom'}`}
             style={{
               backgroundImage: `url(/assets/images/recharge_panel.webp)`,
               backgroundPosition: 'center',
             }}
           >
-            <div className="text-left grid w-full gap-1 md:gap-4 mb-8 pt-[6rem] sm:pt-8">
+            <div className="text-left grid w-full gap-1
+              sm:pt-[2rem]
+              md:gap-4 mb-8
+              lg:gap-4 lg-8">
               <button
                 className="w-[4rem] text-[#80E8FF] font-outfit font-semibold hover:brightness-75"
                 type="button"
@@ -266,7 +268,7 @@ function EarnGuide({ openModal, setOpenModal, setIsOneTimeTaskOpen }) {
                   </svg>
                 </div>
               ) : (
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-5">
                   <button
                     onClick={handleChargeEnergy}
                     disabled={rechargeLoading}
