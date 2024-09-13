@@ -138,28 +138,32 @@ const TaskList = ({ setIsOneTimeTaskOpen }) => {
     >
       <div
         className={`
-              relative min-w-full min-h-[75%] max-w-[1200px] px-[2rem] py-[2rem] rounded-[20px] text-center bg-cover bg-no-repeat md:bg-[length:100%_70%] lg:bg-contain
-              sm:pt-[6rem]
-              md:min-w-[75%] md:px-[6rem] md:py-[10rem] 
-              lg:py-[7rem]
-              xl:py-[6rem] xl:px-[13rem]
+              relative w-[100%] max-w-[1000px] max-h-[95%] px-[2rem] py-[6rem] rounded-[20px] text-center 
+              bg-cover bg-no-repeat 
+              md:px-[4rem] md:py-[14rem] md:bg-contain md:min-h-[750px] 
+              lg:px-[10rem] lg:py-[14rem] lg:bg-contain lg:min-h-[750px]
               ${showTaskModal ? 'animate-slideInFromBottom' : 'animate-slideOutToBottom'}`}
         style={{
           backgroundImage: `url(/assets/images/task_panel.webp)`,
           backgroundPosition: "center",
         }}
       >
-        <div className="text-left grid w-full gap-1 md:gap-4 mb-8 pt-[6rem] sm:pt-8">
+        <div className="text-left grid w-full gap-1 pt-[1rem]
+          sm:pt-0
+          md:gap-4
+          lg:pt-0">
           <button
-            className="w-[4rem] text-[#80E8FF] font-outfit font-semibold hover:brightness-75 ml-6"
+            className="w-[4rem] text-[#80E8FF] font-outfit font-semibold hover:brightness-75"
             type="button"
             onClick={handleCloseModal}
           >
             &lt; &nbsp; Back
           </button>
 
-          <h3 className="text-[1.5rem] lg:text-[2rem] text-[#FFAA00] pl-6">Complete missions to earn free coins</h3>
-          <div className="max-h-[500px] md:max-h-[280px] lg:max-h-[300px] xl:max-h-[350px] grid grid-cols-1 gap-3 py-2 pl-6 pr-8 overflow-y-auto custom-scrollbar">
+          <h3 className="text-[1.5rem] lg:text-[2rem] text-[#FFAA00]">Complete missions to earn free coins</h3>
+          <div className="max-h-[320px] grid grid-cols-1 gap-3 pr-4 overflow-y-auto custom-scrollbar
+            md:max-h-[200px] 
+            lg:max-h-[260px]">
             {renderOneTimeTaskList}
           </div>
         </div>
