@@ -25,6 +25,7 @@ const ClickerController = ({ Children }) => {
     onSelectWallet() {},
   });
   const { visible: isModalVisible, setVisible: setModalVisible } = useWalletModal();
+  const [isPhantomInstalled] = useState(window.phantom?.solana?.isPhantom);
   const userLastPeriodicBatchTimeLoading = useUserLastPeriodicBatchTimeLoading();
   const lastPeriodicBatchTime = useUserLastPeriodicBatchTime();
   const [currentPeriodicBatchTime, setCurrentPeriodicBatchTime] = useState(null);
@@ -59,11 +60,8 @@ const ClickerController = ({ Children }) => {
       return;
     }
 
-    // skip enhforcing wallet binding if is mobile
-    if (
-      /android|iPad|iPhone|iPod/i.test(navigator.userAgent) ||
-      (navigator.userAgent.includes('Mac') && 'ontouchend' in document)
-    ) {
+    // skip enhforcing wallet binding if no access to phantom
+    if (!isPhantomInstalled) {
       return;
     }
 

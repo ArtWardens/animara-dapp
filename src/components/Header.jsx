@@ -79,12 +79,19 @@ function Header() {
   };
 
   const getProfilePic = useCallback(() => {
-    // default placeholder image
+    // use placeholder image if user not loaded yet
     if (!currentUser) {
       return '/assets/images/activeDog.webp';
     }
 
+    // get user profile picture
     let photoUrl = currentUser.photoUrl;
+
+    // returns placeholder if profile picture is not set yet
+    if (photoUrl === ''){
+      photoUrl = '/assets/images/activeDog.webp';
+    }
+
     // process google user content
     if (photoUrl.indexOf('googleusercontent.com') !== -1) {
       photoUrl = `${photoUrl}?alt=media`;
@@ -110,7 +117,7 @@ function Header() {
       >
         {/* profile picture */}
         <div className="p-1 w-20 h-20 relative">
-          <button onClick={handleEditProfile} className="group relative bg-transparent">
+          <button onClick={handleEditProfile} className="group relative ">
             {loadingImage && (
               <div className="h-18 flex justify-center items-center">
                 <MoonLoader color={'#FFB23F'} />
@@ -119,7 +126,7 @@ function Header() {
             <img
               src={getProfilePic()}
               alt="profile"
-              className="justify-self-center rounded-full w-24  group-hover:brightness-[0.55] transition-all duration-300"
+              className="justify-self-center rounded-full w-24 group-hover:brightness-[0.55] transition-all duration-300"
               style={{
                 border: '4px solid var(--80E8FF, #80E8FF)',
                 background: '#111928 50%',
@@ -209,7 +216,7 @@ function Header() {
         ))}
 
         <button
-          className="transition ease-in-out p-2 hover:scale-105 bg-transparent"
+          className="transition ease-in-out p-2 hover:scale-105 "
           onMouseEnter={handleMouseEnterLogout}
           onMouseLeave={handleMouseLeaveLogout}
           onClick={handleLogout}
@@ -275,7 +282,7 @@ function Header() {
             </div>
 
             <div
-              className="w-full h-full text-center scale-125 p-[5rem] -z-50"
+              className="w-full h-full text-center scale-125 p-[4rem] xs:p-[5rem] -z-50"
               style={{
                 backgroundImage: 'url("/assets/images/clicker-character/sticky-Note.webp")',
                 backgroundSize: 'contain',
@@ -292,7 +299,7 @@ function Header() {
               <img
                 src={getProfilePic()}
                 alt="profile"
-                className="items-center rounded-full w-32 mx-auto mb-4"
+                className="items-center rounded-full w-24 xs:w-32 mx-auto mb-2 xs:mb-4"
                 style={{
                   border: '4px solid var(--80E8FF, #80E8FF)',
                   background: '#111928 50%',
@@ -324,7 +331,7 @@ function Header() {
             </div>
 
             <div
-              className={`mt-[4rem] mb-16 z-60
+              className={`mt-[4rem] z-60
               ${window.innerHeight < 768 ? 'space-y-2' : 'space-y-4'}  
             `}
             >
@@ -344,16 +351,20 @@ function Header() {
                   />
                 </div>
               ))}
+            </div>
+
+            {/* Logout button */}
+            <div className='pt-4'>
               <button
-                className="transition ease-in-out hover:scale-105 flex items-center"
-                onMouseEnter={handleMouseEnterLogout}
-                onMouseLeave={handleMouseLeaveLogout}
-                onClick={handleLogout}
-                ref={trigger}
-              >
-                <img src={imageSrcLogout} className="h-12 w-12" alt="logout" />
-                <span className="ml-2 text-4xl text-[#ff647a] capitalize leading-9">LOGOUT</span>
-              </button>
+                  className="transition ease-in-out hover:scale-105 flex items-center"
+                  onMouseEnter={handleMouseEnterLogout}
+                  onMouseLeave={handleMouseLeaveLogout}
+                  onClick={handleLogout}
+                  ref={trigger}
+                >
+                  <img src={imageSrcLogout} className="h-12 w-12" alt="logout" />
+                  <span className="ml-2 text-4xl text-[#ff647a] capitalize leading-9">LOGOUT</span>
+                </button>
             </div>
           </div>
         </div>
