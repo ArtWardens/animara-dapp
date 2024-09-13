@@ -18,6 +18,9 @@ const userInitialState = {
   getLeaderBoardLoading: false,
   getLeaderBoardSuccess: false,
   leaderBoard: [],
+  getNewLeaderBoardLoading: false,
+  getNewLeaderBoardSuccess: false,
+  newLeaderBoard: null,
   updatePopupSuccess: false,
   isAuthenticated: false,
   isOpenDailyPopup: false,
@@ -242,6 +245,20 @@ export const userSlice = createSlice({
       state.getLeaderBoardLoading = false;
       state.error = payload;
       state.getLeaderBoardSuccess = true;
+    },
+    getNewLeaderBoard: (state, { payload }) => {
+      state.getNewLeaderBoardLoading = true;
+      state.getNewLeaderBoardSuccess = false;
+    },
+    getNewLeaderBoardSuccess: (state, { payload }) => {
+      state.getNewLeaderBoardLoading = false;
+      state.newLeaderBoard = payload.leaderboardData;
+      state.getNewLeaderBoardSuccess = true;
+    },
+    getNewLeaderBoardError: (state, { payload }) => {
+      state.getNewLeaderBoardLoading = false;
+      state.error = payload;
+      state.getNewLeaderBoardSuccess = true;
     },
     getOneTimeTaskList: (state, { payload }) => {
       state.getOneTimeTaskListLoading = true;
@@ -552,6 +569,9 @@ export const {
   getLeaderBoard,
   getLeaderBoardSuccess,
   getLeaderBoardError,
+  getNewLeaderBoard,
+  getNewLeaderBoardSuccess,
+  getNewLeaderBoardError,
   getOneTimeTaskList,
   getOneTimeTaskListSuccess,
   getOneTimeTaskListError,
@@ -616,6 +636,9 @@ export const useUserDetailsLoading = () => useAppSelector((state) => state.user.
 export const useLeaderBoardDetails = () => useAppSelector((state) => state.user.leaderBoard);
 export const useLeaderBoardLoading = () => useAppSelector((state) => state.user.getLeaderBoardLoading);
 export const useLeaderBoardLoadSuccess = () => useAppSelector((state) => state.user.getLeaderBoardSuccess);
+export const useNewLeaderBoardDetails = () => useAppSelector((state) => state.user.newLeaderBoard);
+export const useNewLeaderBoardLoading = () => useAppSelector((state) => state.user.getNewLeaderBoardLoading);
+export const useNewLeaderBoardLoadSuccess = () => useAppSelector((state) => state.user.getNewLeaderBoardSuccess);
 export const useIsOpenDailyPopup = () => useAppSelector((state) => state.user.isOpenDailyPopup);
 export const useDailyLoginLoading = () => useAppSelector((state) => state.user.updatePopupLoading);
 export const useOneTimeTaskList = () => useAppSelector((state) => state.user.oneTimeTaskList);

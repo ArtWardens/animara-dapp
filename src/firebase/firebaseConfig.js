@@ -49,6 +49,7 @@ const bindWallet = httpsCallable(functions, "bindWallet");
 const unbindWallet = httpsCallable(functions, "unbindWallet");
 const registerNFT = httpsCallable(functions, "registerNFT");
 const checkUserLastPeriodicBatchTime = httpsCallable(functions, "checkUserLastPeriodicBatchTime");
+const getNewLeaderBoard = httpsCallable(functions, "getLeaderboard");
 
 export {
   auth,
@@ -71,4 +72,5 @@ export {
   unbindWallet,
   registerNFT,
   checkUserLastPeriodicBatchTime,
+  getNewLeaderBoard,
 };

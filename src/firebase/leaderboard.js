@@ -1,4 +1,4 @@
-import { db } from "./firebaseConfig";
+import { db, getNewLeaderBoard } from "./firebaseConfig";
 import { query, orderBy, limit, collection, getDocs } from "firebase/firestore";
 
 const handleGetLeaderboard = async (date) => {
@@ -16,6 +16,16 @@ const handleGetLeaderboard = async (date) => {
     }
 };
 
+const getLeaderboardImpl = async () => {
+    try {
+        const { data } = await getNewLeaderBoard();
+        return data;
+      } catch (error) {
+        console.log('Error checking leaderboard details: ', error);
+      }
+};
+
 export {
     handleGetLeaderboard,
+    getLeaderboardImpl,
 };

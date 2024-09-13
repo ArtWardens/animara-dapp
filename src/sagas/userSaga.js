@@ -19,7 +19,7 @@ import {
   getReferralStatsImpl,
   registerNFTImpl,
 } from "../firebase/user";
-import { handleGetLeaderboard } from "../firebase/leaderboard";
+import { handleGetLeaderboard, getLeaderboardImpl } from "../firebase/leaderboard";
 import {
   handleGetOneTimeTaskList,
   handleCompletedOneTimeTask,
@@ -45,6 +45,9 @@ import {
   getLeaderBoard,
   getLeaderBoardError,
   getLeaderBoardSuccess,
+  getNewLeaderBoard,
+  getNewLeaderBoardError,
+  getNewLeaderBoardSuccess,
   getOneTimeTaskList,
   getOneTimeTaskListError,
   getOneTimeTaskListSuccess,
@@ -328,6 +331,18 @@ export function* updateDailyLoginSaga() {
   }
 }
 
+export function* getNewLeaderBoardSaga() {
+  try {
+    const leaderboardData = yield call(getLeaderboardImpl);
+    yield put(getNewLeaderBoardSuccess(leaderboardData));
+    return leaderboardData;
+  } catch (error) {
+    yield put(getNewLeaderBoardError(error));
+    toast.error("Failed to retrieve leaderboard. Please try again. ");
+  }
+}
+
+// OLD LEADERBOARD BACKUP
 export function* getLeaderBoardSaga(action) {
   const cooldownEndTime = getCooldownTime();
   if (calculateCountdownRemaining(cooldownEndTime) !== 0) {
@@ -597,6 +612,7 @@ export function* userSagaWatcher() {
   yield takeLatest(logOut.type, logOutSaga);
   yield takeLatest(updateDailyLogin.type, updateDailyLoginSaga);
   yield takeLatest(getLeaderBoard.type, getLeaderBoardSaga);
+  yield takeLatest(getNewLeaderBoard.type, getNewLeaderBoardSaga);
   yield takeLatest(closeDailyPopup.type, closeDailyPopupSaga);
   yield takeLatest(getOneTimeTaskList.type, getOneTimeTaskListSaga);
   yield takeLatest(getEarlyBirdOneTimeTaskList.type, getEarlyBirdOneTimeTaskListSaga);

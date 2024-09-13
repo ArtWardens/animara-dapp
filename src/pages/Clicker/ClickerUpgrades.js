@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import PropTypes from "prop-types";
 import { useAppDispatch } from "../../hooks/storeHooks.js";
-import { useUserLocation, useUserLocationLoading, getUserLocations, useDailyComboMatched, useUserDetails } from "../../sagaStore/slices";
+import { useUserLocation, useUserLocationLoading, getUserLocations, useDailyComboMatched, useUserDetails, useNewLeaderBoardDetails, getNewLeaderBoard, useNewLeaderBoardLoading } from "../../sagaStore/slices";
 import UpgradeDetailsModal from "./UpgradeDetailsModal";
 import { PropagateLoader } from "react-spinners";
 import LeaderBoardModal from "../../components/LeaderBoardModal";
@@ -56,6 +56,9 @@ const ClickerUpgrades = ({ onClose }) => {
   const currentUser = useUserDetails();
   const dailyComboMatched = useDailyComboMatched();
 
+  const leaderboard = useNewLeaderBoardDetails();
+  const leaderboardLoading = useNewLeaderBoardLoading();
+
   useEffect(() => {
     if (!userLocations && !userLocationLoading) {
       dispatch(getUserLocations());
@@ -72,9 +75,15 @@ const ClickerUpgrades = ({ onClose }) => {
 
   }, [userLocations]);
 
-  // const handleLeaderboardClick = () => {
-  //   setIsLeaderboardOpen(true);
-  // };
+  const handleLeaderboardClick = () => {
+    // setIsLeaderboardOpen(true);
+    dispatch(getNewLeaderBoard());
+  };
+
+  useEffect(() => {
+    if (leaderboardLoading) return;
+    console.log("leaderBoard: ", leaderboard);
+  }, [leaderboardLoading, leaderboard])
 
   const handleCloseLeaderboard = () => {
     setIsLeaderboardOpen(false);
@@ -152,7 +161,7 @@ const ClickerUpgrades = ({ onClose }) => {
               <div className="xl:w-[30%] flex justify-end">
                 <button
                   className="hidden xl:flex items-center bg-[#49DEFF] rounded-full shadow-md text-white text-xl font-outfit font-bold tracking-wider p-[1.5rem] py-[1rem]"
-                  // onClick={handleLeaderboardClick}
+                  onClick={handleLeaderboardClick}
                 >
                   <img
                     src="/assets/images/clicker-character/trophy.webp"
