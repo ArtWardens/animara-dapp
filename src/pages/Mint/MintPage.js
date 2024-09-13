@@ -673,7 +673,7 @@ function MintPage() {
 
           {/* Desktop View */}
           <div
-            className={`xl:w-[60%] hidden xl:absolute rounded-3xl p-3 transition-all duration-500
+            className={`xl:w-[60%] hidden xl:block rounded-3xl p-3 transition-all duration-500
               ${slideMintPanel ? `translate-x-0 opacity-100` : `translate-x-60 opacity-0`}`}
             style={{
               border: "2px solid var(--Color, #F4FBFF)",
@@ -949,7 +949,7 @@ function MintPage() {
 
 
               {/* Fade Out Overlay */}
-              <div className={`bg-white absolute z-[101] inset-0 w-screen h-screen pointer-events-none transition-all duration-500 ${mintFadeOut ? `opacity-0` : `opacity-100`}`}></div>
+              <div className={`bg-white absolute z-[101] inset-0 w-screen h-screen pointer-events-none transition-all duration-500 ${!mintFadeOut ? `opacity-0` : `opacity-100`}`}></div>
             </div>
 
           )}
