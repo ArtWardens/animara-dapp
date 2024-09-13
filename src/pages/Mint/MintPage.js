@@ -686,17 +686,17 @@ function MintPage() {
             {/* Mint Panel background */}
             <div className="absolute flex w-full justify-between -top-8">
               <img
-                src={"/assets/images/clicker-character/ring01.webp hidden lg:block"}
+                src={"/assets/images/clicker-character/ring01.webp"}
                 alt="ring"
                 className="object-cover w-11 absolute left-2"
               />
               <img
-                src={"/assets/images/clicker-character/ring01.webp hidden lg:block"}
+                src={"/assets/images/clicker-character/ring01.webp"}
                 alt="ring"
                 className="object-cover w-11 opacity-0"
               />
               <img
-                src={"/assets/images/clicker-character/ring02.webp hidden lg:block"}
+                src={"/assets/images/clicker-character/ring02.webp"}
                 alt="ring"
                 className="object-cover w-11 absolute right-8"
               />
@@ -949,7 +949,7 @@ function MintPage() {
 
 
               {/* Fade Out Overlay */}
-              <div className={`bg-white absolute z-[101] inset-0 w-screen h-screen pointer-events-none transition-all duration-500 ${mintFadeOut ? `opacity-0` : `opacity-100`}`}></div>
+              <div className={`bg-white absolute z-[101] inset-0 w-screen h-screen pointer-events-none transition-all duration-500 ${!mintFadeOut ? `opacity-0` : `opacity-100`}`}></div>
             </div>
 
           )}
