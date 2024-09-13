@@ -65,7 +65,7 @@ function ReferralPage (){
       alt: "NFT Cashback",
       title: "NFT Cashback",
       description:
-        "Accumulate USDT rewards when anyone you invite purchases a piece of our NFT! Maybe you can snatch one for yourself too if you invite enough people...",
+        "Accumulate USDC rewards when anyone you invite purchases a piece of our NFT! Maybe you can snatch one for yourself too if you invite enough people...",
     },
     {
       image: "/assets/images/clicker-character/ref03.webp",
@@ -246,7 +246,7 @@ function ReferralPage (){
                   NFT Cashback
                 </div>
                 <div className="w-full origin-top-left text-center text-stone-300 font-outfit text-[12px] leading-tight tracking-wide">
-                  Accumulate USDT rewards when anyone you invite purchases a piece of our NFT! Maybe you can snatch one for yourself too if you invite enough people...
+                  Accumulate USDC rewards when anyone you invite purchases a piece of our NFT! Maybe you can snatch one for yourself too if you invite enough people...
                 </div>
               </div>
             </div>

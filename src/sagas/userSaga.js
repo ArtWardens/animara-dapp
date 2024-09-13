@@ -260,9 +260,7 @@ export function* loginWithTelegramSaga(telegramUser) {
 
 export function* checkLoginWithRedirectSaga() {
   try {
-    console.log(`checkLoginWithRedirectSaga`);
     const IsLoggedIn = yield call(checkLoginWithRedirectImpl);
-    console.log(`IsLoggedIn ${IsLoggedIn}`);
     if (IsLoggedIn){
       yield put(checkLoginWithRedirectSuccess());
     }else{

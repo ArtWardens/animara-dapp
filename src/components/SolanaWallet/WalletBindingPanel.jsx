@@ -156,11 +156,11 @@ const WalletBindingPanel = () => {
               )}
             </div>
           ) : (
-            <span className="text-sm xl:text-base">This account is NOT bound to any wallet</span>
+            <span className="text-sm xl:text-base">This account is NOT bound to any wallet yet</span>
           )}
 
           <div className="flex w-full h-auto items-center justify-center mt-4">
-            {user?.walletAddr === `${publicKey}` ? (
+            {(publicKey && user?.walletAddr === `${publicKey}`) || (!publicKey && user?.walletAddr) ? (
               bindingWallet || disconnectingWallet ? (
                 <MoonLoader color={'#FFB23F'} size={40} />
               ) : (
@@ -267,7 +267,7 @@ const WalletBindingPanel = () => {
               )}
             </div>
           ) : (
-            <span className="w-[50%] text-sm xl:text-base">This account is NOT bound to any wallet</span>
+            <span className="w-[50%] text-sm xl:text-base">This account is NOT bound to any wallet yet</span>
           )}
 
           <div className="flex w-full h-auto items-center justify-center mt-2 xl:mt-4">
@@ -277,7 +277,7 @@ const WalletBindingPanel = () => {
               ) : (
                 <button
                   disabled={bindingWallet}
-                  className="bg-[#8f8f8f] rounded-3xl px-[2rem] py-[1rem] hover:scale-110 transition-all duration-300"
+                  className="bg-red-400 rounded-3xl px-[2rem] py-[1rem] hover:scale-110 transition-all duration-300"
                   onClick={handleDisbindWallet}
                 >
                   Disconnect

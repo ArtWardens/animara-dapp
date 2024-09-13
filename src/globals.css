@@ -3,6 +3,12 @@
 @tailwind components;
 @tailwind utilities;
 
+@supports (-webkit-touch-callout: none) {
+  .safari-hidden {
+    display: none !important; /* Force hide */
+  }
+}
+
 @font-face {
   font-family: "LuckiestGuy";
   src: url("/public/fonts/luckiestguy/LuckiestGuy-Regular.ttf")
@@ -92,13 +98,16 @@
   }
 
   body, a, button {
-    @apply bg-background text-foreground;
+    @apply text-foreground;
     cursor: url('../public/assets/icons/cursor_01.svg') 6 12, auto !important;
-    text-decoration: none;
   }
 
-  body, a, button:active {
-    cursor: url('../public/assets/icons/cursor_07.svg') 6 12, auto !important;
+  a:hover, a:focus, button:hover, button:focus {
+    cursor: url('../public/assets/icons/cursor_01.svg') 6 12, auto !important; /* Maintain default cursor */
+  }
+  
+  a:active, button:active {
+    cursor: url('../public/assets/icons/cursor_07.svg') 6 12, auto !important; /* Change cursor on active click */
   }
 
   .gradient-blue-transparent-fuschia-bottomRight {
