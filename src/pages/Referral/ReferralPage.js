@@ -170,16 +170,15 @@ function ReferralPage (){
     if (!currentUser){ return `none`; }
     
     if (basicClaimable === 0 || nftClaimable === 0){ return `none`; }
-    console.log(`basicClaimable ${basicClaimable}`);
-    console.log(`nftClaimable ${nftClaimable}`);
+
     // selectively combine both claimable amt based on if use owns nft
-    return `${currentUser.ownsNFT? basicClaimable + nftClaimable : basicClaimable} SOL`;
+    return `${currentUser.ownsNFT ? (basicClaimable + nftClaimable).toFixed(4) : basicClaimable.toFixed(4)} SOL`;
   },[currentUser, basicClaimable, nftClaimable]);
 
   const getAdditionalClaimable = useCallback(()=>{
     if (!nftClaimable){ return `0 SOL`; }
     // selectively combine both claimable amt based on if use owns nft
-    return `${nftClaimable} SOL`;
+    return `${nftClaimable.toFixed(4)} SOL`;
   },[nftClaimable]);
 
   return (
