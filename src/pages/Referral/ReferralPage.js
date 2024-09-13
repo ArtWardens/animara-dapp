@@ -167,7 +167,11 @@ function ReferralPage (){
   };
 
   const getTotalClaimable = useCallback(()=>{
-    if (!currentUser){ return `None`; }
+    if (!currentUser){ return `none`; }
+    
+    if (basicClaimable === 0 || nftClaimable === 0){ return `none`; }
+    console.log(`basicClaimable ${basicClaimable}`);
+    console.log(`nftClaimable ${nftClaimable}`);
     // selectively combine both claimable amt based on if use owns nft
     return `${currentUser.ownsNFT? basicClaimable + nftClaimable : basicClaimable} SOL`;
   },[currentUser, basicClaimable, nftClaimable]);
@@ -419,7 +423,7 @@ function ReferralPage (){
                       backgroundRepeat: 'no-repeat',
                     }}
                   >
-                    {(getTotalClaimable() <= `0 sol`) ?
+                    {(getTotalClaimable() === `none`) ?
                       <div className="w-full h-full flex-col place-content-center gap-4 inline-flex">
                         <span className="text-center w-full">Nothing to claim yet</span>
                         <span className="text-center w-full text-xs font-outfit">Get your referrals to mint an NFT now!</span>
@@ -639,8 +643,8 @@ function ReferralPage (){
                       backgroundRepeat: 'no-repeat',
                     }}
                   >
-                    {(getTotalClaimable() >= `0 sol`) ?
-                      <div className="w-full h-full flex-col place-content-center gap-4 inline-flex p-[6rem] sm:p-[6.5rem]">
+                    {(getTotalClaimable() === `none`) ?
+                      <div className="w-full h-full flex-col place-content-center gap-4 inline-flex xs:px-[6rem] py-[6rem] sm:py-[6.5rem]">
                         <span className="text-center w-full">Nothing to claim yet</span>
                         <span className="text-center w-full text-xs font-outfit">Get your referrals to mint an NFT now!</span>
                       </div>
