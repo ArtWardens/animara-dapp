@@ -673,7 +673,7 @@ function MintPage() {
 
           {/* Desktop View */}
           <div
-            className={`xl:w-[60%] hidden xl:block rounded-3xl p-3 transition-all duration-500
+            className={`xl:w-[60%] hidden xl:absolute rounded-3xl p-3 transition-all duration-500
               ${slideMintPanel ? `translate-x-0 opacity-100` : `translate-x-60 opacity-0`}`}
             style={{
               border: "2px solid var(--Color, #F4FBFF)",
@@ -686,17 +686,17 @@ function MintPage() {
             {/* Mint Panel background */}
             <div className="absolute flex w-full justify-between -top-8">
               <img
-                src={"/assets/images/clicker-character/ring01.webp hidden lg:block"}
+                src={"/assets/images/clicker-character/ring01.webp"}
                 alt="ring"
                 className="object-cover w-11 absolute left-2"
               />
               <img
-                src={"/assets/images/clicker-character/ring01.webp hidden lg:block"}
+                src={"/assets/images/clicker-character/ring01.webp"}
                 alt="ring"
                 className="object-cover w-11 opacity-0"
               />
               <img
-                src={"/assets/images/clicker-character/ring02.webp hidden lg:block"}
+                src={"/assets/images/clicker-character/ring02.webp"}
                 alt="ring"
                 className="object-cover w-11 absolute right-8"
               />
