@@ -125,11 +125,11 @@ const ClickerUpgrades = ({ onClose }) => {
             backgroundRepeat: "no-repeat",
           }}
         >
-          <div className="absolute top-0 flex items-center justify-center px-[4rem] pointer-events-none">
+          <div className="absolute w-full top-0 flex items-center justify-center px-[4rem] pointer-events-none">
               <img
                 src={"/assets/images/clicker-character/explore-animara.webp"}
                 alt="explore-animara"
-                className="w-[100%] xl:w-[50%] mt-[-1rem] xl:mt-[-2rem] overflow-visible"
+                className="w-[100%] xl:w-[50%] xs:mt-[-1rem] xl:mt-[-2rem] overflow-visible"
               />
           </div>
 
@@ -261,7 +261,7 @@ const ClickerUpgrades = ({ onClose }) => {
                             return (
                               <div
                                 key={index}
-                                className={`w-[350px] rounded-[36px] text-white flex flex-col items-center justify-center transition-all duration-200 hover:scale-105 ${
+                                className={`w-[300px] xs:w-[350px] rounded-[36px] text-white flex flex-col items-center justify-center transition-all duration-200 hover:scale-105 ${
                                   location.level === -1 ? "" : ""
                                 }`}
                                 style={{
