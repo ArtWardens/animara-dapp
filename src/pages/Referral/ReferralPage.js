@@ -161,10 +161,10 @@ function ReferralPage (){
     }
   };
 
-  const copyInviteCode = () => {
-    navigator.clipboard.writeText(getInviteLink());
+  const copyInviteCode = useCallback(() => {
+    navigator.clipboard.writeText(currentUser?.referralCode ? currentUser.referralCode : '');
     toast.success('Invite code copied to clipboard!');
-  };
+  },[currentUser]);
 
   const getTotalClaimable = useCallback(()=>{
     if (!currentUser){ return `none`; }
