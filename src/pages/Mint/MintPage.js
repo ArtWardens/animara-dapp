@@ -313,6 +313,14 @@ function MintPage() {
     }
   }, [ghostExcited, isMobileApp]);
 
+  const openPhantom = () =>{
+    // Get the current URL
+    const currentUrl = encodeURIComponent(window.location.href);
+    
+    // tries to open phantom wallet's in-app browser
+    window.location.href = `https://phantom.app/ul/browse/${currentUrl}?ref=`;
+  }
+
   return (
     <>
       <Header />
@@ -398,12 +406,12 @@ function MintPage() {
                   <h3 className="w-full text-2xl text-white text-wrap ">STEP 2</h3>
                 </div>
                 <p
-                  className="leading-normal tracking-normal text-white font-outfit"
+                  className="leading-normal tracking-normal text-white font-outfit text-justify"
                   style={{
                     fontSize: "14px",
                   }}
                 >
-                  Unlocks more locations to explore for more Explora Points!
+                  Unlocks more locations to explore for more about Explora Points!
                 </p>
               </div>
             </div>
@@ -422,7 +430,7 @@ function MintPage() {
                   <h3 className="w-full text-2xl text-white text-wrap ">STEP 3</h3>
                 </div>
                 <p
-                  className="leading-normal tracking-normal text-white font-outfit"
+                  className="leading-normal tracking-normal text-white font-outfit text-justify"
                   style={{
                     fontSize: "14px",
                   }}
@@ -469,7 +477,7 @@ function MintPage() {
               }}
             >
               {/* mint card background */}
-              <div className="absolute flex w-full justify-between -top-8">
+              <div className="absolute flex w-full justify-between -top-8 safari-hidden">
                 <img
                   src={"/assets/images/clicker-character/ring01.webp"}
                   alt="ring"
@@ -586,9 +594,13 @@ function MintPage() {
                     onMouseEnter={() => isAllowed ? setGhostExcited(true) : setGhostExcited(false)}
                     onMouseLeave={() => !mintingNFT ? setGhostExcited(false) : setGhostExcited(true)}>
                   {!isPhantomInstalled ? 
-                    <span className='h-20 m-auto text-red-300 text-xl lg:text-3xl'>
-                      {`Open our dapp in Phantom Wallet's in-app browers to mint`}    
-                    </span>
+                    <button
+                      className="h-[80px] w-[250px] m-auto bg-[#FFDC62] border-[#E59E69] rounded-full border justify-center items-center inline-flex shadow-[0px_4px_4px_0px_#FFFBEF_inset,0px_-4px_4px_0px_rgba(255,249,228,0.48),0px_5px_4px_0px_rgba(232,140,72,0.48)]"
+                      onClick={openPhantom}>
+                      <span className=' text-white text-center text-xl lg:text-3xl font-normal'>
+                        {`Open in Phantom Wallet`}    
+                      </span>
+                    </button>
                   : 
                     loadingCandyMachine ? 
                       <span className='h-20 m-auto text-amber-300 text-xl lg:text-3xl animate-pulse'>
@@ -631,7 +643,7 @@ function MintPage() {
                 {/* Web3 links */}
                 <div className="flex">
                   <a
-                    className="text-amber-500 transition-all duration-300 hover:scale-105 hover:font-bold hover:text-amber-400 bg-transparent mb-2"
+                    className="text-amber-500 transition-all duration-300 hover:scale-105 hover:font-bold hover:text-amber-400  mb-2"
                     href="https://solscan.io/"
                     target="_blank"
                     rel="noopener noreferrer"
@@ -642,7 +654,7 @@ function MintPage() {
                   <span className="text-white">&nbsp;&nbsp;|&nbsp;&nbsp;</span>
 
                   <a
-                    className="text-amber-500 transition-all duration-300 hover:scale-105 hover:font-bold hover:text-amber-400 bg-transparent mb-2"
+                    className="text-amber-500 transition-all duration-300 hover:scale-105 hover:font-bold hover:text-amber-400  mb-2"
                     href="https://wallet.magiceden.io/"
                     target="_blank"
                     rel="noopener noreferrer"
@@ -674,17 +686,17 @@ function MintPage() {
             {/* Mint Panel background */}
             <div className="absolute flex w-full justify-between -top-8">
               <img
-                src={"/assets/images/clicker-character/ring01.webp"}
+                src={"/assets/images/clicker-character/ring01.webp hidden lg:block"}
                 alt="ring"
                 className="object-cover w-11 absolute left-2"
               />
               <img
-                src={"/assets/images/clicker-character/ring01.webp"}
+                src={"/assets/images/clicker-character/ring01.webp hidden lg:block"}
                 alt="ring"
                 className="object-cover w-11 opacity-0"
               />
               <img
-                src={"/assets/images/clicker-character/ring02.webp"}
+                src={"/assets/images/clicker-character/ring02.webp hidden lg:block"}
                 alt="ring"
                 className="object-cover w-11 absolute right-8"
               />
@@ -790,9 +802,13 @@ function MintPage() {
                 onMouseLeave={() => !mintingNFT ? setGhostExcited(false) : setGhostExcited(true)}
               >
                 {!isPhantomInstalled ? 
-                  <span className='h-20 m-auto text-red-300 text-xl lg:text-3xl'>
-                    {`Open our dapp in Phantom Wallet's in-app browers to mint`}    
-                  </span>
+                  <button
+                    className="h-[80px] w-[250px] m-auto"
+                    onClick={openPhantom}>
+                    <span className=' text-red-300 text-center text-xl lg:text-3xl'>
+                      {`Open Phantom Wallet`}    
+                    </span>
+                  </button>
                   :
                   loadingCandyMachine ?
                     <span className='h-20 m-auto text-amber-300 text-xl lg:text-3xl animate-pulse'>
@@ -892,7 +908,7 @@ function MintPage() {
           )}
 
           {isVideoEnded && (
-            <div className="fixed inset-0 bg-transparent backdrop-blur-xl rounded-xl flex justify-center items-center z-[200] overflow-hidden">
+            <div className="fixed inset-0  backdrop-blur-xl rounded-xl flex justify-center items-center z-[200] overflow-hidden">
               {/* Background Image with spinning animation */}
               <div
                 className={`absolute w-[2000px] h-[2000px] rotate-image`}
@@ -933,7 +949,7 @@ function MintPage() {
 
 
               {/* Fade Out Overlay */}
-              <div className={`bg-white absolute z-[101] inset-0 w-screen h-screen pointer-events-none transition-all duration-500 ${!mintFadeOut ? `opacity-0` : `opacity-100`}`}></div>
+              <div className={`bg-white absolute z-[101] inset-0 w-screen h-screen pointer-events-none transition-all duration-500 ${mintFadeOut ? `opacity-0` : `opacity-100`}`}></div>
             </div>
 
           )}
