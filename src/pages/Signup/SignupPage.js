@@ -326,7 +326,7 @@ const SignupPage = () => {
               onChange={(e) => setAgreeTNC(e.target.checked)}
               className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:accent-[#49DEFF] dark:focus:accent-[#49DEFF] dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
             <label htmlFor="link-checkbox" className="ms-2 text-sm font-outfit text-gray-900 dark:text-gray-300">
-              By signing up, I agree to Animara&#39;s <Link to="/" className="text-[#49DEFF] dark:text-[#49DEFF] hover:underline ">Terms & Condition</Link>
+              By signing up, I agree to Animara&#39;s <a href="https://animara.world/terms-and-conditions" className="text-[#49DEFF] dark:text-[#49DEFF] hover:underline">Terms & Condition</a>
             </label>
           </div>
 
