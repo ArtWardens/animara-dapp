@@ -154,7 +154,7 @@ const tailwinConfig = {
       },
     },
     screens: {
-      'xs': { 'raw': '(min-width: 530px) and (orientation: portrait)' },
+      'xs': { 'raw': '(min-width: 400px) and (orientation: portrait)' },
       'sm': { 'raw': '(min-width: 640px) and (orientation: portrait)' },
       'md': { 'raw': '(min-width: 768px) and (orientation: portrait)' },
       'lg': { 'raw': '(min-width: 1024px) and (orientation: landscape)' },
