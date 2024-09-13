@@ -277,7 +277,7 @@ const EarlyBirdPage = () => {
                                     className="leading-normal font-outfit text-justify text-[9px] lg:text-[9px] 2xl:text-[10px]"
                                 >
                                     Unlock hidden realms, mystery boxes, and more exclusive rewards!<br />
-                                    Compete for your chance to win our 1 million USDT prize!
+                                    Compete for your chance to win our 1 million USDC prize!
                                 </p>
                             </h3>
                             <h3 className="text-xs w-full">
