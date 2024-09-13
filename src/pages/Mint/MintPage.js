@@ -908,7 +908,7 @@ function MintPage() {
           )}
 
           {isVideoEnded && (
-            <div className="fixed inset-0  backdrop-blur-xl rounded-xl flex justify-center items-center z-[200] overflow-hidden">
+            <div className="fixed inset-0 backdrop-blur-xl flex justify-center items-center z-[200] overflow-hidden">
               {/* Background Image with spinning animation */}
               <div
                 className={`absolute w-[2000px] h-[2000px] rotate-image`}
@@ -919,8 +919,7 @@ function MintPage() {
                   backgroundRepeat: "no-repeat",
                 }}
               ></div>
-
-
+          
               {/* Static Content */}
               <div className="relative z-[101] flex flex-col items-center justify-center p-[1rem]">
                 <div className="w-full bg-gradient-to-t from-[#78bff2e1] to-[#7ae0ffe1] flex flex-col items-start p-[1rem] xl:p-[2rem] rounded-xl shadow-lg transition-all duration-300 hover:scale-105">
@@ -928,7 +927,7 @@ function MintPage() {
                     <span className="text-2xl xl:text-4xl text-center font-normal tracking-widest uppercase mb-[1rem] xl:mb-[2rem]">You minted</span>
                   </div>
                   <div className="w-full flex justify-center">
-                    <img
+                    <img 
                       className="w-[20rem] xl:w-[26rem] h-[20rem] xl:h-[26rem] mb-4"
                       src={nftMinted.offChainMetadata.image}
                       alt="NFT Minted"
@@ -947,11 +946,11 @@ function MintPage() {
                 </div>
               </div>
 
-
               {/* Fade Out Overlay */}
-              <div className={`bg-white absolute z-[101] inset-0 w-screen h-screen pointer-events-none transition-all duration-500 ${!mintFadeOut ? `opacity-0` : `opacity-100`}`}></div>
+              <div className={`flex justify-center items-center bg-white absolute z-[101] inset-0 w-screen h-screen pointer-events-none transition-all duration-300 ${mintFadeOut ? `opacity-0` : `opacity-100`}`}>
+                <span className="m-auto text-amber-400 text-5xl text-center animate-pulse">Loading</span>
+              </div>
             </div>
-
           )}
         </div>
         :
