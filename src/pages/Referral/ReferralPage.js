@@ -65,7 +65,7 @@ function ReferralPage (){
       alt: "NFT Cashback",
       title: "NFT Cashback",
       description:
-        "Accumulate USDT rewards when anyone you invite purchases a piece of our NFT! Maybe you can snatch one for yourself too if you invite enough people...",
+        "Accumulate SOL rewards when anyone you invite purchases a piece of our NFT! Maybe you can snatch one for yourself too if you invite enough people...",
     },
     {
       image: "/assets/images/clicker-character/ref03.webp",
@@ -249,7 +249,7 @@ function ReferralPage (){
                   NFT Cashback
                 </div>
                 <div className="w-full origin-top-left text-center text-stone-300 font-outfit text-[12px] leading-tight tracking-wide">
-                  Accumulate USDT rewards when anyone you invite purchases a piece of our NFT! Maybe you can snatch one for yourself too if you invite enough people...
+                  Accumulate SOL rewards when anyone you invite purchases a piece of our NFT! Maybe you can snatch one for yourself too if you invite enough people...
                 </div>
               </div>
             </div>
@@ -431,12 +431,12 @@ function ReferralPage (){
                       <div className="w-full flex-col justify-center items-center gap-3 inline-flex">
                         {/* Claimable Amount */}
                         <div className="flex-col justify-center items-center gap-1 flex">
-                          <div className="text-center text-white text-sm font-normal leading-none tracking-wide">NFT Cashback</div>
+                          <div className="text-center text-sm font-normal leading-none tracking-wide">NFT Cashback</div>
                           <div
-                            className="text-center text-amber-500 text-4xl leading-8 tracking-wide"
+                            className="text-amber-50 text-center text-4xl leading-8 tracking-wide"
                             style={{
                               WebkitTextStrokeWidth: '2px',
-                              WebkitTextStrokeColor: 'var(--Color-11, #FFF)',
+                              WebkitTextStrokeColor: 'var(--Color-11, rgb(180 83 9))',
                               textShadow: '0px 2px 4px rgba(0, 0, 0, 0.25)',
                             }}
                           >
@@ -651,12 +651,12 @@ function ReferralPage (){
                       <div className="w-full flex-col justify-center items-center gap-3 inline-flex p-[3rem]">
                         {/* Claimable Amount */}
                         <div className="flex-col justify-center items-center gap-1 flex">
-                          <div className="text-center text-white text-sm font-normal leading-none tracking-wide">NFT Cashback</div>
+                          <div className="text-center text-sm font-normal leading-none tracking-wide">NFT Cashback</div>
                           <div
-                            className="text-center text-amber-500 text-4xl leading-8 tracking-wide"
+                            className="text-center text-amber-50 text-4xl leading-8 tracking-wide"
                             style={{
                               WebkitTextStrokeWidth: '2px',
-                              WebkitTextStrokeColor: 'var(--Color-11, #FFF)',
+                              WebkitTextStrokeColor: 'var(--Color-11, rgb(180, 83, 9))',
                               textShadow: '0px 2px 4px rgba(0, 0, 0, 0.25)',
                             }}
                           >
