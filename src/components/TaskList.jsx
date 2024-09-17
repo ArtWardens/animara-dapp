@@ -3,6 +3,7 @@ import { PropTypes } from "prop-types";
 import { FaInstagram, FaTwitter, FaTelegramPlane, FaYoutube, FaLink } from 'react-icons/fa';
 import { getOneTimeTaskList, completeOneTimeTask, useOneTimeTaskList, useOneTimeTaskListSuccess, useTaskIdToComplete, useUserDetails } from '../sagaStore/slices';
 import { useAppDispatch } from '../hooks/storeHooks';
+import DynamicNumberDisplay from './DynamicNumberDisplay';
 
 const TaskList = ({ setIsOneTimeTaskOpen }) => {
   const dispatch = useAppDispatch();
@@ -87,9 +88,11 @@ const TaskList = ({ setIsOneTimeTaskOpen }) => {
               <div className="flex items-center ">
                 <div className="flex items-center">
                   <p className="text-[1rem] md:text-lg text-[#C5C5C5] font-outfit">
-                    <span className="relative top-1 inline-flex items-center text-[#FFC85A] text-[1rem] md:text-lg font-LuckiestGuy">
-                      <img src="/assets/images/coin.webp" alt="coin" className="w-5 h-5 mr-2" />
-                      {task.coins} &nbsp;
+                    <span className="relative top-1 inline-flex items-center">
+                      <DynamicNumberDisplay 
+                        number={task.coins} 
+                        spanClassName={"text-[#FFC85A] text-[1rem] md:text-lg font-LuckiestGuy pr-3"}
+                      />
                     </span> 
                     {task.description}
                   </p>
