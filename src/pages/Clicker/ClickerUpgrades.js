@@ -6,6 +6,7 @@ import { useUserLocation, useUserLocationLoading, getUserLocations, useDailyComb
 import UpgradeDetailsModal from "./UpgradeDetailsModal";
 import { PropagateLoader } from "react-spinners";
 import LeaderBoardModal from "../../components/LeaderBoardModal";
+import DynamicNumberDisplay from "../../components/DynamicNumberDisplay";
 
 const ClickerUpgrades = ({ onClose }) => {
   const dispatch = useAppDispatch();
@@ -247,7 +248,7 @@ const ClickerUpgrades = ({ onClose }) => {
                         <img src="/assets/icons/explora-point.webp" alt="profit icon" className="w-10 h-10 mr-2" />
                         <div className="flex flex-col mr-[1rem]">
                           <div className="text-[#00E0FF] text-2xl font-LuckiestGuy font-normal tracking-wider">
-                            {currentUser.profitPerHour}
+                            {currentUser?.profitPerHour || 0}
                           </div>
                           <div className="text-white text-sm font-outfit ml-2">
                             Explora Points
@@ -299,17 +300,14 @@ const ClickerUpgrades = ({ onClose }) => {
                                       Explora Points
                                     </p>
                                     <div className="flex flex-row">
-                                      <img
-                                        src={"/assets/icons/explora-point.webp"}
-                                        alt="icon2"
-                                        className="w-6 h-6 mr-1"
+                                      <DynamicNumberDisplay 
+                                        number={location.level === 0 && location.level !== -1
+                                            ? location.nextLevelExploraPts
+                                            : location.currentExploraPts}
+                                        imgSrc={"/assets/icons/explora-point.webp"}
+                                        imgClassName={"w-6 h-6 mr-1"}
+                                        spanClassName={"text-[#00E0FF]"}
                                       />
-                                      <p className="text-[#00E0FF]">
-                                        +
-                                        {location.level === 0 && location.level !== -1
-                                          ? location.nextLevelExploraPts
-                                          : location.currentExploraPts}
-                                      </p>
                                     </div>
                                   </div>
                                   <div className="w-full border-t-2 border-blue-400 my-[0.5rem]"></div>
@@ -321,18 +319,32 @@ const ClickerUpgrades = ({ onClose }) => {
                                     </p>
                                     {location.level !== -1 && (
                                       <div className="flex flex-row ml-[2rem]">
-                                        <img
-                                          src={
-                                            "/assets/images/clicker-character/icon-2.webp"
-                                          }
-                                          alt="icon2"
-                                          className="w-6 h-6 mr-2"
-                                        />
-                                        <p className="text-[#ffa900]">
-                                          {location.nextLevelUpgradeCost === 0
-                                            ? "Max"
-                                            : location.nextLevelUpgradeCost}
-                                        </p>
+                                        {location.nextLevelUpgradeCost === 0 
+                                          ? (
+                                            <>
+                                              <img
+                                                src={
+                                                  "/assets/images/clicker-character/icon-2.webp"
+                                                }
+                                                alt="icon2"
+                                                className="w-6 h-6 mr-2"
+                                              />
+                                              <p className="text-[#ffa900]">
+                                                Max
+                                              </p>
+                                            </>
+                                          ) 
+                                          : (
+                                            <DynamicNumberDisplay 
+                                                number={location.nextLevelUpgradeCost === 0
+                                                  ? "Max"
+                                                  : location.nextLevelUpgradeCost}
+                                                imgSrc={"assets/images/clicker-character/icon-2.webp"}
+                                                imgClassName={"w-6 h-6 mr-1"}
+                                                spanClassName={"text-[#ffa900]"}
+                                              />
+                                          )
+                                        }
                                       </div>
                                     )}
                                   </div>

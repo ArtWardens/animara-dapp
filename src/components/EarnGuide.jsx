@@ -4,6 +4,7 @@ import { useUserDetails, useLocalStamina, useRechargeLoading, rechargeStamina } 
 import { useAppDispatch } from '../hooks/storeHooks.js';
 import { StaminaRechargeTypeBasic, StaminaRechargeTypeInvite } from '../utils/constants';
 import ReferPopup from './ReferPopup';
+import DynamicNumberDisplay from './DynamicNumberDisplay';
 
 function EarnGuide({ openModal, setOpenModal, setIsOneTimeTaskOpen }) {
   const dispatch = useAppDispatch();
@@ -314,9 +315,11 @@ function EarnGuide({ openModal, setOpenModal, setIsOneTimeTaskOpen }) {
                     <div className="pt-2 w-full text-[1.25rem] md:text-2xl text-left text-[#80E8FF]">
                       Invite Friend
                       <div className="w-full text-[1rem] md:text-lg text-[#C5C5C5] font-outfit">
-                        <span className="relative top-1 inline-flex items-center text-[#FFC85A] text-[1rem] md:text-lg font-LuckiestGuy">
-                          <img src="/assets/images/coin.webp" alt="coin" className="w-5 h-5 mr-2" />
-                          +5000 &nbsp;
+                        <span className="relative top-1 inline-flex items-center">
+                          <DynamicNumberDisplay 
+                            number={5000} 
+                            spanClassName={"text-[#FFC85A] text-[1rem] md:text-lg font-LuckiestGuy pr-3"}
+                          />
                         </span>
                         For You And Your Friend
                       </div>

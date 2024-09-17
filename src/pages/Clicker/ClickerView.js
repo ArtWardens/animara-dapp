@@ -8,6 +8,7 @@ import EarnGuide from '../../components/EarnGuide';
 import EnergyRegeneration from '../../components/EnergyRegeneration';
 import ClickerUpgrades from './ClickerUpgrades';
 import { dailyLoginRewards } from '../../utils/constants';
+import DynamicNumberDisplay from '../../components/DynamicNumberDisplay';
 
 const ClickerView = () => {
   const dispatch = useAppDispatch();
@@ -142,8 +143,13 @@ const ClickerView = () => {
                       >
                         <p className={`flex flex-1 flex-col items-center justify-center text-xs space-y-1 ${isSelected ? 'text-white' : 'text-[#C5C5C5]'}`}>
                           <span className='font-outfit font-normal'>Day {index + 1}</span>
-                          <img className="w-5 h-5" src={isSelected ? 'assets/images/coin.webp' : 'assets/images/coin-disable.webp'} alt="Star" />
-                          <span>{dayReward}</span>
+                          <DynamicNumberDisplay 
+                            number={dayReward}
+                            divClassName={"block"}
+                            imgClassName={"w-5 h-5 m-auto"}
+                            imgSrc={isSelected ? 'assets/images/coin.webp' : 'assets/images/coin-disable.webp'}
+                            spanClassName={isSelected ? 'text-white' : 'text-[#C5C5C5]'}
+                          />
                         </p>
                       </Box>
                     );
