@@ -65,7 +65,7 @@ function ReferralPage (){
       alt: "NFT Cashback",
       title: "NFT Cashback",
       description:
-        "Accumulate USDC rewards when anyone you invite purchases a piece of our NFT! Maybe you can snatch one for yourself too if you invite enough people...",
+        "Accumulate SOL rewards when anyone you invite purchases a piece of our NFT! Maybe you can snatch one for yourself too if you invite enough people...",
     },
     {
       image: "/assets/images/clicker-character/ref03.webp",
@@ -161,21 +161,24 @@ function ReferralPage (){
     }
   };
 
-  const copyInviteCode = () => {
-    navigator.clipboard.writeText(getInviteLink());
+  const copyInviteCode = useCallback(() => {
+    navigator.clipboard.writeText(currentUser?.referralCode ? currentUser.referralCode : '');
     toast.success('Invite code copied to clipboard!');
-  };
+  },[currentUser]);
 
   const getTotalClaimable = useCallback(()=>{
-    if (!currentUser){ return `None`; }
+    if (!currentUser){ return `none`; }
+    
+    if (basicClaimable === 0 || nftClaimable === 0){ return `none`; }
+
     // selectively combine both claimable amt based on if use owns nft
-    return `${currentUser.ownsNFT? basicClaimable + nftClaimable : basicClaimable} SOL`;
+    return `${currentUser.ownsNFT ? (basicClaimable + nftClaimable).toFixed(4) : basicClaimable.toFixed(4)} SOL`;
   },[currentUser, basicClaimable, nftClaimable]);
 
   const getAdditionalClaimable = useCallback(()=>{
     if (!nftClaimable){ return `0 SOL`; }
     // selectively combine both claimable amt based on if use owns nft
-    return `${nftClaimable} SOL`;
+    return `${nftClaimable.toFixed(4)} SOL`;
   },[nftClaimable]);
 
   return (
@@ -246,7 +249,7 @@ function ReferralPage (){
                   NFT Cashback
                 </div>
                 <div className="w-full origin-top-left text-center text-stone-300 font-outfit text-[12px] leading-tight tracking-wide">
-                  Accumulate USDC rewards when anyone you invite purchases a piece of our NFT! Maybe you can snatch one for yourself too if you invite enough people...
+                  Accumulate SOL rewards when anyone you invite purchases a piece of our NFT! Maybe you can snatch one for yourself too if you invite enough people...
                 </div>
               </div>
             </div>
@@ -419,7 +422,7 @@ function ReferralPage (){
                       backgroundRepeat: 'no-repeat',
                     }}
                   >
-                    {(getTotalClaimable() <= `0 sol`) ?
+                    {(getTotalClaimable() === `none`) ?
                       <div className="w-full h-full flex-col place-content-center gap-4 inline-flex">
                         <span className="text-center w-full">Nothing to claim yet</span>
                         <span className="text-center w-full text-xs font-outfit">Get your referrals to mint an NFT now!</span>
@@ -428,12 +431,12 @@ function ReferralPage (){
                       <div className="w-full flex-col justify-center items-center gap-3 inline-flex">
                         {/* Claimable Amount */}
                         <div className="flex-col justify-center items-center gap-1 flex">
-                          <div className="text-center text-white text-sm font-normal leading-none tracking-wide">NFT Cashback</div>
+                          <div className="text-center text-sm font-normal leading-none tracking-wide">NFT Cashback</div>
                           <div
-                            className="text-center text-amber-500 text-4xl leading-8 tracking-wide"
+                            className="text-amber-50 text-center text-4xl leading-8 tracking-wide"
                             style={{
                               WebkitTextStrokeWidth: '2px',
-                              WebkitTextStrokeColor: 'var(--Color-11, #FFF)',
+                              WebkitTextStrokeColor: 'var(--Color-11, rgb(180 83 9))',
                               textShadow: '0px 2px 4px rgba(0, 0, 0, 0.25)',
                             }}
                           >
@@ -639,7 +642,7 @@ function ReferralPage (){
                       backgroundRepeat: 'no-repeat',
                     }}
                   >
-                    {(getTotalClaimable() <= `0 sol`) ?
+                    {(getTotalClaimable() === `none`) ?
                       <div className="w-full h-full flex-col place-content-center gap-4 inline-flex xs:px-[6rem] py-[6rem] sm:py-[6.5rem]">
                         <span className="text-center w-full">Nothing to claim yet</span>
                         <span className="text-center w-full text-xs font-outfit">Get your referrals to mint an NFT now!</span>
@@ -648,12 +651,12 @@ function ReferralPage (){
                       <div className="w-full flex-col justify-center items-center gap-3 inline-flex p-[3rem]">
                         {/* Claimable Amount */}
                         <div className="flex-col justify-center items-center gap-1 flex">
-                          <div className="text-center text-white text-sm font-normal leading-none tracking-wide">NFT Cashback</div>
+                          <div className="text-center text-sm font-normal leading-none tracking-wide">NFT Cashback</div>
                           <div
-                            className="text-center text-amber-500 text-4xl leading-8 tracking-wide"
+                            className="text-center text-amber-50 text-4xl leading-8 tracking-wide"
                             style={{
                               WebkitTextStrokeWidth: '2px',
-                              WebkitTextStrokeColor: 'var(--Color-11, #FFF)',
+                              WebkitTextStrokeColor: 'var(--Color-11, rgb(180, 83, 9))',
                               textShadow: '0px 2px 4px rgba(0, 0, 0, 0.25)',
                             }}
                           >
