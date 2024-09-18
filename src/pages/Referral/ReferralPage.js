@@ -65,7 +65,7 @@ function ReferralPage (){
       alt: "NFT Cashback",
       title: "NFT Cashback",
       description:
-        "Accumulate USDC rewards when anyone you invite purchases a piece of our NFT! Maybe you can snatch one for yourself too if you invite enough people...",
+        "Accumulate SOL rewards when anyone you invite purchases a piece of our NFT! Maybe you can snatch one for yourself too if you invite enough people...",
     },
     {
       image: "/assets/images/clicker-character/ref03.webp",
@@ -161,21 +161,24 @@ function ReferralPage (){
     }
   };
 
-  const copyInviteCode = () => {
-    navigator.clipboard.writeText(getInviteLink());
+  const copyInviteCode = useCallback(() => {
+    navigator.clipboard.writeText(currentUser?.referralCode ? currentUser.referralCode : '');
     toast.success('Invite code copied to clipboard!');
-  };
+  },[currentUser]);
 
   const getTotalClaimable = useCallback(()=>{
-    if (!currentUser){ return `None`; }
+    if (!currentUser){ return `none`; }
+    
+    if (basicClaimable === 0 || nftClaimable === 0){ return `none`; }
+
     // selectively combine both claimable amt based on if use owns nft
-    return `${currentUser.ownsNFT? basicClaimable + nftClaimable : basicClaimable} SOL`;
+    return `${currentUser.ownsNFT ? (basicClaimable + nftClaimable).toFixed(4) : basicClaimable.toFixed(4)} SOL`;
   },[currentUser, basicClaimable, nftClaimable]);
 
   const getAdditionalClaimable = useCallback(()=>{
     if (!nftClaimable){ return `0 SOL`; }
     // selectively combine both claimable amt based on if use owns nft
-    return `${nftClaimable} SOL`;
+    return `${nftClaimable.toFixed(4)} SOL`;
   },[nftClaimable]);
 
   return (
@@ -215,7 +218,7 @@ function ReferralPage (){
           </span>
 
           {/* Desktop view */}
-          <div className="hidden xl:grid grid-cols-3 gap-12">
+          <div className="hidden lg:grid grid-cols-3 gap-12">
             {/* left section */}
             <div className={`w-[75%] h-full mx-auto flex flex-col justify-center items-center hover:scale-110 transition-all duration-500
                ${showRefOne ? `opacity-100` : `opacity-0`}`}>
@@ -246,7 +249,7 @@ function ReferralPage (){
                   NFT Cashback
                 </div>
                 <div className="w-full origin-top-left text-center text-stone-300 font-outfit text-[12px] leading-tight tracking-wide">
-                  Accumulate USDC rewards when anyone you invite purchases a piece of our NFT! Maybe you can snatch one for yourself too if you invite enough people...
+                  Accumulate SOL rewards when anyone you invite purchases a piece of our NFT! Maybe you can snatch one for yourself too if you invite enough people...
                 </div>
               </div>
             </div>
@@ -270,7 +273,7 @@ function ReferralPage (){
           </div>
 
           {/* Mobile view */}
-          <div className="h-[50dvh] relative flex xl:hidden flex-col justify-center items-center">
+          <div className="h-[50dvh] relative flex lg:hidden flex-col justify-center items-center mb-[2rem]">
             <div className={`w-[70dvw] h-auto flex flex-col justify-center items-center transition-all duration-500
                ${carouselFading ? `opacity-0` : `opacity-100`}`}>
               <img
@@ -316,7 +319,7 @@ function ReferralPage (){
           </div>
 
           {/* Desktop bottom panel */}
-          <div className={`hidden xl:flex w-full items-center transition-all duration-1000
+          <div className={`hidden lg:flex w-full items-center transition-all duration-1000
                ${showPanel ? `opacity-100 scale-100` : `opacity-0 scale-0`}`}>
             {/* referral stats & cashback */}
             <div className="w-[62%] hover:scale-105 transition-all duration-500"
@@ -419,7 +422,7 @@ function ReferralPage (){
                       backgroundRepeat: 'no-repeat',
                     }}
                   >
-                    {(getTotalClaimable() <= `0 sol`) ?
+                    {(getTotalClaimable() === `none`) ?
                       <div className="w-full h-full flex-col place-content-center gap-4 inline-flex">
                         <span className="text-center w-full">Nothing to claim yet</span>
                         <span className="text-center w-full text-xs font-outfit">Get your referrals to mint an NFT now!</span>
@@ -428,12 +431,12 @@ function ReferralPage (){
                       <div className="w-full flex-col justify-center items-center gap-3 inline-flex">
                         {/* Claimable Amount */}
                         <div className="flex-col justify-center items-center gap-1 flex">
-                          <div className="text-center text-white text-sm font-normal leading-none tracking-wide">NFT Cashback</div>
+                          <div className="text-center text-sm font-normal leading-none tracking-wide">NFT Cashback</div>
                           <div
-                            className="text-center text-amber-500 text-4xl leading-8 tracking-wide"
+                            className="text-amber-50 text-center text-4xl leading-8 tracking-wide"
                             style={{
                               WebkitTextStrokeWidth: '2px',
-                              WebkitTextStrokeColor: 'var(--Color-11, #FFF)',
+                              WebkitTextStrokeColor: 'var(--Color-11, rgb(180 83 9))',
                               textShadow: '0px 2px 4px rgba(0, 0, 0, 0.25)',
                             }}
                           >
@@ -534,7 +537,7 @@ function ReferralPage (){
           </div>
 
           {/* Mobile bottom panel */}
-          <div className="flex flex-col xl:hidden w-full overflow-x-hidden">
+          <div className="flex flex-col lg:hidden w-full overflow-x-hidden">
             {/* referral stats & cashback */}
             <div className={`w-full flex flex-col items-center transition-all duration-1000
                ${showPanel ? `opacity-100 scale-100` : `opacity-0 scale-0`}`}>
@@ -542,7 +545,7 @@ function ReferralPage (){
                 {/* Referral stats */}
                 <div className="w-full flex flex-col border-dashed border-r-4 border-transparent">
                   <div
-                    className="w-full h-full items-center p-[5rem]"
+                    className={"w-full h-full items-center px-[4rem] xs:px-[6rem] md:px-[7rem] py-[5rem] xs:py-[7rem]"}
                     style={{
                       backgroundImage: 'url("/assets/images/clicker-character/ticket-mobile-white.webp")',
                       backgroundSize: 'contain',
@@ -551,7 +554,7 @@ function ReferralPage (){
                     }}
                   >
                     {/* Title */}
-                    <div className="text-neutral-700 text-xl tracking-wider pb-3 ml-0 sm:ml-[1rem]">
+                    <div className="text-neutral-700 text-xl tracking-wider ml-0 sm:ml-[1rem]">
                       YOUR REFERRAL STATS
                     </div>
 
@@ -639,8 +642,8 @@ function ReferralPage (){
                       backgroundRepeat: 'no-repeat',
                     }}
                   >
-                    {(getTotalClaimable() >= `0 sol`) ?
-                      <div className="w-full h-full flex-col place-content-center gap-4 inline-flex p-[6rem] sm:p-[6.5rem]">
+                    {(getTotalClaimable() === `none`) ?
+                      <div className="w-full h-full flex-col place-content-center gap-4 inline-flex xs:px-[6rem] py-[6rem] sm:py-[6.5rem]">
                         <span className="text-center w-full">Nothing to claim yet</span>
                         <span className="text-center w-full text-xs font-outfit">Get your referrals to mint an NFT now!</span>
                       </div>
@@ -648,12 +651,12 @@ function ReferralPage (){
                       <div className="w-full flex-col justify-center items-center gap-3 inline-flex p-[3rem]">
                         {/* Claimable Amount */}
                         <div className="flex-col justify-center items-center gap-1 flex">
-                          <div className="text-center text-white text-sm font-normal leading-none tracking-wide">NFT Cashback</div>
+                          <div className="text-center text-sm font-normal leading-none tracking-wide">NFT Cashback</div>
                           <div
-                            className="text-center text-amber-500 text-4xl leading-8 tracking-wide"
+                            className="text-center text-amber-50 text-4xl leading-8 tracking-wide"
                             style={{
                               WebkitTextStrokeWidth: '2px',
-                              WebkitTextStrokeColor: 'var(--Color-11, #FFF)',
+                              WebkitTextStrokeColor: 'var(--Color-11, rgb(180, 83, 9))',
                               textShadow: '0px 2px 4px rgba(0, 0, 0, 0.25)',
                             }}
                           >
@@ -674,7 +677,7 @@ function ReferralPage (){
                           <span className="w-[130px] text-white text-xs font-outfit">Get additional <span className="text-white font-LuckiestGuy text-xs tracking-wide">{getAdditionalClaimable()}</span>, if you own NFT!</span>
                           <div className="flex justify-center items-center p-2 rounded-lg bg-[#FFC85A] shadow-[0px_1px_2px_0px_rgba(198,115,1,0.66)] hover:bg-[#FFAA00] hover:shadow-[0px_4px_4px_0px_rgba(255,210,143,0.61)_inset,0px_4px_4px_0px_rgba(232,140,72,0.48)]  hover:scale-105 transition-transform duration-200">
                             <div
-                              className="text-orange-50 text-xs"
+                              className="text-orange-50 text-xs whitespace-nowrap"
                               onClick={() => navigate('/mint')}
                             >
                               Own Now</div>

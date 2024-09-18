@@ -170,7 +170,11 @@ export function* signupWithEmailSaga({ payload }) {
         break;
       case -6:
         yield put(signupWithEmailError("Error signing up"));
-        toast.error("Another user has registered from this address.");
+        toast.error("Another user has registered from this IP address.");
+        break;
+      case -7:
+        yield put(signupWithEmailError("Error signing up"));
+        toast.error("An account with this email already exists. Try log in instead.");
         break;
       default:
         yield put(signupWithEmailError("Error signing up"));
@@ -185,22 +189,25 @@ export function* signupWithEmailSaga({ payload }) {
 
 export function* loginWithEmailSaga({ payload }) {
   try {
-    const user = yield call(loginWithEmailImpl, payload);
-    if (user?.uid) {
-      const token = yield call(getIdTokenResult, user);
+    const result = yield call(loginWithEmailImpl, payload);
+    if (result?.uid) {
+      const token = yield call(getIdTokenResult, result);
       if (
-        !user.emailVerified ||
+        !result.emailVerified ||
         token.claims.limitedAccess === true
       ) {
         //redirect user to login page
         window.location.href = '/limited-access';  
         return;
       }
-      const userData = yield call(getUserDataImpl, user.uid);
+      const userData = yield call(getUserDataImpl, result.uid);
       yield put(loginWithEmailSuccess(userData));
 
       toast.success("Signed in");
-    } else {
+    } else if (result === -1){
+      toast.error("Invalid login credentials. If you signed up with Twitter, please log in using Twitter.");
+      yield put(loginWithEmailError("Invalid login credentials"));
+    }else{
       yield put(loginWithEmailError("invalid uid"));
       console.error("invalid uid");
     }
