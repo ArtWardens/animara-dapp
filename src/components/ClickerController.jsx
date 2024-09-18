@@ -5,7 +5,7 @@ import { useWalletMultiButton } from '@solana/wallet-adapter-base-ui';
 import { useAppDispatch } from '../hooks/storeHooks';
 import { useNavigate } from 'react-router-dom/dist';
 import { getUser, fetchDates, useMintDate } from '../sagaStore/slices';
-import { useUserDetails, useBindWalletLoading, useUserAuthenticated, useAuthLoading } from '../sagaStore/slices';
+import { useUserDetails, useBindWalletLoading, useUserAuthenticated, useAuthLoading, logOut } from '../sagaStore/slices';
 import { toast } from 'react-toastify';
 
 const ClickerController = ({ Children }) => {
@@ -26,6 +26,10 @@ const ClickerController = ({ Children }) => {
   const { visible: isModalVisible, setVisible: setModalVisible } = useWalletModal();
   const [isPhantomInstalled] = useState(window.phantom?.solana?.isPhantom);
 
+  const handleLogout = () => {
+    dispatch(logOut());
+  };
+
   // prevent unauthenticated access
   // auto featch user details if authenticated
   useEffect(() => {
@@ -40,6 +44,16 @@ const ClickerController = ({ Children }) => {
       }
     }
   }, [dispatch, isAuthLoading, isAuthenticated, navigate, mintDate]);
+
+  // check if user have a referrer or not
+  useEffect(() => {
+    if (currentUser) {
+      if (currentUser.referralData.length === 0) {
+        toast.warning("Suspicious Account detected. Logging out automatically.");
+        handleLogout();
+      } 
+    }
+  }, [currentUser]);
 
   // check to make sure user is using correct wallet
   useEffect(() => {
