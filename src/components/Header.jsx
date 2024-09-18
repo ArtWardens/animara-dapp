@@ -282,7 +282,7 @@ function Header() {
             </div>
 
             <div
-              className="w-full h-full text-center scale-125 p-[5rem] -z-50"
+              className="w-full h-full text-center scale-125 p-[4rem] xs:p-[5rem] -z-50"
               style={{
                 backgroundImage: 'url("/assets/images/clicker-character/sticky-Note.webp")',
                 backgroundSize: 'contain',
@@ -299,7 +299,7 @@ function Header() {
               <img
                 src={getProfilePic()}
                 alt="profile"
-                className="items-center rounded-full w-32 mx-auto mb-4"
+                className="items-center rounded-full w-24 xs:w-32 mx-auto mb-2 xs:mb-4"
                 style={{
                   border: '4px solid var(--80E8FF, #80E8FF)',
                   background: '#111928 50%',
@@ -331,7 +331,7 @@ function Header() {
             </div>
 
             <div
-              className={`mt-[4rem] mb-16 z-60
+              className={`mt-[4rem] z-60
               ${window.innerHeight < 768 ? 'space-y-2' : 'space-y-4'}  
             `}
             >
@@ -351,16 +351,20 @@ function Header() {
                   />
                 </div>
               ))}
+            </div>
+
+            {/* Logout button */}
+            <div className='pt-4'>
               <button
-                className="transition ease-in-out hover:scale-105 flex items-center"
-                onMouseEnter={handleMouseEnterLogout}
-                onMouseLeave={handleMouseLeaveLogout}
-                onClick={handleLogout}
-                ref={trigger}
-              >
-                <img src={imageSrcLogout} className="h-12 w-12" alt="logout" />
-                <span className="ml-2 text-4xl text-[#ff647a] capitalize leading-9">LOGOUT</span>
-              </button>
+                  className="transition ease-in-out hover:scale-105 flex items-center"
+                  onMouseEnter={handleMouseEnterLogout}
+                  onMouseLeave={handleMouseLeaveLogout}
+                  onClick={handleLogout}
+                  ref={trigger}
+                >
+                  <img src={imageSrcLogout} className="h-12 w-12" alt="logout" />
+                  <span className="ml-2 text-4xl text-[#ff647a] capitalize leading-9">LOGOUT</span>
+                </button>
             </div>
           </div>
         </div>

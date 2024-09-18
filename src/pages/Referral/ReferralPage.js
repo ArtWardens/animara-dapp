@@ -218,7 +218,7 @@ function ReferralPage (){
           </span>
 
           {/* Desktop view */}
-          <div className="hidden xl:grid grid-cols-3 gap-12">
+          <div className="hidden lg:grid grid-cols-3 gap-12">
             {/* left section */}
             <div className={`w-[75%] h-full mx-auto flex flex-col justify-center items-center hover:scale-110 transition-all duration-500
                ${showRefOne ? `opacity-100` : `opacity-0`}`}>
@@ -273,7 +273,7 @@ function ReferralPage (){
           </div>
 
           {/* Mobile view */}
-          <div className="h-[50dvh] relative flex xl:hidden flex-col justify-center items-center">
+          <div className="h-[50dvh] relative flex lg:hidden flex-col justify-center items-center mb-[2rem]">
             <div className={`w-[70dvw] h-auto flex flex-col justify-center items-center transition-all duration-500
                ${carouselFading ? `opacity-0` : `opacity-100`}`}>
               <img
@@ -319,7 +319,7 @@ function ReferralPage (){
           </div>
 
           {/* Desktop bottom panel */}
-          <div className={`hidden xl:flex w-full items-center transition-all duration-1000
+          <div className={`hidden lg:flex w-full items-center transition-all duration-1000
                ${showPanel ? `opacity-100 scale-100` : `opacity-0 scale-0`}`}>
             {/* referral stats & cashback */}
             <div className="w-[62%] hover:scale-105 transition-all duration-500"
@@ -537,7 +537,7 @@ function ReferralPage (){
           </div>
 
           {/* Mobile bottom panel */}
-          <div className="flex flex-col xl:hidden w-full overflow-x-hidden">
+          <div className="flex flex-col lg:hidden w-full overflow-x-hidden">
             {/* referral stats & cashback */}
             <div className={`w-full flex flex-col items-center transition-all duration-1000
                ${showPanel ? `opacity-100 scale-100` : `opacity-0 scale-0`}`}>
@@ -545,7 +545,7 @@ function ReferralPage (){
                 {/* Referral stats */}
                 <div className="w-full flex flex-col border-dashed border-r-4 border-transparent">
                   <div
-                    className="w-full h-full items-center p-[5rem]"
+                    className={"w-full h-full items-center px-[4rem] xs:px-[6rem] md:px-[7rem] py-[5rem] xs:py-[7rem]"}
                     style={{
                       backgroundImage: 'url("/assets/images/clicker-character/ticket-mobile-white.webp")',
                       backgroundSize: 'contain',
@@ -554,7 +554,7 @@ function ReferralPage (){
                     }}
                   >
                     {/* Title */}
-                    <div className="text-neutral-700 text-xl tracking-wider pb-3 ml-0 sm:ml-[1rem]">
+                    <div className="text-neutral-700 text-xl tracking-wider ml-0 sm:ml-[1rem]">
                       YOUR REFERRAL STATS
                     </div>
 
@@ -677,7 +677,7 @@ function ReferralPage (){
                           <span className="w-[130px] text-white text-xs font-outfit">Get additional <span className="text-white font-LuckiestGuy text-xs tracking-wide">{getAdditionalClaimable()}</span>, if you own NFT!</span>
                           <div className="flex justify-center items-center p-2 rounded-lg bg-[#FFC85A] shadow-[0px_1px_2px_0px_rgba(198,115,1,0.66)] hover:bg-[#FFAA00] hover:shadow-[0px_4px_4px_0px_rgba(255,210,143,0.61)_inset,0px_4px_4px_0px_rgba(232,140,72,0.48)]  hover:scale-105 transition-transform duration-200">
                             <div
-                              className="text-orange-50 text-xs"
+                              className="text-orange-50 text-xs whitespace-nowrap"
                               onClick={() => navigate('/mint')}
                             >
                               Own Now</div>

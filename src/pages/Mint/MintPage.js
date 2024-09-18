@@ -406,12 +406,12 @@ function MintPage() {
                   <h3 className="w-full text-2xl text-white text-wrap ">STEP 2</h3>
                 </div>
                 <p
-                  className="leading-normal tracking-normal text-white font-outfit"
+                  className="leading-normal tracking-normal text-white font-outfit text-justify"
                   style={{
                     fontSize: "14px",
                   }}
                 >
-                  Unlocks more locations to explore for more Explora Points!
+                  Unlocks more locations to explore for more about Explora Points!
                 </p>
               </div>
             </div>
@@ -430,7 +430,7 @@ function MintPage() {
                   <h3 className="w-full text-2xl text-white text-wrap ">STEP 3</h3>
                 </div>
                 <p
-                  className="leading-normal tracking-normal text-white font-outfit"
+                  className="leading-normal tracking-normal text-white font-outfit text-justify"
                   style={{
                     fontSize: "14px",
                   }}
@@ -477,7 +477,7 @@ function MintPage() {
               }}
             >
               {/* mint card background */}
-              <div className="absolute flex w-full justify-between -top-8">
+              <div className="absolute flex w-full justify-between -top-8 safari-hidden">
                 <img
                   src={"/assets/images/clicker-character/ring01.webp"}
                   alt="ring"
