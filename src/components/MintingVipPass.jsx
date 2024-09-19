@@ -25,54 +25,54 @@ const MintingVipPass = ({ onClose }) => {
                     <div className="flex flex-row items-center">
                         <div className="mr-[1rem]"> 
                             <img
-                            src="/assets/icons/gift.png"
+                            src="/assets/icons/ticket.webp"
                             alt="gift icon"
-                            className="w-6 h-6 ml-[1rem] transition-transform duration-200 hover:scale-110 "
+                            className="w-12 h-auto ml-[1rem] transition-transform duration-200 hover:scale-110 "
                             />
                         </div>
 
                         <div className="flex flex-col">
-                            <h3 className="text-white text-xl font-normal leading-normal">Referral Bonus</h3>
-                            <p className="text-[#c4c4c4] text-sm font-normal font-outfit leading-[14px]">Earn rewards through the referral program.</p>
+                            <h3 className="text-white text-xl font-normal leading-normal">Game Character </h3>
+                            <p className="text-[#c4c4c4] text-sm font-normal font-outfit leading-[14px]">Use your NFT as a unique in-game character.</p>
                         </div>
                     </div>
 
                     <div className="flex flex-row items-center">
                         <div className="mr-[1rem]"> 
                             <img
-                            src="/assets/icons/gem.png"
+                            src="/assets/icons/coin.webp"
                             alt="gem icon"
-                            className="w-6 h-6 ml-[1rem] transition-transform duration-200 hover:scale-110 "
+                            className="w-12 h-auto ml-[1rem] transition-transform duration-200 hover:scale-110 "
                             />
                         </div>
 
                         <div className="flex flex-col">
-                            <h3 className="text-white text-xl font-normal leading-normal">Referral Bonus</h3>
-                            <p className="text-[#c4c4c4] text-sm font-normal font-outfit leading-[14px]">Earn rewards through the referral program.</p>
+                            <h3 className="text-white text-xl font-normal leading-normal">Token Presales</h3>
+                            <p className="text-[#c4c4c4] text-sm font-normal font-outfit leading-[14px]">Gain priority access to token presales and receive 75,000 AniTokens.</p>
                         </div>
                     </div>
 
                     <div className="flex flex-row items-center">
                         <div className="mr-[1rem]"> 
                             <img
-                            src="/assets/icons/coin.png"
+                            src="/assets/icons/booster.webp"
                             alt="coin icon"
-                            className="w-6 h-6 ml-[1rem] transition-transform duration-200 hover:scale-110 "
+                            className="w-12 h-auto ml-[1rem] transition-transform duration-200 hover:scale-110 "
                             />
                         </div>
 
                         <div className="flex flex-col">
-                            <h3 className="text-white text-xl font-normal leading-normal">Referral Bonus</h3>
-                            <p className="text-[#c4c4c4] text-sm font-normal font-outfit leading-[14px]">Earn rewards through the referral program.</p>
+                            <h3 className="text-white text-xl font-normal leading-normal">Booster</h3>
+                            <p className="text-[#c4c4c4] text-sm font-normal font-outfit leading-[14px]">Accelerate your progress in our Tap to Earn system with exclusive boosters.</p>
                         </div>
                     </div>
 
                     <div className="flex flex-row items-center">
                         <div className="mr-[1rem]"> 
                             <img
-                            src="/assets/icons/star.png"
+                            src="/assets/icons/referral.webp"
                             alt="star icon"
-                            className="w-6 h-6 ml-[1rem] transition-transform duration-200 hover:scale-110 "
+                            className="w-12 h-auto ml-[1rem] transition-transform duration-200 hover:scale-110 "
                             />
                         </div>
 
@@ -109,58 +109,58 @@ const MintingVipPass = ({ onClose }) => {
                 </div>
 
                 {/* Content */}
-                <div className="flex flex-col space-y-4">
+                <div className="w-[60%] flex flex-col space-y-4">
                     <div className="flex flex-col items-center">
                         <div className=""> 
                             <img
-                            src="/assets/icons/gift.png"
+                            src="/assets/icons/ticket.webp"
                             alt="gift icon"
-                            className="w-6 h-6 mb-2 transition-transform duration-200 hover:scale-110 "
+                            className="w-8 h-auto mb-2 transition-transform duration-200 hover:scale-110 "
                             />
                         </div>
 
                         <div className="flex flex-col text-center">
-                            <h3 className="text-white text-lg font-normal leading-normal">Referral Bonus</h3>
-                            <p className="text-[#c4c4c4] text-xs font-normal font-outfit leading-[14px]">Earn rewards through the referral program.</p>
+                            <h3 className="text-white text-lg font-normal leading-normal">Game Character </h3>
+                            <p className="text-[#c4c4c4] text-xs font-normal font-outfit leading-[14px]">Use your NFT as a unique in-game character.</p>
                         </div>
                     </div>
 
                     <div className="flex flex-col items-center">
                         <div className=""> 
                             <img
-                            src="/assets/icons/gem.png"
+                            src="/assets/icons/coin.webp"
                             alt="gem icon"
-                            className="w-6 h-6 mb-2 transition-transform duration-200 hover:scale-110 "
+                            className="w-8 h-auto mb-2 transition-transform duration-200 hover:scale-110 "
                             />
                         </div>
 
                         <div className="flex flex-col text-center">
-                            <h3 className="text-white text-lg font-normal leading-normal">Referral Bonus</h3>
-                            <p className="text-[#c4c4c4] text-xs font-normal font-outfit leading-[14px]">Earn rewards through the referral program.</p>
+                            <h3 className="text-white text-lg font-normal leading-normal">Token Presales</h3>
+                            <p className="text-[#c4c4c4] text-xs font-normal font-outfit leading-[14px]">Gain priority access to token presales and <br/> receive 75,000 AniTokens.</p>
                         </div>
                     </div>
 
                     <div className="flex flex-col items-center">
                         <div className=""> 
                             <img
-                            src="/assets/icons/coin.png"
+                            src="/assets/icons/booster.webp"
                             alt="coin icon"
-                            className="w-6 h-6 mb-2 transition-transform duration-200 hover:scale-110 "
+                            className="w-8 h-auto mb-2 transition-transform duration-200 hover:scale-110 "
                             />
                         </div>
 
                         <div className="flex flex-col text-center">
-                            <h3 className="text-white text-lg font-normal leading-normal">Referral Bonus</h3>
-                            <p className="text-[#c4c4c4] text-xs font-normal font-outfit leading-[14px]">Earn rewards through the referral program.</p>
+                            <h3 className="text-white text-lg font-normal leading-normal">Booster</h3>
+                            <p className="text-[#c4c4c4] text-xs font-normal font-outfit leading-[14px]">Accelerate your progress in our Tap to Earn <br/> system with exclusive boosters.</p>
                         </div>
                     </div>
 
                     <div className="flex flex-col items-center">
                         <div className=""> 
                             <img
-                            src="/assets/icons/star.png"
+                            src="/assets/icons/referral.webp"
                             alt="star icon"
-                            className="w-6 h-6 mb-2 transition-transform duration-200 hover:scale-110 "
+                            className="w-8 h-auto mb-2 transition-transform duration-200 hover:scale-110 "
                             />
                         </div>
 
