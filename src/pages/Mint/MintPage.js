@@ -365,19 +365,19 @@ function MintPage() {
 
           {/* Floating Coins */}
           <img
-            className="absolute right-[10%] lg:right-[50%] top-[12%] lg:top-[20%] transform -translate-x-1/2 -translate-y-1/2 z-[200] w-[100px] lg:w-[120px] pointer-events-none"
+            className="absolute right-[10%] lg:right-[50%] top-[12%] lg:top-[20%] transform -translate-x-1/2 -translate-y-1/2 z-[20] w-[100px] lg:w-[120px] pointer-events-none"
             src="/assets/images/coin-3.webp"
             alt=""
           />
 
           <img
-            className="absolute right-[12%] lg:right-[45%] top-[45%] lg:top-[50%] transform -translate-x-1/2 -translate-y-1/2 z-[200] w-[60px] lg:w-[120px] pointer-events-none"
+            className="absolute right-[12%] lg:right-[45%] top-[45%] lg:top-[50%] transform -translate-x-1/2 -translate-y-1/2 z-[20] w-[60px] lg:w-[120px] pointer-events-none"
             src="/assets/images/coin-4.webp"
             alt=""
           />
 
           <img
-            className="absolute left-[12%] lg:left-[17%] bottom-[35%] lg:bottom-[10%] transform -translate-x-1/2 -translate-y-1/2 z-[200] w-[100px] lg:w-[120px] pointer-events-none"
+            className="absolute left-[12%] lg:left-[17%] bottom-[35%] lg:bottom-[10%] transform -translate-x-1/2 -translate-y-1/2 z-[20] w-[100px] lg:w-[120px] pointer-events-none"
             src="/assets/images/coin-5.png"
             alt=""
           />
