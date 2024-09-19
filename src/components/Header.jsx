@@ -104,16 +104,9 @@ function Header() {
     <>
       {/* User Card */}
       <div
-        className={`flex flex-row absolute max-w-[70dvw] top-[3rem] z-10 p-1 pr-4 gap-2 left-[1rem] xl:left-[4rem] ${
+        className={`flex flex-row absolute max-w-[70dvw] top-[3rem] z-10 p-1 pr-4 gap-2 left-[1rem] xl:left-[4rem] glowing-border ${
           mobileMenuOpen ? 'hidden' : ''
         }`}
-        style={{
-          border: '3px solid #F4FBFF',
-          borderRadius: '500px 200px 200px 500px',
-          background: 'var(--0163BE, #0163BE)',
-          boxShadow: '3px 2px 0px 0px #517296 inset',
-          zIndex: 91,
-        }}
       >
         {/* profile picture */}
         <div className="p-1 w-20 h-20 relative">

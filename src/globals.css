@@ -187,4 +187,37 @@ body:active {
   border-radius: 10px;
 }
 
+/* Header */
+@property --angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
 
+.glowing-border {
+  --c1: #F4FBFF;
+  --c2: transparent;
+  z-index: 91;
+  border-radius: 500px 200px 200px 500px;
+  background: conic-gradient(from var(--angle), var(--c2), var(--c1) 0.1turn, var(--c1) 0.15turn, var(--c2) 0.25turn);
+	animation: borderRotate 5s linear infinite forwards;
+}
+
+.glowing-border::before,
+.glowing-border::after {
+  content: "";
+  position: absolute;
+  inset: 3px;
+  z-index: -1;
+  border-radius: inherit;
+  background: var(--0163BE, #0163BE);
+}
+
+@keyframes borderRotate {
+  0% {
+		--angle: 0deg;
+	}
+	100% {
+		--angle: 360deg;
+	}
+}
