@@ -365,25 +365,25 @@ function MintPage() {
 
           {/* Floating Coins */}
           <img
-            className="absolute right-[10%] lg:right-[50%] top-[12%] lg:top-[20%] transform -translate-x-1/2 -translate-y-1/2 z-[20] w-[100px] lg:w-[120px] pointer-events-none"
+            className="absolute right-[5%] lg:right-[50%] top-[20%] lg:top-[20%] transform -translate-x-1/2 -translate-y-1/2 z-[20] w-[60px] lg:w-[120px] pointer-events-none"
             src="/assets/images/coin-3.webp"
             alt=""
           />
 
           <img
-            className="absolute right-[12%] lg:right-[45%] top-[45%] lg:top-[50%] transform -translate-x-1/2 -translate-y-1/2 z-[20] w-[60px] lg:w-[120px] pointer-events-none"
+            className="absolute right-[12%] lg:right-[45%] top-[50%] lg:top-[50%] transform -translate-x-1/2 -translate-y-1/2 z-[20] w-[40px] lg:w-[120px] pointer-events-none"
             src="/assets/images/coin-4.webp"
             alt=""
           />
 
           <img
-            className="absolute left-[12%] lg:left-[17%] bottom-[35%] lg:bottom-[10%] transform -translate-x-1/2 -translate-y-1/2 z-[20] w-[100px] lg:w-[120px] pointer-events-none"
-            src="/assets/images/coin-5.png"
+            className="absolute left-[12%] lg:left-[17%] bottom-[5%] lg:bottom-[10%] transform -translate-x-1/2 -translate-y-1/2 z-[20] w-[60px] lg:w-[120px] pointer-events-none"
+            src="/assets/images/coin-5.webp"
             alt=""
           />
 
           {/* Mint info section */}
-          <div className={`w-full xl:w-[30%] text-amber-500 transition-all duration-1000
+          <div className={`w-full xl:w-[30%] text-amber-500 transition-all duration-1000 z-[40]
             ${showTitle ? `opacity-100` : `opacity-0`}`
           }>
             {/* title */}
@@ -669,7 +669,7 @@ function MintPage() {
                   {/* Info button */}
                   <div className="w-[30%]"> 
                     <img
-                      src="/assets/icons/info.png"
+                      src="/assets/icons/info.webp"
                       alt="info icon"
                       className="w-full md:w-[30%] lg:w-[30%] h-auto ml-[1rem] transition-transform duration-200 hover:scale-110 "
                       onClick={handleInfoClick} 
@@ -900,7 +900,7 @@ function MintPage() {
                 {/* Info button */}
                 <div className="w-[30%]"> 
                   <img
-                    src="/assets/icons/info.png"
+                    src="/assets/icons/info.webp"
                     alt="info icon"
                     className="w-[30%] h-auto ml-[1rem] transition-transform duration-200 hover:scale-110 "
                     onClick={handleInfoClick} 
