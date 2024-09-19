@@ -2,7 +2,7 @@ import React from 'react';
 
 const MintingWarningNotice = ({ onClose }) => {
     return(
-        <div className="w-full h-full fixed inset-0 flex items-center justify-center backdrop-blur-xl over">
+        <div className="w-full h-full fixed inset-0 flex items-center justify-center backdrop-blur-xl z-[50]">
             {/* Desktop view */}
             <div className="min-h-[500px] hidden lg:flex flex-col items-center justify-center p-[6rem]"
                 style={{
