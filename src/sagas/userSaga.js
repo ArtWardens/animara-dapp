@@ -19,11 +19,14 @@ import {
   getReferralStatsImpl,
   registerNFTImpl,
 } from "../firebase/user";
-import { handleGetLeaderboard } from "../firebase/leaderboard";
+import { handleGetLeaderboard, getLeaderboardImpl } from "../firebase/leaderboard";
 import {
   handleGetOneTimeTaskList,
   handleCompletedOneTimeTask,
 } from "../firebase/oneTimeTask";
+import {
+  checkUserLastPeriodicBatchTimeImpl,
+} from "../firebase/periodicTask";
 import {
   settleTapSessionImpl,
   rechargeEnergyImpl,
@@ -34,6 +37,10 @@ import {
   unbindWalletImpl,
 } from '../firebase/clicker';
 import {
+  claimCashbackImpl,
+  cancelCashbackClaimImpl,
+} from '../firebase/cashback.js'
+import {
   closeDailyPopup,
   closeDailyPopupSuccess,
   getEarlyBirdOneTimeTaskList,
@@ -42,6 +49,9 @@ import {
   getLeaderBoard,
   getLeaderBoardError,
   getLeaderBoardSuccess,
+  getNewLeaderBoard,
+  getNewLeaderBoardError,
+  getNewLeaderBoardSuccess,
   getOneTimeTaskList,
   getOneTimeTaskListError,
   getOneTimeTaskListSuccess,
@@ -106,9 +116,15 @@ import {
   mintNFT,
   mintNFTSuccess,
   mintNFTError,
+  claimCashback,
+  claimCashbackSuccess,
+  claimCashbackError,
   fetchDates,
   fetchDatesSuccess,
   fetchDatesError,
+  checkUserLastPeriodicBatchTime,
+  checkUserLastPeriodicBatchTimeSuccess,
+  checkUserLastPeriodicBatchTimeError,
 } from "../sagaStore/slices";
 import {
   StaminaRechargeTypeBasic,
@@ -121,6 +137,7 @@ import {
   setDashboardData,
 } from "../utils/getTimeRemaining";
 import { mintImpl, fetchMintedNFTImpl } from "../web3/mintNFT.tsx";
+import { finalizeCashbackTxn } from "../web3/claimCashback.js";
 import { fetchAllDatesImpl } from "../firebase/countDown.js";
 
 export function* signupWithEmailSaga({ payload }) {
@@ -329,6 +346,18 @@ export function* updateDailyLoginSaga() {
   }
 }
 
+export function* getNewLeaderBoardSaga() {
+  try {
+    const leaderboardData = yield call(getLeaderboardImpl);
+    yield put(getNewLeaderBoardSuccess(leaderboardData));
+    return leaderboardData;
+  } catch (error) {
+    yield put(getNewLeaderBoardError(error));
+    toast.error("Failed to retrieve leaderboard. Please try again. ");
+  }
+}
+
+// OLD LEADERBOARD BACKUP
 export function* getLeaderBoardSaga(action) {
   const cooldownEndTime = getCooldownTime();
   if (calculateCountdownRemaining(cooldownEndTime) !== 0) {
@@ -524,7 +553,6 @@ export function* mintNFTSaga({ payload }) {
       payload.ownedTokens,
       payload.guards
     );
-    console.log(`fetching minted nft`);
     const result = yield call(fetchMintedNFTImpl, payload.umi, successfulMints);
     // const result = [
     //   {
@@ -563,6 +591,36 @@ export function* mintNFTSaga({ payload }) {
   }
 }
 
+export function* claimCashbackSaga({ payload }) {
+  let claimId;
+  try {
+    const result = yield call(claimCashbackImpl);
+    const serializedTxn = result.serializedTxn;
+    claimId = result.claimId;
+    yield call(finalizeCashbackTxn, payload.sendTransaction, serializedTxn);
+    toast.success('Cashback claimed!');
+    yield put(claimCashbackSuccess(result));
+  } catch (error) {
+    if (error === "external-error"){
+      toast.error('Cashback claim not avaiable at the moment. Try again later');
+    } else if (error.error?.code === 4001) {
+      // this error happens when user cancels transaction
+      toast.warn('Claim cancelled');
+    } else if (error.error?.code === -32603) {
+      // this error happens when user do not have enough sol to submit transaction
+      toast.warn('Insufficient SOL to send transaction');
+    } else {
+      toast.error('Failed to claim cashback');
+    }
+    // cancel claim in db if already created
+    if (claimId){
+      console.log(`cancelling cashback`);
+      yield call(cancelCashbackClaimImpl, claimId);
+    }
+    yield put(claimCashbackError(error));
+  }
+}
+
 export function* fetchDatesSaga() {
   try {
     console.log(`fetchDatesSaga`);
@@ -571,6 +629,18 @@ export function* fetchDatesSaga() {
   } catch (error) {
     toast.error("Failed to fetch dates");
     yield put(fetchDatesError(error));
+  }
+}
+
+export function* checkUserLastPeriodicBatchTimeSaga() {
+  try {
+    const userBatchTime = yield call(checkUserLastPeriodicBatchTimeImpl);
+    yield put(checkUserLastPeriodicBatchTimeSuccess(userBatchTime));
+    return userBatchTime;
+  } 
+  catch (error) {
+    yield put(checkUserLastPeriodicBatchTimeError(error));
+    toast.error("Failed to check user batch time. Please try again. ");
   }
 }
 
@@ -586,6 +656,7 @@ export function* userSagaWatcher() {
   yield takeLatest(logOut.type, logOutSaga);
   yield takeLatest(updateDailyLogin.type, updateDailyLoginSaga);
   yield takeLatest(getLeaderBoard.type, getLeaderBoardSaga);
+  yield takeLatest(getNewLeaderBoard.type, getNewLeaderBoardSaga);
   yield takeLatest(closeDailyPopup.type, closeDailyPopupSaga);
   yield takeLatest(getOneTimeTaskList.type, getOneTimeTaskListSaga);
   yield takeLatest(getEarlyBirdOneTimeTaskList.type, getEarlyBirdOneTimeTaskListSaga);
@@ -600,5 +671,7 @@ export function* userSagaWatcher() {
   yield takeLatest(bindWallet.type, bindWalletSaga);
   yield takeLatest(unbindWallet.type, unbindWalletSaga);
   yield takeLatest(mintNFT.type, mintNFTSaga);
+  yield takeLatest(claimCashback.type, claimCashbackSaga);
   yield takeLatest(fetchDates.type, fetchDatesSaga);
+  yield takeLatest(checkUserLastPeriodicBatchTime.type, checkUserLastPeriodicBatchTimeSaga);
 }

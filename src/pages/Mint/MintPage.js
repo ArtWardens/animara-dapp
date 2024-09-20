@@ -140,7 +140,7 @@ function MintPage() {
   const [isNoticeOpen, setIsNoticeOpen] = useState(false);
   const [isPassOpen, setIsPassOpen] = useState(false);
 
-  {/* Toggle VIP pass component */}
+  // Toggle VIP pass component
   const handlePassClick = () => {
     setIsPassOpen(true); 
   };
@@ -149,7 +149,7 @@ function MintPage() {
     setIsPassOpen(false); 
   };
 
-  {/* Toggle notice component */}
+  // Toggle VIP pass component
   const handleInfoClick = () => {
     setIsNoticeOpen(true); 
   };
@@ -251,8 +251,8 @@ function MintPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [umi, checkEligibility, firstRun, currentUser]);
 
-  const handleMintOrConnect = () => {
-    if (!walletAddr) {
+  const handleMintOrBind = () => {
+    if (currentUser?.walletAddr === '') {
       setShowWalletBindingPanel(true);
       setWalletBindingAnim(true);
       setTimeout(() => {
@@ -361,23 +361,23 @@ function MintPage() {
         }}
       >
         {/* Page Content */}
-        <div className="w-full flex flex-col xl:flex-row justify-between container pt-[10rem] xl:pt-[6rem] tracking-wider">
+        <div className="w-full flex flex-col xl:flex-row justify-between container pt-[10rem] tracking-wider">
 
           {/* Floating Coins */}
           <img
-            className="absolute right-[5%] lg:right-[50%] top-[20%] lg:top-[20%] transform -translate-x-1/2 -translate-y-1/2 z-[20] w-[60px] lg:w-[120px] pointer-events-none"
+            className="absolute right-[5%] lg:right-[50%] top-[20%] lg:top-[20%] transform -translate-x-1/2 -translate-y-1/2 z-[20] opacity-65 w-[60px] lg:w-[120px] pointer-events-none"
             src="/assets/images/coin-3.webp"
             alt=""
           />
 
           <img
-            className="absolute right-[12%] lg:right-[45%] top-[50%] lg:top-[50%] transform -translate-x-1/2 -translate-y-1/2 z-[20] w-[40px] lg:w-[120px] pointer-events-none"
+            className="absolute right-[12%] lg:right-[45%] top-[50%] lg:top-[50%] transform -translate-x-1/2 -translate-y-1/2 z-[20] opacity-65 w-[40px] lg:w-[120px] pointer-events-none"
             src="/assets/images/coin-4.webp"
             alt=""
           />
 
           <img
-            className="absolute left-[12%] lg:left-[17%] bottom-[5%] lg:bottom-[10%] transform -translate-x-1/2 -translate-y-1/2 z-[20] w-[60px] lg:w-[120px] pointer-events-none"
+            className="absolute left-[12%] lg:left-[17%] bottom-[5%] lg:bottom-[10%] transform -translate-x-1/2 -translate-y-1/2 z-[20] opacity-65 w-[60px] lg:w-[120px] pointer-events-none"
             src="/assets/images/coin-5.webp"
             alt=""
           />
@@ -520,7 +520,7 @@ function MintPage() {
 
               {/* card content */}
               <div
-                className="flex flex-col items-center rounded-2xl place-content-center p-6 min-h-[60vh] xl:min-h-[80dvh] 2xl:min-h-[50dvh] space-y-[1rem]"
+                className="flex flex-col items-center rounded-2xl place-content-center p-6 min-h-[60vh] xl:min-h-[80dvh] 2xl:min-h-[50dvh] space-y-2"
                 style={{
                   backgroundImage:
                     'url("/assets/images/clicker-character/mintBBG.webp")',
@@ -625,7 +625,7 @@ function MintPage() {
                   {/* Mobile mint button */}
                   <div
                     className={`w-[70%] justify-center items-center inline-flex z-[10] transition-transform duration-200 
-                      ${(isAllowed && !mintingNFT) || !walletAddr ? `hover:scale-105` : ``}`}
+                      ${(isAllowed && !mintingNFT) || currentUser?.walletAddr === '' ? `hover:scale-105` : ``}`}
                       onMouseEnter={() => isAllowed ? setGhostExcited(true) : setGhostExcited(false)}
                       onMouseLeave={() => !mintingNFT ? setGhostExcited(false) : setGhostExcited(true)}>
                     {!isPhantomInstalled ? 
@@ -644,12 +644,12 @@ function MintPage() {
                         :
                         <button
                           className={`h-[80px] w-[250px] rounded-full border justify-center items-center inline-flex shadow-[0px_4px_4px_0px_#FFFBEF_inset,0px_-4px_4px_0px_rgba(255,249,228,0.48),0px_5px_4px_0px_rgba(232,140,72,0.48)] 
-                            ${isAllowed || !walletAddr ?
+                            ${isAllowed || currentUser?.walletAddr === '' ?
                               `bg-[#FFDC62] border-[#E59E69] `
                               :
                               `bg-slate-400 border-slate-400`}`}
                           disabled={(!isAllowed || mintingNFT) && walletAddr}
-                          onClick={handleMintOrConnect}>
+                          onClick={handleMintOrBind}>
                           {mintingNFT ?
                             <MoonLoader color={"#E59E69"} size={40} />
                             :
@@ -659,7 +659,7 @@ function MintPage() {
                                 textShadow: "0px 2px 0.6px rgba(240, 139, 0, 0.66)",
                               }}
                             >
-                              <span className="">{!walletAddr ? `Connect Wallet` : isAllowed ? `Mint Now` : insufficentBalance ? `Insufficient Funds` : `Mint Disabled`}</span>
+                              <span className="">{currentUser?.walletAddr === '' ? `Bind Wallet` : isAllowed ? `Mint Now` : insufficentBalance ? `Insufficient Funds` : `Mint Disabled`}</span>
                             </div>
                           }
                         </button>
@@ -671,7 +671,7 @@ function MintPage() {
                     <img
                       src="/assets/icons/info.webp"
                       alt="info icon"
-                      className="w-full md:w-[30%] lg:w-[30%] h-auto ml-[1rem] transition-transform duration-200 hover:scale-110 "
+                      className="w-full md:w-[30%] h-auto ml-[1rem] transition-transform duration-200 hover:scale-110 "
                       onClick={handleInfoClick} 
                     />
                   </div>
@@ -855,7 +855,7 @@ function MintPage() {
                 {/* Minting button */}
                 <div
                   className={`w-[40%] justify-center items-center inline-flex transition-transform duration-200 
-                      ${(isAllowed && !mintingNFT) || !walletAddr ? `hover:scale-105` : ``}`}
+                      ${(isAllowed && !mintingNFT) || currentUser?.walletAddr === '' ? `hover:scale-105` : ``}`}
                   onMouseEnter={() => isAllowed ? setGhostExcited(true) : setGhostExcited(false)}
                   onMouseLeave={() => !mintingNFT ? setGhostExcited(false) : setGhostExcited(true)}
                 >
@@ -875,12 +875,12 @@ function MintPage() {
                       :
                       <button
                         className={`h-[80px] w-[250px] rounded-full border justify-center items-center inline-flex shadow-[0px_4px_4px_0px_#FFFBEF_inset,0px_-4px_4px_0px_rgba(255,249,228,0.48),0px_5px_4px_0px_rgba(232,140,72,0.48)] 
-                          ${isAllowed || !walletAddr ?
+                          ${isAllowed || currentUser?.walletAddr === '' ?
                             `bg-[#FFDC62] border-[#E59E69] `
                             :
                             `bg-slate-400 border-slate-400`}`}
-                        disabled={(!isAllowed || mintingNFT) && walletAddr}
-                        onClick={handleMintOrConnect}>
+                        disabled={(!isAllowed || mintingNFT) && currentUser.walletAddr !== ''}
+                        onClick={handleMintOrBind}>
                         {mintingNFT ?
                           <MoonLoader color={"#E59E69"} size={40} />
                           :
@@ -890,7 +890,7 @@ function MintPage() {
                               textShadow: "0px 2px 0.6px rgba(240, 139, 0, 0.66)",
                             }}
                           >
-                            <span className="">{!walletAddr ? `Connect Wallet` : isAllowed ? `Mint Now` : insufficentBalance ? `Insufficient Funds` : `Mint Disabled`}</span>
+                            <span className="">{currentUser?.walletAddr === '' ? `Bind Wallet` : isAllowed ? `Mint Now` : insufficentBalance ? `Insufficient Funds` : `Mint Disabled`}</span>
                           </div>
                         }
                       </button>
@@ -902,7 +902,7 @@ function MintPage() {
                   <img
                     src="/assets/icons/info.webp"
                     alt="info icon"
-                    className="w-[30%] h-auto ml-[1rem] transition-transform duration-200 hover:scale-110 "
+                    className="w-[2rem] h-auto ml-[1rem] transition-transform duration-200 hover:scale-110 "
                     onClick={handleInfoClick} 
                   />
                 </div>
@@ -945,21 +945,18 @@ function MintPage() {
             ? window.innerWidth > 500  ? '': 'flex-col'
             : `flex-col`}`}>
           {/* wallet binding panel */}
-          <div className="flex">
+          <div className="flex transiton-all duration-300">
             <WalletBindingPanel className="w-full lx:w-1/2 my-auto p-12" />
           </div>
 
-          {!bindingWallet ?
-            <button
-              className={`text-2xl rounded-lg m-8 mt-0 py-2 px-8 hover:scale-110 transition-all duration-300
-                ${walletAddr && !bindingWallet ? `bg-amber-400` : `bg-red-400 `}`}
-              onClick={handleBackToMint}
-            >
-              {walletAddr && !bindingWallet ? `Back to Mint` : `Close`}
-            </button>
-            :
-            <></>
-          }
+          <button
+            className={`text-2xl rounded-lg m-8 mt-0 py-2 px-8 hover:scale-110 transition-all duration-300
+              ${walletAddr && !bindingWallet ? `bg-amber-400` : bindingWallet ? `bg-slate-400` : `bg-red-400 `}`}
+            disabled={bindingWallet}
+            onClick={handleBackToMint}
+          >
+            {walletAddr && !bindingWallet ? `Back to Mint` : `Close`}
+          </button>
         </div>
         :
         <></>

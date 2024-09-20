@@ -1,12 +1,21 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { PropTypes } from 'prop-types';
 import { useWalletModal } from '@solana/wallet-adapter-react-ui';
 import { useWalletMultiButton } from '@solana/wallet-adapter-base-ui';
 import { useAppDispatch } from '../hooks/storeHooks';
 import { useNavigate } from 'react-router-dom/dist';
-import { getUser, fetchDates, useMintDate } from '../sagaStore/slices';
-import { useUserDetails, useBindWalletLoading, useUserAuthenticated, useAuthLoading, logOut } from '../sagaStore/slices';
+import { getUser, fetchDates, useMintDate, checkUserLastPeriodicBatchTime } from '../sagaStore/slices';
+import {
+  useUserDetails,
+  useBindWalletLoading,
+  useUserAuthenticated,
+  useAuthLoading,
+  useUserLastPeriodicBatchTime,
+  useUserLastPeriodicBatchTimeLoading,
+  logOut,
+} from '../sagaStore/slices';
 import { toast } from 'react-toastify';
+import { Timestamp } from 'firebase/firestore';
 
 const ClickerController = ({ Children }) => {
   const dispatch = useAppDispatch();
@@ -25,6 +34,11 @@ const ClickerController = ({ Children }) => {
   });
   const { visible: isModalVisible, setVisible: setModalVisible } = useWalletModal();
   const [isPhantomInstalled] = useState(window.phantom?.solana?.isPhantom);
+  const userLastPeriodicBatchTimeLoading = useUserLastPeriodicBatchTimeLoading();
+  const lastPeriodicBatchTime = useUserLastPeriodicBatchTime();
+  const [currentPeriodicBatchTime, setCurrentPeriodicBatchTime] = useState(null);
+  const timeoutIdRef = useRef(null);
+  const retryCountRef = useRef(0);
 
   const handleLogout = () => {
     dispatch(logOut());
@@ -48,10 +62,10 @@ const ClickerController = ({ Children }) => {
   // check if user have a referrer or not
   useEffect(() => {
     if (currentUser) {
-      if (currentUser.referralData.length === 0) {
-        toast.warning("Suspicious Account detected. Logging out automatically.");
+      if (!currentUser.referralData || currentUser.referralData === '') {
+        toast.warning('Suspicious Account detected. Logging out automatically.');
         handleLogout();
-      } 
+      }
     }
   }, [currentUser]);
 
@@ -93,6 +107,149 @@ const ClickerController = ({ Children }) => {
   }, [currentUser?.walletAddr, publicKey, connectingWallet, walletConnected, isModalVisible]);
 
   useEffect(() => {}, [publicKey]);
+
+  // Init countdown
+  const initCountdownForNextInterval = () => {
+    console.log('init countdown');
+    // reset retry count
+    retryCountRef.current = 0;
+    let lastBatchTimeRef;
+    if (lastPeriodicBatchTime instanceof Timestamp === false) {
+      lastBatchTimeRef = lastPeriodicBatchTime;
+    } else {
+      lastBatchTimeRef = lastPeriodicBatchTime.toDate().toISOString();
+    }
+    // console.log("init lastBatchTimeRef: ", lastBatchTimeRef);
+    setCurrentPeriodicBatchTime(lastBatchTimeRef);
+
+    // Schedule the next check for the next 5-minute interval
+    const timeUntilNextInterval = calculateNextInterval();
+    console.log('timeUntilNextInterval: ', timeUntilNextInterval);
+
+    if (timeoutIdRef.current) {
+      clearTimeout(timeoutIdRef.current);
+      console.log('Cleared timeout with in init: ', timeoutIdRef.current);
+    }
+
+    //random wait time between 0 - 5 seconds
+    const randomWaitTime = Math.floor(Math.random() * 5000);
+    console.log('randomWaitTime: ', randomWaitTime);
+    timeoutIdRef.current = setTimeout(() => {
+      console.log('Dispatching scheduled check interval');
+      dispatch(checkUserLastPeriodicBatchTime());
+    }, timeUntilNextInterval + randomWaitTime);
+  };
+
+  const calculateNextInterval = () => {
+    const now = new Date();
+    const nextInterval = new Date();
+
+    // Get schedule parameters from env
+    const scheduleHours = process.env.REACT_APP_SCHEDULE_INTERVAL_HOURS || '*';
+    const scheduleMinutes = process.env.REACT_APP_SCHEDULE_INTERVAL_MINUTES || '*';
+
+    console.log('scheduleHours', scheduleHours);
+    console.log('scheduleHours === *', scheduleHours === '*');
+
+    if (scheduleHours === '*') {
+      const minutesInterval = scheduleMinutes === '*' ? 1 : parseInt(scheduleMinutes, 10);
+      let minutes = Math.ceil(now.getUTCMinutes() / minutesInterval) * minutesInterval;
+      // following firebase cron job logic
+      if (minutes >= 60) {
+        minutes = 0;
+        nextInterval.setUTCHours(nextInterval.getUTCHours() + 1); // Move to the next hour
+      }
+      nextInterval.setUTCMinutes(minutes, 0, 0);
+
+      // If the next interval is the current time or earlier, move to the next interval block
+      if (nextInterval.getTime() <= now.getTime()) {
+        console.log('same interval, move to next');
+        nextInterval.setUTCMinutes(nextInterval.getUTCMinutes() + minutesInterval, 0, 0);
+      }
+      console.log('minutesInterval', minutesInterval);
+      console.log('test next minute: ', minutes);
+
+      // Calculate time until the next interval
+      const timeUntilNextInterval = nextInterval.getTime() - now.getTime();
+      return timeUntilNextInterval;
+    } else {
+      const hoursInterval = parseInt(scheduleHours, 10);
+      let hours = Math.ceil(now.getUTCHours() / hoursInterval) * hoursInterval;
+
+      // following firebase cron job logic
+      if (hours >= 24) {
+        hours = 0;
+        nextInterval.setUTCDate(nextInterval.getUTCDate() + 1); // Move to the next day
+      }
+      nextInterval.setUTCHours(hours, 0, 0, 0);
+
+      // If the next interval is the current time or earlier, move to the next interval block
+      if (nextInterval.getTime() <= now.getTime()) {
+        console.log('same interval, move to next');
+        nextInterval.setUTCHours(nextInterval.getUTCHours() + hoursInterval, 0, 0, 0);
+      }
+      console.log('test next hour: ', hours);
+
+      // Calculate time until the next interval
+      const timeUntilNextInterval = nextInterval.getTime() - now.getTime();
+      return timeUntilNextInterval;
+    }
+  };
+
+  const scheduleCheckForNextInterval = () => {
+    let lastBatchTimeRef;
+    if (lastPeriodicBatchTime instanceof Timestamp === false) {
+      lastBatchTimeRef = lastPeriodicBatchTime;
+    } else {
+      lastBatchTimeRef = lastPeriodicBatchTime.toDate().toISOString();
+    }
+
+    if (!currentPeriodicBatchTime) {
+      initCountdownForNextInterval();
+      return;
+    }
+
+    if (currentPeriodicBatchTime === lastBatchTimeRef) {
+      // If the batch hasn't finished, apply retry logic with increasing delay
+      retryCountRef.current++;
+
+      if (retryCountRef.current === 1) {
+        if (timeoutIdRef.current) {
+          clearTimeout(timeoutIdRef.current);
+        }
+        timeoutIdRef.current = setTimeout(() => {
+          dispatch(checkUserLastPeriodicBatchTime());
+        }, 10 * 1000); // 10 seconds
+      } else if (retryCountRef.current === 2) {
+        if (timeoutIdRef.current) {
+          clearTimeout(timeoutIdRef.current);
+        }
+        timeoutIdRef.current = setTimeout(() => {
+          dispatch(checkUserLastPeriodicBatchTime());
+        }, 30 * 1000); // 30 seconds
+      } else {
+        initCountdownForNextInterval();
+      }
+    } else {
+      // If batch success and is finished, reset the retry counter
+      dispatch(getUser());
+      initCountdownForNextInterval();
+    }
+  };
+
+  useEffect(() => {
+    // console.log("Loading: ", userLastPeriodicBatchTimeLoading);
+    // console.log("lastPeriodicBatchTime null? : ", lastPeriodicBatchTime);
+    if (!lastPeriodicBatchTime || userLastPeriodicBatchTimeLoading) return;
+    scheduleCheckForNextInterval();
+    return () => {
+      if (timeoutIdRef.current) {
+        clearTimeout(timeoutIdRef.current);
+        // console.log("Cleared timeout with ID: ", timeoutIdRef.current);
+      }
+    };
+  }, [dispatch, userLastPeriodicBatchTimeLoading, lastPeriodicBatchTime]);
+
   return (
     <div className="overflow-hidden">
       <Children />

@@ -62,7 +62,7 @@ const WalletBindingPanel = () => {
       } else {
         console.log(`no wallet selected`);
       }
-    } else if (disconnectingWallet) {
+    } else if (disconnectingWallet && user.walletAddr === '') {
       onDisconnect();
       setDisconnectingWallet(false);
     }
@@ -189,7 +189,8 @@ const WalletBindingPanel = () => {
 
       {/* Mobile wallet panel */}
       <div
-        className="w-full h-full xl:hidden flex flex-col items-center justify-center my-auto rounded-2xl text-white text-center bg-contain p-[4rem] apy-[6rem] xs:p-[6rem]"
+        className={`w-full h-full xl:hidden flex flex-col items-center justify-center my-auto rounded-2xl text-white text-center bg-contain
+          ${window.innerHeight < 800 ? 'p-[3rem]' : 'p-[3rem] px-[4rem]'}`} 
         style={{
           backgroundImage: `url("/assets/images/clicker-character/wallet-binding-mobile-bg.webp")`,
           backgroundPosition: 'center',
@@ -232,69 +233,73 @@ const WalletBindingPanel = () => {
         </div>
 
         {/* wallet info */}
-        <div className="flex flex-col items-center h-auto my-2 xs:my-6 pb-[2rem] xs:pb-[6rem]">
-          {/* wallet binding info */}
-          {user?.walletAddr ? (
-            <div className="flex flex-col mb-3 xs:mb-6">
-              <span className="text-amber-500 text-xl xl:text-2xl mb-6">Current Wallet</span>
-              {!bindingWallet ? (
-                <span className="flex flex-col items-center justify-center gap-2">
-                  <div className="flex flex-row">
-                    <WalletIcon wallet={{ adapter: { icon: walletIcon, name: walletName } }} className="w-6 mr-2" />
-                    <input
-                      type="text"
-                      value={user?.walletAddr}
-                      readOnly={true}
-                      className="w-full bg-[#00101b] rounded-lg p-3 text-sm font-medium font-outfit tracking-wide"
-                    />
-                  </div>
-                  <div className="flex flex-col items-center w-[60%] relative">
-                    <button
-                      type="button"
-                      onClick={copyWalletAddr}
-                      className=" bg-[#FA0] shadow-[0px_4px_4px_0px_rgba(255,210,143,0.61)_inset] border-[1px] border-[#FFAA00] rounded-lg flex items-center justify-center w-[256px] h-[40px] text-xs tracking-wide px-2 hover:bg-[#FFC85A] hover:shadow-[0px_1px_2px_0px_rgba(198,115,1,0.66)] hover:border-[#FFC85A]  hover:scale-105 transition-transform duration-200"
-                      style={{
-                        boxShadow: '0px 4px 4px 0px rgba(255, 210, 143, 0.61) inset',
-                      }}
-                    >
-                      <FaCopy />
-                      <span className="hover:text-shadow-[0px_2px_0.6px_rgba(240,139,0,0.66)]">&nbsp;Copy</span>
-                    </button>
-                  </div>
-                </span>
-              ) : (
-                <></>
-              )}
-            </div>
-          ) : (
-            <span className="w-[50%] text-sm xl:text-base">This account is NOT bound to any wallet yet</span>
-          )}
-
-          <div className="flex w-full h-auto items-center justify-center mt-2 xl:mt-4">
-            {user?.walletAddr === `${publicKey}` ? (
-              bindingWallet || disconnectingWallet ? (
-                <MoonLoader color={'#FFB23F'} size={40} />
-              ) : (
-                <button
-                  disabled={bindingWallet}
-                  className="bg-red-400 rounded-3xl px-[2rem] py-[1rem] hover:scale-110 transition-all duration-300"
-                  onClick={handleDisbindWallet}
-                >
-                  Disconnect
-                </button>
-              )
-            ) : bindingWallet || connectingWallet ? (
+        <div className="w-64 h-64 flex flex-col my-2 xs:my-6 pb-[2rem] xs:pb-[6rem]">
+          {bindingWallet || disconnectingWallet ? (
+            <div className='flex w-full h-full items-center justify-center'>
               <MoonLoader color={'#FFB23F'} size={40} />
-            ) : (
-              <button
-                disabled={bindingWallet}
-                className="bg-amber-400 w-32 rounded-lg py-2 px-4 hover:scale-110 transition-all duration-300"
-                onClick={handleConnectWallet}
-              >
-                Bind
-              </button>
-            )}
-          </div>
+            </div>
+            )
+            :
+            (
+            <div className='w-full h-full flex flex-col items-center justify-center'>
+              {user?.walletAddr ? (
+                <div className="flex flex-col mb-3 xs:mb-6">
+                  <span className="text-amber-500 text-xl xl:text-2xl mb-6">Current Wallet</span>
+                  {!bindingWallet ? (
+                    <span className="flex flex-col items-center justify-center gap-2">
+                      <div className="flex flex-row">
+                        <WalletIcon wallet={{ adapter: { icon: walletIcon, name: walletName } }} className="w-6 mr-2" />
+                        <input
+                          type="text"
+                          value={user?.walletAddr}
+                          readOnly={true}
+                          className="w-full bg-[#00101b] rounded-lg p-3 text-sm font-medium font-outfit tracking-wide"
+                        />
+                      </div>
+                      <div className="flex flex-col items-center w-[60%] relative">
+                        <button
+                          type="button"
+                          onClick={copyWalletAddr}
+                          className=" bg-[#FA0] shadow-[0px_4px_4px_0px_rgba(255,210,143,0.61)_inset] border-[1px] border-[#FFAA00] rounded-lg flex items-center justify-center w-[256px] h-[40px] text-xs tracking-wide px-2 hover:bg-[#FFC85A] hover:shadow-[0px_1px_2px_0px_rgba(198,115,1,0.66)] hover:border-[#FFC85A]  hover:scale-105 transition-transform duration-200"
+                          style={{
+                            boxShadow: '0px 4px 4px 0px rgba(255, 210, 143, 0.61) inset',
+                          }}
+                        >
+                          <FaCopy />
+                          <span className="hover:text-shadow-[0px_2px_0.6px_rgba(240,139,0,0.66)]">&nbsp;Copy</span>
+                        </button>
+                      </div>
+                    </span>
+                  ) : (
+                    <></>
+                  )}
+                </div>
+              ) : (
+                <span className="w-[80%] my-auto text-sm xl:text-base">This account is NOT bound to any wallet yet</span>
+              )}
+              {/* actions */}
+              <div className="flex w-full h-auto items-center justify-center mt-2 xl:mt-4">
+                {user?.walletAddr === `${publicKey}` ?
+                  <button
+                    disabled={bindingWallet}
+                    className="bg-red-400 rounded-3xl px-[2rem] py-[1rem] hover:scale-110 transition-all duration-300"
+                    onClick={handleDisbindWallet}
+                  >
+                    Disconnect
+                  </button>
+                :
+                  <button
+                    disabled={bindingWallet}
+                    className="bg-amber-400 w-32 rounded-lg py-2 px-4 hover:scale-110 transition-all duration-300"
+                    onClick={handleConnectWallet}
+                  >
+                    Bind
+                  </button>
+                }
+              </div>
+            </div> 
+            )
+          }
         </div>
       </div>
 
