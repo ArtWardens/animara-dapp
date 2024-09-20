@@ -190,7 +190,7 @@ const WalletBindingPanel = () => {
       {/* Mobile wallet panel */}
       <div
         className={`w-full h-full xl:hidden flex flex-col items-center justify-center my-auto rounded-2xl text-white text-center bg-contain
-          ${window.innerHeight < 800 ? 'p-[3rem]' : 'p-[3rem] px-[4rem]'}`} 
+          ${window.innerHeight < 800 ? 'p-[3rem]' : 'p-[3rem] px-[4rem]'}`}
         style={{
           backgroundImage: `url("/assets/images/clicker-character/wallet-binding-mobile-bg.webp")`,
           backgroundPosition: 'center',
@@ -235,13 +235,11 @@ const WalletBindingPanel = () => {
         {/* wallet info */}
         <div className="w-64 h-64 flex flex-col my-2 xs:my-6 pb-[2rem] xs:pb-[6rem]">
           {bindingWallet || disconnectingWallet ? (
-            <div className='flex w-full h-full items-center justify-center'>
+            <div className="flex w-full h-full items-center justify-center">
               <MoonLoader color={'#FFB23F'} size={40} />
             </div>
-            )
-            :
-            (
-            <div className='w-full h-full flex flex-col items-center justify-center'>
+          ) : (
+            <div className="w-full h-full flex flex-col items-center justify-center">
               {user?.walletAddr ? (
                 <div className="flex flex-col mb-3 xs:mb-6">
                   <span className="text-amber-500 text-xl xl:text-2xl mb-6">Current Wallet</span>
@@ -275,19 +273,21 @@ const WalletBindingPanel = () => {
                   )}
                 </div>
               ) : (
-                <span className="w-[80%] my-auto text-sm xl:text-base">This account is NOT bound to any wallet yet</span>
+                <span className="w-[80%] my-auto text-sm xl:text-base">
+                  This account is NOT bound to any wallet yet
+                </span>
               )}
               {/* actions */}
               <div className="flex w-full h-auto items-center justify-center mt-2 xl:mt-4">
-                {user?.walletAddr === `${publicKey}` ?
+                {user?.walletAddr === `${publicKey}` ? (
                   <button
                     disabled={bindingWallet}
                     className="bg-red-400 rounded-3xl px-[2rem] py-[1rem] hover:scale-110 transition-all duration-300"
                     onClick={handleDisbindWallet}
                   >
-                    Disconnect
+                    Unbind
                   </button>
-                :
+                ) : (
                   <button
                     disabled={bindingWallet}
                     className="bg-amber-400 w-32 rounded-lg py-2 px-4 hover:scale-110 transition-all duration-300"
@@ -295,11 +295,10 @@ const WalletBindingPanel = () => {
                   >
                     Bind
                   </button>
-                }
+                )}
               </div>
-            </div> 
-            )
-          }
+            </div>
+          )}
         </div>
       </div>
 
