@@ -383,7 +383,7 @@ function MintPage() {
           />
 
               {/* Mint info section */}
-              <div className={`w-full xl:w-[40%] text-amber-500 transition-all duration-1000 z-[40]
+              <div className={`w-full xl:w-[40%] text-amber-500 transition-all duration-500 z-[40]
                 ${showTitle ? `opacity-100` : `opacity-0`}`
               }>
                 {/* title */}
@@ -402,7 +402,7 @@ function MintPage() {
                 </div>
 
                 {/* step 1 text */}
-                <div className={`w-full mb-8 transition-all duration-1000
+                <div className={`w-full mb-8 transition-all duration-500
                     ${showTextOne ? `opacity-100` : `opacity-0`}
                   `}>
                   <div className="transition-all duration-500 hover:scale-105">
@@ -423,7 +423,7 @@ function MintPage() {
                 </div>
 
                 {/* step 2 text */}
-                <div className={`w-full mb-8 transition-all duration-1000
+                <div className={`w-full mb-8 transition-all duration-500
                     ${showTextTwo ? `opacity-100` : `opacity-0`}
                   `}>
                   <div className="transition-all duration-500 hover:scale-105">
@@ -444,7 +444,7 @@ function MintPage() {
                 </div>
 
                 {/* step 3 text */}
-                <div className={`mb-8 pb-6 transition-all duration-1000
+                <div className={`mb-8 pb-6 transition-all duration-500
                     ${showTextThree ? `opacity-100` : `opacity-0`}
                   `}>
                   <div className="transition-all duration-500 hover:scale-105">
@@ -914,7 +914,7 @@ function MintPage() {
               </div>
 
               {/* Desktop Ghost character view */}
-              <div className={`w-[30%] ml-[-30rem] hidden xl:flex items-end mr-[-10rem] animate-pulse z-[50] transition-all duration-1000 pointer-events-none ${slideCharacter ? `translate-y-0 opacity-100` : `translate-y-60 opacity-0`}`}>
+              <div className={`w-[30%] ml-[-30rem] hidden xl:flex items-end mr-[-10rem] animate-pulse z-[50] transition-all duration-500 pointer-events-none ${slideCharacter ? `translate-y-0 opacity-100` : `translate-y-60 opacity-0`}`}>
                 <video
                   key={videoSource}
                   className="rounded-3xl"

@@ -116,7 +116,7 @@ const UpgradeDetailsModal = ({ upgrade, isMaxLevel, onClose }) => {
 
           {/* Desktop upgrade message panel view */}
           <div
-            className={`w-full hidden xl:flex flex-col items-center justify-center px-[8rem] py-[4rem] xl:py-[8rem] rounded-xl transition-all duration-1000 ${showModal ? `opacity-100 scale-100` : `opacity-0 scale-0`}`}
+            className={`w-full hidden xl:flex flex-col items-center justify-center px-[8rem] py-[4rem] xl:py-[8rem] rounded-xl transition-all duration-300 ${showModal ? `opacity-100 scale-100` : `opacity-0 scale-0`}`}
             style={{
               backgroundImage: `url("/assets/images/clicker-character/successfull-bg.webp")`,
               backgroundSize: "contain",
@@ -184,7 +184,7 @@ const UpgradeDetailsModal = ({ upgrade, isMaxLevel, onClose }) => {
 
           {/* Mobile upgrade message panel view */}      
           <div
-            className={`flex xl:hidden flex-col items-center justify-center px-[4rem] py-[12rem] rounded-xl transition-all duration-1000 ${showModal ? `opacity-100 scale-100` : `opacity-0 scale-0`}`}
+            className={`flex xl:hidden flex-col items-center justify-center px-[4rem] py-[12rem] rounded-xl transition-all duration-300 ${showModal ? `opacity-100 scale-100` : `opacity-0 scale-0`}`}
             style={{
               backgroundImage: `url("/assets/images/clicker-character/successfull-mobile-bg.png")`,
               backgroundSize: "contain",
@@ -250,7 +250,7 @@ const UpgradeDetailsModal = ({ upgrade, isMaxLevel, onClose }) => {
           <>          
           {/* Desktop upgrade details panel view */}
           <div
-            className={`hidden xl:block relative px-[4rem] py-[8rem] rounded-xl w-[90%] max-w-[800px] bg-no-repeat bg-contain transition-all duration-1000 ${showModal ? `opacity-100 scale-100` : `opacity-0 scale-0`}`}
+            className={`hidden xl:block relative px-[4rem] py-[8rem] rounded-xl w-[90%] max-w-[800px] bg-no-repeat bg-contain transition-all duration-300 ${showModal ? `opacity-100 scale-100` : `opacity-0 scale-0`}`}
             style={{
               backgroundImage: `url("/assets/images/clicker-character/upgrades-details-bg.webp")`,
               backgroundPosition: "center",
@@ -342,7 +342,7 @@ const UpgradeDetailsModal = ({ upgrade, isMaxLevel, onClose }) => {
 
           {/* Mobile upgrade details panel view */}
           <div
-            className={`relative xl:hidden px-[6rem] py-[8rem] rounded-xl bg-no-repeat bg-contain transition-all duration-1000 ${showModal ? `opacity-100 scale-100` : `opacity-0 scale-0`}`}
+            className={`relative xl:hidden px-[6rem] py-[8rem] rounded-xl bg-no-repeat bg-contain transition-all duration-300 ${showModal ? `opacity-100 scale-100` : `opacity-0 scale-0`}`}
             style={{
               backgroundImage: `url("/assets/images/clicker-character/upgrades-details-mobile-bg.webp")`,
               backgroundPosition: "center",
