@@ -727,7 +727,7 @@ function ReferralPage (){
                       </div>
                     :
                       getTotalClaimable() === `none` ?
-                        <div className="w-full h-full flex-col place-content-center inline-flex xs:px-[6rem] py-[6rem] sm:py-[6.5rem]">
+                        <div className="w-full h-full p-4 flex-col place-content-center inline-flex">
                           <span className="text-center w-full">Nothing to claim yet</span>
                           <span className="text-center w-full text-xs font-outfit">Get your referrals to mint an NFT now!</span>
                         </div>
