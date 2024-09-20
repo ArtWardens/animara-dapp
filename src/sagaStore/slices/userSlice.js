@@ -54,6 +54,7 @@ const userInitialState = {
   lockDate: null,
   earlyBirdDate: null,
   levelUpCoinReward: 0,
+  claimCashbackLoading: false,
 };
 
 export const userSlice = createSlice({
@@ -482,6 +483,17 @@ export const userSlice = createSlice({
       state.nftMinted = null;
       state.mintingNFT = false;
     },
+    claimCashback: (state, { payload }) => {
+      state.claimCashbackLoading = true;
+    },
+    claimCashbackSuccess: (state, { payload }) => {
+      state.basicClaimable = payload.updatedBasicClaimable;
+      state.nftClaimable = payload.updatedNFTClaimable;
+      state.claimCashbackLoading = false;
+    },
+    claimCashbackError: (state, { payload }) => {
+      state.claimCashbackLoading = false;
+    },
     fetchDates: (state, { payload }) => {
     },
     fetchDatesSuccess: (state, { payload }) => {
@@ -574,6 +586,9 @@ export const {
   mintNFTSuccess,
   mintNFTError,
   resetMintedNFT,
+  claimCashback,
+  claimCashbackSuccess,
+  claimCashbackError,
   fetchDates,
   fetchDatesSuccess,
   fetchDatesError,
@@ -624,6 +639,7 @@ export const useNftClaimable = () => useAppSelector((state) => state.user.nftCla
 export const useBindWalletLoading = () => useAppSelector((state) => state.user.bindWalletLoading);
 export const useMintingNFT = () => useAppSelector((state) => state.user.mintingNFT);
 export const useNFTMinted = () => useAppSelector((state) => state.user.nftMinted);
+export const useClaimCashbackLoading = () => useAppSelector((state) => state.user.claimCashbackLoading);
 export const useMintDate = () => useAppSelector((state) => state.user.mintDate);
 export const useLockDate = () => useAppSelector((state) => state.user.lockDate);
 export const useEarlyBirdDate = () => useAppSelector((state) => state.user.earlyBirdDate);
