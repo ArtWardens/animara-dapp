@@ -102,27 +102,27 @@
   }
 
   body:hover {
-    cursor: url('../public/assets/icons/cursor_01.svg') 10 12, auto !important;
+    cursor: url('../public/assets/icons/cursor_01.svg') 7 14, auto !important;
   }
   
   body:active {
-    cursor: url('../public/assets/icons/cursor_07.svg') 10 12, auto !important;
+    cursor: url('../public/assets/icons/cursor_07.svg') 7 14, auto !important;
   }
   
   a:hover, a:focus, button:hover, button:focus, input:hover, input:focus, label:hover, label:focus {
-    cursor: url('../public/assets/icons/cursor_01.svg') 10 12, auto !important;
+    cursor: url('../public/assets/icons/cursor_01.svg') 7 14, auto !important;
   }
 
   a:active, button:active, input:active, label:active {
-    cursor: url('../public/assets/icons/cursor_07.svg') 10 12, auto !important;
+    cursor: url('../public/assets/icons/cursor_07.svg') 7 14, auto !important;
   }
 
   input[type="checkbox"]:hover, input[type="checkbox"]:focus {
-    cursor: url('../public/assets/icons/cursor_01.svg') 10 12, auto !important;
+    cursor: url('../public/assets/icons/cursor_01.svg') 7 14, auto !important;
   }
 
   input[type="checkbox"]:active {
-    cursor: url('../public/assets/icons/cursor_07.svg') 10 12, auto !important;
+    cursor: url('../public/assets/icons/cursor_07.svg') 7 14, auto !important;
   }
 
   .gradient-blue-transparent-fuschia-bottomRight {
