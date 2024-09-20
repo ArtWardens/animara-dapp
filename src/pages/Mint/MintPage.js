@@ -591,7 +591,7 @@ function MintPage() {
                 <img
                   src="/assets/images/clicker-character/nft-treasureBox.webp"
                   alt="NFT Treasure Box"
-                  className="object-contain w-96 h-96 -my-10 hover:animate-treasureBoxTwerk"
+                  className="object-contain w-72 h-72 hover:animate-treasureBoxTwerk"
                 />
 
                 {/* mint price */}
