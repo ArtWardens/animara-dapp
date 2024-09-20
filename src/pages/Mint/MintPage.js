@@ -648,7 +648,7 @@ function MintPage() {
                                   `bg-[#FFDC62] border-[#E59E69] `
                                   :
                                   `bg-slate-400 border-slate-400`}`}
-                              disabled={(!isAllowed || mintingNFT) && walletAddr}
+                              disabled={(!isAllowed || mintingNFT) && currentUser?.walletAddr !== ''}
                               onClick={handleMintOrBind}>
                               {mintingNFT ?
                                 <MoonLoader color={"#E59E69"} size={40} />
@@ -953,11 +953,11 @@ function MintPage() {
 
           <button
             className={`text-2xl rounded-lg m-8 mt-0 py-2 px-8 hover:scale-110 transition-all duration-300
-              ${walletAddr && !bindingWallet ? `bg-amber-400` : bindingWallet ? `bg-slate-400` : `bg-red-400 `}`}
+              ${currentUser?.walletAddr !== '' && !bindingWallet ? `bg-amber-400` : bindingWallet ? `bg-slate-400` : `bg-red-400 `}`}
             disabled={bindingWallet}
             onClick={handleBackToMint}
           >
-            {walletAddr && !bindingWallet ? `Back to Mint` : `Close`}
+            {currentUser?.walletAddr !== '' && !bindingWallet ? `Back to Mint` : `Close`}
           </button>
         </div>
         :
