@@ -177,7 +177,7 @@ function ReferralPage() {
   const getTotalClaimable = useCallback(() => {
     if (!currentUser) { return `none`; }
 
-    if (basicClaimable === 0 && nftClaimable === 0) { return `none`; }
+    if (basicClaimable === 0 && (!currentUser.ownsNFT || (currentUser.ownsNFT && nftClaimable === 0))) { return `none`; }
 
     // selectively combine both claimable amt based on if use owns nft
     return `${currentUser.ownsNFT ? (basicClaimable + nftClaimable).toFixed(4) : basicClaimable.toFixed(4)} SOL`;
@@ -492,11 +492,11 @@ function ReferralPage() {
 
                           {/* Claim button */}
                           <div className={`my-auto justify-center items-center inline-flex transition-transform duration-200
-                            ${claimCashbackLoading || basicClaimable === 0 ? '' : 'hover:scale-105'}`}>
+                            ${claimCashbackLoading ||  getTotalClaimable() === 'none' ? '' : 'hover:scale-105'}`}>
                             <button
-                              disabled={claimCashbackLoading || basicClaimable === 0}
+                              disabled={claimCashbackLoading ||  getTotalClaimable() === 'none'}
                               className={`h-[48px] w-[160px] rounded-full border justify-center items-center inline-flex shadow-[0px_4px_4px_0px_#FFFBEF_inset,0px_-4px_4px_0px_rgba(255,249,228,0.48),0px_5px_4px_0px_rgba(232,140,72,0.48)] cursor-pointer
-                                ${claimCashbackLoading || basicClaimable === 0 ?
+                                ${claimCashbackLoading ||  getTotalClaimable() === 'none' ?
                                   " border-slate-300 bg-slate-300"
                                   :
                                   " border-amber-600 bg-amber-300 hover:bg-amber-400"}`}
@@ -508,16 +508,16 @@ function ReferralPage() {
                                 :
                                 <div
                                   className={`text-center text-white 
-                                  ${!currentUser.walletAddr ? 'text-xl' : claimCashbackLoading || basicClaimable === 0 ? 'text-sm ' : 'text-2xl'}`}
+                                  ${!currentUser.walletAddr ? 'text-xl' : claimCashbackLoading ||  getTotalClaimable() === 'none' ? 'text-sm ' : 'text-2xl'}`}
                                   style={{
-                                    textShadow: `${claimCashbackLoading || basicClaimable === 0 ?
+                                    textShadow: `${claimCashbackLoading ||  getTotalClaimable() === 'none' ?
                                       '0px 2px 0.6px rgb(71, 85, 105, 0.66)'
                                       :
                                       '0px 2px 0.6px rgba(240, 139, 0, 0.66)'
                                       }`
                                   }}
                                 >
-                                  <span className={`hover:text-shadow-none`}>{claimCashbackLoading || basicClaimable === 0 ? 'Claimed Everything' : !currentUser.walletAddr ? `Bind Wallet` : `Claim`}</span>
+                                  <span className={`hover:text-shadow-none ${claimCashbackLoading ? 'animate-pulse': ''}`}>{claimCashbackLoading ? 'Loading' : !currentUser.walletAddr ? `Bind Wallet` : getTotalClaimable() === 'none' ? 'Claimed Everything' : `Claim`}</span>
                                 </div>
                               }
                             </button>
@@ -753,14 +753,14 @@ function ReferralPage() {
 
                             {/* Claim button */}
                             <div className={`my-auto justify-center items-center inline-flex transition-transform duration-200
-                              ${claimCashbackLoading || basicClaimable === 0 ?
+                              ${claimCashbackLoading || getTotalClaimable() === 'none' ?
                                 ''
                                 :
                                 'hover:scale-105'}`}>
                               <button
-                                disabled={claimCashbackLoading || basicClaimable === 0}
+                                disabled={claimCashbackLoading || getTotalClaimable() === 'none'}
                                 className={`h-[4rem] w-[10rem] rounded-full border justify-center items-center inline-flex shadow-[0px_4px_4px_0px_#FFFBEF_inset,0px_-4px_4px_0px_rgba(255,249,228,0.48),0px_5px_4px_0px_rgba(232,140,72,0.48)] cursor-pointer
-                                  ${claimCashbackLoading || basicClaimable === 0 ?
+                                  ${claimCashbackLoading || getTotalClaimable() === 'none' ?
                                     " border-slate-300 bg-slate-300"
                                     :
                                     " border-amber-600 bg-amber-300 hover:bg-amber-400 hover:pl-[24px] hover:pr-[20px] hover:shadow-[0px_4px_4px_0px_rgba(255,210,143,0.61)_inset,0px_4px_4px_0px_rgba(136,136,136,0.48)]"}`}
@@ -772,16 +772,16 @@ function ReferralPage() {
                                   :
                                   <div
                                     className={`text-center 
-                                    ${currentUser.walletAddr === '' ? 'text-white text-xl' : claimCashbackLoading || basicClaimable === 0 ? 'text-slate-100 text-sm ' : 'text-white text-2xl'}`}
+                                    ${currentUser.walletAddr === '' ? 'text-white text-xl' : claimCashbackLoading || getTotalClaimable() === 'none' ? 'text-slate-100 text-sm ' : 'text-white text-2xl'}`}
                                     style={{
-                                      textShadow: `${claimCashbackLoading || basicClaimable === 0 ?
+                                      textShadow: `${claimCashbackLoading || getTotalClaimable() === 'none' ?
                                         '0px 2px 0.6px rgb(71, 85, 105, 0.66)'
                                         :
                                         '0px 2px 0.6px rgba(240, 139, 0, 0.66)'
                                         }`
                                     }}
                                   >
-                                    <span className={`hover:text-shadow-none`}>{claimCashbackLoading || basicClaimable === 0 ? 'Claimed Everything' : currentUser.walletAddr === '' ? `Bind Wallet` : `Claim`}</span>
+                                    <span className={`hover:text-shadow-none ${claimCashbackLoading ? 'animate-pulse': ''}`}>{claimCashbackLoading ? 'Loading' : !currentUser.walletAddr ? `Bind Wallet` : getTotalClaimable() === 'none' ? 'Claimed Everything' : `Claim`}</span>
                                   </div>
                                 }
                               </button>
