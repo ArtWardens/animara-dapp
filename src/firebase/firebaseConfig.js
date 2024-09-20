@@ -48,6 +48,8 @@ const getReferralStats = httpsCallable(functions, "getReferralStats");
 const bindWallet = httpsCallable(functions, "bindWallet");
 const unbindWallet = httpsCallable(functions, "unbindWallet");
 const registerNFT = httpsCallable(functions, "registerNFT");
+const claimCashback = httpsCallable(functions, "claimCashback");
+const cancelCashbackClaim = httpsCallable(functions, "cancelCashbackClaim");
 
 export {
   auth,
@@ -69,4 +71,6 @@ export {
   bindWallet,
   unbindWallet,
   registerNFT,
+  claimCashback,
+  cancelCashbackClaim,
 };

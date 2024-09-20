@@ -34,6 +34,10 @@ import {
   unbindWalletImpl,
 } from '../firebase/clicker';
 import {
+  claimCashbackImpl,
+  cancelCashbackClaimImpl,
+} from '../firebase/cashback.js'
+import {
   closeDailyPopup,
   closeDailyPopupSuccess,
   getEarlyBirdOneTimeTaskList,
@@ -106,6 +110,9 @@ import {
   mintNFT,
   mintNFTSuccess,
   mintNFTError,
+  claimCashback,
+  claimCashbackSuccess,
+  claimCashbackError,
   fetchDates,
   fetchDatesSuccess,
   fetchDatesError,
@@ -121,6 +128,7 @@ import {
   setDashboardData,
 } from "../utils/getTimeRemaining";
 import { mintImpl, fetchMintedNFTImpl } from "../web3/mintNFT.tsx";
+import { finalizeCashbackTxn } from "../web3/claimCashback.js";
 import { fetchAllDatesImpl } from "../firebase/countDown.js";
 
 export function* signupWithEmailSaga({ payload }) {
@@ -524,7 +532,6 @@ export function* mintNFTSaga({ payload }) {
       payload.ownedTokens,
       payload.guards
     );
-    console.log(`fetching minted nft`);
     const result = yield call(fetchMintedNFTImpl, payload.umi, successfulMints);
     // const result = [
     //   {
@@ -560,6 +567,36 @@ export function* mintNFTSaga({ payload }) {
     yield put(mintNFTSuccess(result[0]));
   } catch (error) {
     yield put(mintNFTError(error));
+  }
+}
+
+export function* claimCashbackSaga({ payload }) {
+  let claimId;
+  try {
+    const result = yield call(claimCashbackImpl);
+    const serializedTxn = result.serializedTxn;
+    claimId = result.claimId;
+    yield call(finalizeCashbackTxn, payload.sendTransaction, serializedTxn);
+    toast.success('Cashback claimed!');
+    yield put(claimCashbackSuccess(result));
+  } catch (error) {
+    if (error === "external-error"){
+      toast.error('Cashback claim not avaiable at the moment. Try again later');
+    } else if (error.error?.code === 4001) {
+      // this error happens when user cancels transaction
+      toast.warn('Claim cancelled');
+    } else if (error.error?.code === -32603) {
+      // this error happens when user do not have enough sol to submit transaction
+      toast.warn('Insufficient SOL to send transaction');
+    } else {
+      toast.error('Failed to claim cashback');
+    }
+    // cancel claim in db if already created
+    if (claimId){
+      console.log(`cancelling cashback`);
+      yield call(cancelCashbackClaimImpl, claimId);
+    }
+    yield put(claimCashbackError(error));
   }
 }
 
@@ -600,5 +637,6 @@ export function* userSagaWatcher() {
   yield takeLatest(bindWallet.type, bindWalletSaga);
   yield takeLatest(unbindWallet.type, unbindWalletSaga);
   yield takeLatest(mintNFT.type, mintNFTSaga);
+  yield takeLatest(claimCashback.type, claimCashbackSaga);
   yield takeLatest(fetchDates.type, fetchDatesSaga);
 }
