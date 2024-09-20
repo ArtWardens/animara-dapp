@@ -99,7 +99,7 @@ const ClickerUpgrades = ({ onClose }) => {
           boxShadow:
             "0px 8px 30px 0px rgba(4, 161, 183, 0.40) inset, 0px 8px 30px 0px rgba(32, 0, 99, 0.40)",
           backdropFilter: "blur(15px)",
-          zIndex: 99,
+          zIndex: 100,
         }}
       >
         <div className="absolute flex w-full justify-between -top-9">
