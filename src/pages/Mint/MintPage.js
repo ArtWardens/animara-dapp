@@ -345,12 +345,8 @@ function MintPage() {
 
   return (
     <>
-      <Header />
-
       {/* page background */}
-      <div
-        className={`flex flex-col xl:flex-row items-center min-h-screen w-full 
-          ${mobileMenuOpen ? `hidden` : ``}`}
+      <div className={`min-h-screen flex flex-col z-[-20] ${mobileMenuOpen ? `hidden` : ``}`}
         style={{
           backgroundImage:
             'url("/assets/images/clicker-character/clickerWall.webp")',
@@ -359,123 +355,569 @@ function MintPage() {
           backgroundRepeat: "no-repeat",
           backgroundAttachment: "fixed",
         }}
-      >
-        {/* Page Content */}
-        <div className="w-full flex flex-col xl:flex-row justify-between container pt-[10rem] tracking-wider">
+        >
 
-          {/* Floating Coins */}
-          <img
-            className="absolute right-[5%] lg:right-[50%] top-[20%] lg:top-[20%] transform -translate-x-1/2 -translate-y-1/2 z-[20] opacity-65 w-[60px] lg:w-[120px] pointer-events-none"
-            src="/assets/images/coin-3.webp"
-            alt=""
-          />
+          <Header />
 
-          <img
-            className="absolute right-[12%] lg:right-[45%] top-[50%] lg:top-[50%] transform -translate-x-1/2 -translate-y-1/2 z-[20] opacity-65 w-[40px] lg:w-[120px] pointer-events-none"
-            src="/assets/images/coin-4.webp"
-            alt=""
-          />
+          <main className="flex-1 w-full flex flex-col pb-24">
+            {/* Page Content */}
+            <div className="w-full flex flex-col xl:flex-row justify-center tracking-wider container mx-auto gap-10">
 
-          <img
-            className="absolute left-[12%] lg:left-[17%] bottom-[5%] lg:bottom-[10%] transform -translate-x-1/2 -translate-y-1/2 z-[20] opacity-65 w-[60px] lg:w-[120px] pointer-events-none"
-            src="/assets/images/coin-5.webp"
-            alt=""
-          />
+              {/* Floating Coins */}
+              <img
+                className="absolute right-[5%] lg:right-[50%] top-[20%] lg:top-[20%] transform -translate-x-1/2 -translate-y-1/2 z-[20] opacity-65 w-[60px] lg:w-[120px] pointer-events-none"
+                src="/assets/images/coin-3.webp"
+                alt=""
+              />
 
-          {/* Mint info section */}
-          <div className={`w-full xl:w-[30%] text-amber-500 transition-all duration-1000 z-[40]
-            ${showTitle ? `opacity-100` : `opacity-0`}`
-          }>
-            {/* title */}
-            <div className="w-full py-4 mb-8 text-center xl:text-left">
-              <span
-                className="text-5xl"
+              <img
+                className="absolute right-[12%] lg:right-[45%] top-[50%] lg:top-[50%] transform -translate-x-1/2 -translate-y-1/2 z-[20] opacity-65 w-[40px] lg:w-[120px] pointer-events-none"
+                src="/assets/images/coin-4.webp"
+                alt=""
+              />
+
+              <img
+                className="absolute left-[12%] lg:left-[17%] bottom-[5%] lg:bottom-[10%] transform -translate-x-1/2 -translate-y-1/2 z-[20] opacity-65 w-[60px] lg:w-[120px] pointer-events-none"
+                src="/assets/images/coin-5.webp"
+                alt=""
+              />
+
+              {/* Mint info section */}
+              <div className={`w-full xl:w-[40%] text-amber-500 transition-all duration-1000 z-[40]
+                ${showTitle ? `opacity-100` : `opacity-0`}`
+              }>
+                {/* title */}
+                <div className="w-full py-4 mb-8 text-center xl:text-left">
+                  <span
+                    className="text-5xl"
+                  >
+                    MINT OUR
+                  </span>
+                  <br />
+                  <span
+                    className="text-7xl"
+                  >
+                    NFTs NOW!
+                  </span>
+                </div>
+
+                {/* step 1 text */}
+                <div className={`w-full mb-8 transition-all duration-1000
+                    ${showTextOne ? `opacity-100` : `opacity-0`}
+                  `}>
+                  <div className="transition-all duration-500 hover:scale-105">
+                    <div className="flex items-center gap-8 pb-2">
+                      <img
+                        src={"/assets/images/clicker-character/gem.webp"}
+                        alt="gem"
+                        className="ml-2 w-6 h-6"
+                      />
+                      <h3 className="w-full text-2xl text-white text-wrap ">STEP 1</h3>
+                    </div>
+                    <p
+                      className="text-[#c4c4c4] text-base font-medium font-outfit leading-tight tracking-wide"
+                    >
+                      Mint your nft and unlock your <span className="text-white text-base font-bold leading-tight tracking-wide">Animara (VIP Value Pass)</span> today.
+                    </p>
+                  </div>
+                </div>
+
+                {/* step 2 text */}
+                <div className={`w-full mb-8 transition-all duration-1000
+                    ${showTextTwo ? `opacity-100` : `opacity-0`}
+                  `}>
+                  <div className="transition-all duration-500 hover:scale-105">
+                    <div className="flex items-center gap-8 pb-2">
+                      <img
+                        src={"/assets/images/clicker-character/gem.webp"}
+                        alt="gem"
+                        className="ml-2 w-6 h-6"
+                      />
+                      <h3 className="w-full text-2xl text-white text-wrap ">STEP 2</h3>
+                    </div>
+                    <p
+                      className="text-[#c4c4c4] text-base font-medium font-outfit leading-tight tracking-wide"
+                    >
+                      Link your phantom wallet , start own your <span className="text-white text-base font-bold leading-tight tracking-wide">NFT Character</span> on Animara.
+                    </p>
+                  </div>
+                </div>
+
+                {/* step 3 text */}
+                <div className={`mb-8 pb-6 transition-all duration-1000
+                    ${showTextThree ? `opacity-100` : `opacity-0`}
+                  `}>
+                  <div className="transition-all duration-500 hover:scale-105">
+                    <div className="flex items-center gap-8 pb-2">
+                      <img
+                        src={"/assets/images/clicker-character/gem.webp"}
+                        alt="gem"
+                        className="ml-2 w-6 h-6"
+                      />
+                      <h3 className="w-full text-2xl text-white text-wrap ">STEP 3</h3>
+                    </div>
+                    <p
+                      className="text-[#c4c4c4] text-base font-medium font-outfit leading-tight tracking-wide"
+                    >
+                      Compete in the Animara leaderboard event and compete to win prizes worth up to <span className="text-white text-base font-bold leading-tight tracking-wide">365k USDC</span>!
+                    </p>
+                  </div>
+                </div>
+
+                {/* Mobile Ghost character view */}
+                <div className="w-full z-0 max-h-[50dvh] flex xl:hidden items-center mt-[-4rem] mb-[-10rem] animate-pulse">
+                  {isMobileApp?
+                    <img 
+                      src={videoSource}
+                      alt="ghost"
+                      className="mx-auto rounded-3xl"
+                    />
+                    :
+                    <video
+                      key={videoSource}
+                      className="mx-auto rounded-3xl"
+                      controls={false}
+                      autoPlay
+                      loop
+                      muted
+                      playsInline
+                    >
+                      <source src={videoSource} type="video/webm" />
+                      Your browser does not support the video tag.
+                    </video>
+                  }
+                </div>
+
+                {/* Mobile view mint card */}
+                <div
+                  className="z-10 w-full block xl:hidden rounded-3xl p-3 mt-[2rem] text-white"
+                  style={{
+                    border: "2px solid var(--Color, #F4FBFF)",
+                    background: "rgba(155, 231, 255, 0.58)",
+                    boxShadow:
+                      "0px 8px 30px 0px rgba(4, 161, 183, 0.40) inset, 0px 8px 30px 0px rgba(32, 0, 99, 0.40)",
+                    backdropFilter: "blur(15px)",
+                  }}
+                >
+                  {/* mint card background */}
+                  <div className="absolute flex w-full justify-between -top-8 safari-hidden">
+                    <img
+                      src={"/assets/images/clicker-character/ring01.webp"}
+                      alt="ring"
+                      className="object-cover w-11 absolute left-2"
+                    />
+                    <img
+                      src={"/assets/images/clicker-character/ring01.webp"}
+                      alt="ring"
+                      className="object-cover w-11 opacity-0"
+                    />
+                    <img
+                      src={"/assets/images/clicker-character/ring02.webp"}
+                      alt="ring"
+                      className="object-cover w-11 absolute right-8"
+                    />
+                  </div>
+
+                  {/* card content */}
+                  <div
+                    className="flex flex-col items-center rounded-2xl place-content-center p-6 min-h-[60vh] xl:min-h-[80dvh] 2xl:min-h-[50dvh] space-y-2"
+                    style={{
+                      backgroundImage:
+                        'url("/assets/images/clicker-character/mintBBG.webp")',
+                      backgroundSize: "cover",
+                      backgroundPosition: "center",
+                      backgroundRepeat: "no-repeat",
+                    }}
+                  >
+                    {/* mint countdown */}
+                    {isContainerVisible && (
+                      <div className="p-3 px-6 bg-[#003260] rounded-3xl shadow-inner border border-[#7fc1ff] flex-col justify-self-center items-center gap-2 inline-flex">
+                        <p className="text-md pb-1">Minting Ends In</p>
+                        <div className="h-[50px] justify-start items-center inline-flex gap-1 pb-3">
+                          <div className="w-12 h-1/2 bg-[#003260] shadow-inner flex-col justify-center items-center gap-1 inline-flex">
+                            <div className="w-12 h-8 flex-col justify-center items-center gap-4 flex">
+                              <div className="text-center text-white text-[26px] tracking-wide font-outfit">
+                                {timeLeft.days}
+                              </div>
+                            </div>
+                            <div className="text-center text-white text-[7px] font-outfit uppercase">
+                              Days
+                            </div>
+                          </div>
+                          <span className="text-white font-outfit font-semibold text-2xl">
+                            :
+                          </span>
+                          <div className="w-12 h-1/2 bg-[#003260] shadow-inner flex-col justify-center items-center gap-1 inline-flex">
+                            <div className="w-12 h-8 flex-col justify-center items-center gap-4 flex">
+                              <div className="text-center text-white text-[26px] tracking-wide font-outfit">
+                                {timeLeft.hours}
+                              </div>
+                            </div>
+                            <div className="text-center text-white text-[7px] font-outfit uppercase">
+                              Hours
+                            </div>
+                          </div>
+                          <span className="text-white font-outfit font-semibold text-2xl">
+                            :
+                          </span>
+                          <div className="w-12 h-1/2 bg-[#003260] shadow-inner flex-col justify-center items-center gap-1 inline-flex">
+                            <div className="w-12 h-8 flex-col justify-center items-center gap-4 flex">
+                              <div className="text-center text-white text-[26px] tracking-wide font-outfit">
+                                {timeLeft.minutes}
+                              </div>
+                            </div>
+                            <div className="text-center text-white text-[7px] font-outfit uppercase">
+                              Minutes
+                            </div>
+                          </div>
+                          <span className="text-white font-outfit font-semibold text-2xl">
+                            :
+                          </span>
+                          <div className="w-12 h-1/2 bg-[#003260] shadow-inner flex-col justify-center items-center gap-1 inline-flex">
+                            <div className="w-12 h-8 flex-col justify-center items-center gap-4 flex">
+                              <div className="text-center text-white text-[26px] tracking-wide font-outfit">
+                                {timeLeft.seconds}
+                              </div>
+                            </div>
+                            <div className="text-center text-white text-[7px] font-outfit uppercase">
+                              Seconds
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* treasure box */}
+                    <img
+                      src="/assets/images/clicker-character/nft-treasureBox.webp"
+                      alt="NFT Treasure Box"
+                      className="object-contain w-96 h-96 -my-10 hover:animate-treasureBoxTwerk"
+                    />
+
+                    {/* mint price */}
+                    <div className="w-full flex-col justify-center items-center inline-flex">
+                      <div className="flex-col justify-center items-center flex pb-8">
+                        <div
+                          className="text-center text-amber-500 text-5xl z-10"
+                          style={{
+                            WebkitTextStrokeWidth: "3.5px",
+                            WebkitTextStrokeColor: "var(--COlor-11, #FFF)",
+                            textShadow: "0px 2px 4px rgba(0, 0, 0, 0.25)",
+                          }}
+                        >
+                          0.99 SOL
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Mobile minting row*/}
+                    <div className="w-full flex flex-row items-center justify-evenly ml-[-2rem] xs:ml-0">
+                      {/* VIP pass button */}
+                      <div className="w-auto mr-[-2rem] mb-[5rem] z-[50]"> 
+                        <img
+                          src="/assets/icons/vip-pass.png"
+                          alt="vip pass icon"
+                          className="w-full h-auto transition-transform duration-200 scale-125 hover:scale-110 "
+                          onClick={handlePassClick} 
+                        />
+                      </div>
+
+                      {/* Mobile mint button */}
+                      <div
+                        className={`w-[70%] justify-center items-center inline-flex z-[10] transition-transform duration-200 
+                          ${(isAllowed && !mintingNFT) || currentUser?.walletAddr === '' ? `hover:scale-105` : ``}`}
+                          onMouseEnter={() => isAllowed ? setGhostExcited(true) : setGhostExcited(false)}
+                          onMouseLeave={() => !mintingNFT ? setGhostExcited(false) : setGhostExcited(true)}>
+                        {!isPhantomInstalled ? 
+                          <button
+                            className="h-[80px] w-[250px] m-auto bg-[#FFDC62] border-[#E59E69] rounded-full border justify-center items-center inline-flex shadow-[0px_4px_4px_0px_#FFFBEF_inset,0px_-4px_4px_0px_rgba(255,249,228,0.48),0px_5px_4px_0px_rgba(232,140,72,0.48)]"
+                            onClick={openPhantom}>
+                            <span className=' text-white text-center text-xl alg:text-3xl font-normal'>
+                              {`Open in Phantom Wallet`}    
+                            </span>
+                          </button>
+                        : 
+                          loadingCandyMachine ? 
+                            <span className='h-20 m-auto text-amber-300 text-xl lg:text-3xl animate-pulse'>
+                              {`Loading`} 
+                            </span>
+                            :
+                            <button
+                              className={`h-[80px] w-[250px] rounded-full border justify-center items-center inline-flex shadow-[0px_4px_4px_0px_#FFFBEF_inset,0px_-4px_4px_0px_rgba(255,249,228,0.48),0px_5px_4px_0px_rgba(232,140,72,0.48)] 
+                                ${isAllowed || currentUser?.walletAddr === '' ?
+                                  `bg-[#FFDC62] border-[#E59E69] `
+                                  :
+                                  `bg-slate-400 border-slate-400`}`}
+                              disabled={(!isAllowed || mintingNFT) && walletAddr}
+                              onClick={handleMintOrBind}>
+                              {mintingNFT ?
+                                <MoonLoader color={"#E59E69"} size={40} />
+                                :
+                                <div
+                                  className="text-center text-white text-2xl font-normal"
+                                  style={{
+                                    textShadow: "0px 2px 0.6px rgba(240, 139, 0, 0.66)",
+                                  }}
+                                >
+                                  <span className="">{currentUser?.walletAddr === '' ? `Bind Wallet` : isAllowed ? `Mint Now` : insufficentBalance ? `Insufficient Funds` : `Mint Disabled`}</span>
+                                </div>
+                              }
+                            </button>
+                        }
+                      </div>
+
+                      {/* Info button */}
+                      <div className="w-[30%]"> 
+                        <img
+                          src="/assets/icons/info.webp"
+                          alt="info icon"
+                          className="w-full md:w-[30%] h-auto ml-[1rem] transition-transform duration-200 hover:scale-110 "
+                          onClick={handleInfoClick} 
+                        />
+                      </div>
+                    </div>
+
+                    <WalletInfo label="Using Wallet" />
+                  </div>
+                </div>
+
+                {/* footer */}
+                <div className={`border-2 border-transparent border-t-sky-300 border-dashed py-8 mt-4 font-outfit text-md
+                  ${showTextSubtext ? `opacity-100` : `opacity-0`}`
+                }>
+                  <div className="flex flex-col items-center xl:items-start">
+                    {/* Web3 links */}
+                    <div className="flex">
+                      <a
+                        className="text-amber-500 text-lg font-medium leading-normal transition-all duration-300 hover:scale-105 hover:font-bold hover:text-amber-400  mb-2"
+                        href="https://solscan.io/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        Solscan
+                      </a>
+
+                      <span className="text-white text-lg">&nbsp;&nbsp;|&nbsp;&nbsp;</span>
+
+                      <a
+                        className="text-amber-500 text-lg font-medium leading-normal transition-all duration-300 hover:scale-105 hover:font-bold hover:text-amber-400  mb-2"
+                        href="https://wallet.magiceden.io/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        Magic Eden
+                      </a>
+
+                    </div>
+                    {/* mainnet desc */}
+                    <p className="text-[#c4c4c4] text-sm font-medium leading-normal">
+                      You must be on the Solana MainNet to mint.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Desktop View */}
+              <div
+                className={`xl:w-[60%] hidden xl:block rounded-3xl p-3 transition-all duration-500
+                  ${slideMintPanel ? `translate-x-0 opacity-100` : `translate-x-60 opacity-0`}`}
+                style={{
+                  border: "2px solid var(--Color, #F4FBFF)",
+                  background: "rgba(155, 231, 255, 0.58)",
+                  boxShadow:
+                    "0px 8px 30px 0px rgba(4, 161, 183, 0.40) inset, 0px 8px 30px 0px rgba(32, 0, 99, 0.40)",
+                  backdropFilter: "blur(15px)",
+                }}
               >
-                MINT OUR
-              </span>
-              <br />
-              <span
-                className="text-7xl"
-              >
-                NFTs NOW!
-              </span>
-            </div>
-
-            {/* step 1 text */}
-            <div className={`w-full mb-8 transition-all duration-1000
-                ${showTextOne ? `opacity-100` : `opacity-0`}
-              `}>
-              <div className="transition-all duration-500 hover:scale-105">
-                <div className="flex items-center gap-8 pb-2">
+                {/* Mint Panel background */}
+                <div className="absolute flex w-full justify-between -top-8">
                   <img
-                    src={"/assets/images/clicker-character/gem.webp"}
-                    alt="gem"
-                    className="ml-2 w-6 h-6"
+                    src={"/assets/images/clicker-character/ring01.webp"}
+                    alt="ring"
+                    className="object-cover w-11 absolute left-2"
                   />
-                  <h3 className="w-full text-2xl text-white text-wrap ">STEP 1</h3>
-                </div>
-                <p
-                  className="text-[#c4c4c4] text-base font-medium font-outfit leading-tight tracking-wide"
-                >
-                  Mint your nft and unlock your <span className="text-white text-base font-bold leading-tight tracking-wide">Animara (VIP Value Pass)</span> today.
-                </p>
-              </div>
-            </div>
-
-            {/* step 2 text */}
-            <div className={`w-full mb-8 transition-all duration-1000
-                ${showTextTwo ? `opacity-100` : `opacity-0`}
-              `}>
-              <div className="transition-all duration-500 hover:scale-105">
-                <div className="flex items-center gap-8 pb-2">
                   <img
-                    src={"/assets/images/clicker-character/gem.webp"}
-                    alt="gem"
-                    className="ml-2 w-6 h-6"
+                    src={"/assets/images/clicker-character/ring01.webp"}
+                    alt="ring"
+                    className="object-cover w-11 opacity-0"
                   />
-                  <h3 className="w-full text-2xl text-white text-wrap ">STEP 2</h3>
-                </div>
-                <p
-                  className="text-[#c4c4c4] text-base font-medium font-outfit leading-tight tracking-wide"
-                >
-                  Link your phantom wallet , start own your <span className="text-white text-base font-bold leading-tight tracking-wide">NFT Character</span> on Animara.
-                </p>
-              </div>
-            </div>
-
-            {/* step 3 text */}
-            <div className={`mb-8 pb-6 transition-all duration-1000
-                ${showTextThree ? `opacity-100` : `opacity-0`}
-              `}>
-              <div className="transition-all duration-500 hover:scale-105">
-                <div className="flex items-center gap-8 pb-2">
                   <img
-                    src={"/assets/images/clicker-character/gem.webp"}
-                    alt="gem"
-                    className="ml-2 w-6 h-6"
+                    src={"/assets/images/clicker-character/ring02.webp"}
+                    alt="ring"
+                    className="object-cover w-11 absolute right-8"
                   />
-                  <h3 className="w-full text-2xl text-white text-wrap ">STEP 3</h3>
                 </div>
-                <p
-                  className="text-[#c4c4c4] text-base font-medium font-outfit leading-tight tracking-wide"
-                >
-                  Compete in the Animara leaderboard event and compete to win prizes worth up to <span className="text-white text-base font-bold leading-tight tracking-wide">365k USDC</span>!
-                </p>
-              </div>
-            </div>
 
-            {/* Mobile Ghost character view */}
-            <div className="w-full z-0 max-h-[50dvh] flex xl:hidden items-center mt-[-4rem] mb-[-10rem] animate-pulse">
-              {isMobileApp?
-                <img 
-                  src={videoSource}
-                  alt="ghost"
-                  className="mx-auto rounded-3xl"
-                />
-                :
+                {/* mint panel content */}
+                <div
+                  className="flex flex-col items-center rounded-2xl bg-opacity-75 place-content-center p-6 min-h-[60vh] lg:min-h-[80dvh] 2xl:min-h-[50dvh] space-y-[1rem]"
+                  style={{
+                    backgroundImage:
+                      'url("/assets/images/clicker-character/mintBBG.webp")',
+                    backgroundSize: "cover",
+                    backgroundPosition: "center",
+                    backgroundRepeat: "no-repeat",
+                  }}
+                >
+                  {/* mint countdown */}
+                  {isContainerVisible && (
+                    <div className="p-3 px-6 bg-[#003260] rounded-3xl shadow-inner border border-[#7fc1ff] flex-col justify-self-center items-center gap-2 inline-flex">
+                      <p className="text-md pb-1">Minting Ends In</p>
+                      <div className="h-[50px] justify-start items-center inline-flex gap-1 pb-3">
+                        <div className="w-12 h-1/2 bg-[#003260] shadow-inner flex-col justify-center items-center gap-1 inline-flex">
+                          <div className="w-12 h-8 flex-col justify-center items-center gap-4 flex">
+                            <div className="text-center text-white text-[26px] tracking-wide font-outfit">
+                              {timeLeft.days}
+                            </div>
+                          </div>
+                          <div className="text-center text-white text-[7px] font-outfit uppercase">
+                            Days
+                          </div>
+                        </div>
+                        <span className="text-white font-outfit font-semibold text-2xl">
+                          :
+                        </span>
+                        <div className="w-12 h-1/2 bg-[#003260] shadow-inner flex-col justify-center items-center gap-1 inline-flex">
+                          <div className="w-12 h-8 flex-col justify-center items-center gap-4 flex">
+                            <div className="text-center text-white text-[26px] tracking-wide font-outfit">
+                              {timeLeft.hours}
+                            </div>
+                          </div>
+                          <div className="text-center text-white text-[7px] font-outfit uppercase">
+                            Hours
+                          </div>
+                        </div>
+                        <span className="text-white font-outfit font-semibold text-2xl">
+                          :
+                        </span>
+                        <div className="w-12 h-1/2 bg-[#003260] shadow-inner flex-col justify-center items-center gap-1 inline-flex">
+                          <div className="w-12 h-8 flex-col justify-center items-center gap-4 flex">
+                            <div className="text-center text-white text-[26px] tracking-wide font-outfit">
+                              {timeLeft.minutes}
+                            </div>
+                          </div>
+                          <div className="text-center text-white text-[7px] font-outfit uppercase">
+                            Minutes
+                          </div>
+                        </div>
+                        <span className="text-white font-outfit font-semibold text-2xl">
+                          :
+                        </span>
+                        <div className="w-12 h-1/2 bg-[#003260] shadow-inner flex-col justify-center items-center gap-1 inline-flex">
+                          <div className="w-12 h-8 flex-col justify-center items-center gap-4 flex">
+                            <div className="text-center text-white text-[26px] tracking-wide font-outfit">
+                              {timeLeft.seconds}
+                            </div>
+                          </div>
+                          <div className="text-center text-white text-[7px] font-outfit uppercase">
+                            Seconds
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* treasure chest */}
+                  <img
+                    src="/assets/images/clicker-character/nft-treasureBox.webp"
+                    alt="NFT Treasure Box"
+                    className="object-contain w-96 h-96 -my-10 hover:animate-treasureBoxTwerk"
+                  />
+
+                  {/* mint price */}
+                  <div className="w-full flex-col justify-center items-center inline-flex">
+                    <div className="flex-col justify-center items-center flex pb-8">
+                      <div
+                        className="text-center text-amber-500 text-5xl z-10"
+                        style={{
+                          WebkitTextStrokeWidth: "3.5px",
+                          WebkitTextStrokeColor: "var(--COlor-11, #FFF)",
+                          textShadow: "0px 2px 4px rgba(0, 0, 0, 0.25)",
+                        }}
+                      >
+                        0.99 SOL
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Desktop Minting row */}
+                  <div className="w-full flex flex-row items-center justify-center">
+                    {/* VIP pass button */}
+                    <div className="w-[30%]"> 
+                        <img
+                          src="/assets/icons/vip-pass.png"
+                          alt="vip pass icon"
+                          className="w-full h-full transition-transform duration-200 hover:scale-110 "
+                          onClick={handlePassClick} 
+                        />
+                      </div>
+
+                    {/* Minting button */}
+                    <div
+                      className={`w-[40%] justify-center items-center inline-flex transition-transform duration-200 
+                          ${(isAllowed && !mintingNFT) || currentUser?.walletAddr === '' ? `hover:scale-105` : ``}`}
+                      onMouseEnter={() => isAllowed ? setGhostExcited(true) : setGhostExcited(false)}
+                      onMouseLeave={() => !mintingNFT ? setGhostExcited(false) : setGhostExcited(true)}
+                    >
+                      {!isPhantomInstalled ? 
+                        <button
+                          className="h-[80px] w-[250px] m-auto"
+                          onClick={openPhantom}>
+                          <span className=' text-red-300 text-center text-xl lg:text-3xl'>
+                            {`Open Phantom Wallet`}    
+                          </span>
+                        </button>
+                        :
+                        loadingCandyMachine ?
+                          <span className='h-20 m-auto text-amber-300 text-xl lg:text-3xl animate-pulse'>
+                            {`Loading`}  
+                          </span>
+                          :
+                          <button
+                            className={`h-[80px] w-[250px] rounded-full border justify-center items-center inline-flex shadow-[0px_4px_4px_0px_#FFFBEF_inset,0px_-4px_4px_0px_rgba(255,249,228,0.48),0px_5px_4px_0px_rgba(232,140,72,0.48)] 
+                              ${isAllowed || currentUser?.walletAddr === '' ?
+                                `bg-[#FFDC62] border-[#E59E69] `
+                                :
+                                `bg-slate-400 border-slate-400`}`}
+                            disabled={(!isAllowed || mintingNFT) && currentUser.walletAddr !== ''}
+                            onClick={handleMintOrBind}>
+                            {mintingNFT ?
+                              <MoonLoader color={"#E59E69"} size={40} />
+                              :
+                              <div
+                                className="text-center text-white text-2xl font-normal"
+                                style={{
+                                  textShadow: "0px 2px 0.6px rgba(240, 139, 0, 0.66)",
+                                }}
+                              >
+                                <span className="">{currentUser?.walletAddr === '' ? `Bind Wallet` : isAllowed ? `Mint Now` : insufficentBalance ? `Insufficient Funds` : `Mint Disabled`}</span>
+                              </div>
+                            }
+                          </button>
+                      }
+                    </div>
+
+                    {/* Info button */}
+                    <div className="w-[30%]"> 
+                      <img
+                        src="/assets/icons/info.webp"
+                        alt="info icon"
+                        className="w-[2rem] h-auto ml-[1rem] transition-transform duration-200 hover:scale-110 "
+                        onClick={handleInfoClick} 
+                      />
+                    </div>
+                  </div>
+
+                  {/* wallet info */}
+                  <WalletInfo label="Using Wallet" />
+                </div>
+              </div>
+
+              {/* Desktop Ghost character view */}
+              <div className={`w-[30%] ml-[-30rem] hidden xl:flex items-end mr-[-10rem] animate-pulse z-[50] transition-all duration-1000 pointer-events-none ${slideCharacter ? `translate-y-0 opacity-100` : `translate-y-60 opacity-0`}`}>
                 <video
                   key={videoSource}
-                  className="mx-auto rounded-3xl"
+                  className="rounded-3xl"
                   controls={false}
                   autoPlay
                   loop
@@ -485,450 +927,10 @@ function MintPage() {
                   <source src={videoSource} type="video/webm" />
                   Your browser does not support the video tag.
                 </video>
-              }
-            </div>
-
-            {/* Mobile view mint card */}
-            <div
-              className="z-10 w-full block xl:hidden rounded-3xl p-3 mt-[2rem] text-white"
-              style={{
-                border: "2px solid var(--Color, #F4FBFF)",
-                background: "rgba(155, 231, 255, 0.58)",
-                boxShadow:
-                  "0px 8px 30px 0px rgba(4, 161, 183, 0.40) inset, 0px 8px 30px 0px rgba(32, 0, 99, 0.40)",
-                backdropFilter: "blur(15px)",
-              }}
-            >
-              {/* mint card background */}
-              <div className="absolute flex w-full justify-between -top-8 safari-hidden">
-                <img
-                  src={"/assets/images/clicker-character/ring01.webp"}
-                  alt="ring"
-                  className="object-cover w-11 absolute left-2"
-                />
-                <img
-                  src={"/assets/images/clicker-character/ring01.webp"}
-                  alt="ring"
-                  className="object-cover w-11 opacity-0"
-                />
-                <img
-                  src={"/assets/images/clicker-character/ring02.webp"}
-                  alt="ring"
-                  className="object-cover w-11 absolute right-8"
-                />
-              </div>
-
-              {/* card content */}
-              <div
-                className="flex flex-col items-center rounded-2xl place-content-center p-6 min-h-[60vh] xl:min-h-[80dvh] 2xl:min-h-[50dvh] space-y-2"
-                style={{
-                  backgroundImage:
-                    'url("/assets/images/clicker-character/mintBBG.webp")',
-                  backgroundSize: "cover",
-                  backgroundPosition: "center",
-                  backgroundRepeat: "no-repeat",
-                }}
-              >
-                {/* mint countdown */}
-                {isContainerVisible && (
-                  <div className="p-3 px-6 bg-[#003260] rounded-3xl shadow-inner border border-[#7fc1ff] flex-col justify-self-center items-center gap-2 inline-flex">
-                    <p className="text-md pb-1">Minting Ends In</p>
-                    <div className="h-[50px] justify-start items-center inline-flex gap-1 pb-3">
-                      <div className="w-12 h-1/2 bg-[#003260] shadow-inner flex-col justify-center items-center gap-1 inline-flex">
-                        <div className="w-12 h-8 flex-col justify-center items-center gap-4 flex">
-                          <div className="text-center text-white text-[26px] tracking-wide font-outfit">
-                            {timeLeft.days}
-                          </div>
-                        </div>
-                        <div className="text-center text-white text-[7px] font-outfit uppercase">
-                          Days
-                        </div>
-                      </div>
-                      <span className="text-white font-outfit font-semibold text-2xl">
-                        :
-                      </span>
-                      <div className="w-12 h-1/2 bg-[#003260] shadow-inner flex-col justify-center items-center gap-1 inline-flex">
-                        <div className="w-12 h-8 flex-col justify-center items-center gap-4 flex">
-                          <div className="text-center text-white text-[26px] tracking-wide font-outfit">
-                            {timeLeft.hours}
-                          </div>
-                        </div>
-                        <div className="text-center text-white text-[7px] font-outfit uppercase">
-                          Hours
-                        </div>
-                      </div>
-                      <span className="text-white font-outfit font-semibold text-2xl">
-                        :
-                      </span>
-                      <div className="w-12 h-1/2 bg-[#003260] shadow-inner flex-col justify-center items-center gap-1 inline-flex">
-                        <div className="w-12 h-8 flex-col justify-center items-center gap-4 flex">
-                          <div className="text-center text-white text-[26px] tracking-wide font-outfit">
-                            {timeLeft.minutes}
-                          </div>
-                        </div>
-                        <div className="text-center text-white text-[7px] font-outfit uppercase">
-                          Minutes
-                        </div>
-                      </div>
-                      <span className="text-white font-outfit font-semibold text-2xl">
-                        :
-                      </span>
-                      <div className="w-12 h-1/2 bg-[#003260] shadow-inner flex-col justify-center items-center gap-1 inline-flex">
-                        <div className="w-12 h-8 flex-col justify-center items-center gap-4 flex">
-                          <div className="text-center text-white text-[26px] tracking-wide font-outfit">
-                            {timeLeft.seconds}
-                          </div>
-                        </div>
-                        <div className="text-center text-white text-[7px] font-outfit uppercase">
-                          Seconds
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                )}
-
-                {/* treasure box */}
-                <img
-                  src="/assets/images/clicker-character/nft-treasureBox.webp"
-                  alt="NFT Treasure Box"
-                  className="object-contain w-96 h-96 -my-10 hover:animate-treasureBoxTwerk"
-                />
-
-                {/* mint price */}
-                <div className="w-full flex-col justify-center items-center inline-flex">
-                  <div className="flex-col justify-center items-center flex pb-8">
-                    <div
-                      className="text-center text-amber-500 text-5xl z-10"
-                      style={{
-                        WebkitTextStrokeWidth: "3.5px",
-                        WebkitTextStrokeColor: "var(--COlor-11, #FFF)",
-                        textShadow: "0px 2px 4px rgba(0, 0, 0, 0.25)",
-                      }}
-                    >
-                      0.99 SOL
-                    </div>
-                  </div>
-                </div>
-
-                {/* Mobile minting row*/}
-                <div className="w-full flex flex-row items-center justify-evenly ml-[-2rem] xs:ml-0">
-                  {/* VIP pass button */}
-                  <div className="w-auto mr-[-2rem] mb-[5rem] z-[50]"> 
-                    <img
-                      src="/assets/icons/vip-pass.png"
-                      alt="vip pass icon"
-                      className="w-full h-auto transition-transform duration-200 scale-125 hover:scale-110 "
-                      onClick={handlePassClick} 
-                    />
-                  </div>
-
-                  {/* Mobile mint button */}
-                  <div
-                    className={`w-[70%] justify-center items-center inline-flex z-[10] transition-transform duration-200 
-                      ${(isAllowed && !mintingNFT) || currentUser?.walletAddr === '' ? `hover:scale-105` : ``}`}
-                      onMouseEnter={() => isAllowed ? setGhostExcited(true) : setGhostExcited(false)}
-                      onMouseLeave={() => !mintingNFT ? setGhostExcited(false) : setGhostExcited(true)}>
-                    {!isPhantomInstalled ? 
-                      <button
-                        className="h-[80px] w-[250px] m-auto bg-[#FFDC62] border-[#E59E69] rounded-full border justify-center items-center inline-flex shadow-[0px_4px_4px_0px_#FFFBEF_inset,0px_-4px_4px_0px_rgba(255,249,228,0.48),0px_5px_4px_0px_rgba(232,140,72,0.48)]"
-                        onClick={openPhantom}>
-                        <span className=' text-white text-center text-xl alg:text-3xl font-normal'>
-                          {`Open in Phantom Wallet`}    
-                        </span>
-                      </button>
-                    : 
-                      loadingCandyMachine ? 
-                        <span className='h-20 m-auto text-amber-300 text-xl lg:text-3xl animate-pulse'>
-                          {`Loading`} 
-                        </span>
-                        :
-                        <button
-                          className={`h-[80px] w-[250px] rounded-full border justify-center items-center inline-flex shadow-[0px_4px_4px_0px_#FFFBEF_inset,0px_-4px_4px_0px_rgba(255,249,228,0.48),0px_5px_4px_0px_rgba(232,140,72,0.48)] 
-                            ${isAllowed || currentUser?.walletAddr === '' ?
-                              `bg-[#FFDC62] border-[#E59E69] `
-                              :
-                              `bg-slate-400 border-slate-400`}`}
-                          disabled={(!isAllowed || mintingNFT) && walletAddr}
-                          onClick={handleMintOrBind}>
-                          {mintingNFT ?
-                            <MoonLoader color={"#E59E69"} size={40} />
-                            :
-                            <div
-                              className="text-center text-white text-2xl font-normal"
-                              style={{
-                                textShadow: "0px 2px 0.6px rgba(240, 139, 0, 0.66)",
-                              }}
-                            >
-                              <span className="">{currentUser?.walletAddr === '' ? `Bind Wallet` : isAllowed ? `Mint Now` : insufficentBalance ? `Insufficient Funds` : `Mint Disabled`}</span>
-                            </div>
-                          }
-                        </button>
-                    }
-                  </div>
-
-                  {/* Info button */}
-                  <div className="w-[30%]"> 
-                    <img
-                      src="/assets/icons/info.webp"
-                      alt="info icon"
-                      className="w-full md:w-[30%] h-auto ml-[1rem] transition-transform duration-200 hover:scale-110 "
-                      onClick={handleInfoClick} 
-                    />
-                  </div>
-                </div>
-
-                <WalletInfo label="Using Wallet" />
               </div>
             </div>
+          </main>
 
-            {/* footer */}
-            <div className={`border-2 border-transparent border-t-sky-300 border-dashed py-8 mt-4 font-outfit text-md
-              ${showTextSubtext ? `opacity-100` : `opacity-0`}`
-            }>
-              <div className="flex flex-col items-center xl:items-start">
-                {/* Web3 links */}
-                <div className="flex">
-                  <a
-                    className="text-amber-500 text-lg font-medium leading-normal transition-all duration-300 hover:scale-105 hover:font-bold hover:text-amber-400  mb-2"
-                    href="https://solscan.io/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    Solscan
-                  </a>
-
-                  <span className="text-white text-lg">&nbsp;&nbsp;|&nbsp;&nbsp;</span>
-
-                  <a
-                    className="text-amber-500 text-lg font-medium leading-normal transition-all duration-300 hover:scale-105 hover:font-bold hover:text-amber-400  mb-2"
-                    href="https://wallet.magiceden.io/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    Magic Eden
-                  </a>
-
-                </div>
-                {/* mainnet desc */}
-                <p className="text-[#c4c4c4] text-sm font-medium leading-normal">
-                  You must be on the Solana MainNet to mint.
-                </p>
-              </div>
-            </div>
-          </div>
-
-          {/* Desktop View */}
-          <div
-            className={`xl:w-[60%] hidden xl:block rounded-3xl p-3 transition-all duration-500
-              ${slideMintPanel ? `translate-x-0 opacity-100` : `translate-x-60 opacity-0`}`}
-            style={{
-              border: "2px solid var(--Color, #F4FBFF)",
-              background: "rgba(155, 231, 255, 0.58)",
-              boxShadow:
-                "0px 8px 30px 0px rgba(4, 161, 183, 0.40) inset, 0px 8px 30px 0px rgba(32, 0, 99, 0.40)",
-              backdropFilter: "blur(15px)",
-            }}
-          >
-            {/* Mint Panel background */}
-            <div className="absolute flex w-full justify-between -top-8">
-              <img
-                src={"/assets/images/clicker-character/ring01.webp"}
-                alt="ring"
-                className="object-cover w-11 absolute left-2"
-              />
-              <img
-                src={"/assets/images/clicker-character/ring01.webp"}
-                alt="ring"
-                className="object-cover w-11 opacity-0"
-              />
-              <img
-                src={"/assets/images/clicker-character/ring02.webp"}
-                alt="ring"
-                className="object-cover w-11 absolute right-8"
-              />
-            </div>
-
-            {/* mint panel content */}
-            <div
-              className="flex flex-col items-center rounded-2xl bg-opacity-75 place-content-center p-6 min-h-[60vh] lg:min-h-[80dvh] 2xl:min-h-[50dvh] space-y-[1rem]"
-              style={{
-                backgroundImage:
-                  'url("/assets/images/clicker-character/mintBBG.webp")',
-                backgroundSize: "cover",
-                backgroundPosition: "center",
-                backgroundRepeat: "no-repeat",
-              }}
-            >
-              {/* mint countdown */}
-              {isContainerVisible && (
-                <div className="p-3 px-6 bg-[#003260] rounded-3xl shadow-inner border border-[#7fc1ff] flex-col justify-self-center items-center gap-2 inline-flex">
-                  <p className="text-md pb-1">Minting Ends In</p>
-                  <div className="h-[50px] justify-start items-center inline-flex gap-1 pb-3">
-                    <div className="w-12 h-1/2 bg-[#003260] shadow-inner flex-col justify-center items-center gap-1 inline-flex">
-                      <div className="w-12 h-8 flex-col justify-center items-center gap-4 flex">
-                        <div className="text-center text-white text-[26px] tracking-wide font-outfit">
-                          {timeLeft.days}
-                        </div>
-                      </div>
-                      <div className="text-center text-white text-[7px] font-outfit uppercase">
-                        Days
-                      </div>
-                    </div>
-                    <span className="text-white font-outfit font-semibold text-2xl">
-                      :
-                    </span>
-                    <div className="w-12 h-1/2 bg-[#003260] shadow-inner flex-col justify-center items-center gap-1 inline-flex">
-                      <div className="w-12 h-8 flex-col justify-center items-center gap-4 flex">
-                        <div className="text-center text-white text-[26px] tracking-wide font-outfit">
-                          {timeLeft.hours}
-                        </div>
-                      </div>
-                      <div className="text-center text-white text-[7px] font-outfit uppercase">
-                        Hours
-                      </div>
-                    </div>
-                    <span className="text-white font-outfit font-semibold text-2xl">
-                      :
-                    </span>
-                    <div className="w-12 h-1/2 bg-[#003260] shadow-inner flex-col justify-center items-center gap-1 inline-flex">
-                      <div className="w-12 h-8 flex-col justify-center items-center gap-4 flex">
-                        <div className="text-center text-white text-[26px] tracking-wide font-outfit">
-                          {timeLeft.minutes}
-                        </div>
-                      </div>
-                      <div className="text-center text-white text-[7px] font-outfit uppercase">
-                        Minutes
-                      </div>
-                    </div>
-                    <span className="text-white font-outfit font-semibold text-2xl">
-                      :
-                    </span>
-                    <div className="w-12 h-1/2 bg-[#003260] shadow-inner flex-col justify-center items-center gap-1 inline-flex">
-                      <div className="w-12 h-8 flex-col justify-center items-center gap-4 flex">
-                        <div className="text-center text-white text-[26px] tracking-wide font-outfit">
-                          {timeLeft.seconds}
-                        </div>
-                      </div>
-                      <div className="text-center text-white text-[7px] font-outfit uppercase">
-                        Seconds
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              {/* treasure chest */}
-              <img
-                src="/assets/images/clicker-character/nft-treasureBox.webp"
-                alt="NFT Treasure Box"
-                className="object-contain w-96 h-96 -my-10 hover:animate-treasureBoxTwerk"
-              />
-
-              {/* mint price */}
-              <div className="w-full flex-col justify-center items-center inline-flex">
-                <div className="flex-col justify-center items-center flex pb-8">
-                  <div
-                    className="text-center text-amber-500 text-5xl z-10"
-                    style={{
-                      WebkitTextStrokeWidth: "3.5px",
-                      WebkitTextStrokeColor: "var(--COlor-11, #FFF)",
-                      textShadow: "0px 2px 4px rgba(0, 0, 0, 0.25)",
-                    }}
-                  >
-                    0.99 SOL
-                  </div>
-                </div>
-              </div>
-
-              {/* Desktop Minting row */}
-              <div className="w-full flex flex-row items-center justify-center">
-                {/* VIP pass button */}
-                <div className="w-[30%]"> 
-                    <img
-                      src="/assets/icons/vip-pass.png"
-                      alt="vip pass icon"
-                      className="w-full h-full transition-transform duration-200 hover:scale-110 "
-                      onClick={handlePassClick} 
-                    />
-                  </div>
-
-                {/* Minting button */}
-                <div
-                  className={`w-[40%] justify-center items-center inline-flex transition-transform duration-200 
-                      ${(isAllowed && !mintingNFT) || currentUser?.walletAddr === '' ? `hover:scale-105` : ``}`}
-                  onMouseEnter={() => isAllowed ? setGhostExcited(true) : setGhostExcited(false)}
-                  onMouseLeave={() => !mintingNFT ? setGhostExcited(false) : setGhostExcited(true)}
-                >
-                  {!isPhantomInstalled ? 
-                    <button
-                      className="h-[80px] w-[250px] m-auto"
-                      onClick={openPhantom}>
-                      <span className=' text-red-300 text-center text-xl lg:text-3xl'>
-                        {`Open Phantom Wallet`}    
-                      </span>
-                    </button>
-                    :
-                    loadingCandyMachine ?
-                      <span className='h-20 m-auto text-amber-300 text-xl lg:text-3xl animate-pulse'>
-                        {`Loading`}  
-                      </span>
-                      :
-                      <button
-                        className={`h-[80px] w-[250px] rounded-full border justify-center items-center inline-flex shadow-[0px_4px_4px_0px_#FFFBEF_inset,0px_-4px_4px_0px_rgba(255,249,228,0.48),0px_5px_4px_0px_rgba(232,140,72,0.48)] 
-                          ${isAllowed || currentUser?.walletAddr === '' ?
-                            `bg-[#FFDC62] border-[#E59E69] `
-                            :
-                            `bg-slate-400 border-slate-400`}`}
-                        disabled={(!isAllowed || mintingNFT) && currentUser.walletAddr !== ''}
-                        onClick={handleMintOrBind}>
-                        {mintingNFT ?
-                          <MoonLoader color={"#E59E69"} size={40} />
-                          :
-                          <div
-                            className="text-center text-white text-2xl font-normal"
-                            style={{
-                              textShadow: "0px 2px 0.6px rgba(240, 139, 0, 0.66)",
-                            }}
-                          >
-                            <span className="">{currentUser?.walletAddr === '' ? `Bind Wallet` : isAllowed ? `Mint Now` : insufficentBalance ? `Insufficient Funds` : `Mint Disabled`}</span>
-                          </div>
-                        }
-                      </button>
-                  }
-                </div>
-
-                {/* Info button */}
-                <div className="w-[30%]"> 
-                  <img
-                    src="/assets/icons/info.webp"
-                    alt="info icon"
-                    className="w-[2rem] h-auto ml-[1rem] transition-transform duration-200 hover:scale-110 "
-                    onClick={handleInfoClick} 
-                  />
-                </div>
-              </div>
-
-              {/* wallet info */}
-              <WalletInfo label="Using Wallet" />
-            </div>
-          </div>
-
-          {/* Desktop Ghost character view */}
-          <div className={`w-[30%] ml-[-30rem] hidden xl:flex items-end mr-[-10rem] animate-pulse z-[50] transition-all duration-1000 pointer-events-none ${slideCharacter ? `translate-y-0 opacity-100` : `translate-y-60 opacity-0`}`}>
-            <video
-              key={videoSource}
-              className="rounded-3xl"
-              controls={false}
-              autoPlay
-              loop
-              muted
-              playsInline
-            >
-              <source src={videoSource} type="video/webm" />
-              Your browser does not support the video tag.
-            </video>
-          </div>
-        </div>
       </div>
 
       {/* Conditionally render the MintingWarningNotice component */}
