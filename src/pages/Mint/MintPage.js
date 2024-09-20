@@ -914,7 +914,7 @@ function MintPage() {
               </div>
 
               {/* Desktop Ghost character view */}
-              <div className={`w-[30%] ml-[-30rem] hidden xl:flex items-end mr-[-10rem] animate-pulse z-[50] transition-all duration-500 pointer-events-none ${slideCharacter ? `translate-y-0 opacity-100` : `translate-y-60 opacity-0`}`}>
+              <div className={`w-[30%] ml-[-20rem] hidden xl:flex items-end mr-[-10rem] animate-pulse z-[50] transition-all duration-1000 pointer-events-none ${slideCharacter ? `translate-y-0 opacity-100` : `translate-y-60 opacity-0`}`}>
                 <video
                   key={videoSource}
                   className="rounded-3xl"
