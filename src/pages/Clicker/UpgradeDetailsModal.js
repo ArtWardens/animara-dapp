@@ -133,6 +133,10 @@ const UpgradeDetailsModal = ({ upgrade, isMaxLevel, onClose }) => {
                 <p className="text-2xl xl:text-4xl text-red-500 font-bold my-[5rem]">
                   Failed to upgrade location level. <br/> Insufficient coins.
                 </p>
+              ) : upgradeUserLocationError !== "" ? (
+                <p className="text-2xl xl:text-4xl text-red-500 font-bold my-[5rem]">
+                  Failed to upgrade location level. <br/> Please try again.
+                </p>
               ) : (
                 <>
                   <p
