@@ -229,8 +229,8 @@ function MintPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [umi, checkEligibility, firstRun, currentUser]);
 
-  const handleMintOrConnect = () => {
-    if (!walletAddr) {
+  const handleMintOrBind = () => {
+    if (currentUser.walletAddr === '') {
       setShowWalletBindingPanel(true);
       setWalletBindingAnim(true);
       setTimeout(() => {
@@ -590,7 +590,7 @@ function MintPage() {
                 {/* mint button */}
                 <div
                   className={`justify-center items-center inline-flex transition-transform duration-200 
-                    ${(isAllowed && !mintingNFT) || !walletAddr ? `hover:scale-105` : ``}`}
+                    ${(isAllowed && !mintingNFT) || currentUser.walletAddr === '' ? `hover:scale-105` : ``}`}
                     onMouseEnter={() => isAllowed ? setGhostExcited(true) : setGhostExcited(false)}
                     onMouseLeave={() => !mintingNFT ? setGhostExcited(false) : setGhostExcited(true)}>
                   {!isPhantomInstalled ? 
@@ -609,12 +609,12 @@ function MintPage() {
                       :
                       <button
                         className={`h-[80px] w-[250px] rounded-full border justify-center items-center inline-flex shadow-[0px_4px_4px_0px_#FFFBEF_inset,0px_-4px_4px_0px_rgba(255,249,228,0.48),0px_5px_4px_0px_rgba(232,140,72,0.48)] 
-                          ${isAllowed || !walletAddr ?
+                          ${isAllowed || currentUser.walletAddr === '' ?
                             `bg-[#FFDC62] border-[#E59E69] `
                             :
                             `bg-slate-400 border-slate-400`}`}
-                        disabled={(!isAllowed || mintingNFT) && walletAddr}
-                        onClick={handleMintOrConnect}>
+                        // disabled={(!isAllowed || mintingNFT) && currentUser.walletAddr !== ''}
+                        onClick={handleMintOrBind}>
                         {mintingNFT ?
                           <MoonLoader color={"#E59E69"} size={40} />
                           :
@@ -624,7 +624,7 @@ function MintPage() {
                               textShadow: "0px 2px 0.6px rgba(240, 139, 0, 0.66)",
                             }}
                           >
-                            <span className="">{!walletAddr ? `Connect Wallet` : isAllowed ? `Mint Now` : insufficentBalance ? `Insufficient Funds` : `Mint Disabled`}</span>
+                            <span className="">{currentUser.walletAddr === '' ? `Bind Wallet` : isAllowed ? `Mint Now` : insufficentBalance ? `Insufficient Funds` : `Mint Disabled`}</span>
                           </div>
                         }
                       </button>
@@ -797,7 +797,7 @@ function MintPage() {
               {/* Mint button */}
               <div
                 className={`justify-center items-center inline-flex transition-transform duration-200 
-                    ${(isAllowed && !mintingNFT) || !walletAddr ? `hover:scale-105` : ``}`}
+                    ${(isAllowed && !mintingNFT) || currentUser.walletAddr === '' ? `hover:scale-105` : ``}`}
                 onMouseEnter={() => isAllowed ? setGhostExcited(true) : setGhostExcited(false)}
                 onMouseLeave={() => !mintingNFT ? setGhostExcited(false) : setGhostExcited(true)}
               >
@@ -817,12 +817,12 @@ function MintPage() {
                     :
                     <button
                       className={`h-[80px] w-[250px] rounded-full border justify-center items-center inline-flex shadow-[0px_4px_4px_0px_#FFFBEF_inset,0px_-4px_4px_0px_rgba(255,249,228,0.48),0px_5px_4px_0px_rgba(232,140,72,0.48)] 
-                        ${isAllowed || !walletAddr ?
+                        ${isAllowed || currentUser.walletAddr === '' ?
                           `bg-[#FFDC62] border-[#E59E69] `
                           :
                           `bg-slate-400 border-slate-400`}`}
-                      disabled={(!isAllowed || mintingNFT) && walletAddr}
-                      onClick={handleMintOrConnect}>
+                      // disabled={(!isAllowed || mintingNFT) && currentUser.walletAddr !== ''}
+                      onClick={handleMintOrBind}>
                       {mintingNFT ?
                         <MoonLoader color={"#E59E69"} size={40} />
                         :
@@ -832,7 +832,7 @@ function MintPage() {
                             textShadow: "0px 2px 0.6px rgba(240, 139, 0, 0.66)",
                           }}
                         >
-                          <span className="">{!walletAddr ? `Connect Wallet` : isAllowed ? `Mint Now` : insufficentBalance ? `Insufficient Funds` : `Mint Disabled`}</span>
+                          <span className="">{currentUser.walletAddr === '' ? `Bind Wallet` : isAllowed ? `Mint Now` : insufficentBalance ? `Insufficient Funds` : `Mint Disabled`}</span>
                         </div>
                       }
                     </button>
@@ -870,21 +870,18 @@ function MintPage() {
             ? window.innerWidth > 500  ? '': 'flex-col'
             : `flex-col`}`}>
           {/* wallet binding panel */}
-          <div className="flex">
+          <div className="flex transiton-all duration-300">
             <WalletBindingPanel className="w-full lx:w-1/2 my-auto p-12" />
           </div>
 
-          {!bindingWallet ?
-            <button
-              className={`text-2xl rounded-lg m-8 mt-0 py-2 px-8 hover:scale-110 transition-all duration-300
-                ${walletAddr && !bindingWallet ? `bg-amber-400` : `bg-red-400 `}`}
-              onClick={handleBackToMint}
-            >
-              {walletAddr && !bindingWallet ? `Back to Mint` : `Close`}
-            </button>
-            :
-            <></>
-          }
+          <button
+            className={`text-2xl rounded-lg m-8 mt-0 py-2 px-8 hover:scale-110 transition-all duration-300
+              ${walletAddr && !bindingWallet ? `bg-amber-400` : bindingWallet ? `bg-slate-400` : `bg-red-400 `}`}
+            disabled={bindingWallet}
+            onClick={handleBackToMint}
+          >
+            {walletAddr && !bindingWallet ? `Back to Mint` : `Close`}
+          </button>
         </div>
         :
         <></>
