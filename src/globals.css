@@ -199,8 +199,25 @@ body:active {
   --c2: transparent;
   z-index: 91;
   border-radius: 500px 200px 200px 500px;
-  background: conic-gradient(from var(--angle), var(--c2), var(--c1) 0.1turn, var(--c1) 0.15turn, var(--c2) 0.25turn);
-	animation: borderRotate 5s linear infinite forwards;
+  /* Fallback for older browsers / version */
+  background: linear-gradient(
+    20deg,
+    transparent,
+    transparent 16.5%,
+    #ffffff 33%,
+    transparent 49.5%,
+    transparent 66%,
+    #0163be60 85.5%,
+    #ffffff 100%
+  )
+  0 100% / 100% 200%;
+  animation: header-glow 5s infinite linear;
+
+  /* Feature query for browsers that support conic-gradient */
+  @supports (background: conic-gradient(from 0deg, var(--c2), var(--c1) 0.1turn, var(--c1) 0.15turn, var(--c2) 0.25turn)) {
+    background: conic-gradient(from var(--angle), var(--c2), var(--c1) 0.1turn, var(--c1) 0.15turn, var(--c2) 0.25turn);
+    animation: borderRotate 5s linear infinite forwards;
+  }
 }
 
 .glowing-border::before,
@@ -225,7 +242,6 @@ body:active {
     #fe848f 100%
   )
   0 100% / 100% 200%;
-  transition: transform 0.3s cubic-bezier(0.55, 0.085, 0.68, 0.53);
   animation: header-glow 5s infinite linear;
 }
 
