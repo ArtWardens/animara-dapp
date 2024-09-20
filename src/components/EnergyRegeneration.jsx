@@ -125,7 +125,7 @@ function EnergyRegeneration({ isLeaderboardOpen, setIsLeaderboardOpen, isOneTime
             isLeaderboardOpen ? 'block' : 'hidden'
           }`}
           style={{
-            zIndex: 99,
+            zIndex: 100,
           }}
         >
           <LeaderBoardModal
