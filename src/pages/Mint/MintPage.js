@@ -376,11 +376,11 @@ function MintPage() {
                 alt=""
               />
 
-              <img
-                className="absolute left-[12%] lg:left-[17%] bottom-[5%] lg:bottom-[10%] transform -translate-x-1/2 -translate-y-1/2 z-[20] opacity-65 w-[60px] lg:w-[120px] pointer-events-none"
-                src="/assets/images/coin-5.webp"
-                alt=""
-              />
+          <img
+            className="absolute left-[12%] lg:left-[17%] bottom-[5%] lg:bottom-[10%] transform -translate-x-1/2 -translate-y-1/2 z-[20] opacity-65 w-[60px] lg:w-[120px] pointer-events-none"
+            src="/assets/images/coin-5.webp"
+            alt=""
+          />
 
               {/* Mint info section */}
               <div className={`w-full xl:w-[40%] text-amber-500 transition-all duration-1000 z-[40]
@@ -610,17 +610,17 @@ function MintPage() {
                       </div>
                     </div>
 
-                    {/* Mobile minting row*/}
-                    <div className="w-full flex flex-row items-center justify-evenly ml-[-2rem] xs:ml-0">
-                      {/* VIP pass button */}
-                      <div className="w-auto mr-[-2rem] mb-[5rem] z-[50]"> 
-                        <img
-                          src="/assets/icons/vip-pass.png"
-                          alt="vip pass icon"
-                          className="w-full h-auto transition-transform duration-200 scale-125 hover:scale-110 "
-                          onClick={handlePassClick} 
-                        />
-                      </div>
+                {/* Mobile minting row*/}
+                <div className="w-full flex flex-row items-center justify-evenly ml-[-2rem] xs:ml-0">
+                  {/* VIP pass button */}
+                  <div className="w-auto mr-[-2rem] mb-[5rem] z-[50]"> 
+                    <img
+                      src="/assets/icons/vip-pass.png"
+                      alt="vip pass icon"
+                      className="w-full h-auto transition-transform duration-200 scale-125 hover:scale-110 "
+                      onClick={handlePassClick} 
+                    />
+                  </div>
 
                       {/* Mobile mint button */}
                       <div
@@ -840,17 +840,17 @@ function MintPage() {
                     </div>
                   </div>
 
-                  {/* Desktop Minting row */}
-                  <div className="w-full flex flex-row items-center justify-center">
-                    {/* VIP pass button */}
-                    <div className="w-[30%]"> 
-                        <img
-                          src="/assets/icons/vip-pass.png"
-                          alt="vip pass icon"
-                          className="w-full h-full transition-transform duration-200 hover:scale-110 "
-                          onClick={handlePassClick} 
-                        />
-                      </div>
+              {/* Desktop Minting row */}
+              <div className="w-full flex flex-row items-center justify-center">
+                {/* VIP pass button */}
+                <div className="w-[30%]"> 
+                    <img
+                      src="/assets/icons/vip-pass.png"
+                      alt="vip pass icon"
+                      className="w-full h-full transition-transform duration-200 hover:scale-110 "
+                      onClick={handlePassClick} 
+                    />
+                  </div>
 
                     {/* Minting button */}
                     <div

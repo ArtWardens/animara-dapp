@@ -62,8 +62,8 @@ const ClickerController = ({ Children }) => {
   // check if user have a referrer or not
   useEffect(() => {
     if (currentUser) {
-      if (!currentUser.referralData || currentUser.referralData === '') {
-        toast.warning('Suspicious Account detected. Logging out automatically.');
+      if (!currentUser.referralData || currentUser.referralData === "") {
+        toast.warning("Suspicious Account detected. Logging out automatically.");
         handleLogout();
       }
     }

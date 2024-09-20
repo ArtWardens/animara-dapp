@@ -134,6 +134,10 @@ const UpgradeDetailsModal = ({ upgrade, isMaxLevel, onClose }) => {
                 <p className="text-2xl xl:text-4xl text-red-500 font-bold my-[5rem]">
                   Failed to upgrade location level. <br/> Insufficient coins.
                 </p>
+              ) : upgradeUserLocationError !== "" ? (
+                <p className="text-2xl xl:text-4xl text-red-500 font-bold my-[5rem]">
+                  Failed to upgrade location level. <br/> Please try again.
+                </p>
               ) : (
                 <>
                   <p
@@ -340,7 +344,7 @@ const UpgradeDetailsModal = ({ upgrade, isMaxLevel, onClose }) => {
           <div
             className={`relative xl:hidden px-[6rem] py-[8rem] rounded-xl bg-no-repeat bg-contain transition-all duration-1000 ${showModal ? `opacity-100 scale-100` : `opacity-0 scale-0`}`}
             style={{
-              backgroundImage: `url("/assets/images/clicker-character/upgrades-details-mobile-bg.png")`,
+              backgroundImage: `url("/assets/images/clicker-character/upgrades-details-mobile-bg.webp")`,
               backgroundPosition: "center",
             }}
             onClick={(e) => e.stopPropagation()}
