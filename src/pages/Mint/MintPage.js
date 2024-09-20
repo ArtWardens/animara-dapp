@@ -361,23 +361,23 @@ function MintPage() {
         }}
       >
         {/* Page Content */}
-        <div className="w-full flex flex-col xl:flex-row justify-between container pt-[10rem] xl:pt-[6rem] tracking-wider">
+        <div className="w-full flex flex-col xl:flex-row justify-between container pt-[10rem] tracking-wider">
 
           {/* Floating Coins */}
           <img
-            className="absolute right-[5%] lg:right-[50%] top-[20%] lg:top-[20%] transform -translate-x-1/2 -translate-y-1/2 z-[20] w-[60px] lg:w-[120px] pointer-events-none"
+            className="absolute right-[5%] lg:right-[50%] top-[20%] lg:top-[20%] transform -translate-x-1/2 -translate-y-1/2 z-[20] opacity-65 w-[60px] lg:w-[120px] pointer-events-none"
             src="/assets/images/coin-3.webp"
             alt=""
           />
 
           <img
-            className="absolute right-[12%] lg:right-[45%] top-[50%] lg:top-[50%] transform -translate-x-1/2 -translate-y-1/2 z-[20] w-[40px] lg:w-[120px] pointer-events-none"
+            className="absolute right-[12%] lg:right-[45%] top-[50%] lg:top-[50%] transform -translate-x-1/2 -translate-y-1/2 z-[20] opacity-65 w-[40px] lg:w-[120px] pointer-events-none"
             src="/assets/images/coin-4.webp"
             alt=""
           />
 
           <img
-            className="absolute left-[12%] lg:left-[17%] bottom-[5%] lg:bottom-[10%] transform -translate-x-1/2 -translate-y-1/2 z-[20] w-[60px] lg:w-[120px] pointer-events-none"
+            className="absolute left-[12%] lg:left-[17%] bottom-[5%] lg:bottom-[10%] transform -translate-x-1/2 -translate-y-1/2 z-[20] opacity-65 w-[60px] lg:w-[120px] pointer-events-none"
             src="/assets/images/coin-5.webp"
             alt=""
           />
@@ -520,7 +520,7 @@ function MintPage() {
 
               {/* card content */}
               <div
-                className="flex flex-col items-center rounded-2xl place-content-center p-6 min-h-[60vh] xl:min-h-[80dvh] 2xl:min-h-[50dvh] space-y-[1rem]"
+                className="flex flex-col items-center rounded-2xl place-content-center p-6 min-h-[60vh] xl:min-h-[80dvh] 2xl:min-h-[50dvh] space-y-2"
                 style={{
                   backgroundImage:
                     'url("/assets/images/clicker-character/mintBBG.webp")',
@@ -671,7 +671,7 @@ function MintPage() {
                     <img
                       src="/assets/icons/info.webp"
                       alt="info icon"
-                      className="w-full md:w-[30%] lg:w-[30%] h-auto ml-[1rem] transition-transform duration-200 hover:scale-110 "
+                      className="w-full md:w-[30%] h-auto ml-[1rem] transition-transform duration-200 hover:scale-110 "
                       onClick={handleInfoClick} 
                     />
                   </div>
@@ -902,7 +902,7 @@ function MintPage() {
                   <img
                     src="/assets/icons/info.webp"
                     alt="info icon"
-                    className="w-[30%] h-auto ml-[1rem] transition-transform duration-200 hover:scale-110 "
+                    className="w-[2rem] h-auto ml-[1rem] transition-transform duration-200 hover:scale-110 "
                     onClick={handleInfoClick} 
                   />
                 </div>
