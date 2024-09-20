@@ -203,6 +203,13 @@ body:active {
 }
 
 /* Header */
+.default-border {
+  border: 3px solid #F4FBFF;
+  border-radius: 500px 200px 200px 500px;
+  background: var(--0163BE, #0163BE);
+  box-shadow: 3px 2px 0px 0px #517296 inset;
+}
+
 @property --angle {
   syntax: '<angle>';
   initial-value: 0deg;
