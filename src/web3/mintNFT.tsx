@@ -138,7 +138,8 @@ export async function mintImpl(
     const successfulMints = await verifyTx(umi, signatures, latestBlockhash, "finalized");
     return successfulMints;
   } catch (e) {
-    console.error(`minting failed because of ${e}`);
+    toast.error("Minting failed");
+    console.error(`minting failed because of: `, e);
     throw e;
   }
 }

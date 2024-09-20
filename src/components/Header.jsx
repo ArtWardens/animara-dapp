@@ -1,19 +1,11 @@
 import React, { useEffect, useState, useRef, useCallback } from 'react';
 import { useDispatch } from 'react-redux';
-import { useTranslation } from 'react-i18next';
 import { useLocation, useNavigate } from 'react-router-dom/dist';
 import { MoonLoader } from 'react-spinners';
 import { logOut, useUserDetails, useLocalCoins, setMobileMenuOpen, useMobileMenuOpen } from '../sagaStore/slices';
 
-const lngs = {
-  en: { nativeName: 'English' },
-  cn: { nativeName: '中文' },
-};
-
 function Header() {
-  const { i18n } = useTranslation();
   const mobileMenuOpen = useMobileMenuOpen();
-  const [langDropdownOpen, setLangDropdownOpen] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const location = useLocation();
@@ -22,11 +14,6 @@ function Header() {
   const localCoins = useLocalCoins();
   const trigger = useRef(null);
   const coinsDisplayRef = useRef(null);
-
-  const handleLangChange = (lng) => {
-    i18n.changeLanguage(lng);
-    setLangDropdownOpen(false);
-  };
 
   // navigation bar setup
   const navDestinations = [
@@ -88,7 +75,7 @@ function Header() {
     let photoUrl = currentUser.photoUrl;
 
     // returns placeholder if profile picture is not set yet
-    if (photoUrl === ''){
+    if (photoUrl === '') {
       photoUrl = '/assets/images/activeDog.webp';
     }
 
@@ -104,16 +91,9 @@ function Header() {
     <>
       {/* User Card */}
       <div
-        className={`flex flex-row absolute max-w-[70dvw] top-[3rem] z-10 p-1 pr-4 gap-2 left-[1rem] xl:left-[4rem] ${
+        className={`flex flex-row absolute max-w-[70dvw] top-[3rem] z-10 p-1 pr-4 gap-2 left-[1rem] xl:left-[4rem] ${currentUser?.ownsNFT ? 'glowing-border' : 'default-border'} ${
           mobileMenuOpen ? 'hidden' : ''
         }`}
-        style={{
-          border: '3px solid #F4FBFF',
-          borderRadius: '500px 200px 200px 500px',
-          background: 'var(--0163BE, #0163BE)',
-          boxShadow: '3px 2px 0px 0px #517296 inset',
-          zIndex: 91,
-        }}
       >
         {/* profile picture */}
         <div className="p-1 w-20 h-20 relative">
@@ -181,30 +161,6 @@ function Header() {
           zIndex: 91,
         }}
       >
-        <div className="relative">
-          <img
-            src="/assets/images/clicker-character/locale.webp"
-            className="w-[3dvw] xl:w-[1.5dvw] "
-            onClick={() => setLangDropdownOpen(!langDropdownOpen)}
-            alt="change locale"
-          />
-          {langDropdownOpen && (
-            <div className="absolute right-0 mt-2 w-[150px] bg-slate-800 shadow-lg rounded-md z-10">
-              {Object.keys(lngs).map((lng) => (
-                <button
-                  className="block w-full px-4 py-2 text-left hover:bg-slate-500"
-                  type="submit"
-                  key={lng}
-                  onClick={() => handleLangChange(lng)}
-                  disabled={i18n.resolvedLanguage === lng}
-                >
-                  {lngs[lng].nativeName}
-                </button>
-              ))}
-            </div>
-          )}
-        </div>
-
         {navDestinations.map(({ name, link }) => (
           <button
             key={name}
@@ -354,17 +310,17 @@ function Header() {
             </div>
 
             {/* Logout button */}
-            <div className='pt-4'>
+            <div className="pt-4">
               <button
-                  className="transition ease-in-out hover:scale-105 flex items-center"
-                  onMouseEnter={handleMouseEnterLogout}
-                  onMouseLeave={handleMouseLeaveLogout}
-                  onClick={handleLogout}
-                  ref={trigger}
-                >
-                  <img src={imageSrcLogout} className="h-12 w-12" alt="logout" />
-                  <span className="ml-2 text-4xl text-[#ff647a] capitalize leading-9">LOGOUT</span>
-                </button>
+                className="transition ease-in-out hover:scale-105 flex items-center"
+                onMouseEnter={handleMouseEnterLogout}
+                onMouseLeave={handleMouseLeaveLogout}
+                onClick={handleLogout}
+                ref={trigger}
+              >
+                <img src={imageSrcLogout} className="h-12 w-12" alt="logout" />
+                <span className="ml-2 text-4xl text-[#ff647a] capitalize leading-9">LOGOUT</span>
+              </button>
             </div>
           </div>
         </div>

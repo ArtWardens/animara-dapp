@@ -124,8 +124,8 @@ const LoginPage = () => {
         <div ref={nodeRef} className="fade-mask-layer -translate-x-full"></div>
         {/* Background Image */}
         <img 
-          src="../backgrounds/BG_login.webp" alt="background"
-          className="w-full h-full absolute top-0 -z-40 opacity-75 object-cover"
+          src="/backgrounds/BG_login.webp" alt="background"
+          className="w-full h-full absolute top-0 -z-40 object-cover"
         />
 
         {/* Header */}
@@ -168,7 +168,7 @@ const LoginPage = () => {
               value={email}
               required
               onChange={(e) => setEmail(e.target.value)}
-              className="mt-3 w-full outline-none  rounded-[0.625rem] border border-[#245F89] py-[0.875rem] px-[1rem] font-outfit text-black"
+              className="mt-3 w-full outline-none  rounded-[0.625rem] border border-[#245F89] py-[0.875rem] px-[1rem] font-outfit text-dark-2"
             />
             {/* Password */}
             <div className="relative mt-2">
@@ -178,7 +178,7 @@ const LoginPage = () => {
                 placeholder={tLogin("Password")}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full outline-none  rounded-[0.625rem] border border-[#245F89] py-[0.875rem] px-[1rem] font-outfit text-black"
+                className="w-full outline-none  rounded-[0.625rem] border border-[#245F89] py-[0.875rem] px-[1rem] font-outfit text-dark-2"
                 required
               />
               <img
