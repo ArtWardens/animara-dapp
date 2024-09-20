@@ -376,11 +376,11 @@ function MintPage() {
                 alt=""
               />
 
-          <img
-            className="absolute left-[12%] lg:left-[17%] bottom-[5%] lg:bottom-[10%] transform -translate-x-1/2 -translate-y-1/2 z-[20] opacity-65 w-[60px] lg:w-[120px] pointer-events-none"
-            src="/assets/images/coin-5.webp"
-            alt=""
-          />
+              <img
+                className="absolute left-[12%] lg:left-[17%] top-[50rem] lg:top-[60rem] transform -translate-x-1/2 -translate-y-1/2 z-[20] opacity-65 w-[60px] lg:w-[120px] pointer-events-none"
+                src="/assets/images/coin-5.webp"
+                alt=""
+              />
 
               {/* Mint info section */}
               <div className={`w-full xl:w-[40%] text-amber-500 transition-all duration-500 z-[40]
