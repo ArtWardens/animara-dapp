@@ -24,7 +24,7 @@ const getUserDataImpl = async (uid) => {
 
     if (docSnap.exists()) {
       const userData = docSnap.data();
-      const referralData = referralSnap.exists() ? referralSnap.data().referredUserIds : null;
+      const referralData = referralSnap.exists() ? referralSnap.data().referredBy : null;
 
       return {
         ...userData,
