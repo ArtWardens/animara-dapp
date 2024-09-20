@@ -88,7 +88,7 @@ function Header() {
   }, [currentUser]);
 
   return (
-    <>
+    <div className='w-full container pb-52'>
       {/* User Card */}
       <div
         className={`flex flex-row absolute max-w-[70dvw] top-[3rem] z-10 p-1 pr-4 gap-2 left-[1rem] xl:left-[4rem] glowing-border ${
@@ -156,7 +156,7 @@ function Header() {
 
       {/* Desktop Navigation Bar */}
       <div
-        className="hidden xl:flex absolute top-16 gap-2 right-[4rem] z-96 items-center"
+        className="hidden lg:flex absolute top-16 gap-2 right-[4rem] z-96 items-center"
         style={{
           zIndex: 91,
         }}
@@ -325,7 +325,7 @@ function Header() {
           </div>
         </div>
       )}
-    </>
+    </div>
   );
 }
 
