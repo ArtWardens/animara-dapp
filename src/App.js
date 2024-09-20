@@ -15,7 +15,6 @@ import { GlobalProvider } from './context/ContextProvider';
 import rootSaga from './sagas';
 import { useAppDispatch } from './hooks/storeHooks';
 import { appInit, systemUpdateNetworkConnection, setIsMobile, setIsIOS } from './sagaStore/slices';
-import { checkLoginWithRedirect } from "./sagaStore/slices/userSlice.js";
 import { runSaga } from './sagaStore/store';
 import "@solana/wallet-adapter-react-ui/styles.css";
 import './globals.css';
@@ -74,9 +73,6 @@ export const App = () => {
 
   // setup to track if this page is mobile
   useEffect(() => {
-    // check if is redirected from login
-    dispatch(checkLoginWithRedirect());
-
     const handleResize = () => {
       dispatch(setIsMobile(window.innerWidth < 768));
     };
