@@ -94,7 +94,7 @@ const MintingVipPass = ({ onClose }) => {
             {/* Mobile view */}
             <div className="min-w-[400px] min-h-[900px] flex lg:hidden flex-col mt-[8rem] p-[4rem] md:p-[8rem]"
                 style={{
-                    backgroundImage: `url("/assets/images/clicker-character/upgrades-details-mobile-bg.png")`,
+                    backgroundImage: `url("/assets/images/clicker-character/upgrades-details-mobile-bg.webp")`,
                     backgroundSize: "contain",
                     backgroundPosition: "center",
                     backgroundRepeat: "no-repeat",

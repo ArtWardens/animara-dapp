@@ -312,7 +312,7 @@ const SignupPage = () => {
             placeholder="Invite code"
             value={referralCode}
             onChange={(e) => setReferralCode(e.target.value)}
-            className="mt-2 w-full outline-none  rounded-[0.625rem] border border-[#245F89] py-[0.875rem] px-[1rem] font-outfit text-[#C5C5C5]"
+            className="mt-2 w-full outline-none  rounded-[0.625rem] border border-[#245F89] py-[0.875rem] px-[1rem] font-outfit text-black"
             required
           />
 
