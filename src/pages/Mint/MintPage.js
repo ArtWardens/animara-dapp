@@ -615,7 +615,7 @@ function MintPage() {
                   {/* VIP pass button */}
                   <div className="w-auto mr-[-2rem] mb-[5rem] z-[50]"> 
                     <img
-                      src="/assets/icons/vip-pass.png"
+                      src="/assets/icons/vip-pass.webp"
                       alt="vip pass icon"
                       className="w-full h-auto transition-transform duration-200 scale-125 hover:scale-110 "
                       onClick={handlePassClick} 
@@ -845,7 +845,7 @@ function MintPage() {
                 {/* VIP pass button */}
                 <div className="w-[30%]"> 
                     <img
-                      src="/assets/icons/vip-pass.png"
+                      src="/assets/icons/vip-pass.webp"
                       alt="vip pass icon"
                       className="w-full h-full transition-transform duration-200 hover:scale-110 "
                       onClick={handlePassClick} 
