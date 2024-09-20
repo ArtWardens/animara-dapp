@@ -255,7 +255,7 @@ const SignupPage = () => {
             value={username}
             required
             onChange={(e) => setUsername(e.target.value)}
-            className="mt-6 w-full outline-none  rounded-[0.625rem] border border-[#245F89] py-[0.875rem] px-[1rem] font-outfit text-[#C5C5C5]"
+            className="mt-6 w-full outline-none  rounded-[0.625rem] border border-[#245F89] py-[0.875rem] px-[1rem] font-outfit text-black"
           />
 
           {/* Email */}
@@ -266,7 +266,7 @@ const SignupPage = () => {
             value={email}
             required
             onChange={handleEmailChange}
-            className={`mt-2 w-full outline-none  rounded-[0.625rem] border py-[0.875rem] px-[1rem] font-outfit text-[#C5C5C5] ${getEmailInputBorderClass()}`}
+            className={`mt-2 w-full outline-none  rounded-[0.625rem] border py-[0.875rem] px-[1rem] font-outfit text-black ${getEmailInputBorderClass()}`}
           />
           {!isEmailValid && <p className="text-red-500">{emailError}</p>}
 
@@ -278,7 +278,7 @@ const SignupPage = () => {
                 placeholder="Password"
                 value={password}
                 onChange={handlePasswordChange}
-                className={`w-full outline-none  rounded-[0.625rem] border py-[0.875rem] px-[1rem] font-outfit text-[#C5C5C5] ${getPasswordInputBorderClass()}`}
+                className={`w-full outline-none  rounded-[0.625rem] border py-[0.875rem] px-[1rem] font-outfit text-black ${getPasswordInputBorderClass()}`}
                 required
               />
               <img
@@ -298,7 +298,7 @@ const SignupPage = () => {
               placeholder="Confirm Password"
               value={confirmPassword}
               onChange={handleConfirmPasswordChange}
-              className={`w-full outline-none  rounded-[0.625rem] border py-[0.875rem] px-[1rem] font-outfit text-[#C5C5C5] ${getConfirmPasswordInputBorderClass()}`}
+              className={`w-full outline-none  rounded-[0.625rem] border py-[0.875rem] px-[1rem] font-outfit text-black ${getConfirmPasswordInputBorderClass()}`}
               required
             />
             {!doPasswordsMatch && (
@@ -312,7 +312,7 @@ const SignupPage = () => {
             placeholder="Invite code"
             value={referralCode}
             onChange={(e) => setReferralCode(e.target.value)}
-            className="mt-2 w-full outline-none  rounded-[0.625rem] border border-[#245F89] py-[0.875rem] px-[1rem] font-outfit text-[#C5C5C5]"
+            className="mt-2 w-full outline-none  rounded-[0.625rem] border border-[#245F89] py-[0.875rem] px-[1rem] font-outfit text-black"
             required
           />
 
