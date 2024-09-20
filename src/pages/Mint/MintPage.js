@@ -361,7 +361,7 @@ function MintPage() {
 
           <main className="flex-1 w-full flex flex-col pb-24">
             {/* Page Content */}
-            <div className="w-full flex flex-col xl:flex-row justify-center tracking-wider container mx-auto gap-10">
+            <div className="w-full flex flex-col xl:flex-row justify-between tracking-wider container">
 
               {/* Floating Coins */}
               <img
@@ -383,11 +383,11 @@ function MintPage() {
               />
 
               {/* Mint info section */}
-              <div className={`w-full xl:w-[40%] text-amber-500 transition-all duration-500 z-[40]
+              <div className={`w-full xl:w-[35%] text-amber-500 transition-all duration-500 z-[40]
                 ${showTitle ? `opacity-100` : `opacity-0`}`
               }>
                 {/* title */}
-                <div className="w-full py-4 mb-8 text-center xl:text-left">
+                <div className="w-full mb-8 text-center xl:text-left">
                   <span
                     className="text-5xl"
                   >
@@ -490,7 +490,7 @@ function MintPage() {
 
                 {/* Mobile view mint card */}
                 <div
-                  className="z-10 w-full block xl:hidden rounded-3xl p-3 mt-[2rem] text-white"
+                  className="z-10 w-full block xl:hidden rounded-3xl p-4 mt-[2rem] text-white"
                   style={{
                     border: "2px solid var(--Color, #F4FBFF)",
                     background: "rgba(155, 231, 255, 0.58)",
@@ -596,7 +596,7 @@ function MintPage() {
 
                     {/* mint price */}
                     <div className="w-full flex-col justify-center items-center inline-flex">
-                      <div className="flex-col justify-center items-center flex pb-8">
+                      <div className="flex-col justify-center items-center flex">
                         <div
                           className="text-center text-amber-500 text-5xl z-10"
                           style={{
@@ -719,7 +719,7 @@ function MintPage() {
 
               {/* Desktop View */}
               <div
-                className={`xl:w-[60%] hidden xl:block rounded-3xl p-3 transition-all duration-500
+                className={`w-full xl:w-[50%] p-3 hidden lg:block rounded-3xl transition-all duration-500
                   ${slideMintPanel ? `translate-x-0 opacity-100` : `translate-x-60 opacity-0`}`}
                 style={{
                   border: "2px solid var(--Color, #F4FBFF)",
@@ -826,9 +826,9 @@ function MintPage() {
 
                   {/* mint price */}
                   <div className="w-full flex-col justify-center items-center inline-flex">
-                    <div className="flex-col justify-center items-center flex pb-8">
+                    <div className="flex-col justify-center items-center flex">
                       <div
-                        className="text-center text-amber-500 text-5xl z-10"
+                        className="text-center text-amber-500 text-6xl z-10"
                         style={{
                           WebkitTextStrokeWidth: "3.5px",
                           WebkitTextStrokeColor: "var(--COlor-11, #FFF)",
