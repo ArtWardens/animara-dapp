@@ -41,7 +41,7 @@ const EditProfilePage = () => {
     setUsername(user?.name || "");
     setEmail(user?.email || "");
     setPhone(user?.phoneNumber || "");
-    setInviteCode(user?.referredBy || "");
+    setInviteCode(user?.referralData || "");
   }, [user, updateProfileLoading]);
 
   const handleResetPassword = () => {
@@ -307,7 +307,7 @@ const EditProfilePage = () => {
                       type="text"
                       id="inviteCode"
                       value={inviteCode}
-                      readOnly={user?.referredBy ? true : false}
+                      readOnly={user?.referralData ? true : false}
                       onChange={handleInviteCodeChange}
                       className="w-full bg-[rgba(0,52,89,0.80)] border-[1px] border-[#245F89] rounded-lg p-4 pr-[90px] text-sm font-semibold font-outfit tracking-wide"
                     />
