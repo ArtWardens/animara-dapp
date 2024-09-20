@@ -620,7 +620,7 @@ function ReferralPage (){
                 {/* Referral stats */}
                 <div className="w-full aspect-[0.63] flex flex-col border-dashed border-r-4 border-transparent">
                   <div
-                    className={"w-full h-full items-center px-[3rem] xs:px-[2rem] md:px-[7rem] py-[5rem] xs:py-[7rem]"}
+                    className={"w-full h-full items-center px-[3rem] xs:px-[2rem] py-[5rem] xs:py-[7rem]"}
                     style={{
                       backgroundImage: 'url("/assets/images/clicker-character/ticket-mobile-white.webp")',
                       backgroundSize: 'contain',
