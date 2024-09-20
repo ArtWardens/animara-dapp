@@ -58,12 +58,7 @@ function EnergyRegeneration({ isLeaderboardOpen, setIsLeaderboardOpen, isOneTime
 
   return (
     <>
-      <div
-        className="absolute flex flex-col xl:grid grid-cols-3 gap-3 justify-center items-center w-full mx-auto pt-8 xl:px-12 top-[8rem] xl:top-60"
-        style={{
-          zIndex: 20,
-        }}
-      >
+      <div className="absolute flex flex-col xl:grid grid-cols-3 gap-3 justify-center items-center w-full mx-auto pt-8 xl:px-12 top-[8rem] xl:top-60 z-[50]">
         {/* explora point display */}
         <div
           className={`items-center justify-center transition-opacity duration-700 ${
@@ -130,7 +125,7 @@ function EnergyRegeneration({ isLeaderboardOpen, setIsLeaderboardOpen, isOneTime
             isLeaderboardOpen ? 'block' : 'hidden'
           }`}
           style={{
-            zIndex: 100,
+            zIndex: 99,
           }}
         >
           <LeaderBoardModal

@@ -67,6 +67,8 @@ const signUpWithEmailImpl = async (email, password, username, referralCode) => {
   } catch (error) {
     if (error.code === 'auth/error-code:-47'){
       return -6;
+    } else if (error.code === 'auth/email-already-in-use'){
+      return -7;
     }
     return 0;
   }
@@ -83,6 +85,9 @@ const loginWithEmailImpl = async (data) => {
     const { user } = result;
     return user;
   } catch (error) {
+    if (error.code === 'auth/invalid-credential'){
+      return -1;
+    }
     return null;
   }
 };

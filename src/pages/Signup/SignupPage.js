@@ -208,8 +208,8 @@ const SignupPage = () => {
       <div ref={nodeRef} className="fade-mask-layer -translate-x-full"></div>
         {/* Background Image */}
         <img 
-          src="../backgrounds/BG_login.webp" alt="background"
-          className="w-full h-full absolute top-0 -z-40 opacity-75 object-cover"
+          src="/backgrounds/BG_login.webp" alt="background"
+          className="w-full h-full absolute top-0 -z-40 object-cover"
         />
 
         {/* Header */}
@@ -255,7 +255,7 @@ const SignupPage = () => {
             value={username}
             required
             onChange={(e) => setUsername(e.target.value)}
-            className="mt-6 w-full outline-none  rounded-[0.625rem] border border-[#245F89] py-[0.875rem] px-[1rem] font-outfit text-black"
+            className="mt-6 w-full outline-none  rounded-[0.625rem] border border-[#245F89] py-[0.875rem] px-[1rem] font-outfit text-dark-2"
           />
 
           {/* Email */}
@@ -266,7 +266,7 @@ const SignupPage = () => {
             value={email}
             required
             onChange={handleEmailChange}
-            className={`mt-2 w-full outline-none  rounded-[0.625rem] border py-[0.875rem] px-[1rem] font-outfit text-black ${getEmailInputBorderClass()}`}
+            className={`mt-2 w-full outline-none  rounded-[0.625rem] border py-[0.875rem] px-[1rem] font-outfit text-dark-2 ${getEmailInputBorderClass()}`}
           />
           {!isEmailValid && <p className="text-red-500">{emailError}</p>}
 
@@ -278,7 +278,7 @@ const SignupPage = () => {
                 placeholder="Password"
                 value={password}
                 onChange={handlePasswordChange}
-                className={`w-full outline-none  rounded-[0.625rem] border py-[0.875rem] px-[1rem] font-outfit text-black ${getPasswordInputBorderClass()}`}
+                className={`w-full outline-none  rounded-[0.625rem] border py-[0.875rem] px-[1rem] font-outfit text-dark-2 ${getPasswordInputBorderClass()}`}
                 required
               />
               <img
@@ -298,7 +298,7 @@ const SignupPage = () => {
               placeholder="Confirm Password"
               value={confirmPassword}
               onChange={handleConfirmPasswordChange}
-              className={`w-full outline-none  rounded-[0.625rem] border py-[0.875rem] px-[1rem] font-outfit text-black ${getConfirmPasswordInputBorderClass()}`}
+              className={`w-full outline-none  rounded-[0.625rem] border py-[0.875rem] px-[1rem] font-outfit text-dark-2 ${getConfirmPasswordInputBorderClass()}`}
               required
             />
             {!doPasswordsMatch && (
@@ -325,7 +325,7 @@ const SignupPage = () => {
               onChange={(e) => setAgreeTNC(e.target.checked)}
               className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:accent-[#49DEFF] dark:focus:accent-[#49DEFF] dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
             <label htmlFor="link-checkbox" className="ms-2 text-sm font-outfit text-gray-900 dark:text-gray-300">
-              By signing up, I agree to Animara&#39;s <Link to="/" className="text-[#49DEFF] dark:text-[#49DEFF] hover:underline ">Terms & Condition</Link>
+              By signing up, I agree to Animara&#39;s <a href="https://animara.world/terms-and-conditions" className="text-[#49DEFF] dark:text-[#49DEFF] hover:underline">Terms & Condition</a>
             </label>
           </div>
 
