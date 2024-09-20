@@ -1,8 +1,20 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
 const MintingVipPass = ({ onClose }) => {
+    const [showModal, setShowModal] = useState(false);
+
+    useEffect(() => {    
+        const timerModal = setTimeout(() => {
+          setShowModal(true);
+        }, 250);
+    
+        return () => {
+          clearTimeout(timerModal);
+        };
+    }, []);
+
     return(
-        <div className="w-full h-full fixed inset-0 flex items-center justify-center backdrop-blur-xl z-[50]">
+        <div className={`w-full h-full fixed inset-0 flex items-center justify-center backdrop-blur-xl z-[50] transition-all duration-1000 ${showModal ? `opacity-100` : `opacity-0`}`}>
             {/* Desktop view */}
             <div className="min-h-[600px] hidden lg:flex flex-col items-center justify-center p-[6rem]"
                 style={{

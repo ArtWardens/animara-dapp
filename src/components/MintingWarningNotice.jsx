@@ -1,10 +1,22 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
 const MintingWarningNotice = ({ onClose }) => {
+    const [showModal, setShowModal] = useState(false);
+
+    useEffect(() => {    
+        const timerModal = setTimeout(() => {
+          setShowModal(true);
+        }, 250);
+    
+        return () => {
+          clearTimeout(timerModal);
+        };
+    }, []);
+
     return(
-        <div className="w-full h-full fixed inset-0 flex items-center justify-center backdrop-blur-xl z-[50]">
+        <div className={`w-full h-full fixed inset-0 flex items-center justify-center backdrop-blur-xl z-[50] transition-all duration-1000 ${showModal ? `opacity-100` : `opacity-0`}`}>
             {/* Desktop view */}
-            <div className="min-h-[500px] min-w-[500px] hidden lg:flex flex-col items-center justify-center p-[6rem]"
+            <div className="min-h-[500px] min-w-[500px] hidden lg:flex flex-col items-center justify-center p-[6rem] "
                 style={{
                     backgroundImage: `url("/assets/images/clicker-character/upgrades-details-bg.webp")`,
                     backgroundSize: "contain",
@@ -38,7 +50,7 @@ const MintingWarningNotice = ({ onClose }) => {
             </div>
 
             {/* Mobile view */}
-            <div className="min-w-[400px] min-h-[600px] flex lg:hidden flex-col mt-[8rem] p-[4rem] md:p-[8rem]"
+            <div className="min-w-[400px] min-h-[600px] flex lg:hidden flex-col mt-[8rem] p-[4rem] md:p-[8rem] "
                 style={{
                     backgroundImage: `url("/assets/images/clicker-character/upgrades-details-mobile-bg.webp")`,
                     backgroundSize: "contain",
