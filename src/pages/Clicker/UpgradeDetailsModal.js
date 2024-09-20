@@ -392,7 +392,7 @@ const UpgradeDetailsModal = ({ upgrade, isMaxLevel, onClose }) => {
 
                   <div className="flex flex-row items-center">
                     <img
-                      src={"/assets/images/clicker-character/explora-point.webp"}
+                      src={"/assets/icons/explora-point.webp"}
                       alt="icon2"
                       className="w-6 h-6 mr-1"
                     />
@@ -405,7 +405,7 @@ const UpgradeDetailsModal = ({ upgrade, isMaxLevel, onClose }) => {
                         <p className="text-white">&nbsp; → &nbsp;</p>
                         <img
                           src={
-                            "/assets/images/clicker-character/explora-point.webp"
+                            "/assets/icons/explora-point.webp"
                           }
                           alt="icon2"
                           className="w-6 h-6 mr-1"
