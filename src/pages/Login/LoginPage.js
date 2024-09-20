@@ -168,7 +168,7 @@ const LoginPage = () => {
               value={email}
               required
               onChange={(e) => setEmail(e.target.value)}
-              className="mt-3 w-full outline-none  rounded-[0.625rem] border border-[#245F89] py-[0.875rem] px-[1rem] font-outfit text-[#C5C5C5]"
+              className="mt-3 w-full outline-none  rounded-[0.625rem] border border-[#245F89] py-[0.875rem] px-[1rem] font-outfit text-black"
             />
             {/* Password */}
             <div className="relative mt-2">
@@ -178,7 +178,7 @@ const LoginPage = () => {
                 placeholder={tLogin("Password")}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full outline-none  rounded-[0.625rem] border border-[#245F89] py-[0.875rem] px-[1rem] font-outfit text-[#C5C5C5]"
+                className="w-full outline-none  rounded-[0.625rem] border border-[#245F89] py-[0.875rem] px-[1rem] font-outfit text-black"
                 required
               />
               <img
