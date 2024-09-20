@@ -12,6 +12,7 @@ import {
   useAuthLoading,
   useUserLastPeriodicBatchTime,
   useUserLastPeriodicBatchTimeLoading,
+  logOut,
 } from '../sagaStore/slices';
 import { toast } from 'react-toastify';
 import { Timestamp } from 'firebase/firestore';
