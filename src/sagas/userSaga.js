@@ -19,11 +19,14 @@ import {
   getReferralStatsImpl,
   registerNFTImpl,
 } from "../firebase/user";
-import { handleGetLeaderboard } from "../firebase/leaderboard";
+import { handleGetLeaderboard, getLeaderboardImpl } from "../firebase/leaderboard";
 import {
   handleGetOneTimeTaskList,
   handleCompletedOneTimeTask,
 } from "../firebase/oneTimeTask";
+import {
+  checkUserLastPeriodicBatchTimeImpl,
+} from "../firebase/periodicTask";
 import {
   settleTapSessionImpl,
   rechargeEnergyImpl,
@@ -46,6 +49,9 @@ import {
   getLeaderBoard,
   getLeaderBoardError,
   getLeaderBoardSuccess,
+  getNewLeaderBoard,
+  getNewLeaderBoardError,
+  getNewLeaderBoardSuccess,
   getOneTimeTaskList,
   getOneTimeTaskListError,
   getOneTimeTaskListSuccess,
@@ -116,6 +122,9 @@ import {
   fetchDates,
   fetchDatesSuccess,
   fetchDatesError,
+  checkUserLastPeriodicBatchTime,
+  checkUserLastPeriodicBatchTimeSuccess,
+  checkUserLastPeriodicBatchTimeError,
 } from "../sagaStore/slices";
 import {
   StaminaRechargeTypeBasic,
@@ -337,6 +346,18 @@ export function* updateDailyLoginSaga() {
   }
 }
 
+export function* getNewLeaderBoardSaga() {
+  try {
+    const leaderboardData = yield call(getLeaderboardImpl);
+    yield put(getNewLeaderBoardSuccess(leaderboardData));
+    return leaderboardData;
+  } catch (error) {
+    yield put(getNewLeaderBoardError(error));
+    toast.error("Failed to retrieve leaderboard. Please try again. ");
+  }
+}
+
+// OLD LEADERBOARD BACKUP
 export function* getLeaderBoardSaga(action) {
   const cooldownEndTime = getCooldownTime();
   if (calculateCountdownRemaining(cooldownEndTime) !== 0) {
@@ -611,6 +632,18 @@ export function* fetchDatesSaga() {
   }
 }
 
+export function* checkUserLastPeriodicBatchTimeSaga() {
+  try {
+    const userBatchTime = yield call(checkUserLastPeriodicBatchTimeImpl);
+    yield put(checkUserLastPeriodicBatchTimeSuccess(userBatchTime));
+    return userBatchTime;
+  } 
+  catch (error) {
+    yield put(checkUserLastPeriodicBatchTimeError(error));
+    toast.error("Failed to check user batch time. Please try again. ");
+  }
+}
+
 export function* userSagaWatcher() {
   yield takeLatest(signupWithEmail.type, signupWithEmailSaga);
   yield takeLatest(loginWithEmail.type, loginWithEmailSaga);
@@ -623,6 +656,7 @@ export function* userSagaWatcher() {
   yield takeLatest(logOut.type, logOutSaga);
   yield takeLatest(updateDailyLogin.type, updateDailyLoginSaga);
   yield takeLatest(getLeaderBoard.type, getLeaderBoardSaga);
+  yield takeLatest(getNewLeaderBoard.type, getNewLeaderBoardSaga);
   yield takeLatest(closeDailyPopup.type, closeDailyPopupSaga);
   yield takeLatest(getOneTimeTaskList.type, getOneTimeTaskListSaga);
   yield takeLatest(getEarlyBirdOneTimeTaskList.type, getEarlyBirdOneTimeTaskListSaga);
@@ -639,4 +673,5 @@ export function* userSagaWatcher() {
   yield takeLatest(mintNFT.type, mintNFTSaga);
   yield takeLatest(claimCashback.type, claimCashbackSaga);
   yield takeLatest(fetchDates.type, fetchDatesSaga);
+  yield takeLatest(checkUserLastPeriodicBatchTime.type, checkUserLastPeriodicBatchTimeSaga);
 }
