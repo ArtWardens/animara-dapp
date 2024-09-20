@@ -15,7 +15,7 @@ const MintingVipPass = ({ onClose }) => {
 
   return (
     <div
-      className={`w-full h-full fixed inset-0 flex items-center justify-center backdrop-blur-xl z-[50] transition-all duration-500 ${showModal ? `opacity-100` : `opacity-0`}`}
+      className={`w-full h-full fixed inset-0 flex items-center justify-center backdrop-blur-xl z-[99] transition-all duration-500 ${showModal ? `opacity-100` : `opacity-0`}`}
     >
       {/* Desktop view */}
       <div
@@ -107,7 +107,7 @@ const MintingVipPass = ({ onClose }) => {
         </div>
 
         <button
-          className="bg-[#ffdc61] text-white mt-2 xl:mt-8 px-8 py-2 rounded-full text-lg uppercase flex items-center justify-center hover:shadow-[0px_4px_4px_0px_#FFFBEF_inset]"
+          className="bg-[#ffdc61] text-white mt-2 xl:mt-8 px-8 py-2 rounded-full text-lg uppercase flex items-center justify-center hover:shadow-[0px_4px_4px_0px_#FFFBEF_inset] transition-all duration-300 hover:scale-110"
           onClick={onClose}
         >
           okay
@@ -116,7 +116,7 @@ const MintingVipPass = ({ onClose }) => {
 
       {/* Mobile view */}
       <div
-        className="min-w-[400px] min-h-[900px] flex lg:hidden flex-col mt-[8rem] p-[4rem] md:p-[8rem]"
+        className="min-w-[400px] min-h-[900px] flex lg:hidden flex-col p-[4rem] md:p-[8rem]"
         style={{
           backgroundImage: `url("/assets/images/clicker-character/upgrades-details-mobile-bg.webp")`,
           backgroundSize: 'contain',
