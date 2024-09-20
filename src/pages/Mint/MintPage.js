@@ -149,7 +149,7 @@ function MintPage() {
     setIsPassOpen(false); 
   };
 
-  // Toggle VIP pass component
+  // Toggle notice component
   const handleInfoClick = () => {
     setIsNoticeOpen(true); 
   };
