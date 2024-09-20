@@ -12,6 +12,7 @@ import {
 } from "../../sagaStore/slices/userSlice.js";
 import { MoonLoader } from "react-spinners";
 import LevelUpModal from "./LevelUpModal.js";
+import DynamicNumberDisplay from "../../components/DynamicNumberDisplay";
 
 const UpgradeDetailsModal = ({ upgrade, isMaxLevel, onClose }) => {
   const { t } = useTranslation();
@@ -279,12 +280,12 @@ const UpgradeDetailsModal = ({ upgrade, isMaxLevel, onClose }) => {
 
               <div className="flex flex-row items-center justify-between">
                 <p className="text-sm font-sans mr-[1rem]">with</p>
-                <img
-                  src={"/assets/images/clicker-character/gem.webp"}
-                  alt="gem"
-                  className="w-6 h-6 mr-2"
+                <DynamicNumberDisplay 
+                  number={upgrade.nextLevelUpgradeCost}
+                  imgSrc={"/assets/images/clicker-character/gem.webp"}
+                  imgClassName={"w-6 h-6 mr-2"}
+                  spanClassName={"text-normal font-normal"}
                 />
-                <p>{upgrade.nextLevelUpgradeCost}</p>
               </div>
 
               <p className="text-white text-base font-sans">
@@ -296,28 +297,22 @@ const UpgradeDetailsModal = ({ upgrade, isMaxLevel, onClose }) => {
                   <p className="text-sm font-sans font-medium mr-[1rem]">
                     Explora Points
                   </p>
-                  <img
-                    src={"/assets/icons/explora-point.webp"}
-                    alt="icon2"
-                    className="w-6 h-6 mr-1"
+                  <DynamicNumberDisplay 
+                    number={upgrade.currentExploraPts}
+                    imgSrc={"/assets/icons/explora-point.webp"}
+                    imgClassName={"w-6 h-6 mr-1"}
+                    spanClassName={"text-2xl text-[#80e8ff] font-bold"}
                   />
-                  <p className="text-2xl text-[#80e8ff] font-bold">
-                    {upgrade.currentExploraPts}
-                  </p>
 
                   {!isMaxLevel && (
                     <>
                       <p className="text-white">&nbsp; → &nbsp;</p>
-                      <img
-                        src={
-                          "/assets/icons/explora-point.webp"
-                        }
-                        alt="icon2"
-                        className="w-6 h-6 mr-1"
+                      <DynamicNumberDisplay 
+                        number={upgrade.nextLevelExploraPts || 0}
+                        imgSrc={"/assets/icons/explora-point.webp"}
+                        imgClassName={"w-6 h-6 mr-1"}
+                        spanClassName={"text-2xl text-[#80e8ff] font-bold"}
                       />
-                      <p className="text-2xl text-[#80e8ff] font-bold">
-                        +{upgrade.nextLevelExploraPts || 0}
-                      </p>
                     </>
                   )}
                 </div>
