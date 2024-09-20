@@ -5,7 +5,6 @@ import { useAppDispatch } from "../../hooks/storeHooks.js";
 import {
   useAuthLoading,
   loginWithEmail,
-  loginWithTwitter,
   useUserAuthenticated,
 } from "../../sagaStore/slices/userSlice.js";
 import { useIsIOS } from "../../sagaStore/slices/systemSlice.js";
@@ -69,9 +68,9 @@ const LoginPage = () => {
   //   dispatch(loginWithGoogle());
   // };
 
-  const handleLoginWithTwitter = async () => {
-    dispatch(loginWithTwitter());
-  };
+  // const handleLoginWithTwitter = async () => {
+  //   dispatch(loginWithTwitter());
+  // };
 
   // const handleTelegramAuth = async (telegramUser) => {
   //   dispatch(loginWithTelegram(telegramUser));
@@ -142,7 +141,7 @@ const LoginPage = () => {
         {/* Login Card Latest */}
         <div className="relative left-[50%] -translate-x-1/2 lg:left-[75%] self-center sm:max-h-[50.5rem] max-w-[25rem] sm:max-w-[27.5rem] rounded-[2.5rem] p-[2.5rem] gap-[1.25rem] bg-[#003459] shadow-[0.5rem_0.375rem_0.625rem_0_rgba(0,0,0,0.2)] font-bignoodle">
           {/* Upper Section */}
-          <div className="relative self-center gap-[1.25rem]">
+          <div className="relative self-center space-y-[2rem]">
             <div className="flex justify-center items-center">
               {isIOS?
                 <img 
@@ -165,7 +164,7 @@ const LoginPage = () => {
             <input
               disabled={isAuthLoading}
               type="email"
-              placeholder={tLogin("email")}
+              placeholder={tLogin("Email")}
               value={email}
               required
               onChange={(e) => setEmail(e.target.value)}
@@ -176,7 +175,7 @@ const LoginPage = () => {
               <input
                 disabled={isAuthLoading}
                 type={showPassword ? "text" : "password"}
-                placeholder={tLogin("password")}
+                placeholder={tLogin("Password")}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 className="w-full outline-none  rounded-[0.625rem] border border-[#245F89] py-[0.875rem] px-[1rem] font-outfit text-dark-2"
@@ -232,14 +231,20 @@ const LoginPage = () => {
                 Sign Up
               </Link>
             </p>
+            {/* Policies */}
+            <div className="mt-3 flex gap-8 font-outfit text-[#C5C5C5] text-[1rem] text-center justify-center">
+              <Link to="https://animara.world/privacy-policy" className="hover:brightness-75 ">Privacy Policy</Link>
+              <span>|</span>
+              <Link to="https://animara.world/terms-and-conditions" className="hover:brightness-75 ">Terms & Conditions</Link>
+            </div>
           </div>
           
           {/*  Divider */}
-          <div className="flex items-center my-6">
+          {/* <div className="flex items-center my-6">
             <hr className="border-t border-[#C5C5C5] flex-grow" />
             <span className="px-8 text-[0.875rem] text-[#C5C5C5] font-outfit">Or</span>
             <hr className="border-t border-[#C5C5C5] flex-grow" />
-          </div>
+          </div> */}
 
           {/* Social Login Buttons Section */}
           {/* <button 
@@ -254,7 +259,7 @@ const LoginPage = () => {
             />
             Login With Google
           </button> */}
-          <button 
+          {/* <button 
             type="button"
             disabled={isAuthLoading}
             className="mt-1 max-h-[4rem] w-full font-outfit text-[1rem] leading-[1rem] text-[#C5C5C5] rounded-[0.625rem] py-[0.875rem] px-[1rem] gap-[1.25rem] bg-[#0A4169] hover:brightness-75 text-center inline-flex items-center justify-center"
@@ -265,18 +270,12 @@ const LoginPage = () => {
               className="max-h-[2.5rem] max-w-[2.5rem]"
             />
             Login With X
-          </button>
+          </button> */}
           <div className="flex items-center justify-center">
             {/* <LoginButton
               botUsername={process.env.REACT_APP_TELEGRAM_BOT_NAME}
               onAuthCallback={handleTelegramAuth}
             /> */}
-          </div>
-
-          <div className="mt-3 flex gap-8 font-outfit text-[#C5C5C5] text-[1rem] text-center justify-center">
-            <Link to="https://animara.world/privacy-policy" className="hover:brightness-75 ">Privacy Policy</Link>
-            <span>|</span>
-            <Link to="https://animara.world/terms-and-conditions" className="hover:brightness-75 ">Terms & Conditions</Link>
           </div>
         </div>
       </div>
