@@ -237,7 +237,7 @@ function ReferralPage() {
         <main className="flex-1 w-full flex flex-col z-20 pb-24">
           {/* content */}
           <div
-            className={`container flex flex-col items-center gap-6 tracking-wider transition-opacity duration-1000
+            className={`container flex flex-col items-center gap-6 tracking-wider transition-opacity duration-500
             ${showTitle ? `opacity-100` : `opacity-0`}`}
           >
 
@@ -357,7 +357,7 @@ function ReferralPage() {
             </div>
 
             {/* Desktop bottom panel */}
-            <div className={`hidden lg:flex w-full items-center transition-all duration-1000
+            <div className={`hidden lg:flex w-full items-center transition-all duration-500
                 ${showPanel ? `opacity-100 scale-100` : `opacity-0 scale-0`}`}>
               {/* referral stats & cashback */}
               <div className="w-[60%] flex hover:scale-105 transition-all duration-500"
@@ -617,7 +617,7 @@ function ReferralPage() {
             {/* Mobile bottom panel */}
             <div className="flex flex-col lg:hidden w-full overflow-x-hidden">
               {/* referral stats & cashback */}
-              <div className={`w-full flex flex-col items-center transition-all duration-1000
+              <div className={`w-full flex flex-col items-center transition-all duration-500
                 ${showPanel ? `opacity-100 scale-100` : `opacity-0 scale-0`}`}>
                 <div className="flex flex-col ">
                   {/* Referral stats */}
