@@ -36,6 +36,8 @@ const MascotView = ({ openModal, setOpenModal }) => {
   const [rewardModalFading, setRewardModalFading] = useState(false);
   const [startSlide, setStartSlide] = useState(false);
   const [isInteractive, setIsInteractive] = useState(false);
+  const [showWord, setShowWord] = useState(false); // State to manage word display after 2.5 seconds
+  const [showCongratulations, setShowCongratulations] = useState(false); // Manage "Congratulations" visibility
   const idleTimerRef = useRef(null);
   const periodicSettlerTimerRef = useRef(null);
   const plusOneTimerRef = useRef(null);
@@ -51,7 +53,7 @@ const MascotView = ({ openModal, setOpenModal }) => {
 
     const interactivityTimer = setTimeout(() => {
       setIsInteractive(true);
-    }, 1000); // Adjust this delay to match the duration of your transitions
+    }, 1000);
 
     return () => {
       clearTimeout(slideTimer);
@@ -76,7 +78,7 @@ const MascotView = ({ openModal, setOpenModal }) => {
       return src;
     });
 
-    setMascotImages(preloadedImages); // Set preloaded images
+    setMascotImages(preloadedImages);
 
     setIsInitialized(true);
   }, [dispatch, currentUser, isInitialized]);
@@ -106,8 +108,6 @@ const MascotView = ({ openModal, setOpenModal }) => {
     document.addEventListener('mouseleave', handleMouseLeave);
     document.addEventListener('visibilitychange', handleVisibilityChange);
 
-    // remember that we have initialized
-    setIsInitialized(true);
     return () => {
       document.removeEventListener('mouseleave', handleMouseLeave);
       document.removeEventListener('visibilitychange', handleVisibilityChange);
@@ -117,22 +117,12 @@ const MascotView = ({ openModal, setOpenModal }) => {
   // periodic tap session settler
   const setupSettler = useCallback(() => {
     if (!currentUser) return;
-    // skip setup settler if already present
-    if (periodicSettlerTimerRef.current) {
-      return;
-    }
+    if (periodicSettlerTimerRef.current) return;
 
-    // try to settle tap session if there are any changes
     if (!settlingTapSession && (currentUser?.coins !== localCoins || currentUser?.stamina !== localStamina)) {
-      dispatch(
-        settleTapSession({
-          newCointAmt: localCoins,
-          newStamina: localStamina,
-        }),
-      );
+      dispatch(settleTapSession({ newCointAmt: localCoins, newStamina: localStamina }));
     }
 
-    // re-setup a timer to repeat this set
     clearInterval(periodicSettlerTimerRef.current);
     periodicSettlerTimerRef.current = setInterval(() => {
       periodicSettlerTimerRef.current = null;
@@ -150,52 +140,35 @@ const MascotView = ({ openModal, setOpenModal }) => {
 
     setImgIndex((prevIndex) => (prevIndex === 0 ? 1 : prevIndex === 1 ? 2 : 1));
 
-    // kickstart idle timer
     const restartIdleTimer = () => {
-      // reset timer whenever we call this
       if (idleTimerRef.current) {
         clearTimeout(idleTimerRef.current);
       }
-      // set a timer to reset mascot after no action for a duration
+
       idleTimerRef.current = setTimeout(() => {
         setImgIndex(0);
         clearInterval(periodicSettlerTimerRef.current);
         periodicSettlerTimerRef.current = null;
-        // Note: if reward modal is opened, then skip idle handling
-        // because usually we are waiting for server to update back depletion rewards
-        if (
-          !settlingTapSession &&
-          !isOpenRewardModal &&
-          (currentUser?.coins !== localCoins || currentUser?.stamina !== localStamina)
-        ) {
-          dispatch(
-            settleTapSession({
-              newCointAmt: localCoins,
-              newStamina: localStamina,
-            }),
-          );
+
+        if (!settlingTapSession && !isOpenRewardModal && (currentUser?.coins !== localCoins || currentUser?.stamina !== localStamina)) {
+          dispatch(settleTapSession({ newCointAmt: localCoins, newStamina: localStamina }));
         }
       }, idleTimeoutDuration);
     };
-    restartIdleTimer();
-    if (!periodicSettlerTimerRef.current) {
-      setupSettler();
-    }
 
-    // Dispatch action to consume stamina and play sound
+    restartIdleTimer();
+    if (!periodicSettlerTimerRef.current) setupSettler();
+
     dispatch(consumeStamina({ staminaToConsume: 1, coinToGain: 1 }));
     mascotSound();
 
-    // Display the floating +1 effect
     const randomLeft = Math.random() * 70 + 15;
     const randomTop = Math.random() * 50 + 5;
     setPlusOneEffect({ show: false, left: randomLeft, top: randomTop });
 
     setTimeout(() => setPlusOneEffect({ show: true, left: randomLeft, top: randomTop }), 0);
 
-    if (plusOneTimerRef.current) {
-      clearTimeout(plusOneTimerRef.current);
-    }
+    if (plusOneTimerRef.current) clearTimeout(plusOneTimerRef.current);
     plusOneTimerRef.current = setTimeout(() => setPlusOneEffect({ show: false, left: 0, top: 0 }), 500);
   }, [
     dispatch,
@@ -220,20 +193,41 @@ const MascotView = ({ openModal, setOpenModal }) => {
   }, [dispatch, localStamina, localCoins, currentUser, isOpenRewardModal]);
 
   useEffect(() => {
-    if (!rechargingStamina) {
-      return;
-    }
+    if (!rechargingStamina) return;
     clearInterval(periodicSettlerTimerRef.current);
     periodicSettlerTimerRef.current = null;
   }, [rechargingStamina]);
 
+  // Reward modal close handler
   const closeRewardModal = () => {
     setRewardModalFading(true);
     setTimeout(() => {
       setIsOpenRewardModal(false);
       setRewardModalFading(false);
+      setShowWord(false);
+      setShowCongratulations(false);
     }, 500);
   };
+
+  const handleVideoPlay = () => {
+    setTimeout(() => {
+      setShowWord(true);
+      setTimeout(() => {
+        setShowWord(false);
+      }, 3000);
+    }, 2500);
+
+    if (currentUser?.ownsNFT) {
+      setTimeout(() => {
+        setShowCongratulations(true);
+        setTimeout(() => {
+          setShowCongratulations(false);
+        }, 3300);
+      }, 7750);
+    }
+  };
+
+  const videoSource = currentUser?.ownsNFT ? '/assets/images/boxCoin_full.webm' : '/assets/images/boxCoin_normal.webm';
 
   return (
     <div
@@ -302,16 +296,14 @@ const MascotView = ({ openModal, setOpenModal }) => {
               {mascotImages.map((src, index) => (
                 <div
                   key={index}
-                  className={`absolute bottom-[12rem] xl:bottom-20 transition-transform duration-1000 overflow-visible flex justify-center
-                    ${startSlide ? 'translate-y-0' : 'translate-y-full'}
-                  `}
+                  className={`absolute bottom-[12rem] xl:bottom-32 transition-transform duration-1000 overflow-visible flex justify-center
+                    ${startSlide ? 'translate-y-0' : 'translate-y-full'}`}
                 >
                   <img
                     src={src}
                     alt={`Game mascot ${index}`}
                     className={`transition-opacity min-w-[50rem] w-3/4 xl:w-3/4 mb-[-4rem] xl:mb-0
-                      ${imgIndex === index ? 'block' : 'hidden'}
-                    `}
+                      ${imgIndex === index ? 'block' : 'hidden'}`}
                   />
                 </div>
               ))}
@@ -322,20 +314,49 @@ const MascotView = ({ openModal, setOpenModal }) => {
 
       {isOpenRewardModal && (
         <div
-          className={`fixed top-0 flex flex-col h-full w-full items-center justify-center bg-dark/90 transition-opacity duration-500 ${rewardModalFading ? 'opacity-0' : 'opacity-100'}`}
-          style={{
-            zIndex: 100,
-          }}
+          className={`fixed top-0 flex h-full w-full items-center justify-center bg-dark/90 transition-opacity duration-500 ${rewardModalFading ? 'opacity-0' : 'opacity-100'}`}
         >
           <video
-            src="https://storage.animara.world/depletion-reward-w-number.webm"
+            src={videoSource} // Dynamically select the video based on currentUser.ownsNFT
             autoPlay
             loop={false}
             muted
             playsInline
             onEnded={closeRewardModal}
-            className="absolute inset-0 object-cover w-full h-full"
+            onPlay={handleVideoPlay}
+            className="absolute object-cover object-center w-full lg:w-auto h-auto lg:h-full"
           />
+
+          <div
+            className={`absolute text-[18vh] font-bold transition-all duration-1000 transform text-amber-500 tracking-normal
+            ${showWord ? 'opacity-100 scale-150 pb-20 translate-x-0' : 'opacity-0 scale-0 pb-0 translate-x-6'}`}
+            style={{
+              WebkitTextStrokeWidth: '0.45vh',
+              WebkitTextStrokeColor: 'var(--Color-11, #FFF)',
+            }}
+          >
+            +{currentUser.depletionReward}
+          </div>
+
+          <div
+            className={`absolute text-[12vh] font-bold transition-all duration-1000 transform text-amber-500 tracking-normal
+            ${showCongratulations ? 'opacity-100 scale-150 pb-20 translate-x-0' : 'opacity-0 scale-0 pb-0 translate-x-6'}`}
+            style={{
+              WebkitTextStrokeWidth: '0.45vh',
+              WebkitTextStrokeColor: 'var(--Color-11, #FFF)',
+            }}
+          >
+            1.1X
+            <p
+              className="absolute text-[8vh] font-bold transition-all duration-1000 transform text-amber-500 tracking-normal"
+              style={{
+                WebkitTextStrokeWidth: '0.25vh',
+                WebkitTextStrokeColor: 'var(--Color-11, #FFF)',
+              }}
+            >
+              
+            </p>
+          </div>
         </div>
       )}
     </div>
