@@ -346,7 +346,7 @@ function MintPage() {
   return (
     <>
       {/* page background */}
-      <div className={`min-h-screen flex flex-col z-[-20] ${mobileMenuOpen ? `hidden` : ``}`}
+      <div className={`min-h-screen flex flex-col z-[-20]`}
         style={{
           backgroundImage:
             'url("/assets/images/clicker-character/clickerWall.webp")',
@@ -359,7 +359,7 @@ function MintPage() {
 
           <Header />
 
-          <main className="flex-1 w-full flex flex-col pb-24">
+          <div className={`flex-1 w-full flex flex-col pb-24  ${mobileMenuOpen ? `hidden` : ``}`}>
             {/* Page Content */}
             <div className="w-full flex flex-col xl:flex-row justify-between tracking-wider container">
 
@@ -927,7 +927,7 @@ function MintPage() {
                 </video>
               </div>
             </div>
-          </main>
+          </div>
 
       </div>
 

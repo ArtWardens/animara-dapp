@@ -221,7 +221,7 @@ function ReferralPage() {
   return (
     <>
       {/* page background */}
-      <div className={`min-h-screen flex flex-col ${mobileMenuOpen ? `hidden` : ``}`}
+      <div className={`min-h-screen flex flex-col `}
         style={{
           backgroundImage:
             'url("/assets/images/clicker-character/clickerWall.webp")',
@@ -234,7 +234,7 @@ function ReferralPage() {
 
         <Header />
 
-        <main className="flex-1 w-full flex flex-col z-20 pb-24">
+        <div className={`flex-1 w-full flex flex-col z-20 pb-24 ${mobileMenuOpen ? `hidden` : ``}`}>
           {/* content */}
           <div
             className={`container flex flex-col items-center gap-6 tracking-wider transition-opacity duration-500
@@ -882,7 +882,7 @@ function ReferralPage() {
               </div>
             </div>
           </div>
-        </main>
+        </div>
 
       </div>
 
