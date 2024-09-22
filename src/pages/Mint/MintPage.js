@@ -16,6 +16,7 @@ import { useMobileMenuOpen } from '../../sagaStore/slices';
 import { startCountdown } from "../../firebase/countDown";
 import MintingWarningNotice from "../../components/MintingWarningNotice.jsx";
 import MintingVipPass from "../../components/MintingVipPass.jsx";
+import { useCallback } from "react";
 
 const useCandyMachine = (
   umi,
@@ -139,7 +140,7 @@ function MintPage() {
   const [isPhantomInstalled] = useState(window.phantom?.solana?.isPhantom);
   const [isNoticeOpen, setIsNoticeOpen] = useState(false);
   const [isPassOpen, setIsPassOpen] = useState(false);
-
+    
   // Toggle VIP pass component
   const handlePassClick = () => {
     setIsPassOpen(true); 
@@ -343,6 +344,18 @@ function MintPage() {
     window.location.href = `https://phantom.app/ul/browse/${currentUrl}?ref=`;
   }
 
+  const getRemainingNFTs = useCallback(()=>{
+    if (!candyMachine){
+      return `loading`
+    }
+    const nftsLeft = (Number(candyMachine.data.itemsAvailable) - Number(candyMachine.itemsRedeemed))
+    const nftsAvailalbe = Number(candyMachine.data.itemsAvailable);
+    if (nftsLeft === 0){
+      return ``
+    }
+    return `${nftsLeft.toLocaleString()}/${nftsAvailalbe.toLocaleString()}`;
+  }, [candyMachine]);
+
   return (
     <>
       {/* page background */}
@@ -519,7 +532,7 @@ function MintPage() {
 
                   {/* card content */}
                   <div
-                    className="flex flex-col items-center rounded-2xl place-content-center p-6 min-h-[60vh] xl:min-h-[80dvh] 2xl:min-h-[50dvh] space-y-2"
+                    className="flex flex-col items-center rounded-2xl place-content-center p-6 min-h-[60vh] xl:min-h-[80dvh] 2xl:min-h-[50dvh]"
                     style={{
                       backgroundImage:
                         'url("/assets/images/clicker-character/mintBBG.webp")',
@@ -590,9 +603,24 @@ function MintPage() {
                     <img
                       src="/assets/images/clicker-character/nft-treasureBox.webp"
                       alt="NFT Treasure Box"
-                      className="object-contain w-72 h-auto -my-10 hover:animate-treasureBoxTwerk"
+                      className="object-contain w-72 h-auto -mt-2 -mb-2 hover:animate-treasureBoxTwerk"
                     />
 
+                    {/* Remaining NFTs */}
+                    <div className="w-full flex-col justify-center items-center inline-flex">
+                      <div className="flex-col justify-center items-center flex">
+                        <div
+                          className="text-center text-amber-300 text-xl z-10"
+                          style={{
+                            textShadow: "0px 2px 4px rgba(0, 0, 0, 0.25)",
+                          }}
+                        >
+                          {getRemainingNFTs() !== '' ? getRemainingNFTs() : 'NFTs Sold Out'}
+                          {getRemainingNFTs() !== '' ? <span className="text-white"> NFTs Remaining</span> : <></>}
+                        </div>
+                      </div>
+                    </div>
+                    
                     {/* mint price */}
                     <div className="w-full flex-col justify-center items-center inline-flex">
                       <div className="flex-col justify-center items-center flex">
@@ -609,8 +637,8 @@ function MintPage() {
                       </div>
                     </div>
 
-                {/* Mobile minting row*/}
-                <div className="w-full flex flex-row items-center justify-evenly ml-[-2rem] xs:ml-0">
+                    {/* Mobile minting row*/}
+                    <div className="-mb-4 w-full flex flex-row items-center justify-evenly ml-[-2rem] xs:ml-0">
                   {/* VIP pass button */}
                   <div className="w-auto mr-[-2rem] mb-[5rem] z-[50]"> 
                     <img
@@ -749,7 +777,7 @@ function MintPage() {
 
                 {/* mint panel content */}
                 <div
-                  className="flex flex-col items-center rounded-2xl bg-opacity-75 place-content-center p-6 min-h-[60vh] lg:min-h-[80dvh] 2xl:min-h-[50dvh] space-y-[1rem]"
+                  className="flex flex-col items-center rounded-2xl bg-opacity-75 place-content-center p-6 min-h-[60vh] lg:min-h-[80dvh] 2xl:min-h-[50dvh]"
                   style={{
                     backgroundImage:
                       'url("/assets/images/clicker-character/mintBBG.webp")',
@@ -760,7 +788,7 @@ function MintPage() {
                 >
                   {/* mint countdown */}
                   {isContainerVisible && (
-                    <div className="p-3 px-6 bg-[#003260] rounded-3xl shadow-inner border border-[#7fc1ff] flex-col justify-self-center items-center gap-2 inline-flex">
+                    <div className="-mt-24 p-3 px-6 bg-[#003260] rounded-3xl shadow-inner border border-[#7fc1ff] flex-col justify-self-center items-center gap-2 inline-flex">
                       <p className="text-md pb-1">Minting Ends In</p>
                       <div className="h-[50px] justify-start items-center inline-flex gap-1 pb-3">
                         <div className="w-12 h-1/2 bg-[#003260] shadow-inner flex-col justify-center items-center gap-1 inline-flex">
@@ -820,8 +848,23 @@ function MintPage() {
                   <img
                     src="/assets/images/clicker-character/nft-treasureBox.webp"
                     alt="NFT Treasure Box"
-                    className="object-contain w-96 h-96 -my-10 hover:animate-treasureBoxTwerk"
+                    className="object-contain w-96 h-96 -mt-2 -mb-10 hover:animate-treasureBoxTwerk"
                   />
+
+                  {/* Remaining NFTs */}
+                  <div className="w-full flex-col justify-center items-center inline-flex">
+                    <div className="flex-col justify-center items-center flex">
+                      <div
+                        className="text-center text-amber-300 text-xl z-10"
+                        style={{
+                          textShadow: "0px 2px 4px rgba(0, 0, 0, 0.25)",
+                        }}
+                      >
+                        {getRemainingNFTs() !== '' ? getRemainingNFTs() : 'NFTs Sold Out'}
+                        {getRemainingNFTs() !== '' ? <span className="text-white"> NFTs Remaining</span> : <></>}
+                      </div>
+                    </div>
+                  </div>
 
                   {/* mint price */}
                   <div className="w-full flex-col justify-center items-center inline-flex">
@@ -839,17 +882,17 @@ function MintPage() {
                     </div>
                   </div>
 
-              {/* Desktop Minting row */}
-              <div className="w-full flex flex-row items-center justify-center">
-                {/* VIP pass button */}
-                <div className="w-[30%]"> 
-                    <img
-                      src="/assets/icons/vip-pass.webp"
-                      alt="vip pass icon"
-                      className="w-full h-full transition-transform duration-200 hover:scale-110 "
-                      onClick={handlePassClick} 
-                    />
-                  </div>
+                  {/* Desktop Minting row */}
+                  <div className="w-full flex flex-row items-center justify-center">
+                    {/* VIP pass button */}
+                    <div className="w-[30%]"> 
+                      <img
+                        src="/assets/icons/vip-pass.webp"
+                        alt="vip pass icon"
+                        className="w-full h-full transition-transform duration-200 hover:scale-110 "
+                        onClick={handlePassClick} 
+                      />
+                    </div>
 
                     {/* Minting button */}
                     <div
