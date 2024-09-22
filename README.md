@@ -32,11 +32,17 @@ The **Animara DApp** is a private decentralized application (DApp) developed usi
 ├── public/                 # Public assets, including index.html
 ├── src/
 │   ├── components/         # Reusable UI components
-│   ├── pages/              # Page components for routing
-│   ├── services/           # API calls and blockchain interactions
+│   ├── context/            # React Context API providers and consumers
+│   ├── data/               # Data handling, possibly static data or constants
+│   ├── firebase/           # Firebase-related configuration and services
 │   ├── hooks/              # Custom React hooks
-│   ├── App.js              # Main application component
-│   └── index.js            # Entry point for the React app
+│   ├── i18n/               # Internationalization (i18n) configuration and resources
+│   ├── pages/              # Page components for routing
+│   ├── sagas/              # Redux-saga-related logic for managing side effects
+│   ├── sagaStore/          # Redux-saga store configuration
+│   ├── styles/             # Global styles (CSS/SCSS files)
+│   ├── utils/              # Utility functions and helpers
+│   ├── web3/               # Web3 blockchain integration logic
 ├── package.json            # Project metadata and dependencies
 └── README.md               # This file
 ```
@@ -54,14 +60,13 @@ Before you begin, ensure the following tools are installed:
 - **Node.js** (v14.x or later)
 - **npm** or **pnpm** (recommended)
 - **Git** for version control
-- **Solana CLI** for blockchain interactions
 - **Firebase CLI** for managing Firebase services
 
 ### Installation
 
 1. **Clone the repository** (make sure you have the necessary access):
    ```bash
-   git clone https://your-private-repo-url/animara-dapp.git
+   git clone https://github.com/ArtWardens/animara-dapp.git
    cd animara-dapp
    ```
 
@@ -69,10 +74,6 @@ Before you begin, ensure the following tools are installed:
    Using `pnpm` (recommended):
    ```bash
    pnpm install
-   ```
-   Or using npm:
-   ```bash
-   npm install
    ```
 
 ### Environment Variables
@@ -106,12 +107,6 @@ To run the development server locally:
 pnpm start
 ```
 
-Or with npm:
-
-```bash
-npm start
-```
-
 Access the app at `http://localhost:3000`.
 
 ### Building the App
@@ -120,12 +115,6 @@ To build the app for production:
 
 ```bash
 pnpm build
-```
-
-Or with npm:
-
-```bash
-npm run build
 ```
 
 The production build will be created in the `build/` folder, ready for deployment.
@@ -138,10 +127,6 @@ The production build will be created in the `build/` folder, ready for deploymen
    ```bash
    pnpm lint
    ```
-   Or:
-   ```bash
-   npm run lint
-   ```
 
 - **Branching Strategy**: Follow the team's **Git branching model**. Feature branches should be named as `feature/your-feature-name`, and ensure that branches are merged into `dev` or `main` following code reviews.
 
@@ -151,12 +136,6 @@ Before pushing code, run tests to ensure all functionality is working as expecte
 
 ```bash
 pnpm test
-```
-
-Or with npm:
-
-```bash
-npm run test
 ```
 
 ### Deployment
