@@ -12,6 +12,7 @@ import {
 } from "../../sagaStore/slices/userSlice.js";
 import { MoonLoader } from "react-spinners";
 import LevelUpModal from "./LevelUpModal.js";
+import DynamicNumberDisplay from "../../components/DynamicNumberDisplay";
 
 const UpgradeDetailsModal = ({ upgrade, isMaxLevel, onClose }) => {
   const { t } = useTranslation();
@@ -115,7 +116,7 @@ const UpgradeDetailsModal = ({ upgrade, isMaxLevel, onClose }) => {
 
           {/* Desktop upgrade message panel view */}
           <div
-            className={`w-full hidden xl:flex flex-col items-center justify-center px-[8rem] py-[4rem] xl:py-[8rem] rounded-xl transition-all duration-1000 ${showModal ? `opacity-100 scale-100` : `opacity-0 scale-0`}`}
+            className={`w-full hidden xl:flex flex-col items-center justify-center px-[8rem] py-[4rem] xl:py-[8rem] rounded-xl transition-all duration-300 ${showModal ? `opacity-100 scale-100` : `opacity-0 scale-0`}`}
             style={{
               backgroundImage: `url("/assets/images/clicker-character/successfull-bg.webp")`,
               backgroundSize: "contain",
@@ -132,6 +133,10 @@ const UpgradeDetailsModal = ({ upgrade, isMaxLevel, onClose }) => {
               ) : upgradeUserLocationError === "insufficient-funds" ? (
                 <p className="text-2xl xl:text-4xl text-red-500 font-bold my-[5rem]">
                   Failed to upgrade location level. <br/> Insufficient coins.
+                </p>
+              ) : upgradeUserLocationError !== "" ? (
+                <p className="text-2xl xl:text-4xl text-red-500 font-bold my-[5rem]">
+                  Failed to upgrade location level. <br/> Please try again.
                 </p>
               ) : (
                 <>
@@ -179,7 +184,7 @@ const UpgradeDetailsModal = ({ upgrade, isMaxLevel, onClose }) => {
 
           {/* Mobile upgrade message panel view */}      
           <div
-            className={`flex xl:hidden flex-col items-center justify-center px-[4rem] py-[12rem] rounded-xl transition-all duration-1000 ${showModal ? `opacity-100 scale-100` : `opacity-0 scale-0`}`}
+            className={`flex xl:hidden flex-col items-center justify-center px-[4rem] py-[12rem] rounded-xl transition-all duration-300 ${showModal ? `opacity-100 scale-100` : `opacity-0 scale-0`}`}
             style={{
               backgroundImage: `url("/assets/images/clicker-character/successfull-mobile-bg.png")`,
               backgroundSize: "contain",
@@ -245,7 +250,7 @@ const UpgradeDetailsModal = ({ upgrade, isMaxLevel, onClose }) => {
           <>          
           {/* Desktop upgrade details panel view */}
           <div
-            className={`hidden xl:block relative px-[4rem] py-[8rem] rounded-xl w-[90%] max-w-[800px] bg-no-repeat bg-contain transition-all duration-1000 ${showModal ? `opacity-100 scale-100` : `opacity-0 scale-0`}`}
+            className={`hidden xl:block relative px-[4rem] py-[8rem] rounded-xl w-[90%] max-w-[800px] bg-no-repeat bg-contain transition-all duration-300 ${showModal ? `opacity-100 scale-100` : `opacity-0 scale-0`}`}
             style={{
               backgroundImage: `url("/assets/images/clicker-character/upgrades-details-bg.webp")`,
               backgroundPosition: "center",
@@ -279,12 +284,12 @@ const UpgradeDetailsModal = ({ upgrade, isMaxLevel, onClose }) => {
 
               <div className="flex flex-row items-center justify-between">
                 <p className="text-sm font-sans mr-[1rem]">with</p>
-                <img
-                  src={"/assets/images/clicker-character/gem.webp"}
-                  alt="gem"
-                  className="w-6 h-6 mr-2"
+                <DynamicNumberDisplay 
+                  number={upgrade.nextLevelUpgradeCost}
+                  imgSrc={"/assets/images/clicker-character/gem.webp"}
+                  imgClassName={"w-6 h-6 mr-2"}
+                  spanClassName={"text-normal font-normal"}
                 />
-                <p>{upgrade.nextLevelUpgradeCost}</p>
               </div>
 
               <p className="text-white text-base font-sans">
@@ -296,28 +301,22 @@ const UpgradeDetailsModal = ({ upgrade, isMaxLevel, onClose }) => {
                   <p className="text-sm font-sans font-medium mr-[1rem]">
                     Explora Points
                   </p>
-                  <img
-                    src={"/assets/icons/explora-point.webp"}
-                    alt="icon2"
-                    className="w-6 h-6 mr-1"
+                  <DynamicNumberDisplay 
+                    number={upgrade.currentExploraPts}
+                    imgSrc={"/assets/icons/explora-point.webp"}
+                    imgClassName={"w-6 h-6 mr-1"}
+                    spanClassName={"text-2xl text-[#80e8ff] font-bold"}
                   />
-                  <p className="text-2xl text-[#80e8ff] font-bold">
-                    {upgrade.currentExploraPts}
-                  </p>
 
                   {!isMaxLevel && (
                     <>
                       <p className="text-white">&nbsp; → &nbsp;</p>
-                      <img
-                        src={
-                          "/assets/icons/explora-point.webp"
-                        }
-                        alt="icon2"
-                        className="w-6 h-6 mr-1"
+                      <DynamicNumberDisplay 
+                        number={upgrade.nextLevelExploraPts || 0}
+                        imgSrc={"/assets/icons/explora-point.webp"}
+                        imgClassName={"w-6 h-6 mr-1"}
+                        spanClassName={"text-2xl text-[#80e8ff] font-bold"}
                       />
-                      <p className="text-2xl text-[#80e8ff] font-bold">
-                        +{upgrade.nextLevelExploraPts || 0}
-                      </p>
                     </>
                   )}
                 </div>
@@ -343,9 +342,9 @@ const UpgradeDetailsModal = ({ upgrade, isMaxLevel, onClose }) => {
 
           {/* Mobile upgrade details panel view */}
           <div
-            className={`relative xl:hidden px-[6rem] py-[8rem] rounded-xl bg-no-repeat bg-contain transition-all duration-1000 ${showModal ? `opacity-100 scale-100` : `opacity-0 scale-0`}`}
+            className={`relative xl:hidden px-[6rem] py-[8rem] rounded-xl bg-no-repeat bg-contain transition-all duration-300 ${showModal ? `opacity-100 scale-100` : `opacity-0 scale-0`}`}
             style={{
-              backgroundImage: `url("/assets/images/clicker-character/upgrades-details-mobile-bg.png")`,
+              backgroundImage: `url("/assets/images/clicker-character/upgrades-details-mobile-bg.webp")`,
               backgroundPosition: "center",
             }}
             onClick={(e) => e.stopPropagation()}
@@ -397,7 +396,7 @@ const UpgradeDetailsModal = ({ upgrade, isMaxLevel, onClose }) => {
 
                   <div className="flex flex-row items-center">
                     <img
-                      src={"/assets/images/clicker-character/explora-point.webp"}
+                      src={"/assets/icons/explora-point.webp"}
                       alt="icon2"
                       className="w-6 h-6 mr-1"
                     />
@@ -410,7 +409,7 @@ const UpgradeDetailsModal = ({ upgrade, isMaxLevel, onClose }) => {
                         <p className="text-white">&nbsp; → &nbsp;</p>
                         <img
                           src={
-                            "/assets/images/clicker-character/explora-point.webp"
+                            "/assets/icons/explora-point.webp"
                           }
                           alt="icon2"
                           className="w-6 h-6 mr-1"

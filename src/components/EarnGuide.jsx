@@ -4,6 +4,7 @@ import { useUserDetails, useLocalStamina, useRechargeLoading, rechargeStamina } 
 import { useAppDispatch } from '../hooks/storeHooks.js';
 import { StaminaRechargeTypeBasic, StaminaRechargeTypeInvite } from '../utils/constants';
 import ReferPopup from './ReferPopup';
+import DynamicNumberDisplay from './DynamicNumberDisplay';
 
 function EarnGuide({ openModal, setOpenModal, setIsOneTimeTaskOpen }) {
   const dispatch = useAppDispatch();
@@ -128,7 +129,7 @@ function EarnGuide({ openModal, setOpenModal, setIsOneTimeTaskOpen }) {
 
   return (
     <>
-      <div className="absolute bottom-0 xl:bottom-20 flex justify-center w-full xl:w-[81%] h-[30dvh] xl:h-44 pb-8">
+      <div className="absolute bottom-0 xl:bottom-64 flex justify-center w-full xl:w-[81%] h-[30dvh] xl:h-44 pb-8">
         <img
           src={'/assets/images/clicker-character/button-footerBg.webp'}
           alt="ring"
@@ -224,18 +225,20 @@ function EarnGuide({ openModal, setOpenModal, setIsOneTimeTaskOpen }) {
         >
           <div
             className={`
-              relative min-w-full min-h-[75%] max-w-[1200px] px-[2rem] py-[2rem] rounded-[20px] text-center bg-cover bg-no-repeat md:bg-[length:100%_70%] lg:bg-contain
-              sm:pt-[6rem]
-              md:min-w-[75%] md:px-[6rem] md:py-[10rem] 
-              lg:py-[7rem]
-              xl:py-[6rem] xl:px-[13rem]
+              relative w-[100%] max-w-[1000px] max-h-[95%] px-[2rem] py-[6rem] rounded-[20px] text-center 
+              bg-cover bg-no-repeat 
+              md:px-[4rem] md:py-[14rem] md:bg-contain md:min-h-[750px] 
+              lg:px-[10rem] lg:py-[14rem] lg:bg-contain lg:min-h-[750px]
               ${showBoostsModal ? 'animate-slideInFromBottom' : 'animate-slideOutToBottom'}`}
             style={{
               backgroundImage: `url(/assets/images/recharge_panel.webp)`,
               backgroundPosition: 'center',
             }}
           >
-            <div className="text-left grid w-full gap-1 md:gap-4 mb-8 pt-[6rem] sm:pt-8">
+            <div className="text-left grid w-full gap-1
+              sm:pt-[2rem]
+              md:gap-4 mb-8
+              lg:gap-4 lg-8">
               <button
                 className="w-[4rem] text-[#80E8FF] font-outfit font-semibold hover:brightness-75"
                 type="button"
@@ -266,7 +269,7 @@ function EarnGuide({ openModal, setOpenModal, setIsOneTimeTaskOpen }) {
                   </svg>
                 </div>
               ) : (
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-5">
                   <button
                     onClick={handleChargeEnergy}
                     disabled={rechargeLoading}
@@ -312,9 +315,11 @@ function EarnGuide({ openModal, setOpenModal, setIsOneTimeTaskOpen }) {
                     <div className="pt-2 w-full text-[1.25rem] md:text-2xl text-left text-[#80E8FF]">
                       Invite Friend
                       <div className="w-full text-[1rem] md:text-lg text-[#C5C5C5] font-outfit">
-                        <span className="relative top-1 inline-flex items-center text-[#FFC85A] text-[1rem] md:text-lg font-LuckiestGuy">
-                          <img src="/assets/images/coin.webp" alt="coin" className="w-5 h-5 mr-2" />
-                          +5000 &nbsp;
+                        <span className="relative top-1 inline-flex items-center">
+                          <DynamicNumberDisplay 
+                            number={5000} 
+                            spanClassName={"text-[#FFC85A] text-[1rem] md:text-lg font-LuckiestGuy pr-3"}
+                          />
                         </span>
                         For You And Your Friend
                       </div>

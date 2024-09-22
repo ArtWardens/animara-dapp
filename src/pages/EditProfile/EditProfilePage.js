@@ -41,11 +41,10 @@ const EditProfilePage = () => {
     setUsername(user?.name || "");
     setEmail(user?.email || "");
     setPhone(user?.phoneNumber || "");
-    setInviteCode(user?.referredBy || "");
+    setInviteCode(user?.referralData || "");
   }, [user, updateProfileLoading]);
 
   const handleResetPassword = () => {
-    console.log(email);
     dispatch(resetPassword(email));
   };
 
@@ -123,7 +122,7 @@ const EditProfilePage = () => {
 
   return (
     // background
-    <div className="relative w-full min-h-screen">
+    <div className="min-h-screen flex flex-col z-[-20]">
       {/* Blur wrapper for main content */}
       <div className={`flex flex-col items-center pb-8 min-h-screen w-full transition-all duration-500`}
         style={{
@@ -135,12 +134,13 @@ const EditProfilePage = () => {
           backgroundAttachment: "fixed",
         }}
       >
+        <Header />
+
         {/* outer container */}
-        <div className="flex flex-col xl:flex-row pt-[6rem] lg:pt-[11rem] px-[0rem] xl:px-[4rem] w-screen h-full">
-          <Header />
+        <div className="flex flex-col xl:flex-row px-[0rem] xl:px-[4rem] w-screen h-full">
 
           {/* content */}
-          <div className={`flex flex-col 2xl:flex-row w-full mt-[5rem] lg:mt-0 gap-20 
+          <div className={`flex flex-col 2xl:flex-row w-full gap-20
             ${mobileMenuOpen ? `hidden` : ``}`}>
             {/* details panel */}
             <div className="w-full px-[2rem]">
@@ -307,7 +307,7 @@ const EditProfilePage = () => {
                       type="text"
                       id="inviteCode"
                       value={inviteCode}
-                      readOnly={user?.referredBy ? true : false}
+                      readOnly={user?.referralData ? true : false}
                       onChange={handleInviteCodeChange}
                       className="w-full bg-[rgba(0,52,89,0.80)] border-[1px] border-[#245F89] rounded-lg p-4 pr-[90px] text-sm font-semibold font-outfit tracking-wide"
                     />

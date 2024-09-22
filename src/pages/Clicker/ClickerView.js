@@ -8,6 +8,7 @@ import EarnGuide from '../../components/EarnGuide';
 import EnergyRegeneration from '../../components/EnergyRegeneration';
 import ClickerUpgrades from './ClickerUpgrades';
 import { dailyLoginRewards } from '../../utils/constants';
+import DynamicNumberDisplay from '../../components/DynamicNumberDisplay';
 
 const ClickerView = () => {
   const dispatch = useAppDispatch();
@@ -84,7 +85,10 @@ const ClickerView = () => {
           className="h-screen w-screen flex flex-1 overflow-x-hidden overflow-y-auto"
         >
           <div className="fixed inset-0  backdrop-blur-xl rounded-xl flex justify-center items-center z-[200] overflow-hidden">
-            <div className={`min-h-[800px] md:min-h-[unset] daily-reward-bg relative rounded-xl w-[100%] lg:max-w-[1100px] bg-no-repeat bg-cover md:bg-[length:100%_70%] lg:bg-contain 
+            <div className={`min-h-[800px] w-[100%] relative rounded-xl 
+            daily-reward-bg bg-no-repeat bg-cover
+            md:min-h-[unset] md:bg-[length:100%_70%] 
+            lg:max-w-[1100px] lg:bg-contain 
             transition-all ease-in-out duration-500
             ${showPanel ? `scale-100` : `scale-0`}`}
               style={{
@@ -94,7 +98,11 @@ const ClickerView = () => {
             >
               {/* Close Button */}
               <button
-                className="absolute top-[4rem] md:top-[13rem] lg:top-[10rem] xl:top-[8rem] right-[2.5rem] md:right-[5rem] text-white text-4xl  hover:brightness-75"
+                className="absolute top-[6rem] right-[2.5rem] text-white text-4xl hover:brightness-75
+                xs:top-[4rem]
+                md:top-[13rem] md:right-[5rem]
+                lg:top-[10rem] lg:right-[6rem] 
+                xl:top-[8rem]" 
                 onClick={handleClose}
               >
                 &times;
@@ -102,7 +110,8 @@ const ClickerView = () => {
 
               {/* Reward Content */}
               <div className="flex flex-col items-center 
-                px-[2rem] pt-[4rem] pb-[6rem] 
+                px-[2rem] pt-[8rem] pb-[4rem] 
+                xs:pt-[4rem] xs:pb-[6rem] 
                 md:px-[3rem] md:pt-[14rem] md:pb-[15rem] 
                 lg:px-[4rem] lg:pt-[8rem] lg:pb-[10rem]">
                 <Box>
@@ -114,13 +123,17 @@ const ClickerView = () => {
                     className="max-w-[8rem] lg:max-w-[9rem] pt-1"
                   />
                 </Box>
-                <div className="space-y-1 flex flex-col items-center pb-3">
-                  <p className="text-[#FFAA00] text-sm xs:text-[3rem] lg:text-[3.75rem] font-base text-center pb-3">Daily reward</p>
+                <div className="space-y-1 flex flex-col items-center py-3">
+                  <p className="text-[#FFAA00] text-[1.5rem] xs:text-[3rem] lg:text-[3.75rem] font-base text-center pb-3">Daily reward</p>
                   <span className="text-white text-sm xs:text-base font-outfit text-center font-normal">
                     Accure Coins For Loggin Into The Game Daily Without Skipping
                   </span>
                 </div>
-                <Box className="max-h-[450px] md:max-h-[250px] lg:max-h-[unset] overflow-y-auto py-3 pl-2 pr-4 w-full grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-7 gap-2 custom-scrollbar">
+                <Box className="max-h-[300px] overflow-y-auto py-3 pl-2 pr-4 w-full grid grid-cols-2 gap-2 custom-scrollbar
+                  xs:max-h-[400px]
+                  sm:max-h-[450px] sm:grid-cols-3 
+                  md:max-h-[250px] md:grid-cols-5
+                  lg:max-h-[unset] lg:grid-cols-7">
                   {dailyLoginRewards.map((dayReward, index) => {
                     const isSelected = index < currentUser?.loginDays;
                     return (
@@ -128,11 +141,16 @@ const ClickerView = () => {
                         className={`${isSelected ? 'bg-[#FFAA00]' : 'bg-[#3C3C3C]'} rounded-md py-1.5 flex transition-all duration-300 hover:scale-105 will-change-transform backface-hidden`}
                         key={index}
                       >
-                        <p className={`flex flex-1 flex-col items-center justify-center text-xs space-y-1 ${isSelected ? 'text-white' : 'text-[#C5C5C5]'}`}>
+                        <div className={`flex flex-1 flex-col items-center justify-center text-xs space-y-1 ${isSelected ? 'text-white' : 'text-[#C5C5C5]'}`}>
                           <span className='font-outfit font-normal'>Day {index + 1}</span>
-                          <img className="w-5 h-5" src={isSelected ? 'assets/images/coin.webp' : 'assets/images/coin-disable.webp'} alt="Star" />
-                          <span>{dayReward}</span>
-                        </p>
+                          <DynamicNumberDisplay 
+                            number={dayReward}
+                            divClassName={"block"}
+                            imgClassName={"w-5 h-5 m-auto"}
+                            imgSrc={isSelected ? 'assets/images/coin.webp' : 'assets/images/coin-disable.webp'}
+                            spanClassName={isSelected ? 'text-white' : 'text-[#C5C5C5]'}
+                          />
+                        </div>
                       </Box>
                     );
                   })}

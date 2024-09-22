@@ -99,15 +99,30 @@
 
   body, a, button {
     @apply text-foreground;
-    cursor: url('../public/assets/icons/cursor_01.svg') 6 12, auto !important;
   }
 
-  a:hover, a:focus, button:hover, button:focus {
-    cursor: url('../public/assets/icons/cursor_01.svg') 6 12, auto !important; /* Maintain default cursor */
+  body:hover {
+    cursor: url('../public/assets/icons/cursor_01.svg') 7 14, auto !important;
   }
   
-  a:active, button:active {
-    cursor: url('../public/assets/icons/cursor_07.svg') 6 12, auto !important; /* Change cursor on active click */
+  body:active {
+    cursor: url('../public/assets/icons/cursor_07.svg') 7 14, auto !important;
+  }
+  
+  a:hover, a:focus, button:hover, button:focus, input:hover, input:focus, label:hover, label:focus {
+    cursor: url('../public/assets/icons/cursor_01.svg') 7 14, auto !important;
+  }
+
+  a:active, button:active, input:active, label:active {
+    cursor: url('../public/assets/icons/cursor_07.svg') 7 14, auto !important;
+  }
+
+  input[type="checkbox"]:hover, input[type="checkbox"]:focus {
+    cursor: url('../public/assets/icons/cursor_01.svg') 7 14, auto !important;
+  }
+
+  input[type="checkbox"]:active {
+    cursor: url('../public/assets/icons/cursor_07.svg') 7 14, auto !important;
   }
 
   .gradient-blue-transparent-fuschia-bottomRight {
@@ -187,4 +202,116 @@ body:active {
   border-radius: 10px;
 }
 
+/* Header */
+.default-border {
+  border: 3px solid #F4FBFF;
+  border-radius: 500px 200px 200px 500px;
+  background: var(--0163BE, #0163BE);
+  box-shadow: 3px 2px 0px 0px #517296 inset;
+}
 
+@property --angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
+
+.glowing-border {
+  --c1: #F4FBFF;
+  --c2: transparent;
+  z-index: 91;
+  border-radius: 500px 200px 200px 500px;
+  /* Fallback for older browsers / version */
+  background: linear-gradient(
+    20deg,
+    transparent,
+    transparent 16.5%,
+    #ffffff 33%,
+    transparent 49.5%,
+    transparent 66%,
+    #0163be60 85.5%,
+    #ffffff 100%
+  )
+  0 100% / 100% 200%;
+  animation: header-glow 5s infinite linear;
+
+  /* Feature query for browsers that support conic-gradient */
+  @supports (background: conic-gradient(from 0deg, var(--c2), var(--c1) 0.1turn, var(--c1) 0.15turn, var(--c2) 0.25turn)) {
+    background: conic-gradient(from var(--angle), var(--c2), var(--c1) 0.1turn, var(--c1) 0.15turn, var(--c2) 0.25turn);
+    animation: borderRotate 5s linear infinite forwards;
+  }
+}
+
+.glowing-border::before,
+.glowing-border::after {
+  content: "";
+  position: absolute;
+  inset: 3px;
+  z-index: -1;
+  border-radius: inherit;
+  background: var(--0163BE, #0163be);
+}
+
+.glowing-border:hover {
+  background: linear-gradient(
+    20deg,
+    #00f8f1,
+    #ffbd1e20 16.5%,
+    #fe848f 33%,
+    #fe848f20 49.5%,
+    #00f8f1 66%,
+    #0163be60 85.5%,
+    #fe848f 100%
+  )
+  0 100% / 100% 200%;
+  animation: header-glow 5s infinite linear;
+}
+
+.glowing-border:hover::before,
+.glowing-border:hover::after {
+  background-blend-mode: overlay;
+  filter: blur(5px);
+  inset: 1px;
+  opacity: .7;
+  transition: opacity 0s linear 0s;
+  animation: noise-background 1s steps(1) infinite;
+}
+
+@keyframes borderRotate {
+  0% {
+		--angle: 0deg;
+	}
+	100% {
+		--angle: 360deg;
+	}
+}
+
+@keyframes header-glow {
+  0% {
+    background-position: 0 100%;
+  }
+  100% {
+    background-position: 0 300%;
+  }
+}
+
+@keyframes noise-background {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  20% {
+    transform: translate3d(.5px, .3px, 0);
+  }
+  40% {
+    transform: translate3d(.1px, .5px, 0);
+   }
+   60% {
+    transform: translate3d(.3px, .2px, 0);
+   }
+   80% {
+    transform: translate3d(.5px, 0, 0);
+   }
+  100% {
+    transform: translate3d(10px, 0, 0);
+  }
+}

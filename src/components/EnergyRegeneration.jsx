@@ -6,6 +6,7 @@ import { getTimeRemaining } from '../utils/getTimeRemaining';
 import { useLocalStamina, useRechargeLoading, useUserDetails, useUserDetailsLoading } from '../sagaStore/slices';
 import TaskList from '../components/TaskList.jsx';
 import LeaderBoardModal from '../components/LeaderBoardModal.jsx';
+import MintingWarningNotice from './MintingWarningNotice.jsx';
 
 function EnergyRegeneration({ isLeaderboardOpen, setIsLeaderboardOpen, isOneTimeTaskOpen, setIsOneTimeTaskOpen }) {
   const currentUser = useUserDetails();
@@ -18,6 +19,16 @@ function EnergyRegeneration({ isLeaderboardOpen, setIsLeaderboardOpen, isOneTime
   const [showFirstDiv, setShowFirstDiv] = useState(false);
   const [showProgressBar, setShowProgressBar] = useState(false);
   const [countDownRemaining] = useState(0);
+  const [isNoticeOpen, setIsNoticeOpen] = useState(false);
+
+  // Toggle notice component
+  const handleInfoClick = () => {
+    setIsNoticeOpen(true); 
+  };
+
+  const closeNotice = () => {
+    setIsNoticeOpen(false); 
+  };
 
   // intro anim
   useEffect(() => {
@@ -58,12 +69,7 @@ function EnergyRegeneration({ isLeaderboardOpen, setIsLeaderboardOpen, isOneTime
 
   return (
     <>
-      <div
-        className="absolute flex flex-col xl:grid grid-cols-3 gap-3 justify-center items-center w-full mx-auto pt-8 xl:px-12 top-[8rem] xl:top-60"
-        style={{
-          zIndex: 20,
-        }}
-      >
+      <div className="absolute flex flex-col xl:grid grid-cols-3 gap-3 justify-center items-center w-full mx-auto pt-8 xl:px-12 top-[8rem] xl:top-8 z-[50]">
         {/* explora point display */}
         <div
           className={`items-center justify-center transition-opacity duration-700 ${
@@ -75,9 +81,9 @@ function EnergyRegeneration({ isLeaderboardOpen, setIsLeaderboardOpen, isOneTime
           }}
         >
           <div
-            className="flex gap-1 py-5 px-6 rounded-3xl"
+            className="flex flex-row gap-1 py-5 px-6 rounded-3xl"
             style={{
-              background: '#0764BA',
+              background: '#002b4c',
               backgroundBlendMode: 'multiply',
               boxShadow: '3px 2px 0px 0px #60ACFF inset',
             }}
@@ -88,13 +94,14 @@ function EnergyRegeneration({ isLeaderboardOpen, setIsLeaderboardOpen, isOneTime
                 <MoonLoader size={25} color={'#80E8FF'} />
               </div>
             ) : (
-              <div className="flex flex-col mr-[5rem] my-auto">
+              <div className="flex flex-col mr-[1rem] my-auto">
                 <div className="text-[#00E0FF] text-2xl font-LuckiestGuy font-normal tracking-wider">
                   {profitPerHour}
                 </div>
                 <div className="text-white text-sm font-outfit">Explora Points</div>
               </div>
             )}
+            <img src="/assets/icons/info-blue.webp" alt="info icon" className="w-8 h-8 my-auto mr-2 hover:scale-105" onClick={handleInfoClick}/>
           </div>
         </div>
 
@@ -140,6 +147,8 @@ function EnergyRegeneration({ isLeaderboardOpen, setIsLeaderboardOpen, isOneTime
           />
         </div>
       )}
+      {/* Conditionally render the MintingVipPass component */}
+      {isNoticeOpen && <MintingWarningNotice onClose={closeNotice} />}
     </>
   );
 }

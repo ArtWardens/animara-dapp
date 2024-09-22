@@ -7,7 +7,6 @@ import {
   useAuthLoading,
   useUserAuthenticated,
   signupWithEmail,
-  loginWithTwitter,
 } from "../../sagaStore/slices/userSlice.js";
 import { useIsIOS } from "../../sagaStore/slices/systemSlice.js";
 import { CSSTransition } from "react-transition-group";
@@ -52,9 +51,9 @@ const SignupPage = () => {
 
   useEffect(() => {
     setHasInput(
-      username !== "" && email !== "" && password !== "" && confirmPassword !== "" && agreeTNC
+      username !== "" && email !== "" && password !== "" && confirmPassword !== "" && referralCode !== "" && agreeTNC
     );
-  }, [username, email, password, confirmPassword, agreeTNC]);
+  }, [username, email, password, confirmPassword, referralCode, agreeTNC]);
 
   const togglePassword = () => {
     setShowPassword(!showPassword);
@@ -73,9 +72,9 @@ const SignupPage = () => {
   //   dispatch(loginWithGoogle());
   // };
 
-  const handleLoginWithTwitter = async () => {
-    dispatch(loginWithTwitter());
-  };
+  // const handleLoginWithTwitter = async () => {
+  //   dispatch(loginWithTwitter());
+  // };
 
   // const handleTelegramAuth = async (telegramUser) => {
   //   dispatch(loginWithTelegram(telegramUser));
@@ -209,8 +208,8 @@ const SignupPage = () => {
       <div ref={nodeRef} className="fade-mask-layer -translate-x-full"></div>
         {/* Background Image */}
         <img 
-          src="../backgrounds/BG_login.webp" alt="background"
-          className="w-full h-full absolute top-0 -z-40 opacity-75 object-cover"
+          src="/backgrounds/BG_login.webp" alt="background"
+          className="w-full h-full absolute top-0 -z-40 object-cover"
         />
 
         {/* Header */}
@@ -226,7 +225,7 @@ const SignupPage = () => {
         {/* Sign up Card Latest */}
         <div className="relative left-[50%] -translate-x-1/2 lg:left-[75%] self-center sm:max-h-[59.5rem] max-w-[25rem] sm:max-w-[27.5rem] rounded-[2.5rem] p-[2.5rem] gap-[1.25rem] bg-[#003459] shadow-[0.5rem_0.375rem_0.625rem_0_rgba(0,0,0,0.2)] font-bignoodle">
           {/* Upper Section */}
-          <div className="relative self-center gap-[1.25rem] flex">
+          <div className="relative self-center space-y-[0.75rem] xl:space-y-[1.25rem] flex flex-col">
             <div className="flex-none">
               {isIOS?
                 <img 
@@ -247,9 +246,8 @@ const SignupPage = () => {
               <p className="text-[2.5rem] leading-[2.75rem] text-[#FFC85A]">Sign up</p>
               <p className="text-[#C5C5C5] font-outfit">Begin your adventure in Animara</p>
             </div>
-          </div>
 
-          {/* Username */}
+            {/* Username */}
           <input
             disabled={isAuthLoading}
             type="text"
@@ -257,7 +255,7 @@ const SignupPage = () => {
             value={username}
             required
             onChange={(e) => setUsername(e.target.value)}
-            className="mt-6 w-full outline-none  rounded-[0.625rem] border border-[#245F89] py-[0.875rem] px-[1rem] font-outfit text-[#C5C5C5]"
+            className="mt-6 w-full outline-none  rounded-[0.625rem] border border-[#245F89] py-[0.875rem] px-[1rem] font-outfit text-dark-2"
           />
 
           {/* Email */}
@@ -268,7 +266,7 @@ const SignupPage = () => {
             value={email}
             required
             onChange={handleEmailChange}
-            className={`mt-2 w-full outline-none  rounded-[0.625rem] border py-[0.875rem] px-[1rem] font-outfit text-[#C5C5C5] ${getEmailInputBorderClass()}`}
+            className={`mt-2 w-full outline-none  rounded-[0.625rem] border py-[0.875rem] px-[1rem] font-outfit text-dark-2 ${getEmailInputBorderClass()}`}
           />
           {!isEmailValid && <p className="text-red-500">{emailError}</p>}
 
@@ -280,7 +278,7 @@ const SignupPage = () => {
                 placeholder="Password"
                 value={password}
                 onChange={handlePasswordChange}
-                className={`w-full outline-none  rounded-[0.625rem] border py-[0.875rem] px-[1rem] font-outfit text-[#C5C5C5] ${getPasswordInputBorderClass()}`}
+                className={`w-full outline-none  rounded-[0.625rem] border py-[0.875rem] px-[1rem] font-outfit text-dark-2 ${getPasswordInputBorderClass()}`}
                 required
               />
               <img
@@ -300,7 +298,7 @@ const SignupPage = () => {
               placeholder="Confirm Password"
               value={confirmPassword}
               onChange={handleConfirmPasswordChange}
-              className={`w-full outline-none  rounded-[0.625rem] border py-[0.875rem] px-[1rem] font-outfit text-[#C5C5C5] ${getConfirmPasswordInputBorderClass()}`}
+              className={`w-full outline-none  rounded-[0.625rem] border py-[0.875rem] px-[1rem] font-outfit text-dark-2 ${getConfirmPasswordInputBorderClass()}`}
               required
             />
             {!doPasswordsMatch && (
@@ -311,10 +309,11 @@ const SignupPage = () => {
           {/* Invite Code */}
           <input
             type="text"
-            placeholder="Invite code (Optional)"
+            placeholder="Invite code"
             value={referralCode}
             onChange={(e) => setReferralCode(e.target.value)}
-            className="mt-2 w-full outline-none  rounded-[0.625rem] border border-[#245F89] py-[0.875rem] px-[1rem] font-outfit text-[#C5C5C5]"
+            className="mt-2 w-full outline-none  rounded-[0.625rem] border border-[#245F89] py-[0.875rem] px-[1rem] font-outfit text-black"
+            required
           />
 
           {/* T&C checkbox */}
@@ -326,7 +325,7 @@ const SignupPage = () => {
               onChange={(e) => setAgreeTNC(e.target.checked)}
               className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:accent-[#49DEFF] dark:focus:accent-[#49DEFF] dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
             <label htmlFor="link-checkbox" className="ms-2 text-sm font-outfit text-gray-900 dark:text-gray-300">
-              By signing up, I agree to Animara&#39;s <Link to="/" className="text-[#49DEFF] dark:text-[#49DEFF] hover:underline ">Terms & Condition</Link>
+              By signing up, I agree to Animara&#39;s <a href="https://animara.world/terms-and-conditions" className="text-[#49DEFF] dark:text-[#49DEFF] hover:underline">Terms & Condition</a>
             </label>
           </div>
 
@@ -373,14 +372,22 @@ const SignupPage = () => {
               >
                 Login
               </Link>
-            </p>
+          </p>
+
+            {/* Policies */}
+          <div className="mt-3 flex gap-8 font-outfit text-[#C5C5C5] text-[1rem] text-center justify-center">
+            <Link to="https://animara.world/privacy-policy" className="hover:brightness-75 ">Privacy Policy</Link>
+            <span>|</span>
+            <Link to="https://animara.world/terms-and-conditions" className="hover:brightness-75 ">Terms & Conditions</Link>
+          </div>
+          </div>
 
           {/*  Divider */}
-          <div className="flex items-center my-6">
+          {/* <div className="flex items-center my-6">
             <hr className="border-t border-[#C5C5C5] flex-grow" />
             <span className="px-8 text-[0.875rem] text-[#C5C5C5] font-outfit">Or</span>
             <hr className="border-t border-[#C5C5C5] flex-grow" />
-          </div>
+          </div> */}
 
           {/* Social Login Buttons Section */}
           {/* <button 
@@ -395,7 +402,7 @@ const SignupPage = () => {
             />
             Continue With Google
           </button> */}
-          <button 
+          {/* <button 
             type="button" 
             disabled={isAuthLoading}
             className="mt-1 max-h-[4rem] w-full font-outfit text-[1rem] leading-[1rem] text-[#C5C5C5] rounded-[0.625rem] py-[0.875rem] px-[1rem] gap-[1.25rem] bg-[#0A4169] hover:brightness-75 text-center inline-flex items-center justify-center"
@@ -406,20 +413,12 @@ const SignupPage = () => {
               className="max-h-[2.5rem] max-w-[2.5rem]"
             />
             Continue With X
-          </button>
+          </button> */}
           <div className="flex items-center justify-center">
             {/* <LoginButton
               botUsername={process.env.REACT_APP_TELEGRAM_BOT_NAME}
               onAuthCallback={handleTelegramAuth}
             /> */}
-          </div>
-
-
-          {/* Policies */}
-          <div className="mt-3 flex gap-8 font-outfit text-[#C5C5C5] text-[1rem] text-center justify-center">
-            <Link to="https://animara.world/privacy-policy" className="hover:brightness-75 ">Privacy Policy</Link>
-            <span>|</span>
-            <Link to="https://animara.world/terms-and-conditions" className="hover:brightness-75 ">Terms & Conditions</Link>
           </div>
         </div>
       </div>

@@ -24,11 +24,11 @@ const getUserDataImpl = async (uid) => {
 
     if (docSnap.exists()) {
       const userData = docSnap.data();
-      const referredBy = referralSnap.exists() ? referralSnap.data().referredBy : null;
+      const referralData = referralSnap.exists() ? referralSnap.data().referredBy : null;
 
       return {
         ...userData,
-        referredBy,  // Include referredBy from the "referrals" collection
+        referralData,
         completedTask: completedTaskSnap.exists()
           ? completedTaskSnap.data().completedTask
           : [],
