@@ -184,7 +184,7 @@ function Header() {
 
       {/* Mobile Hamburger Menu Button */}
       <button
-        className="transition ease-in-out hover:scale-105 xl:hidden absolute top-[5rem] right-[2rem] xl:right-[4rem] z-50"
+        className="transition ease-in-out hover:scale-105 lg:hidden absolute top-[5rem] right-[2rem] xl:right-[4rem] z-50"
         onClick={() => dispatch(setMobileMenuOpen(!mobileMenuOpen))}
       >
         <svg
