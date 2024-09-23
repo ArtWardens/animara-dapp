@@ -91,7 +91,7 @@ function Header() {
     <div className='w-full container'>
       {/* User Card */}
       <div
-        className={`flex flex-row absolute max-w-[70dvw] top-[3rem] z-10 p-1 pr-4 gap-2 left-[1rem] xl:left-[4rem] ${currentUser?.ownsNFT ? 'glowing-border' : 'default-border'} ${
+        className={`flex flex-row absolute max-w-[70dvw] top-[3rem] z-20 p-1 pr-4 gap-2 left-[1rem] xl:left-[4rem] ${currentUser?.ownsNFT ? 'glowing-border' : 'default-border'} ${
           mobileMenuOpen ? 'hidden' : ''
         }`}
       >

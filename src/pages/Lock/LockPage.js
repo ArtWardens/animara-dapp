@@ -46,17 +46,18 @@ const LockPage = () => {
 
     return (
         <>
+            <Header />
+
             <div
-                className={`relative flex-grow flex flex-col place-content-center items-center xl:px-[6rem] pb-4 min-h-screen bg-cover bg-center bg-no-repeat bg-fixed 
+                className={`flex-grow flex flex-col place-content-center items-center xl:px-[6rem] pb-4 min-h-screen bg-cover bg-center bg-no-repeat bg-fixed
                     `}
                 style={{
                     backgroundImage: 'url("/assets/images/clicker-character/clickerBg.webp")',
                 }}
             >
-                <Header />
 
                 <div
-                    className={`absolute inset-0 flex items-center justify-center bg-cover bg-center bg-no-repeat bg-fixed bg-blend-overlay-multiply ${mobileMenuOpen ? `hidden` : ``}`}
+                    className={`absolute inset-0 items-center justify-center bg-cover bg-center bg-no-repeat bg-fixed bg-blend-overlay-multiply ${mobileMenuOpen ? `hidden` : ``}`}
                     style={{
                         backgroundImage: "linear-gradient(0deg, rgba(0, 53, 80, 0.50) 0%, rgba(0, 53, 80, 0.50) 100%), radial-gradient(65.76% 50% at 50% 50%, rgba(127, 127, 127, 0.00) 0%, #606060 100%)",
                         backdropFilter: "blur(5px)",
@@ -75,11 +76,12 @@ const LockPage = () => {
                             }`}
                     />
                 </div>
+                
                 <img
                     src="/assets/images/clicker-character/padlock.webp"
                     alt="Lock"
-                    className={`origin-center mb-[20rem] transition-transform duration-500 delay-150 transform ${showLock ? (reverse ? "scale-0 opacity-0" : "scale-110 opacity-100") : "scale-0 opacity-0"
-                        } z-10`}
+                    className={`origin-center top-[50%] left-[50%] items-center transition-transform duration-500 delay-150 transform ${showLock ? (reverse ? "scale-0 opacity-0" : "scale-110 opacity-100") : "scale-0 opacity-0"
+                        }`}
                 />
             </div>
 
