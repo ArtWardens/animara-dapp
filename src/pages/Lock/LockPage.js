@@ -80,7 +80,7 @@ const LockPage = () => {
                 <img
                     src="/assets/images/clicker-character/padlock.webp"
                     alt="Lock"
-                    className={`origin-center top-[50%] left-[50%] items-center transition-transform duration-500 delay-150 transform ${showLock ? (reverse ? "scale-0 opacity-0" : "scale-110 opacity-100") : "scale-0 opacity-0"
+                    className={`origin-center h-[6rem] aspect-[0.76] lg:h-[9rem] top-[50%] left-[50%] items-center transition-transform duration-500 delay-150 transform ${showLock ? (reverse ? "scale-0 opacity-0" : "scale-110 opacity-100") : "scale-0 opacity-0"
                         }`}
                 />
             </div>
