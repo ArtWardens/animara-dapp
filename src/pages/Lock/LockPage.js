@@ -49,7 +49,7 @@ const LockPage = () => {
             <Header />
 
             <div
-                className={`flex-grow flex flex-col place-content-center items-center xl:px-[6rem] pb-4 min-h-screen bg-cover bg-center bg-no-repeat bg-fixed
+                className={`overflow-hidden flex-grow flex flex-col place-content-center items-center xl:px-[6rem] pb-4 min-h-screen bg-cover bg-center bg-no-repeat bg-fixed
                     `}
                 style={{
                     backgroundImage: 'url("/assets/images/clicker-character/clickerBg.webp")',
@@ -57,7 +57,7 @@ const LockPage = () => {
             >
 
                 <div
-                    className={`absolute inset-0 items-center justify-center bg-cover bg-center bg-no-repeat bg-fixed bg-blend-overlay-multiply ${mobileMenuOpen ? `hidden` : ``}`}
+                    className={`flex place-content-center absolute inset-0 items-center justify-center bg-cover bg-center bg-no-repeat bg-fixed bg-blend-overlay-multiply ${mobileMenuOpen ? `hidden` : ``}`}
                     style={{
                         backgroundImage: "linear-gradient(0deg, rgba(0, 53, 80, 0.50) 0%, rgba(0, 53, 80, 0.50) 100%), radial-gradient(65.76% 50% at 50% 50%, rgba(127, 127, 127, 0.00) 0%, #606060 100%)",
                         backdropFilter: "blur(5px)",
@@ -66,13 +66,13 @@ const LockPage = () => {
                     <img
                         src="/assets/images/clicker-character/chain-left.webp"
                         alt="Left Chain"
-                        className={`absolute origin-center h-full w-auto right-0 transition-transform duration-1000 ease-out ${showLeftChain ? (reverse ? "-translate-x-full -translate-y-full opacity-0" : "translate-x-0 translate-y-0 opacity-100") : "-translate-x-full -translate-y-full opacity-0"
+                        className={`absolute mx-auto h-full aspect-[1.78] transition-transform duration-1000 ease-out ${showLeftChain ? (reverse ? "-translate-x-full -translate-y-full opacity-0" : "translate-x-0 translate-y-0 opacity-100") : "-translate-x-full -translate-y-full opacity-0"
                             }`}
                     />
                     <img
                         src="/assets/images/clicker-character/chain-right.webp"
                         alt="Right Chain"
-                        className={`absolute origin-center h-full w-auto left-0 transition-transform duration-1000 ease-out ${showRightChain ? (reverse ? "translate-x-full -translate-y-full opacity-0" : "translate-x-0 translate-y-0 opacity-100") : "translate-x-full -translate-y-full opacity-0"
+                        className={`absolute mx-auto h-full aspect-[1.78] transition-transform duration-1000 ease-out ${showRightChain ? (reverse ? "translate-x-full -translate-y-full opacity-0" : "translate-x-0 translate-y-0 opacity-100") : "translate-x-full -translate-y-full opacity-0"
                             }`}
                     />
                 </div>
@@ -80,7 +80,7 @@ const LockPage = () => {
                 <img
                     src="/assets/images/clicker-character/padlock.webp"
                     alt="Lock"
-                    className={`origin-center h-[6rem] aspect-[0.76] lg:h-[9rem] top-[50%] left-[50%] items-center transition-transform duration-500 delay-150 transform ${showLock ? (reverse ? "scale-0 opacity-0" : "scale-110 opacity-100") : "scale-0 opacity-0"
+                    className={`origin-center h-[9rem] aspect-[0.76] xl:h-[12rem] 2xl:h-[16rem] items-center transition-transform duration-500 delay-150 transform ${showLock ? (reverse ? "scale-0 opacity-0" : "scale-110 opacity-100") : "scale-0 opacity-0"
                         }`}
                 />
             </div>
