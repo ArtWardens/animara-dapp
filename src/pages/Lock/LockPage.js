@@ -48,7 +48,7 @@ const LockPage = () => {
         <>
             <div
                 className={`relative flex-grow flex flex-col place-content-center items-center xl:px-[6rem] pb-4 min-h-screen bg-cover bg-center bg-no-repeat bg-fixed 
-                    ${mobileMenuOpen ? `hidden` : ``}`}
+                    `}
                 style={{
                     backgroundImage: 'url("/assets/images/clicker-character/clickerBg.webp")',
                 }}
@@ -56,7 +56,7 @@ const LockPage = () => {
                 <Header />
 
                 <div
-                    className="absolute inset-0 flex items-center justify-center bg-cover bg-center bg-no-repeat bg-fixed bg-blend-overlay-multiply"
+                    className={`absolute inset-0 flex items-center justify-center bg-cover bg-center bg-no-repeat bg-fixed bg-blend-overlay-multiply ${mobileMenuOpen ? `hidden` : ``}`}
                     style={{
                         backgroundImage: "linear-gradient(0deg, rgba(0, 53, 80, 0.50) 0%, rgba(0, 53, 80, 0.50) 100%), radial-gradient(65.76% 50% at 50% 50%, rgba(127, 127, 127, 0.00) 0%, #606060 100%)",
                         backdropFilter: "blur(5px)",
