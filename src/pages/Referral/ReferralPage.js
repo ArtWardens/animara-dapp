@@ -234,7 +234,7 @@ function ReferralPage() {
 
         <Header />
 
-        <div className={`flex-1 w-full flex flex-col z-20 pb-24 ${mobileMenuOpen ? `hidden` : ``}`}>
+        <div className={`flex-1 w-full flex flex-col z-20 pb-24 pt-52 ${mobileMenuOpen ? `hidden` : ``}`}>
           {/* content */}
           <div
             className={`container flex flex-col items-center gap-6 tracking-wider transition-opacity duration-500
