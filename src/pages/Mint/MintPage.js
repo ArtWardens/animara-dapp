@@ -372,7 +372,7 @@ function MintPage() {
 
           <Header />
 
-          <div className={`flex-1 w-full flex flex-col pb-24  ${mobileMenuOpen ? `hidden` : ``}`}>
+          <div className={`flex-1 w-full flex flex-col pb-24 pt-52 ${mobileMenuOpen ? `hidden` : ``}`}>
             {/* Page Content */}
             <div className="w-full flex flex-col xl:flex-row justify-between tracking-wider container">
 
