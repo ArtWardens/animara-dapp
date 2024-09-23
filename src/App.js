@@ -10,7 +10,7 @@ import VerifyEmailPage from "./pages/VerifyEmail/VerifyEmailPage";
 import LimitedAccessPage from "./pages/VerifyEmail/LimitedAccessPage";
 import MintPage from "./pages/Mint/MintPage";
 // import ClickerPage from "./pages/Clicker/ClickerPage";
-import LockPage from "./pages/Lock/LockPage";
+import LockPage from "./pages/Lock/LockPage.js";
 import AppLayout from './components/AppLayout';
 import { GlobalProvider } from './context/ContextProvider';
 import rootSaga from './sagas';
