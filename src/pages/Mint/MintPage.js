@@ -396,7 +396,7 @@ function MintPage() {
               />
 
               {/* Mint info section */}
-              <div className={`w-full xl:w-[35%] text-amber-500 transition-all duration-500 z-[40]
+              <div className={`w-full xl:w-[45%] text-amber-500 transition-all duration-500 z-[40]
                 ${showTitle ? `opacity-100` : `opacity-0`}`
               }>
                 {/* title */}
@@ -457,7 +457,7 @@ function MintPage() {
                 </div>
 
                 {/* step 3 text */}
-                <div className={`mb-8 pb-6 transition-all duration-500
+                <div className={`mb-8 transition-all duration-500
                     ${showTextThree ? `opacity-100` : `opacity-0`}
                   `}>
                   <div className="transition-all duration-500 hover:scale-105">
@@ -474,6 +474,45 @@ function MintPage() {
                     >
                       Compete in the Animara leaderboard event and compete to win prizes worth up to <span className="text-white text-base font-bold leading-tight tracking-wide">365k USDC</span>!
                     </p>
+                  </div>
+                </div>
+
+                {/* Click to view Tutorial */}
+                <div className={`mb-8 pb-12 md:pb-0 lg:pb-0 transition-all duration-500
+                    ${showTextThree ? `opacity-100` : `opacity-0`}
+                  `}>
+                  <div className="sm:flex lg:flex items-center">
+                    <img
+                      src={"/assets/images/mint_video_icon.webp"}
+                      alt="video"
+                      className="mx-auto sm:ml-0 sm:mr-2 lg:ml-0 lg:mr-2 w-[120px] h-[120px]"
+                    />
+                    <div className="inline text-center sm:text-left lg:text-left">
+                      <h3 className="w-full text-2xl text-white text-wrap uppercase">click to view tutorial video now!</h3>
+                      <ul className="mx-auto sm:flex lg:flex sm:justify-start lg:justify-start">
+                        <li><a
+                          className="text-[#80E8FF] text-lg font-outfit font-medium leading-normal underline transition-all duration-300 hover:scale-105 hover:font-bold hover:text-[#98e6f8] mb-2"
+                          href="https://solscan.io/" // TODO: change link after video provided
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          Guide to Mint the NFT
+                        </a></li>
+                        <li>
+                        <span className="hidden sm:block lg:block font-outfit text-white text-lg">&nbsp;&nbsp;|&nbsp;&nbsp;</span>
+                        </li>
+                        <li>
+                        <a
+                          className="text-[#80E8FF] text-lg font-outfit font-medium leading-normal underline transition-all duration-300 hover:scale-105 hover:font-bold hover:text-[#98e6f8] mb-2"
+                          href="https://wallet.magiceden.io/" // TODO: change link after video provided
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          Link Phantom Wallet
+                        </a>
+                        </li>
+                      </ul>
+                    </div>
                   </div>
                 </div>
 
@@ -716,23 +755,23 @@ function MintPage() {
                     {/* Web3 links */}
                     <div className="flex">
                       <a
-                        className="text-amber-500 text-lg font-medium leading-normal transition-all duration-300 hover:scale-105 hover:font-bold hover:text-amber-400  mb-2"
-                        href="https://solscan.io/"
+                        className="text-amber-500 text-lg font-medium leading-normal underline transition-all duration-300 hover:scale-105 hover:font-bold hover:text-amber-400  mb-2"
+                        href="https://opensea.io/"
                         target="_blank"
                         rel="noopener noreferrer"
                       >
-                        Solscan
+                        Opensea Link
                       </a>
 
                       <span className="text-white text-lg">&nbsp;&nbsp;|&nbsp;&nbsp;</span>
 
                       <a
-                        className="text-amber-500 text-lg font-medium leading-normal transition-all duration-300 hover:scale-105 hover:font-bold hover:text-amber-400  mb-2"
-                        href="https://wallet.magiceden.io/"
+                        className="text-amber-500 text-lg font-medium leading-normal underline transition-all duration-300 hover:scale-105 hover:font-bold hover:text-amber-400  mb-2"
+                        href="https://etherscan.io/"
                         target="_blank"
                         rel="noopener noreferrer"
                       >
-                        Magic Eden
+                        Etherscan
                       </a>
 
                     </div>
