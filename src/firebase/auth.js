@@ -43,6 +43,7 @@ const signUpWithEmailImpl = async (email, password, username, referralCode) => {
       const actionCodeSettings = {
         url: `${process.env.REACT_APP_PUBLIC_URL}/login?registrationEmail=${email}`,
         handleCodeInApp: false,
+        dynamicLinkDomain: `${process.env.REACT_APP_DOMAIN}`,
       };
 
       await sendEmailVerification(
