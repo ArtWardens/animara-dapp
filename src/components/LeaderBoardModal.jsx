@@ -1,141 +1,163 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { PropTypes } from 'prop-types';
 import { useAppDispatch } from '../hooks/storeHooks';
 import {
-  getLeaderBoard,
-  useLeaderBoardDetails,
-  useLeaderBoardLoadSuccess,
-  useLeaderBoardLoading,
-  useUserDetails,
+  getNewLeaderBoard,
+  useNewLeaderBoardDetails,
+  useNewLeaderBoardLoading,
+  useNewLeaderBoardLoadSuccess,
 } from '../sagaStore/slices';
+import DynamicNumberDisplay from './DynamicNumberDisplay';
 
-const LeaderBoardModal = ({ setIsLeaderBoardOpen, countdown, timeRemaining }) => {
-  const handleCloseModal = () => {
-    setIsLeaderBoardOpen(false);
-  };
+const LeaderBoardModal = ({ handleCloseLeaderboard }) => {
   const dispatch = useAppDispatch();
-  const leaderBoardLoaded = useLeaderBoardLoadSuccess();
-  const leaderBoardLoading = useLeaderBoardLoading();
-  const leaderBoardData = useLeaderBoardDetails();
+
+  const leaderboard = useNewLeaderBoardDetails();
+  const leaderboardLoading = useNewLeaderBoardLoading();
+  const leaderBoardLoaded = useNewLeaderBoardLoadSuccess();
+  
+  const [showLeaderBoardModal, setShowLeaderBoardModal] = useState(true);
+
+  const closeModal = () => {
+    if (showLeaderBoardModal) {
+      setShowLeaderBoardModal(false);
+    }
+
+    const timerPanel = setTimeout(() => {
+      handleCloseLeaderboard();
+    }, 300);
+
+    return () => {
+      clearTimeout(timerPanel);
+    };
+  };
 
   useEffect(() => {
-    if (!leaderBoardLoaded && !leaderBoardLoading) {
-      const currentDate = new Date();
-      const formattedDate = `${currentDate.getFullYear()}_${String(currentDate.getMonth() + 1).padStart(2, '0')}_${String(currentDate.getDate()).padStart(2, '0')}`;
-      dispatch(getLeaderBoard(formattedDate));
-    }
-  }, [dispatch, leaderBoardLoaded, leaderBoardLoading]);
+    dispatch(getNewLeaderBoard());
+  }, [dispatch]);
 
-  useEffect(() => {
-    if (!leaderBoardLoading && leaderBoardLoaded && countdown === 0) {
-      const currentDate = new Date();
-      const formattedDate = `${currentDate.getFullYear()}_${String(currentDate.getMonth() + 1).padStart(2, '0')}_${String(currentDate.getDate()).padStart(2, '0')}`;
-
-      dispatch(getLeaderBoard(formattedDate));
-    }
-  }, [dispatch, countdown, leaderBoardLoaded, leaderBoardLoading]);
-
-  const userDetails = useUserDetails();
   return (
-    <div className="fixed inset-0 overflow-y-auto z-[10000]">
-      <div className="absolute inset-0 bg-pink-300 z-[100001]">
-        <div
-          className="absolute inset-0 bg-cover bg-no-repeat z-[100001]"
-          style={{ backgroundImage: 'url(/assets/images/Light.webp)' }}
-        >
-          <div className="absolute top-4 left-4">
-            <img src="/assets/images/username.webp" className=" h-16" alt="username" />{' '}
-            <p className="text-white absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/3 w-20 truncate">
-              <span>{`${userDetails?.first_name} ${userDetails?.last_name}`}</span>
-            </p>
-          </div>
-          <div className="w-screen h-screen flex">
-            <div className="relative h-full max-h-96 w-full max-w-screen-sm m-auto flex items-center justify-center">
-              <img
-                className="select-none h-full min-w-[800px] min-h-[500px]"
-                draggable={false}
-                src="/assets/images/LeaderboardBg.webp"
-                alt="leaderboard"
-              />
-              <div onClick={handleCloseModal} className="absolute top-4 -right-10">
-                <img src="/assets/images/x.webp" width={50} height={50} className="" alt="x" />
-              </div>
+    <div
+      className={`fixed left-0 top-0 flex h-full min-h-screen w-full items-center justify-center bg-dark/90 px-4 py-4`}
+      style={{
+        zIndex: 90,
+      }}
+    >
+      <div
+        className={`
+          relative w-[100%] max-w-[1000px] max-h-[95%] px-[2rem] py-[6rem] rounded-[20px] text-center 
+          bg-cover bg-no-repeat 
+          md:px-[4rem] md:py-[14rem] md:bg-contain md:min-h-[750px] 
+          lg:px-[7rem] lg:py-[14rem] lg:bg-contain lg:min-h-[750px]
+          ${showLeaderBoardModal ? 'animate-slideInFromBottom' : 'animate-slideOutToBottom'}`}
+        style={{
+          backgroundImage: `url(/assets/images/leaderboard_panel.webp)`,
+          backgroundPosition: 'center',
+        }}
+      >
+        <div className="text-left grid w-full gap-1
+          sm:pt-[2rem]
+          md:gap-4 mb-2
+          lg:gap-4 lg-8">
+          <button
+            className="w-[4rem] text-[#80E8FF] font-outfit font-semibold hover:brightness-75"
+            type="button"
+            onClick={closeModal}
+          >
+            &lt; &nbsp; Back
+          </button>
 
-              {leaderBoardData?.length > 0 ? (
-                <div className="absolute top-1/4 w-[100%] ">
-                  <ul className="grid gap-2 max-h-[230px] overflow-y-auto px-8">
-                    {leaderBoardData?.map((el, index) => (
-                      <li
-                        key={el.uid}
-                        className={`flex justify-between 
-                          items-center
-                          text-white py-1 px-2 ${index === 0 ? 'lb' : index === 1 ? 'lb2' : index === 2 ? 'lb3' : 'lbr'}`}
-                      >
-                        <div className="flex items-center space-x-3">
-                          {index === 0 ? (
-                            <img src="/assets/images/gold.webp" className=" w-[35px] h-[35px]" alt="gold" />
-                          ) : index === 1 ? (
-                            <img src="/assets/images/silvar.webp" className=" w-[35px] h-[35px]" alt="silvar" />
-                          ) : index === 2 ? (
-                            <img src="/assets/images/platinum.webp" className=" w-[35px] h-[35px]" alt="platinium" />
-                          ) : (
-                            <div className=" w-[35px] h-[35px]"></div>
-                          )}
-
-                          <span className="lb-text text-xl">{el.name}</span>
-                        </div>
-                        <div className="flex items-center">
-                          <span className="mr-2 lb-text text-xl">{el.numberOfClicks}</span>
-                          <img
-                            src="/assets/images/hamar2.webp"
-                            width={50}
-                            height={50}
-                            className=" w-[25px] h-[25px]"
-                            alt="x"
-                          />
-                        </div>
-                        <div className="flex items-center">
-                          <span className="lb-point text-xl">{el.coins}</span>
-                          <img
-                            src="/assets/images/gem3.webp"
-                            width={50}
-                            height={50}
-                            className=" w-[20px] h-[20px]"
-                            alt="x"
-                          />
-                        </div>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              ) : (
-                <div className="absolute">
-                  <span className="text-xl">NO RECORDS YET</span>
-                </div>
-              )}
-
-              <div className="absolute -bottom-9 -right-24">
-                <div className="max-w-48 w-full h-8 bg-purple-900 opacity-80 rounded-[602px] flex justify-between items-center pl-3">
-                  <h3 className="text-yellow-300">
-                    {timeRemaining.hours}:{timeRemaining.minutes}:{timeRemaining.seconds}{' '}
-                    <span className="text-white">until reset</span>
-                  </h3>
-                  <div>
-                    <img src="/assets/images/timer.webp" width={50} height={50} className="" alt="x" />
-                  </div>
-                </div>
-                <h4 className="text-white font-light pt-1.5">Leaderboard refreshes in {countdown} seconds</h4>
-              </div>
-            </div>
-          </div>
         </div>
+
+        {leaderboardLoading || !leaderBoardLoaded ? (
+        // loader
+        <div className="pt-4 flex align-middle justify-center">
+          <svg
+            aria-hidden="true"
+            className="w-8 h-8 text-Fuchsia-200 animate-spin dark:text-Fuchsia-200 fill-yellow-600"
+            viewBox="0 0 100 101"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+              fill="currentColor"
+            />
+            <path
+              d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+              fill="currentFill"
+            />
+          </svg>
+        </div>
+        ) : (
+          <div 
+            className="max-h-[350px] md:max-h-[280px] lg:max-h-[350px] grid grid-cols-1 gap-1 pr-4 overflow-x-hidden overflow-y-auto custom-scrollbar">
+            {leaderboard && leaderboard.length > 0 ? (
+              leaderboard.map((item, index) => {
+                let backgroundImage;
+                let top3ImgSrc;
+                switch (index) {
+                  case 0:
+                    backgroundImage = "linear-gradient(to right, #FFDE6A00, #FFDE6A 10%, #FFDE6A93, #8E8E8E00)"; // 1st place - Gold
+                    top3ImgSrc = "/assets/images/leaderboard_1st.webp";
+                    break;
+                  case 1:
+                    backgroundImage = "linear-gradient(to right, #FF813900, #FF8139 10%, #FF813993, #FF813900)"; // 2nd place - Orange
+                    top3ImgSrc = "/assets/images/leaderboard_2nd.webp";
+                    break;
+                  case 2:
+                    backgroundImage = "linear-gradient(to right, #80E8FF00, #80E8FF 10%, #80E8FF93, #80E8FF00)"; // 3rd place - Cyan
+                    top3ImgSrc = "/assets/images/leaderboard_3rd.webp";
+                    break;
+                  default:
+                    backgroundImage = "linear-gradient(to right, #FFFFFF00, #FFFFFF4D, #FFFFFF66, #FFFFFF00)"; // Default - White
+                    top3ImgSrc = null;
+                    break;
+                }
+                return (
+                  <>
+                    <div key={index} 
+                      className="flex space-x-2 justify-stretch font-LuckiestGuy text-left
+                        h-[58px] px-[2rem]
+                        md:h-[50px] md:px-[3rem]  
+                        lg:h-[50px] lg:px-[8rem]"
+                      style={{
+                        backgroundImage: backgroundImage,
+                      }}>
+                      {top3ImgSrc ? (
+                        <img src={top3ImgSrc} alt="medal" className="object-cover w-[36px] mr-1"></img>
+                      ) : (
+                        <div className="w-[36px] mr-1"></div>
+                      )}
+                      <div className="
+                        inline-block w-full my-auto
+                        md:grid md:grid-cols-[60%_40%] md:gap-2 
+                        lg:grid lg:grid-cols-[60%_40%] lg:gap-2 
+                        ">
+                        <p className="truncate text-[1rem] xs:text-xl lg:text-2xl drop-shadow-[3px_2px_4px_rgba(32,91,121,1)] my-auto">{item.name}</p>
+                        <DynamicNumberDisplay 
+                          number={item.profitPerHour} 
+                          imgSrc={"/assets/icons/explora-point.webp"}
+                          imgClassName={"w-[15px] h-[15px] xs:w-[20px] xs:h-[20px] lg:w-[30px] lg:h-[30px] mr-1 drop-shadow-xl"}
+                          spanClassName={"inline-block text-transparent text-[1rem] xs:text-xl lg:text-2xl drop-shadow-xl bg-clip-text bg-gradient-to-b from-[#E9FFEE] to-[#00E0FF] font-bold"}
+                        />
+                      </div>
+                    </div>
+                  </>
+                )})
+            ) : (
+              // Fallback if leaderboard is empty
+              <p>No leaderboard data available</p>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );
 };
 
 LeaderBoardModal.propTypes = {
-  setIsLeaderBoardOpen: PropTypes.func,
+  handleCloseLeaderboard: PropTypes.func,
   countdown: PropTypes.number,
   timeRemaining: PropTypes.number,
 };
