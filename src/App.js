@@ -3,6 +3,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import useNavigatorOnline from 'use-navigator-online';
 import LoginPage from './pages/Login/LoginPage';
 import SignupPage from "./pages/Signup/SignupPage";
+import ForgotPasswordPage from "./pages/ForgotPassword/ForgotPasswordPage.js";
 import EditProfilePage from "./pages/EditProfile/EditProfilePage";
 import ReferralPage from "./pages/Referral/ReferralPage";
 import EarlyBirdPage from "./pages/EarlyBird/EarlyBirdPage";
@@ -96,6 +97,7 @@ export const App = () => {
                     <Route path="/" element={<LoginPage />} />
                     <Route path="/login" element={<LoginPage />} />
                     <Route path="/signup" element={<SignupPage />} />
+                    <Route path="/forgot-password" element={<ForgotPasswordPage />} />
                     <Route path="/limited-access" element={<LimitedAccessPage />} />
                     <Route path="/verify-email" element={<VerifyEmailPage />} />
                     <Route path="/edit-profile" element={<ClickerController Children={EditProfilePage} />} />

@@ -295,9 +295,9 @@ export function* checkLoginWithRedirectSaga() {
   }
 }
 
-export function* resetPasswordSaga(action) {
+export function* resetPasswordSaga({ payload }) {
   try {
-    const email = action.payload; 
+    const email = payload.email; 
     const result = yield call(resetPasswordImpl, email);
     if (result) {
       yield put(resetPasswordSuccess());
