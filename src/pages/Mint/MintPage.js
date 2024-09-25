@@ -759,22 +759,22 @@ function MintPage() {
                     <div className="flex">
                       <a
                         className="text-amber-500 text-lg font-medium leading-normal underline transition-all duration-300 hover:scale-105 hover:font-bold hover:text-amber-400  mb-2"
-                        href="https://opensea.io/"
+                        href="https://solscan.io/"
                         target="_blank"
                         rel="noopener noreferrer"
                       >
-                        Opensea Link
+                        Solscan
                       </a>
 
                       <span className="text-white text-lg">&nbsp;&nbsp;|&nbsp;&nbsp;</span>
 
                       <a
                         className="text-amber-500 text-lg font-medium leading-normal underline transition-all duration-300 hover:scale-105 hover:font-bold hover:text-amber-400  mb-2"
-                        href="https://etherscan.io/"
+                        href="https://wallet.magiceden.io/"
                         target="_blank"
                         rel="noopener noreferrer"
                       >
-                        Etherscan
+                        Magic Eden
                       </a>
 
                     </div>
