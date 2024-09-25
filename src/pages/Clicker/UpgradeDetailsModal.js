@@ -370,7 +370,7 @@ const UpgradeDetailsModal = ({ upgrade, isMaxLevel, onClose }) => {
                 </span>
               </p>
 
-              <h2 className="text-4xl text-white font-LuckiestGuy uppercase tracking-wider">
+              <h2 className="text-4xl text-[#FFAA00] font-LuckiestGuy uppercase tracking-wider">
                 {t(upgrade.locationId)}
               </h2>
 
