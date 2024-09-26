@@ -137,7 +137,7 @@ const EditProfilePage = () => {
         <Header />
 
         {/* outer container */}
-        <div className="flex flex-col xl:flex-row px-[0rem] xl:px-[4rem] w-screen h-full pt-48">
+        <div className="flex flex-col xl:flex-row px-[0rem] xl:px-[4rem] w-screen h-full">
 
           {/* content */}
           <div className={`flex flex-col 2xl:flex-row w-full gap-20
@@ -184,7 +184,7 @@ const EditProfilePage = () => {
                   style={{
                     flexShrink: 0,
                     borderRadius: "500px",
-                    border: "3px solid var(--80E8FF, #80E8FF)",
+                    border: "2.5px solid var(--80E8FF, #80E8FF)",
                     background: `url(${imageData || user?.photoUrl}) black 50% / cover no-repeat`,
                   }}
                 >
@@ -192,9 +192,9 @@ const EditProfilePage = () => {
                     <img
                       src={imageData || getProfilePic()}
                       alt="pfp"
-                      className="group-hover:brightness-75 h-full w-full object-cover scale-110"
+                      className="group-hover:brightness-75 h-full w-full object-cover"
                       style={{
-                        border: '5px solid var(--80E8FF, #80E8FF)',
+                        border: '4px solid var(--80E8FF, #80E8FF)',
                         background: '#111928 50%',
                         backgroundSize: 'cover',
                         backgroundRepeat: 'no-repeat',

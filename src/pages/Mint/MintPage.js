@@ -114,6 +114,7 @@ function MintPage() {
   const [showTextOne, setShowTextOne] = useState(false);
   const [showTextTwo, setShowTextTwo] = useState(false);
   const [showTextThree, setShowTextThree] = useState(false);
+  const [showTutorial, setShowTutorial] = useState(false);
   const [showTextSubtext, setShowSubtext] = useState(false);
   const [slideMintPanel, setSlideMintPanel] = useState(false);
   const [slideCharacter, setSlideCharacter] = useState(false);
@@ -140,6 +141,7 @@ function MintPage() {
   const [isPhantomInstalled] = useState(window.phantom?.solana?.isPhantom);
   const [isNoticeOpen, setIsNoticeOpen] = useState(false);
   const [isPassOpen, setIsPassOpen] = useState(false);
+  const [tutorialVid, setTutorialVid] = useState(null);
     
   // Toggle VIP pass component
   const handlePassClick = () => {
@@ -178,6 +180,10 @@ function MintPage() {
       setShowTextThree(true);
     }, 700);
 
+    const timerTutorial = setTimeout(() => {
+      setShowTutorial(true);
+    }, 800);
+
     const timerSubtext = setTimeout(() => {
       setShowSubtext(true);
     }, 900);
@@ -195,6 +201,7 @@ function MintPage() {
       clearTimeout(timerTextOne);
       clearTimeout(timerTextTwo);
       clearTimeout(timerTextThree);
+      clearTimeout(timerTutorial);
       clearTimeout(timerSubtext);
       clearTimeout(timerMintPanel);
       clearTimeout(timerCharacter);
@@ -380,7 +387,7 @@ function MintPage() {
 
           <Header />
 
-          <div className={`flex-1 w-full flex flex-col pb-24 pt-52 ${mobileMenuOpen ? `hidden` : ``}`}>
+          <div className={`flex-1 w-full flex flex-col pb-24  ${mobileMenuOpen ? `hidden` : ``}`}>
             {/* Page Content */}
             <div className="w-full flex flex-col xl:flex-row justify-between tracking-wider container">
 
@@ -404,7 +411,7 @@ function MintPage() {
               />
 
               {/* Mint info section */}
-              <div className={`w-full xl:w-[35%] text-amber-500 transition-all duration-500 z-[40]
+              <div className={`w-full xl:w-[45%] text-amber-500 transition-all duration-500 z-[40]
                 ${showTitle ? `opacity-100` : `opacity-0`}`
               }>
                 {/* title */}
@@ -465,7 +472,7 @@ function MintPage() {
                 </div>
 
                 {/* step 3 text */}
-                <div className={`mb-8 pb-6 transition-all duration-500
+                <div className={`mb-8 transition-all duration-500
                     ${showTextThree ? `opacity-100` : `opacity-0`}
                   `}>
                   <div className="transition-all duration-500 hover:scale-105">
@@ -482,6 +489,41 @@ function MintPage() {
                     >
                       Compete in the Animara leaderboard event and compete to win prizes worth up to <span className="text-white text-base font-bold leading-tight tracking-wide">365k USDC</span>!
                     </p>
+                  </div>
+                </div>
+
+                {/* Click to view Tutorial */}
+                <div className={`mb-8 pb-12 md:pb-0 lg:pb-0 transition-all duration-500
+                    ${showTutorial ? `opacity-100` : `opacity-0`}
+                  `}>
+                  <div className="sm:flex lg:flex items-center">
+                    <img
+                      src={"/assets/images/mint_video_icon.webp"}
+                      alt="video"
+                      className="mx-auto sm:ml-0 sm:mr-2 lg:ml-0 lg:mr-2 w-[120px] h-[120px]"
+                    />
+                    <div className="inline text-center sm:text-left lg:text-left">
+                      <h3 className="w-full text-2xl text-white text-wrap uppercase">click to view tutorial video now!</h3>
+                      <ul className="mx-auto sm:flex lg:flex sm:justify-start lg:justify-start">
+                        <li><button
+                          onClick={() => setTutorialVid("https://storage.animara.world/mint-anim.mp4")} // TODO: change link after video provided
+                          className="text-[#80E8FF] text-lg font-outfit font-medium leading-normal underline transition-all duration-300 hover:scale-105 hover:font-bold hover:text-[#98e6f8] mb-2"
+                        >
+                          Guide to Mint the NFT
+                        </button></li>
+                        <li>
+                        <span className="hidden sm:block lg:block font-outfit text-white text-lg">&nbsp;&nbsp;|&nbsp;&nbsp;</span>
+                        </li>
+                        <li>
+                        <button
+                          onClick={() => setTutorialVid("https://storage.animara.world/depletion-reward-w-number.webm")} // TODO: change link after video provided
+                          className="text-[#80E8FF] text-lg font-outfit font-medium leading-normal underline transition-all duration-300 hover:scale-105 hover:font-bold hover:text-[#98e6f8] mb-2"
+                        >
+                          Link Phantom Wallet
+                        </button>
+                        </li>
+                      </ul>
+                    </div>
                   </div>
                 </div>
 
@@ -724,7 +766,7 @@ function MintPage() {
                     {/* Web3 links */}
                     <div className="flex">
                       <a
-                        className="text-amber-500 text-lg font-medium leading-normal transition-all duration-300 hover:scale-105 hover:font-bold hover:text-amber-400  mb-2"
+                        className="text-amber-500 text-lg font-medium leading-normal underline transition-all duration-300 hover:scale-105 hover:font-bold hover:text-amber-400  mb-2"
                         href="https://solscan.io/"
                         target="_blank"
                         rel="noopener noreferrer"
@@ -735,7 +777,7 @@ function MintPage() {
                       <span className="text-white text-lg">&nbsp;&nbsp;|&nbsp;&nbsp;</span>
 
                       <a
-                        className="text-amber-500 text-lg font-medium leading-normal transition-all duration-300 hover:scale-105 hover:font-bold hover:text-amber-400  mb-2"
+                        className="text-amber-500 text-lg font-medium leading-normal underline transition-all duration-300 hover:scale-105 hover:font-bold hover:text-amber-400  mb-2"
                         href="https://wallet.magiceden.io/"
                         target="_blank"
                         rel="noopener noreferrer"
@@ -981,6 +1023,25 @@ function MintPage() {
           </div>
 
       </div>
+
+      {/* Tutorial video popup modal */}
+      {tutorialVid && (
+        <div className="fixed top-0 left-0 bg-[rgba(0,0,0,0.8)] w-full h-full z-[99]">
+          <span 
+            className="absolute top-2 right-5 text-[50px] font-bold text-white hover:scale-110 transition-transform duration-200"
+            onClick={() => setTutorialVid(null)}>
+              &times;
+          </span>
+          <video  
+            className="block max-w-[95%] max-h-[95%] absolute top-[50%] left-[50%] -translate-x-1/2 -translate-y-1/2 object-contain border-2 border-white"
+            autoPlay
+            controls
+            playsInline>
+              <source src={tutorialVid} type="video/webm" />
+              Your browser does not support the video tag.
+          </video>
+        </div>
+      )}
 
       {/* Conditionally render the MintingWarningNotice component */}
       {isPassOpen && <MintingVipPass onClose={closePass} />}

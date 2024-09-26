@@ -2,23 +2,19 @@ import React, { useState, useEffect } from 'react';
 import { PropTypes } from 'prop-types';
 import { MoonLoader } from 'react-spinners';
 import ProgressBar from './FancyProgressBar/ProgressBar.tsx';
-import { getTimeRemaining } from '../utils/getTimeRemaining';
 import { useLocalStamina, useRechargeLoading, useUserDetails, useUserDetailsLoading } from '../sagaStore/slices';
 import TaskList from '../components/TaskList.jsx';
-import LeaderBoardModal from '../components/LeaderBoardModal.jsx';
 import MintingWarningNotice from './MintingWarningNotice.jsx';
 
-function EnergyRegeneration({ isLeaderboardOpen, setIsLeaderboardOpen, isOneTimeTaskOpen, setIsOneTimeTaskOpen }) {
+function EnergyRegeneration({ isOneTimeTaskOpen, setIsOneTimeTaskOpen }) {
   const currentUser = useUserDetails();
   const localStamina = useLocalStamina();
   const rechargingStamina = useRechargeLoading();
   const userDetailsLoading = useUserDetailsLoading();
   const [profitPerHour, setProfitPerHour] = useState('');
   const [progressBarWidth, setProgressBarWidth] = useState(0);
-  const [timeRemaining, setTimeRemaining] = useState(getTimeRemaining());
   const [showFirstDiv, setShowFirstDiv] = useState(false);
   const [showProgressBar, setShowProgressBar] = useState(false);
-  const [countDownRemaining] = useState(0);
   const [isNoticeOpen, setIsNoticeOpen] = useState(false);
 
   // Toggle notice component
@@ -44,14 +40,6 @@ function EnergyRegeneration({ isLeaderboardOpen, setIsLeaderboardOpen, isOneTime
       clearTimeout(firstDivTimer);
       clearTimeout(progressBarTimer);
     };
-  }, []);
-
-  useEffect(() => {
-    const intervalId = setInterval(() => {
-      setTimeRemaining(getTimeRemaining());
-    }, 1000);
-
-    return () => clearInterval(intervalId);
   }, []);
 
   useEffect(() => {
@@ -131,22 +119,6 @@ function EnergyRegeneration({ isLeaderboardOpen, setIsLeaderboardOpen, isOneTime
 
       {isOneTimeTaskOpen && <TaskList setIsOneTimeTaskOpen={setIsOneTimeTaskOpen} />}
 
-      {isLeaderboardOpen && (
-        <div
-          className={`fixed left-0 top-0 flex h-full min-h-screen w-full items-center justify-center bg-dark/90 px-4 py-5 ${
-            isLeaderboardOpen ? 'block' : 'hidden'
-          }`}
-          style={{
-            zIndex: 100,
-          }}
-        >
-          <LeaderBoardModal
-            timeRemaining={timeRemaining}
-            countdown={countDownRemaining}
-            setIsLeaderBoardOpen={setIsLeaderboardOpen}
-          />
-        </div>
-      )}
       {/* Conditionally render the MintingVipPass component */}
       {isNoticeOpen && <MintingWarningNotice onClose={closeNotice} />}
     </>
@@ -154,7 +126,6 @@ function EnergyRegeneration({ isLeaderboardOpen, setIsLeaderboardOpen, isOneTime
 }
 
 EnergyRegeneration.propTypes = {
-  isLeaderboardOpen: PropTypes.bool,
   setIsLeaderboardOpen: PropTypes.func,
   isOneTimeTaskOpen: PropTypes.bool,
   setIsOneTimeTaskOpen: PropTypes.func,

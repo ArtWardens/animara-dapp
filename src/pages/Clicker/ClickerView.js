@@ -59,8 +59,6 @@ const ClickerView = () => {
 
       <div className="max-w-full flex justify-center items-center relative">
         <EnergyRegeneration 
-          isLeaderboardOpen={isLeaderboardOpen}
-          setIsLeaderboardOpen={setIsLeaderboardOpen}
           isOneTimeTaskOpen={isOneTimeTaskOpen}
           setIsOneTimeTaskOpen={setIsOneTimeTaskOpen}
         />

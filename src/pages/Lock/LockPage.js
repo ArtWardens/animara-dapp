@@ -49,15 +49,14 @@ const LockPage = () => {
             <Header />
 
             <div
-                className={`overflow-hidden flex-grow flex flex-col place-content-center items-center xl:px-[6rem] pb-4 min-h-screen bg-cover bg-center bg-no-repeat bg-fixed
-                    `}
+                className={`relative flex-grow flex flex-col place-content-center items-center xl:px-[6rem] pb-4 min-h-screen bg-cover bg-center bg-no-repeat bg-fixed 
+                    ${mobileMenuOpen ? `hidden` : ``}`}
                 style={{
                     backgroundImage: 'url("/assets/images/clicker-character/clickerBg.webp")',
                 }}
             >
-
                 <div
-                    className={`flex place-content-center absolute inset-0 items-center justify-center bg-cover bg-center bg-no-repeat bg-fixed bg-blend-overlay-multiply ${mobileMenuOpen ? `hidden` : ``}`}
+                    className="absolute inset-0 flex items-center justify-center bg-cover bg-center bg-no-repeat bg-fixed bg-blend-overlay-multiply"
                     style={{
                         backgroundImage: "linear-gradient(0deg, rgba(0, 53, 80, 0.50) 0%, rgba(0, 53, 80, 0.50) 100%), radial-gradient(65.76% 50% at 50% 50%, rgba(127, 127, 127, 0.00) 0%, #606060 100%)",
                         backdropFilter: "blur(5px)",
@@ -66,26 +65,25 @@ const LockPage = () => {
                     <img
                         src="/assets/images/clicker-character/chain-left.webp"
                         alt="Left Chain"
-                        className={`absolute mx-auto h-full aspect-[1.78] transition-transform duration-1000 ease-out ${showLeftChain ? (reverse ? "-translate-x-full -translate-y-full opacity-0" : "translate-x-0 translate-y-0 opacity-100") : "-translate-x-full -translate-y-full opacity-0"
+                        className={`absolute origin-center h-full w-auto right-0 transition-transform duration-1000 ease-out ${showLeftChain ? (reverse ? "-translate-x-full -translate-y-full opacity-0" : "translate-x-0 translate-y-0 opacity-100") : "-translate-x-full -translate-y-full opacity-0"
                             }`}
                     />
                     <img
                         src="/assets/images/clicker-character/chain-right.webp"
                         alt="Right Chain"
-                        className={`absolute mx-auto h-full aspect-[1.78] transition-transform duration-1000 ease-out ${showRightChain ? (reverse ? "translate-x-full -translate-y-full opacity-0" : "translate-x-0 translate-y-0 opacity-100") : "translate-x-full -translate-y-full opacity-0"
+                        className={`absolute origin-center h-full w-auto left-0 transition-transform duration-1000 ease-out ${showRightChain ? (reverse ? "translate-x-full -translate-y-full opacity-0" : "translate-x-0 translate-y-0 opacity-100") : "translate-x-full -translate-y-full opacity-0"
                             }`}
                     />
                 </div>
-                
                 <img
                     src="/assets/images/clicker-character/padlock.webp"
                     alt="Lock"
-                    className={`origin-center h-[6rem] lg:h-[9rem] aspect-[0.76] xl:h-[10rem] 2xl:h-[12rem] items-center transition-transform duration-500 delay-150 transform ${showLock ? (reverse ? "scale-0 opacity-0" : "scale-110 opacity-100") : "scale-0 opacity-0"
-                        }`}
+                    className={`origin-center mb-[7rem] transition-transform duration-500 delay-150 transform ${showLock ? (reverse ? "scale-0 opacity-0" : "scale-110 opacity-100") : "scale-0 opacity-0"
+                        } z-10`}
                 />
             </div>
 
-            <div className={`hidden absolute bottom-40 lg:bottom-52 left-1/2 -translate-x-1/2 w-80 p-4 pb-6 bg-[#003260] rounded-3xl shadow-inner border border-[#7fc1ff] flex flex-col items-center gap-3 transition-transform duration-500 delay-150 transform ${showCountdown ? (reverse ? "scale-0 opacity-0" : "scale-105 opacity-100") : "scale-0 opacity-0"}`}>
+            <div className={`absolute bottom-40 lg:bottom-52 left-1/2 -translate-x-1/2 w-80 p-4 pb-6 bg-[#003260] rounded-3xl shadow-inner border border-[#7fc1ff] flex flex-col items-center gap-3 transition-transform duration-500 delay-150 transform ${showCountdown ? (reverse ? "scale-0 opacity-0" : "scale-105 opacity-100") : "scale-0 opacity-0"}`}>
                 <p className="text-lg text-white">
                     Unlocks In
                 </p>
