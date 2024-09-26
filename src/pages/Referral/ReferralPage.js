@@ -201,14 +201,19 @@ function ReferralPage() {
 
   const handleClaimCashbackOrBind = () => {
     if (currentUser.walletAddr === '') {
+      // special case 1: has claimable but wallet not binded yet to claim
       setShowWalletBindingPanel(true);
       setWalletBindingAnim(true);
       setTimeout(() => {
         setWalletBindingAnim(false);
       }, 300);
-      return;
+    }else if (!currentUser.ownsNFT && basicClaimable === 0 && nftClaimable >= 0 && currentUser.walletAddr !== ''){
+      // special case 2: only have nft claimables to claim but doesnt own nft yet
+      navigate('/mint');
+    }else {
+      // ready to claim cashback
+      dispatch(claimCashback({ sendTransaction }));
     }
-    dispatch(claimCashback({ sendTransaction }));
   };
 
   const handleBackToMint = () => {
