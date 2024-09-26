@@ -261,7 +261,7 @@ function ReferralPage() {
               <div className={`w-[75%] h-full mx-auto flex flex-col justify-center items-center hover:scale-110 transition-all duration-500
                 ${showRefOne ? `opacity-100` : `opacity-0`}`}>
                 <img
-                  className="w-4/5 aspect-[1.35] origin-top-left shadow"
+                  className="w-4/5 aspect-[1.35] origin-top-left"
                   src="/assets/images/clicker-character/ref01.webp"
                   alt="Invite Rewards"
                 />
@@ -278,7 +278,7 @@ function ReferralPage() {
               <div className={`w-[75%] h-full mx-auto flex flex-col justify-center items-center hover:scale-110 transition-all duration-500
                 ${showRefThree ? `opacity-100` : `opacity-0`}`}>
                 <img
-                  className="w-full aspect-[1.22] origin-top-left shadow"
+                  className="w-full aspect-[1.22] origin-top-left"
                   src="/assets/images/clicker-character/ref02.webp"
                   alt="NFT Cashback"
                 />
@@ -295,7 +295,7 @@ function ReferralPage() {
               <div className={`w-[75%] h-full mx-auto flex flex-col justify-center items-center hover:scale-110 transition-all duration-500
                 ${showRefTwo ? `opacity-100` : `opacity-0`}`}>
                 <img
-                  className="w-4/5 aspect-[1.35] origin-top-left shadow"
+                  className="w-4/5 aspect-[1.35] origin-top-left"
                   src="/assets/images/clicker-character/ref03.webp"
                   alt="Rank Up Rewards"
                 />
@@ -315,7 +315,7 @@ function ReferralPage() {
               <div className={`w-[70dvw] h-auto flex flex-col justify-center items-center transition-all duration-500
                 ${carouselFading ? `opacity-0` : `opacity-100`}`}>
                 <img
-                  className="w-[80%] lg:w-[60%] h-auto origin-top-left shadow"
+                  className="w-[80%] lg:w-[60%] h-auto origin-top-left"
                   src={content[currentIndex].image}
                   alt={content[currentIndex].alt}
                 />
@@ -333,7 +333,7 @@ function ReferralPage() {
               <div className="absolute top-1/2 hover:scale-150 transition-scale duration-500 transform -translate-y-1/2 left-[-2rem]">
                 <button
                   onClick={handlePrev}
-                  className="text-white p-2 rounded-full shadow-md"
+                  className="text-white p-2 rounded-full"
                 >
                   <img
                     className="w-full h-full"
@@ -345,7 +345,7 @@ function ReferralPage() {
               <div className="absolute top-1/2 hover:scale-150 transition-scale duration-500 transform -translate-y-1/2 right-[-2rem]">
                 <button
                   onClick={handleNext}
-                  className="text-white p-2 rounded-full shadow-md"
+                  className="text-white p-2 rounded-full"
                 >
                   <img
                     className="w-full h-full "
