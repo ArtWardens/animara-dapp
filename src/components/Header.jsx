@@ -91,7 +91,7 @@ function Header() {
     <div className='w-full container'>
       {/* User Card */}
       <div
-        className={`flex flex-row absolute max-w-[70dvw] top-[3rem] z-20 p-1 pr-4 gap-2 left-[1rem] xl:left-[4rem] ${currentUser?.ownsNFT ? 'glowing-border' : 'default-border'} ${
+        className={`flex flex-row absolute max-w-[70dvw] top-[3rem] z-10 p-1 pr-4 gap-2 left-[1rem] xl:left-[4rem] ${currentUser?.ownsNFT ? 'glowing-border' : 'default-border'} ${
           mobileMenuOpen ? 'hidden' : ''
         }`}
       >
@@ -172,7 +172,7 @@ function Header() {
         ))}
 
         <button
-          className="transition ease-in-out p-2 hover:scale-105 "
+          className="transition ease-in-out p-2 hover:scale-105"
           onMouseEnter={handleMouseEnterLogout}
           onMouseLeave={handleMouseLeaveLogout}
           onClick={handleLogout}
@@ -184,7 +184,7 @@ function Header() {
 
       {/* Mobile Hamburger Menu Button */}
       <button
-        className="transition ease-in-out hover:scale-105 lg:hidden absolute top-[5rem] right-[2rem] xl:right-[4rem] z-50"
+        className="transition ease-in-out hover:scale-105 xl:hidden absolute top-[5rem] right-[2rem] xl:right-[4rem] z-50"
         onClick={() => dispatch(setMobileMenuOpen(!mobileMenuOpen))}
       >
         <svg
@@ -201,7 +201,7 @@ function Header() {
       {/* Mobile Menu */}
       {mobileMenuOpen && (
         <div
-          className="h-full absolute inset-0 z-40 flex flex-col items-center justify-start py-[2rem] px-[4rem] overflow-hidden"
+          className="h-full absolute inset-0 z-40 flex flex-col items-center justify-start py-[3rem] px-[4rem] overflow-hidden"
           style={{
             backgroundImage: 'url("/assets/images/clicker-character/clickerWall.webp")',
             backgroundSize: 'cover',
@@ -238,7 +238,7 @@ function Header() {
             </div>
 
             <div
-              className="w-full h-full text-center scale-125 p-[4rem] xs:p-[5rem] -z-50"
+              className={`w-full h-full text-center scale-125 -z-50 ${window.innerHeight < 768 ? 'p-[3.5rem]' : 'p-[5rem]'}`}
               style={{
                 backgroundImage: 'url("/assets/images/clicker-character/sticky-Note.webp")',
                 backgroundSize: 'contain',
@@ -255,7 +255,7 @@ function Header() {
               <img
                 src={getProfilePic()}
                 alt="profile"
-                className="items-center rounded-full w-24 xs:w-32 mx-auto mb-2 xs:mb-4"
+                className={`items-center rounded-full mx-auto ${window.innerHeight < 768 ? 'w-[10dvh] mb-0' : 'w-20 mb-2'}`}
                 style={{
                   border: '4px solid var(--80E8FF, #80E8FF)',
                   background: '#111928 50%',
@@ -269,14 +269,14 @@ function Header() {
                   <span className="text-white text-xs tracking-wider font-outfit whitespace-nowrap">Certified KOL</span>
                 </span>
               )}
-              <p className="text-lg text-[#003459] font-medium font-outfit mt-4 mb-1"> {currentUser?.name}</p>
-              <div className="gap-2 flex place-content-center">
-                <img className="w-6 object-contain" src={'/assets/images/clicker-character/gem.webp'} alt="gem" />
+              <p className="text-md text-[#003459] font-medium font-outfit mt-[0.5rem]"> {currentUser?.name}</p>
+              <div className="gap-[0.5rem] flex place-content-center">
+                <img className="w-5 object-contain" src={'/assets/images/clicker-character/gem.webp'} alt="gem" />
                 <div className="items-center justify-center">
                   <span
-                    className="text-2xl xl:text-4xl text-amber-500 tracking-normal pr-2"
+                    className="text-[32px] xl:text-4xl text-amber-500 tracking-normal pr-2"
                     style={{
-                      WebkitTextStrokeWidth: '1.75px',
+                      WebkitTextStrokeWidth: '1.5px',
                       WebkitTextStrokeColor: 'var(--Color-11, #FFF)',
                     }}
                   >
