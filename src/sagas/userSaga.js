@@ -213,7 +213,7 @@ export function* loginWithEmailSaga({ payload }) {
 
       toast.success("Signed in");
     } else if (result === -1){
-      toast.error("Invalid login credentials. If you signed up with Twitter, please log in using Twitter.");
+      toast.error("Invalid login credentials. Please try again.");
       yield put(loginWithEmailError("Invalid login credentials"));
     }else{
       yield put(loginWithEmailError("invalid uid"));

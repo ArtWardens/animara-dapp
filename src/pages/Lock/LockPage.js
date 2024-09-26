@@ -49,8 +49,7 @@ const LockPage = () => {
             <Header />
 
             <div
-                className={`relative flex-grow flex flex-col place-content-center items-center xl:px-[6rem] pb-4 min-h-screen bg-cover bg-center bg-no-repeat bg-fixed 
-                    ${mobileMenuOpen ? `hidden` : ``}`}
+                className={`overflow-hidden flex-grow flex flex-col place-content-center items-center xl:px-[6rem] pb-4 h-[100dvh] bg-cover bg-center bg-no-repeat bg-fixed`}
                 style={{
                     backgroundImage: 'url("/assets/images/clicker-character/clickerBg.webp")',
                 }}
