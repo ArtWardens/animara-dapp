@@ -177,18 +177,19 @@ function ReferralPage() {
   const getTotalClaimable = useCallback(() => {
     if (!currentUser) { return `no-claim`; }
 
-    // if (nftClaimable === 0 && (!currentUser.ownsNFT || (currentUser.ownsNFT && nftClaimable === 0))) { return `none`; }
 
-    if (currentUser.ownsNFT){
-      // selectively combine both claimable amt based on if user owns nft
-      return `${currentUser.ownsNFT ? (basicClaimable + nftClaimable).toFixed(4) : basicClaimable.toFixed(4)} SOL`;
+    if (basicClaimable + nftClaimable === 0){
+      return `no-claim`;
     }else{
-      if (basicClaimable + nftClaimable === 0){
-        return `no-claim`;
-      }else if (basicClaimable !== 0){
-        return `${basicClaimable} SOL`;
-      }else {
-        return `-`;
+      if (currentUser.ownsNFT){
+        // selectively combine both claimable amt based on if user owns nft
+        return `${currentUser.ownsNFT ? (basicClaimable + nftClaimable).toFixed(4) : basicClaimable.toFixed(4)} SOL`;
+      }else{
+        if (basicClaimable !== 0){
+          return `${basicClaimable} SOL`;
+        }else {
+          return `-`;
+        }
       }
     }
   }, [currentUser, basicClaimable, nftClaimable]);
@@ -485,8 +486,8 @@ function ReferralPage() {
                       :
                       getTotalClaimable() === 'no-claim' ?
                         <div className="w-full h-full p-4 flex-col place-content-center inline-flex">
-                          <span className="text-center w-full">Nothing to claim yet</span>
-                          <span className="text-center w-full text-xs font-outfit">Get your referrals to mint an NFT now!</span>
+                          <span className="text-center w-full">You claimed everything</span>
+                          <span className="text-center w-full text-xs font-outfit">Get your referrals to mint NFT to claim more!</span>
                         </div>
                         :
                         <div className="w-full h-full p-4 flex-col justify-center items-center inline-flex">
@@ -746,8 +747,8 @@ function ReferralPage() {
                         :
                         getTotalClaimable() === 'no-claim' ?
                           <div className="w-full h-full p-4 flex-col place-content-center inline-flex">
-                            <span className="text-center w-full">Nothing to claim yet</span>
-                            <span className="text-center w-full text-xs font-outfit">Get your referrals to mint an NFT now!</span>
+                            <span className="text-center w-full">You claimed everything</span>
+                            <span className="text-center w-full text-xs font-outfit">Get your referrals to mint NFT to claim more!</span>
                           </div>
                           :
                           <div className="w-full h-full flex-col justify-center items-center inline-flex px-[1rem] py-[2rem]">
