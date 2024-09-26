@@ -137,7 +137,7 @@ import {
   setDashboardData,
 } from "../utils/getTimeRemaining";
 import { mintImpl, fetchMintedNFTImpl } from "../web3/mintNFT.tsx";
-import { finalizeCashbackTxn } from "../web3/claimCashback.js";
+import { finalizeCashbackTxnImpl } from "../web3/claimCashback.js";
 import { fetchAllDatesImpl } from "../firebase/countDown.js";
 
 export function* signupWithEmailSaga({ payload }) {
@@ -597,9 +597,14 @@ export function* claimCashbackSaga({ payload }) {
     const result = yield call(claimCashbackImpl);
     const serializedTxn = result.serializedTxn;
     claimId = result.claimId;
-    yield call(finalizeCashbackTxn, payload.sendTransaction, serializedTxn);
-    toast.success('Cashback claimed!');
-    yield put(claimCashbackSuccess(result));
+    const finalizationResult = yield call(finalizeCashbackTxnImpl, payload.sendTransaction, serializedTxn, process.env.REACT_APP_RPC_TIMEOUT);
+    if (finalizationResult){
+      toast.success('Cashback claimed successfully!');
+      yield put(claimCashbackSuccess(result));
+    }else{
+      toast.warn('Cashback claimed! It may take some time to reflect in your wallet.');
+      yield put(claimCashbackSuccess({updatedBasicClaimable: 0, updatedNFTClaimable: 0}));
+    }
   } catch (error) {
     if (error === "external-error"){
       toast.error('Cashback claim not avaiable at the moment. Try again later');
