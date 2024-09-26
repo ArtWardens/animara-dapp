@@ -103,7 +103,7 @@ const LoginPage = () => {
       classNames="fade"
       unmountOnExit
     >
-      <div className="min-h-screen relative flex overflow-hidden">
+      <div className="h-[100dvh] relative flex overflow-hidden">
         <div ref={nodeRef} className="fade-mask-layer -translate-x-full"></div>
         {/* Background Image */}
         <img 
