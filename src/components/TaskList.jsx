@@ -87,7 +87,7 @@ const TaskList = ({ setIsOneTimeTaskOpen }) => {
               <p className="text-[1.25rem] md:text-2xl text-left text-[#80E8FF]">{task.title}</p>
               <div className="flex items-center ">
                 <div className="flex items-center">
-                  <p className="text-[1rem] md:text-lg text-[#C5C5C5] font-outfit">
+                  <div className="text-[1rem] md:text-lg text-[#C5C5C5] font-outfit">
                     <span className="relative top-1 inline-flex items-center">
                       <DynamicNumberDisplay 
                         number={task.coins} 
@@ -95,7 +95,7 @@ const TaskList = ({ setIsOneTimeTaskOpen }) => {
                       />
                     </span> 
                     {task.description}
-                  </p>
+                  </div>
                 </div>
               </div>
             </div>

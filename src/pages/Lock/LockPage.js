@@ -80,12 +80,12 @@ const LockPage = () => {
                 <img
                     src="/assets/images/clicker-character/padlock.webp"
                     alt="Lock"
-                    className={`origin-center mb-[7rem] transition-transform duration-500 delay-150 transform ${showLock ? (reverse ? "scale-0 opacity-0" : "scale-110 opacity-100") : "scale-0 opacity-0"
-                        } z-10`}
+                    className={`origin-center h-[6rem] lg:h-[9rem] aspect-[0.76] xl:h-[10rem] 2xl:h-[12rem] items-center transition-transform duration-500 delay-150 transform ${showLock ? (reverse ? "scale-0 opacity-0" : "scale-110 opacity-100") : "scale-0 opacity-0"
+                        }`}
                 />
             </div>
 
-            <div className={`absolute bottom-40 lg:bottom-52 left-1/2 -translate-x-1/2 w-80 p-4 pb-6 bg-[#003260] rounded-3xl shadow-inner border border-[#7fc1ff] flex flex-col items-center gap-3 transition-transform duration-500 delay-150 transform ${showCountdown ? (reverse ? "scale-0 opacity-0" : "scale-105 opacity-100") : "scale-0 opacity-0"}`}>
+            <div className={`hidden absolute bottom-40 lg:bottom-52 left-1/2 -translate-x-1/2 w-80 p-4 pb-6 bg-[#003260] rounded-3xl shadow-inner border border-[#7fc1ff] flex-col items-center gap-3 transition-transform duration-500 delay-150 transform ${showCountdown ? (reverse ? "scale-0 opacity-0" : "scale-105 opacity-100") : "scale-0 opacity-0"}`}>
                 <p className="text-lg text-white">
                     Unlocks In
                 </p>
