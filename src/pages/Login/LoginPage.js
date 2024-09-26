@@ -120,7 +120,7 @@ const LoginPage = () => {
       classNames="fade"
       unmountOnExit
     >
-      <div className="min-h-screen relative flex overflow-hidden">
+      <div className="h-[100dvh] relative flex overflow-hidden">
         <div ref={nodeRef} className="fade-mask-layer -translate-x-full"></div>
         {/* Background Image */}
         <img 
@@ -139,7 +139,7 @@ const LoginPage = () => {
         </header>
 
         {/* Login Card Latest */}
-        <div className="relative left-[50%] -translate-x-1/2 lg:left-[75%] self-center sm:max-h-[50.5rem] max-w-[25rem] sm:max-w-[27.5rem] rounded-[2.5rem] p-[2.5rem] gap-[1.25rem] bg-[#003459] shadow-[0.5rem_0.375rem_0.625rem_0_rgba(0,0,0,0.2)] font-bignoodle">
+        <div className="relative left-[50%] -translate-x-1/2 lg:left-[75%] self-center sm:max-h-[50.5rem] max-w-[25rem] sm:max-w-[27.5rem] rounded-[2.5rem] p-[1.5rem] lg:p-[2.5rem] gap-[1.25rem] bg-[#003459] shadow-[0.5rem_0.375rem_0.625rem_0_rgba(0,0,0,0.2)] font-bignoodle">
           {/* Upper Section */}
           <div className="relative self-center space-y-[2rem]">
             <div className="flex justify-center items-center">
