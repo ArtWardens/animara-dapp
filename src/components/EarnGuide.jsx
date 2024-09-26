@@ -129,7 +129,7 @@ function EarnGuide({ openModal, setOpenModal, setIsOneTimeTaskOpen }) {
 
   return (
     <>
-      <div className="absolute bottom-0 xl:bottom-64 flex justify-center w-full xl:w-[81%] h-[30dvh] xl:h-44 pb-8">
+      <div className="absolute bottom-0 xl:bottom-20 flex justify-center w-full xl:w-[81%] h-[30dvh] xl:h-44 pb-8">
         <img
           src={'/assets/images/clicker-character/button-footerBg.webp'}
           alt="ring"

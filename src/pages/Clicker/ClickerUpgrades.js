@@ -49,7 +49,7 @@ const ClickerUpgrades = ({ onClose }) => {
     },
   ];
 
-  const [selectedOption, setSelectedOption] = useState("mountain");
+  const [selectedOption, setSelectedOption] = useState("forest");
   const [selectedUpgrade, setSelectedUpgrade] = useState(null);
   const userLocationLoading = useUserLocationLoading();
 

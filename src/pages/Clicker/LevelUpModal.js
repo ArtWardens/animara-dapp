@@ -8,7 +8,7 @@ const LevelUpModal = ({ onClose, coinReward }) => {
   return (
     <div className="fixed inset-0 flex justify-center items-center z-[200]">
       <div
-        className={`flex flex-col px-[4rem] py-[8rem] rounded-xl w-[45%] transition-all duration-300 opacity-100 scale-100`}
+        className={`flex flex-col px-[4rem] py-[8rem] rounded-xl w-[45%] transition-all duration-1000 opacity-100 scale-100`}
         style={{
           backgroundImage: `url("/assets/images/clicker-character/successfull-bg.webp")`,
           backgroundSize: "contain",

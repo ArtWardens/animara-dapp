@@ -141,7 +141,7 @@ const ClickerView = () => {
                         className={`${isSelected ? 'bg-[#FFAA00]' : 'bg-[#3C3C3C]'} rounded-md py-1.5 flex transition-all duration-300 hover:scale-105 will-change-transform backface-hidden`}
                         key={index}
                       >
-                        <div className={`flex flex-1 flex-col items-center justify-center text-xs space-y-1 ${isSelected ? 'text-white' : 'text-[#C5C5C5]'}`}>
+                        <p className={`flex flex-1 flex-col items-center justify-center text-xs space-y-1 ${isSelected ? 'text-white' : 'text-[#C5C5C5]'}`}>
                           <span className='font-outfit font-normal'>Day {index + 1}</span>
                           <DynamicNumberDisplay 
                             number={dayReward}
@@ -150,7 +150,7 @@ const ClickerView = () => {
                             imgSrc={isSelected ? 'assets/images/coin.webp' : 'assets/images/coin-disable.webp'}
                             spanClassName={isSelected ? 'text-white' : 'text-[#C5C5C5]'}
                           />
-                        </div>
+                        </p>
                       </Box>
                     );
                   })}

@@ -237,7 +237,7 @@ const MascotView = ({ openModal, setOpenModal }) => {
 
   return (
     <div
-      className={`flex justify-center items-start h-screen w-screen xl:pb-16 transition-all duration-700
+      className={`flex justify-center items-end h-screen w-screen xl:pb-16 transition-all duration-700
       ${startSlide ? 'translate-y-0' : 'translate-y-full'}`}
     >
       <div
