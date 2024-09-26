@@ -88,10 +88,10 @@ function Header() {
   }, [currentUser]);
 
   return (
-    <div className='w-full container'>
+    <div className="w-full container pb-52">
       {/* User Card */}
       <div
-        className={`flex flex-row absolute max-w-[70dvw] top-[3rem] z-20 p-1 pr-4 gap-2 left-[1rem] xl:left-[4rem] ${currentUser?.ownsNFT ? 'glowing-border' : 'default-border'} ${
+        className={`flex flex-row absolute max-w-[70dvw] top-[3rem] z-10 p-1 pr-4 gap-2 left-[1rem] xl:left-[4rem] ${currentUser?.ownsNFT && currentUser?.walletAddr !== '' ? 'glowing-border' : 'default-border'} ${
           mobileMenuOpen ? 'hidden' : ''
         }`}
       >
@@ -184,7 +184,7 @@ function Header() {
 
       {/* Mobile Hamburger Menu Button */}
       <button
-        className="transition ease-in-out hover:scale-105 lg:hidden absolute top-[5rem] right-[2rem] xl:right-[4rem] z-50"
+        className="transition ease-in-out hover:scale-105 xl:hidden absolute top-[5rem] right-[2rem] xl:right-[4rem] z-50"
         onClick={() => dispatch(setMobileMenuOpen(!mobileMenuOpen))}
       >
         <svg
