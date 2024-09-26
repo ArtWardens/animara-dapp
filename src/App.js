@@ -1,16 +1,17 @@
 import React, { useEffect, useMemo } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import useNavigatorOnline from 'use-navigator-online';
-import LoginPage from './pages/Login/LoginPage';
-import SignupPage from "./pages/Signup/SignupPage";
-import ForgotPasswordPage from "./pages/ForgotPassword/ForgotPasswordPage.js";
-import EditProfilePage from "./pages/EditProfile/EditProfilePage";
-import ReferralPage from "./pages/Referral/ReferralPage";
-import EarlyBirdPage from "./pages/EarlyBird/EarlyBirdPage";
-import VerifyEmailPage from "./pages/VerifyEmail/VerifyEmailPage";
-import LimitedAccessPage from "./pages/VerifyEmail/LimitedAccessPage";
-import MintPage from "./pages/Mint/MintPage";
-import ClickerPage from "./pages/Clicker/ClickerPage";
+// import LoginPage from './pages/Login/LoginPage';
+// import SignupPage from "./pages/Signup/SignupPage";
+import ComingSoonPage from './pages/ComingSoon/ComingSoonPage.js';
+// import ForgotPasswordPage from "./pages/ForgotPassword/ForgotPasswordPage.js";
+// import EditProfilePage from "./pages/EditProfile/EditProfilePage";
+// import ReferralPage from "./pages/Referral/ReferralPage";
+// import EarlyBirdPage from "./pages/EarlyBird/EarlyBirdPage";
+// import VerifyEmailPage from "./pages/VerifyEmail/VerifyEmailPage";
+// import LimitedAccessPage from "./pages/VerifyEmail/LimitedAccessPage";
+// import MintPage from "./pages/Mint/MintPage";
+// import ClickerPage from "./pages/Clicker/ClickerPage";
 import AppLayout from './components/AppLayout';
 import { GlobalProvider } from './context/ContextProvider';
 import rootSaga from './sagas';
@@ -26,7 +27,7 @@ import { WalletModalProvider } from '@solana/wallet-adapter-react-ui';
 import { UmiProvider } from "./web3/UmiProvider.tsx";
 
 import './i18n';
-import ClickerController from './components/ClickerController';
+// import ClickerController from './components/ClickerController';
 import Error404Page from './pages/Error404/Error404.js';
 import NoInternetConnection from './components/NoInternetConnection.jsx';
 
@@ -94,17 +95,20 @@ export const App = () => {
               <GlobalProvider>
                 <Routes>
                   <Route element={<AppLayout />}>
-                    <Route path="/" element={<LoginPage />} />
-                    <Route path="/login" element={<LoginPage />} />
-                    <Route path="/signup" element={<SignupPage />} />
-                    <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+                    {/* <Route path="/" element={<LoginPage />} /> */}
+                    {/* <Route path="/login" element={<LoginPage />} /> */}
+                    {/* <Route path="/signup" element={<SignupPage />} /> */}
+                    <Route path="/" element={<ComingSoonPage />} />
+                    <Route path="/login" element={<ComingSoonPage />} />
+                    <Route path="/signup" element={<ComingSoonPage />} />
+                    {/* <Route path="/forgot-password" element={<ForgotPasswordPage />} />
                     <Route path="/limited-access" element={<LimitedAccessPage />} />
                     <Route path="/verify-email" element={<VerifyEmailPage />} />
                     <Route path="/edit-profile" element={<ClickerController Children={EditProfilePage} />} />
                     <Route path="/anitap" element={<ClickerController Children={ClickerPage} />} />
                     <Route path="/referral" element={<ClickerController Children={ReferralPage} />} />
                     <Route path="/early-bird" element={<ClickerController Children={EarlyBirdPage} />} />
-                    <Route path="/mint" element={<ClickerController Children={MintPage} />} />
+                    <Route path="/mint" element={<ClickerController Children={MintPage} />} /> */}
                     <Route path="*" element={<Error404Page />} />
                   </Route>
                 </Routes>
