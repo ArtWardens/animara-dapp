@@ -49,7 +49,7 @@ const LockPage = () => {
             <Header />
 
             <div
-                className={`overflow-hidden flex-grow flex flex-col place-content-center items-center xl:px-[6rem] pb-4 min-h-screen bg-cover bg-center bg-no-repeat bg-fixed
+                className={`h-[100dvh] relative flex-grow flex flex-col place-content-center items-center xl:px-[6rem] pb-4 bg-cover bg-center bg-no-repeat bg-fixed 
                     `}
                 style={{
                     backgroundImage: 'url("/assets/images/clicker-character/clickerBg.webp")',
@@ -85,7 +85,7 @@ const LockPage = () => {
                 />
             </div>
 
-            <div className={`hidden absolute bottom-40 lg:bottom-52 left-1/2 -translate-x-1/2 w-80 p-4 pb-6 bg-[#003260] rounded-3xl shadow-inner border border-[#7fc1ff] flex flex-col items-center gap-3 transition-transform duration-500 delay-150 transform ${showCountdown ? (reverse ? "scale-0 opacity-0" : "scale-105 opacity-100") : "scale-0 opacity-0"}`}>
+            <div className={`hidden absolute bottom-40 lg:bottom-52 left-1/2 -translate-x-1/2 w-80 p-4 pb-6 bg-[#003260] rounded-3xl shadow-inner border border-[#7fc1ff] flex-col items-center gap-3 transition-transform duration-500 delay-150 transform ${showCountdown ? (reverse ? "scale-0 opacity-0" : "scale-105 opacity-100") : "scale-0 opacity-0"}`}>
                 <p className="text-lg text-white">
                     Unlocks In
                 </p>
