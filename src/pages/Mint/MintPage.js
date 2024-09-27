@@ -417,13 +417,13 @@ function MintPage() {
                 {/* title */}
                 <div className="w-full mb-8 text-center xl:text-left">
                   <span
-                    className="text-5xl"
+                    className="text-3xl lg:text-5xl"
                   >
                     MINT OUR
                   </span>
                   <br />
                   <span
-                    className="text-7xl"
+                    className="text-5xl lg:text-7xl"
                   >
                     NFTs NOW!
                   </span>
