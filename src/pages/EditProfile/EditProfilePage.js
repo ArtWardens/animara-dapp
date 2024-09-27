@@ -45,7 +45,7 @@ const EditProfilePage = () => {
   }, [user, updateProfileLoading]);
 
   const handleResetPassword = () => {
-    dispatch(resetPassword(email));
+    dispatch(resetPassword({ email }));
   };
 
   const handleUpdateProfile = (e) => {

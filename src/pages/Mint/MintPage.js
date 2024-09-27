@@ -335,6 +335,14 @@ function MintPage() {
     }, 500);
   };
 
+  const handleVideoError = () =>{
+    setIsVideoEnded(true);
+    setMintFadeOut(false);
+    setTimeout(() => {
+      setMintFadeOut(true);
+    }, 500);
+  }
+
   useEffect(() => {
     if (ghostExcited) {
       setVideoSource(isMobileApp ? '/assets/images/happy-ghost.webp' : 'https://storage.animara.world/happy-ghost.webm');
@@ -1074,6 +1082,7 @@ function MintPage() {
               ref={videoRef}
               className={`w-full h-full object-cover transition-all duration-300 ${mintVideoAnim ? `scale-100` : `scale-0`}`}
               onEnded={handleVideoEnd}
+              onError={handleVideoError}
               autoPlay
               playsInline
               controls={false}

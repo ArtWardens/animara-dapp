@@ -175,12 +175,23 @@ function ReferralPage() {
   }, [currentUser]);
 
   const getTotalClaimable = useCallback(() => {
-    if (!currentUser) { return `none`; }
+    if (!currentUser) { return `no-claim`; }
 
-    if (basicClaimable === 0 && (!currentUser.ownsNFT || (currentUser.ownsNFT && nftClaimable === 0))) { return `none`; }
 
-    // selectively combine both claimable amt based on if use owns nft
-    return `${currentUser.ownsNFT ? (basicClaimable + nftClaimable).toFixed(4) : basicClaimable.toFixed(4)} SOL`;
+    if (basicClaimable + nftClaimable === 0){
+      return `no-claim`;
+    }else{
+      if (currentUser.ownsNFT){
+        // selectively combine both claimable amt based on if user owns nft
+        return `${currentUser.ownsNFT ? (basicClaimable + nftClaimable).toFixed(4) : basicClaimable.toFixed(4)} SOL`;
+      }else{
+        if (basicClaimable !== 0){
+          return `${basicClaimable} SOL`;
+        }else {
+          return `-`;
+        }
+      }
+    }
   }, [currentUser, basicClaimable, nftClaimable]);
 
   const getAdditionalClaimable = useCallback(() => {
@@ -191,14 +202,19 @@ function ReferralPage() {
 
   const handleClaimCashbackOrBind = () => {
     if (currentUser.walletAddr === '') {
+      // special case 1: has claimable but wallet not binded yet to claim
       setShowWalletBindingPanel(true);
       setWalletBindingAnim(true);
       setTimeout(() => {
         setWalletBindingAnim(false);
       }, 300);
-      return;
+    }else if (!currentUser.ownsNFT && basicClaimable === 0 && nftClaimable >= 0 && currentUser.walletAddr !== ''){
+      // special case 2: only have nft claimables to claim but doesnt own nft yet
+      navigate('/mint');
+    }else {
+      // ready to claim cashback
+      dispatch(claimCashback({ sendTransaction }));
     }
-    dispatch(claimCashback({ sendTransaction }));
   };
 
   const handleBackToMint = () => {
@@ -261,7 +277,7 @@ function ReferralPage() {
               <div className={`w-[75%] h-full mx-auto flex flex-col justify-center items-center hover:scale-110 transition-all duration-500
                 ${showRefOne ? `opacity-100` : `opacity-0`}`}>
                 <img
-                  className="w-4/5 aspect-[1.35] origin-top-left shadow"
+                  className="w-4/5 aspect-[1.35] origin-top-left"
                   src="/assets/images/clicker-character/ref01.webp"
                   alt="Invite Rewards"
                 />
@@ -278,7 +294,7 @@ function ReferralPage() {
               <div className={`w-[75%] h-full mx-auto flex flex-col justify-center items-center hover:scale-110 transition-all duration-500
                 ${showRefThree ? `opacity-100` : `opacity-0`}`}>
                 <img
-                  className="w-full aspect-[1.22] origin-top-left shadow"
+                  className="w-full aspect-[1.22] origin-top-left"
                   src="/assets/images/clicker-character/ref02.webp"
                   alt="NFT Cashback"
                 />
@@ -295,7 +311,7 @@ function ReferralPage() {
               <div className={`w-[75%] h-full mx-auto flex flex-col justify-center items-center hover:scale-110 transition-all duration-500
                 ${showRefTwo ? `opacity-100` : `opacity-0`}`}>
                 <img
-                  className="w-4/5 aspect-[1.35] origin-top-left shadow"
+                  className="w-4/5 aspect-[1.35] origin-top-left"
                   src="/assets/images/clicker-character/ref03.webp"
                   alt="Rank Up Rewards"
                 />
@@ -315,7 +331,7 @@ function ReferralPage() {
               <div className={`w-[70dvw] h-auto flex flex-col justify-center items-center transition-all duration-500
                 ${carouselFading ? `opacity-0` : `opacity-100`}`}>
                 <img
-                  className="w-[80%] lg:w-[60%] h-auto origin-top-left shadow"
+                  className="w-[80%] lg:w-[60%] h-auto origin-top-left"
                   src={content[currentIndex].image}
                   alt={content[currentIndex].alt}
                 />
@@ -333,7 +349,7 @@ function ReferralPage() {
               <div className="absolute top-1/2 hover:scale-150 transition-scale duration-500 transform -translate-y-1/2 left-[-2rem]">
                 <button
                   onClick={handlePrev}
-                  className="text-white p-2 rounded-full shadow-md"
+                  className="text-white p-2 rounded-full"
                 >
                   <img
                     className="w-full h-full"
@@ -345,7 +361,7 @@ function ReferralPage() {
               <div className="absolute top-1/2 hover:scale-150 transition-scale duration-500 transform -translate-y-1/2 right-[-2rem]">
                 <button
                   onClick={handleNext}
-                  className="text-white p-2 rounded-full shadow-md"
+                  className="text-white p-2 rounded-full"
                 >
                   <img
                     className="w-full h-full "
@@ -468,10 +484,10 @@ function ReferralPage() {
                         </div>
                       </div>
                       :
-                      getTotalClaimable() === `none` ?
+                      getTotalClaimable() === 'no-claim' ?
                         <div className="w-full h-full p-4 flex-col place-content-center inline-flex">
-                          <span className="text-center w-full">Nothing to claim yet</span>
-                          <span className="text-center w-full text-xs font-outfit">Get your referrals to mint an NFT now!</span>
+                          <span className="text-center w-full">You claimed everything</span>
+                          <span className="text-center w-full text-xs font-outfit">Get your referrals to mint NFT to claim more!</span>
                         </div>
                         :
                         <div className="w-full h-full p-4 flex-col justify-center items-center inline-flex">
@@ -492,11 +508,11 @@ function ReferralPage() {
 
                           {/* Claim button */}
                           <div className={`my-auto justify-center items-center inline-flex transition-transform duration-200
-                            ${claimCashbackLoading ||  getTotalClaimable() === 'none' ? '' : 'hover:scale-105'}`}>
+                            ${claimCashbackLoading ||  getTotalClaimable() === 'no-claim' ? '' : 'hover:scale-105'}`}>
                             <button
-                              disabled={claimCashbackLoading ||  getTotalClaimable() === 'none'}
+                              disabled={claimCashbackLoading ||  getTotalClaimable() === 'no-claim'}
                               className={`h-[48px] w-[160px] rounded-full border justify-center items-center inline-flex shadow-[0px_4px_4px_0px_#FFFBEF_inset,0px_-4px_4px_0px_rgba(255,249,228,0.48),0px_5px_4px_0px_rgba(232,140,72,0.48)] cursor-pointer
-                                ${claimCashbackLoading ||  getTotalClaimable() === 'none' ?
+                                ${claimCashbackLoading ||  getTotalClaimable() === 'no-claim' ?
                                   " border-slate-300 bg-slate-300"
                                   :
                                   " border-amber-600 bg-amber-300 hover:bg-amber-400"}`}
@@ -508,16 +524,16 @@ function ReferralPage() {
                                 :
                                 <div
                                   className={`text-center text-white 
-                                  ${!currentUser.walletAddr ? 'text-xl' : claimCashbackLoading ||  getTotalClaimable() === 'none' ? 'text-sm ' : 'text-2xl'}`}
+                                  ${!currentUser.walletAddr ? 'text-xl' : claimCashbackLoading ||  getTotalClaimable() === 'no-claim' ? 'text-sm ' : 'text-2xl'}`}
                                   style={{
-                                    textShadow: `${claimCashbackLoading ||  getTotalClaimable() === 'none' ?
+                                    textShadow: `${claimCashbackLoading ||  getTotalClaimable() === 'no-claim' ?
                                       '0px 2px 0.6px rgb(71, 85, 105, 0.66)'
                                       :
                                       '0px 2px 0.6px rgba(240, 139, 0, 0.66)'
                                       }`
                                   }}
                                 >
-                                  <span className={`hover:text-shadow-none ${claimCashbackLoading ? 'animate-pulse': ''}`}>{claimCashbackLoading ? 'Loading' : !currentUser.walletAddr ? `Bind Wallet` : getTotalClaimable() === 'none' ? 'Claimed Everything' : `Claim`}</span>
+                                  <span className={`hover:text-shadow-none ${claimCashbackLoading ? 'animate-pulse': ''}`}>{claimCashbackLoading ? 'Loading' : !currentUser.walletAddr ? `Bind Wallet` : getTotalClaimable() === 'no-claim' ? 'Claimed Everything' : getTotalClaimable() === '-' ? 'Mint Now' : `Claim`}</span>
                                 </div>
                               }
                             </button>
@@ -729,10 +745,10 @@ function ReferralPage() {
                           </div>
                         </div>
                         :
-                        getTotalClaimable() === `none` ?
+                        getTotalClaimable() === 'no-claim' ?
                           <div className="w-full h-full p-4 flex-col place-content-center inline-flex">
-                            <span className="text-center w-full">Nothing to claim yet</span>
-                            <span className="text-center w-full text-xs font-outfit">Get your referrals to mint an NFT now!</span>
+                            <span className="text-center w-full">You claimed everything</span>
+                            <span className="text-center w-full text-xs font-outfit">Get your referrals to mint NFT to claim more!</span>
                           </div>
                           :
                           <div className="w-full h-full flex-col justify-center items-center inline-flex px-[1rem] py-[2rem]">
@@ -753,14 +769,14 @@ function ReferralPage() {
 
                             {/* Claim button */}
                             <div className={`my-auto justify-center items-center inline-flex transition-transform duration-200
-                              ${claimCashbackLoading || getTotalClaimable() === 'none' ?
+                              ${claimCashbackLoading || getTotalClaimable() === 'no-claim' ?
                                 ''
                                 :
                                 'hover:scale-105'}`}>
                               <button
-                                disabled={claimCashbackLoading || getTotalClaimable() === 'none'}
+                                disabled={claimCashbackLoading || getTotalClaimable() === 'no-claim'}
                                 className={`h-[4rem] w-[10rem] rounded-full border justify-center items-center inline-flex shadow-[0px_4px_4px_0px_#FFFBEF_inset,0px_-4px_4px_0px_rgba(255,249,228,0.48),0px_5px_4px_0px_rgba(232,140,72,0.48)] cursor-pointer
-                                  ${claimCashbackLoading || getTotalClaimable() === 'none' ?
+                                  ${claimCashbackLoading || getTotalClaimable() === 'no-claim' ?
                                     " border-slate-300 bg-slate-300"
                                     :
                                     " border-amber-600 bg-amber-300 hover:bg-amber-400 hover:pl-[24px] hover:pr-[20px] hover:shadow-[0px_4px_4px_0px_rgba(255,210,143,0.61)_inset,0px_4px_4px_0px_rgba(136,136,136,0.48)]"}`}
@@ -772,16 +788,16 @@ function ReferralPage() {
                                   :
                                   <div
                                     className={`text-center 
-                                    ${currentUser.walletAddr === '' ? 'text-white text-xl' : claimCashbackLoading || getTotalClaimable() === 'none' ? 'text-slate-100 text-sm ' : 'text-white text-2xl'}`}
+                                    ${currentUser.walletAddr === '' ? 'text-white text-xl' : claimCashbackLoading || getTotalClaimable() === 'no-claim' ? 'text-slate-100 text-sm ' : 'text-white text-2xl'}`}
                                     style={{
-                                      textShadow: `${claimCashbackLoading || getTotalClaimable() === 'none' ?
+                                      textShadow: `${claimCashbackLoading || getTotalClaimable() === 'no-claim' ?
                                         '0px 2px 0.6px rgb(71, 85, 105, 0.66)'
                                         :
                                         '0px 2px 0.6px rgba(240, 139, 0, 0.66)'
                                         }`
                                     }}
                                   >
-                                    <span className={`hover:text-shadow-none ${claimCashbackLoading ? 'animate-pulse': ''}`}>{claimCashbackLoading ? 'Loading' : !currentUser.walletAddr ? `Bind Wallet` : getTotalClaimable() === 'none' ? 'Claimed Everything' : `Claim`}</span>
+                                    <span className={`hover:text-shadow-none ${claimCashbackLoading ? 'animate-pulse': ''}`}>{claimCashbackLoading ? 'Loading' : !currentUser.walletAddr ? `Bind Wallet` : getTotalClaimable() === 'no-claim' ? 'Claimed Everything' : getTotalClaimable() === '-' ? 'Mint Now' : `Claim`}</span>
                                   </div>
                                 }
                               </button>

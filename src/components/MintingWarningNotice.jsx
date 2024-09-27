@@ -35,7 +35,7 @@ const MintingWarningNotice = ({ onClose }) => {
           <p>Important Notice</p>
         </div>
 
-        <div className="font-normal text-white text-2xl text-center uppercase my-2 xl:my-[2rem]">
+        <div className="font-normal text-[#FFAA00] text-2xl text-center uppercase my-2 xl:my-[2rem]">
           <h1>NFT Transfers and Violation Policy</h1>
         </div>
 
@@ -78,7 +78,7 @@ const MintingWarningNotice = ({ onClose }) => {
             <p>Important Notice</p>
           </div>
 
-          <div className="font-normal text-white text-xl xl:text-2xl text-center uppercase my-[1rem]">
+          <div className="font-normal text-[#FFAA00] text-xl xl:text-2xl text-center uppercase my-[1rem]">
             <h1>NFT Transfers and Violation Policy</h1>
           </div>
 

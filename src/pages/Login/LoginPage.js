@@ -120,7 +120,7 @@ const LoginPage = () => {
       classNames="fade"
       unmountOnExit
     >
-      <div className="min-h-screen relative flex overflow-hidden">
+      <div className="h-[100dvh] relative flex overflow-hidden">
         <div ref={nodeRef} className="fade-mask-layer -translate-x-full"></div>
         {/* Background Image */}
         <img 
@@ -141,7 +141,7 @@ const LoginPage = () => {
         {/* Login Card Latest */}
         <div className="relative left-[50%] -translate-x-1/2 lg:left-[75%] self-center sm:max-h-[50.5rem] max-w-[25rem] sm:max-w-[27.5rem] rounded-[2.5rem] p-[2.5rem] gap-[1.25rem] bg-[#003459] shadow-[0.5rem_0.375rem_0.625rem_0_rgba(0,0,0,0.2)] font-bignoodle">
           {/* Upper Section */}
-          <div className="relative self-center space-y-[2rem]">
+          <div className="flex flex-col relative self-center space-y-[2rem]">
             <div className="flex justify-center items-center">
               {isIOS?
                 <img 
@@ -187,14 +187,25 @@ const LoginPage = () => {
                 alt="show password"
                 className="absolute top-1/2 right-3 -translate-y-1/2 -translate-x-3 "
               />
+              <div className="flex h-auto mt-2 align-item-send">
+                <Link
+                  to="/forgot-password"
+                  className="ml-auto hover:brightness-75"
+                >
+                  <p className="text-amber-400 font-outfit text-[0.875rem] leading-[1rem] text-center">
+                    Forgot Password?
+                  </p>
+                </Link>
+              </div>
             </div>
+
             {/* Login Button */}
             <button
               id="login-button"
               disabled={isAuthLoading || !hasInput}
               className={`mt-3 font-outfit font-bold text-[1rem] leading-[1rem] w-full rounded-[1.25rem] border-[0.4px] py-[1.25rem] px-[2rem] ${
                 isAuthLoading || !hasInput
-                  ? 'bg-gray-400 border-gray-300 text-gray-200'
+                  ? 'bg-[#FFB23F] border-[#E59E69] text-[#FFF5F5] opacity-50'
                   : 'bg-[#FFB23F] border-[#E59E69] text-[#FFF5F5] hover:brightness-75'
               }`}
               onClick={handleLoginWithEmail}
