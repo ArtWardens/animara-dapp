@@ -14,6 +14,7 @@ import { useMobileMenuOpen } from '../../sagaStore/slices';
 import Header from "../../components/Header.jsx";
 import WalletBindingPanel from "../../components/SolanaWallet/WalletBindingPanel.jsx";
 import "./EditProfile.css";
+import { MoonLoader } from "react-spinners";
 
 const EditProfilePage = () => {
   const dispatch = useAppDispatch();
@@ -144,39 +145,39 @@ const EditProfilePage = () => {
             ${mobileMenuOpen ? `hidden` : ``}`}>
             {/* details panel */}
             <div className="w-full px-[2rem]">
+              {/* Back button */}
+              <div className="w-full flex items-start justify-start mb-2">
+                <a
+                  onClick={handleBackClick}
+                  className="text-white text-sm font-outfit tracking-wide hover:text-amber-500 transition-colors "
+                >
+                  &lt;&nbsp;Back
+                </a>
+              </div>
               {/* header */}
               <div className="w-full xl:w-[100%] header flex justify-between items-center space-x-[2rem] lg:space-x-[8rem]">
-                <span className="flex gap-2">
-                  <div className="flex flex-col">
-                    <a
-                      onClick={handleBackClick}
-                      className="text-white text-sm font-outfit tracking-wide hover:text-amber-500 transition-colors "
-                    >
-                      &lt;&nbsp;Back
-                    </a>
-                    <div className="flex flex-col xl:flex-row">
-                      <div
-                        className="w-full text-left text-amber-500 text-5xl font-normal font-['Luckiest Guy'] uppercase leading-[54px]"
-                        style={{
-                          WebkitTextStrokeWidth: "2px",
-                          WebkitTextStrokeColor: "var(--Color-11, #FFF)",
-                        }}
-                      >
-                        PROFILE
-                      </div>
-                      <div className="my-[1rem]">
-                        {user?.isKOL && (
-                          <span className="bg-sky-700 rounded-lg items-center xl:ml-[1rem] p-2">
-                            <span className="text-white text-xs tracking-wider font-outfit whitespace-nowrap">
-                              Certified KOL
-                            </span>
-                          </span>
-                        )}
-                      </div>
-                    </div>
+                <div className="flex flex-col xl:flex-row">
+                  <div
+                    className="w-full text-left text-amber-500 text-5xl font-normal font-['Luckiest Guy'] uppercase leading-[54px]"
+                    style={{
+                      WebkitTextStrokeWidth: "2px",
+                      WebkitTextStrokeColor: "var(--Color-11, #FFF)",
+                    }}
+                  >
+                    PROFILE
                   </div>
-                </span>
-                <span
+                  {user?.isKOL && (
+                    <div className="my-[1rem]">
+                        <span className="bg-sky-700 rounded-lg items-center xl:ml-[1rem] p-2">
+                          <span className="text-white text-xs tracking-wider font-outfit whitespace-nowrap">
+                            Certified KOL
+                          </span>
+                        </span>
+                    </div>
+                  )}
+                </div>
+                {/* Profile picture */}
+                <div
                   className="flex w-24 h-24 items-center justify-center rounded-full border overflow-hidden relative group"
                   onClick={() => {
                     inputFile.current?.click();
@@ -193,12 +194,6 @@ const EditProfilePage = () => {
                       src={imageData || getProfilePic()}
                       alt="pfp"
                       className="group-hover:brightness-75 h-full w-full object-cover"
-                      style={{
-                        border: '4px solid var(--80E8FF, #80E8FF)',
-                        background: '#111928 50%',
-                        backgroundSize: 'cover',
-                        backgroundRepeat: 'no-repeat',
-                      }}
                       onError={(e) => {
                         e.target.onerror = null;
                         e.target.src = "/assets/images/activeDog.webp";
@@ -223,7 +218,7 @@ const EditProfilePage = () => {
                     alt="edit"
                     className="invisible group-hover:visible absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 text-white fill-white"
                   />
-                </span>
+                </div>
                 <input
                   type="file"
                   id="pfp"
@@ -331,14 +326,16 @@ const EditProfilePage = () => {
                       </button>
                     )}
                     <button
-                      className={`w-[200px] h-[60px] rounded-[26px] justify-between items-center inline-flex ${hasChanges ? "bg-amber-400" : "bg-slate-300"}`}
+                      className={`w-[200px] h-[60px] rounded-[26px] justify-center items-center inline-flex ${hasChanges ? "bg-amber-400" : "bg-slate-300"}`}
                       disabled={updateProfileLoading || !hasChanges}
                       type="submit"
                     >
-                      <div className={`w-[200px] h-[60px] px-[30px] py-5 rounded-[26px] border border-orange-300 justify-between items-center flex ${hasChanges ? "hover:bg-amber-300" : "bg-slate-300"}`}>
+                      <div className={`w-[200px] h-[60px] px-[30px] py-5 rounded-[26px] border justify-center items-center flex ${hasChanges ? "border-orange-300 hover:bg-amber-300" : "border-white bg-slate-400"}`}>
                         <div className="text-center text-white text-xl font-bold capitalize leading-tight">
-                          {updateProfileLoading
-                            ? "Saving changes.."
+                          {!updateProfileLoading
+                            ? <div className="flex items-center justify-center">
+                              <MoonLoader size={40} color={'#FFB23F'}/>
+                            </div>
                             : "Save Changes"}
                         </div>
                       </div>
