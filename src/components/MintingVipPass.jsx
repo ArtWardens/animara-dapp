@@ -31,7 +31,7 @@ const MintingVipPass = ({ onClose }) => {
           maxHeight: '600px',
         }}
       >
-        <div className="font-normal text-2xl text-center leading-normal tracking-wider uppercase mb-[2rem]">
+        <div className="font-normal text-[#FFAA00] text-2xl text-center leading-normal tracking-wider uppercase mb-[2rem]">
           <p> VIP value pass</p>
         </div>
 
@@ -129,7 +129,7 @@ const MintingVipPass = ({ onClose }) => {
         }}
       >
         <div className="flex flex-col items-center justify-center my-auto">
-          <div className="font-normal text-xl text-center leading-normal tracking-wider uppercase mb-2">
+          <div className="font-normal text-[#FFAA00] text-xl text-center leading-normal tracking-wider uppercase mb-2">
             <p> VIP value pass</p>
           </div>
 
