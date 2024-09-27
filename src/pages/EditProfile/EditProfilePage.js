@@ -291,7 +291,7 @@ const EditProfilePage = () => {
                     value={phone}
                     onChange={handlePhoneChange}
                     defaultCountry="US"
-                    className="w-full custom-phone-input border-[1px] border-[#245F89] rounded-lg flex p-4 items-center gap-2 text-sm font-semibold font-outfit tracking-wide"
+                    className="w-full bg-[rgba(0,52,89,0.80)] custom-phone-input border-[1px] border-[#245F89] rounded-lg flex p-4 items-center gap-2 text-sm font-semibold font-outfit tracking-wide"
                   />
                 </div>
                 {/* invite code */}
