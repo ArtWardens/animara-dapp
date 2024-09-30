@@ -131,7 +131,7 @@ function Header() {
           </button>
         </div>
 
-        <div class="flex-none w-12">
+        <div className="flex-none w-12">
         </div>
         {/* user details */}
         <div className="flex flex-col place-content-center flex-grow">

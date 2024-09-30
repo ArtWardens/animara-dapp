@@ -36,6 +36,7 @@ const EditProfilePage = () => {
   };
 
   useEffect(() => {
+    console.log(updateProfileLoading);
     if (updateProfileLoading) { 
       return
     }
@@ -194,7 +195,7 @@ const EditProfilePage = () => {
                       <img
                         src={imageData || getProfilePic()}
                         alt="pfp"
-                        className="group-hover:brightness-75 h-full w-full object-cover"
+                        className="justify-self-center rounded-full w-12 xs:w-24 lg:w-24 group-hover:brightness-[0.55] transition-all duration-300"
                         onError={(e) => {
                           e.target.onerror = null;
                           e.target.src = "/assets/images/activeDog.webp";
