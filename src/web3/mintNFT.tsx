@@ -65,8 +65,10 @@ export async function mintImpl(
           return { status: "rejected", reason: error, value: new Uint8Array() };
 
         });
-      if (sig.status === "fulfilled")
-        await verifyTx(umi, [sig.value], latestBlockhash, "finalized");
+      if (sig.status === "fulfilled"){
+        console.log(`sig.status === "fulfilled"`);
+        await verifyTx(umi, [sig.value], "finalized");
+      }
     }
 
     let tables: AddressLookupTableInput[] = [];
@@ -115,8 +117,8 @@ export async function mintImpl(
         .sendTransaction(tx, { skipPreflight: true, maxRetries: 1, preflightCommitment: "finalized", commitment: "finalized" })
         .then((signature) => {
           console.log(
-            `Transaction ${index + 1} resolved with signature: ${base58.deserialize(signature)[0]
-            }`
+            `tx #${index + 1} resolved with signature: ${base58.deserialize(signature)[0]
+            }, raw: `, signature
           );
           amountSent = amountSent + 1;
           signatures.push(signature);
@@ -129,13 +131,11 @@ export async function mintImpl(
     });
 
     await Promise.allSettled(sendPromises);
-    console.log(`all settled`);
     if (!(await sendPromises[0]).status === true) {
       // throw error that no tx was created
       throw new Error("no tx was created");
     }
-
-    const successfulMints = await verifyTx(umi, signatures, latestBlockhash, "finalized");
+    const successfulMints = await verifyTx(umi, signatures, "finalized");
     return successfulMints;
   } catch (e) {
     toast.error("Minting failed");

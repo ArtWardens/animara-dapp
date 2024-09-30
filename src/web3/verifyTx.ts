@@ -1,4 +1,4 @@
-import { BlockhashWithExpiryBlockHeight, PublicKey, Umi } from "@metaplex-foundation/umi";
+import { PublicKey, Umi } from "@metaplex-foundation/umi";
 
 const detectBotTax = (logs: string[]) => {
   if (logs.find((l) => l.includes("Candy Guard Botting"))) {
@@ -14,16 +14,20 @@ type VerifySignatureResult =
 // Helper function to add a delay
 const wait = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
-export const verifyTx = async (umi: Umi, signatures: Uint8Array[], blockhash: BlockhashWithExpiryBlockHeight, commitment: "processed" | "confirmed" | "finalized") => {
+export const verifyTx = async (umi: Umi, signatures: Uint8Array[], commitment: "processed" | "confirmed" | "finalized") => {
+  console.log(`start verifying tx: `, signatures);
   const verifySignature = async (
     signature: Uint8Array
   ): Promise<VerifySignatureResult> => {
     let transaction;
     for (let i = 0; i < 30; i++) {
+      console.log(`verfying signature ${i+1}/30 times`);
       transaction = await umi.rpc.getTransaction(signature);
       if (transaction) {
+        console.log(`signature verfied`);
         break;
       }
+      console.log(`waiting 3s to verify signature again`);
       await new Promise((resolve) => setTimeout(resolve, 3000));
     }
 
@@ -41,29 +45,33 @@ export const verifyTx = async (umi: Umi, signatures: Uint8Array[], blockhash: Bl
   // confirmTransaction is deperacted
   // https://solana.com/docs/rpc/deprecated/confirmtransaction
   // try to check txn statuses with delayed retries  
-  const maxRetries = 5;
+  const maxRetries = 10;
   let retries = 0;
   let txnConfirmed = false;
   while (!txnConfirmed && retries < maxRetries) {
+    console.log(`verifying tx retry #${retries}`);
     // tries to get txn status
     const txnStatuses = await umi.rpc.getSignatureStatuses(signatures, {searchTransactionHistory: true});
     
     // check if txn status matches our desired status
     if (txnStatuses[0] && txnStatuses[0].commitment === commitment) {
       txnConfirmed = true;
+      console.log(`verified tx on retry #${retries}`);
       break;
     }
     
     retries++;
     
-    // Generate a random delay between 0.1 and 0.7 seconds (100ms to 700ms)
-    const randomDelay = Math.floor(Math.random() * (700 - 100 + 1)) + 100;
+    // delay between 1 and 6 seconds based on retries
+    const escalatingDelay = Math.floor(1000 * retries) + 1000;
     
     // Wait for the random delay
-    await wait(randomDelay);
+    console.log(`waiting ${escalatingDelay} ms before retrying`);
+    await wait(escalatingDelay);
   }
   
   if (!txnConfirmed) {
+    console.log(`TX Not ${commitment} after ${retries} retries`);
     return { success: false, reason: `TX Not ${commitment} after ${retries} retries` };
   }
 

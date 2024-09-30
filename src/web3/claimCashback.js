@@ -26,7 +26,7 @@ const finalizeCashbackTxnImpl = async (sendTransaction, serializedTxn, timeout) 
     // confirmTransaction is deperacted
     // https://solana.com/docs/rpc/deprecated/confirmtransaction
     // try to check txn statuses with delayed retries
-    const maxRetries = 5;
+    const maxRetries = 10;
     let retries = 0;
     let txnConfirmed = false;
     let result;
@@ -43,11 +43,11 @@ const finalizeCashbackTxnImpl = async (sendTransaction, serializedTxn, timeout) 
       
       retries++;
       
-      // Generate a random delay between 0.1 and 0.7 seconds (100ms to 700ms)
-      const randomDelay = Math.floor(Math.random() * (700 - 100 + 1)) + 100;
+      // delay between 1 and 6 seconds based on retries
+      const escalatingDelay = Math.floor(1000 * retries) + 1000;
       
       // Wait for the random delay
-      await wait(randomDelay);
+      await wait(escalatingDelay);
     }
     if (!txnConfirmed){
       return null;

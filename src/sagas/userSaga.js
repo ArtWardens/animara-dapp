@@ -621,8 +621,9 @@ export function* claimCashbackSaga({ payload }) {
     if (claimId){
       console.log(`cancelling cashback`);
       yield call(cancelCashbackClaimImpl, claimId);
+    }else{
+      yield put(claimCashbackError(error));
     }
-    yield put(claimCashbackError(error));
   }
 }
 
