@@ -153,7 +153,7 @@ function Header() {
             <div className="relative flex items-center justify-center max-w-44">
               <span
                 ref={coinsDisplayRef}
-                className="relative text-2xl xs:text-3xl text-[#FFC85A] font-outfit font-bold tracking-normal w-full overflow-hidden text-left drop-shadow-md"
+                className="relative text-2xl xs:text-3xl text-[#FFC85A] font-LuckiestGuy tracking-normal w-full overflow-hidden text-left drop-shadow-md"
               >
                 {formatNumberWithCommas(localCoins)}
               </span>
@@ -286,14 +286,14 @@ function Header() {
                 divClassName={"gap-[0.5rem] flex place-content-center"}
                 imgSrc={"/assets/images/clicker-character/gem.webp"}
                 imgClassName={"w-10 object-contain"}
-                spanClassName={"text-[32px] xl:text-4xl text-[#FFAA00] tracking-normal font-outfit font-bold pr-2"}
+                spanClassName={"text-[32px] xl:text-4xl text-[#FFAA00] tracking-normal font-LuckiestGuy pr-2"}
               />
               <DynamicNumberDisplay 
                 number={currentUser?.profitPerHour} 
                 divClassName={"gap-[0.5rem] flex place-content-center"}
                 imgSrc={"/assets/icons/explora-point.webp"}
                 imgClassName={"w-10 object-contain"}
-                spanClassName={"text-[32px] xl:text-4xl text-[#00B9E1] tracking-normal font-outfit font-bold pr-2"}
+                spanClassName={"text-[32px] xl:text-4xl text-[#00B9E1] tracking-normal font-LuckiestGuy pr-2"}
               />
             </div>
 
