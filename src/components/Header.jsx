@@ -96,7 +96,9 @@ function Header() {
           ${mobileMenuOpen ? 'hidden' : ''}`}
       >
         {/* profile picture */}
-        <div className="w-28 h-28 absolute -top-[18px] -left-4 profile-border flex justify-center items-center">
+        <div className={`w-28 h-28 absolute -top-[18px] -left-4 flex justify-center items-center
+          ${currentUser?.ownsNFT && currentUser?.walletAddr !== '' ? 'nft-profile-border' : 'profile-border'}
+        `}>
           <button onClick={handleEditProfile} className="group relative ">
             {loadingImage && (
               <div className="h-18 flex justify-center items-center bg-[#003459] rounded-full">
@@ -132,12 +134,20 @@ function Header() {
         </div>
         {/* user details */}
         <div className="flex flex-col place-content-center flex-grow">
-          <div className="pt-1 pl-8 font-LuckiestGuy text-md flex bg-[#003459]">
+          <div className={`pt-1 pl-10 font-LuckiestGuy text-md flex user-detail-1
+            ${currentUser?.ownsNFT && currentUser?.walletAddr !== '' ? 'bg-[#573A00]' : 'bg-[#003459]'}
+          `}>
             <p className="flex-1">{currentUser?.name || 'Animara User'}</p>
-            <p className="flex-1 ml-2 xs:ml-4 font-LuckiestGuy text-[#80E8FF] text-md text-right">LV.{currentUser?.level}</p>
+            <p className={`flex-1 ml-2 xs:ml-4 font-LuckiestGuy text-md text-right
+              ${currentUser?.ownsNFT && currentUser?.walletAddr !== '' ? 'text-[#FFB23F]' : 'text-[#80E8FF]'}
+            `}>LV.{currentUser?.level}</p>
           </div>
 
-          <div className="bg-gradient-to-l from-[#003459] from-20% via-[#0032A1] via-40% to-[#2D72FF] pb-1 pl-8 gap-1 xs:gap-2 flex">
+          <div className={`pb-1 pl-10 gap-1 xs:gap-2 flex user-detail-2
+            ${currentUser?.ownsNFT && currentUser?.walletAddr !== '' 
+              ? 'bg-gradient-to-l from-[#573A00] from-5% via-[#FFB800] via-90% to-[#FFFFFF]' 
+              : 'bg-gradient-to-l from-[#003459] from-20% via-[#0032A1] via-40% to-[#2D72FF]'}
+          `}>
             <img className="w-6 xs:w-8 object-contain" src={'/assets/images/clicker-character/gem.webp'} alt="gem" />
             <div className="relative flex items-center justify-center max-w-44">
               <span
