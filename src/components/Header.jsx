@@ -263,7 +263,7 @@ function Header() {
               )}
 
               <div className={`w-full h-32 flex align-middle justify-center
-                ${currentUser?.ownsNFT && currentUser?.walletAddr !== '' ? 'nft-profile-border bg-cover' : 'profile-border bg-cover'}
+                ${currentUser?.ownsNFT && currentUser?.walletAddr !== '' ? 'nft-profile-border' : 'profile-border'}
               `}>
                 <img
                   src={getProfilePic()}
