@@ -36,7 +36,6 @@ const EditProfilePage = () => {
   };
 
   useEffect(() => {
-    console.log(updateProfileLoading);
     if (updateProfileLoading) { 
       return
     }
