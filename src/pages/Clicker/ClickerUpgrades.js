@@ -90,9 +90,11 @@ const ClickerUpgrades = ({ onClose }) => {
   }
 
   return (
-    <>
-      <div className={`fixed inset-0 flex bg-dark bg-opacity-75 justify-center items-center z-50 transition-all duration-300
-        ${slideUpgrades? `opacity-100` : `opacity-0`}`}>
+    <div className="w-full max-w-[90dvw]">
+      <div 
+        className={`fixed inset-0 flex bg-dark bg-opacity-75 justify-center items-start z-50 transition-all duration-300
+        ${slideUpgrades? `opacity-100` : `opacity-0`}`}
+        onClick={handleBack}>
         <div
           className={`relative w-full xl:w-5/6 h-4/5 rounded-3xl p-3 mt-[10rem] transition-all duration-300 z-[100] ${slideUpgrades? `translate-y-0 opacity-100` : `translate-y-60 opacity-0`}`}
           style={{
@@ -136,11 +138,13 @@ const ClickerUpgrades = ({ onClose }) => {
             </div>
 
             {/* this line got problem */}
-            <div className="h-full flex flex-col justify-start overflow-y-auto mt-[3rem]"> 
+            <div className="h-full flex flex-col justify-start overflow-y-auto mt-[3rem]"
+            onClick={(event) => {
+              event.stopPropagation();
+            }}> 
               <div className="w-full flex flex-row flex-wrap items-center justify-between mt-[2rem] px-[4rem]">
                 <div className="xl:w-[30%]">
-                  <p className="" onClick={handleBack}>
-                    &lt;&nbsp; Back
+                  <p className="" >
                   </p>
                 </div>
                 
@@ -398,7 +402,7 @@ const ClickerUpgrades = ({ onClose }) => {
           handleCloseLeaderboard={handleCloseLeaderboard}
         />
       )}
-    </>
+    </div>
   );
 };
 

@@ -134,7 +134,8 @@ const TaskList = ({ setIsOneTimeTaskOpen }) => {
 
   return (
     <div
-      className={`fixed left-0 top-0 flex h-full min-h-screen w-full items-center justify-center bg-dark/90 px-4 py-4`}
+      className={`fixed left-0 top-0 flex h-full w-full items-center justify-center bg-dark/90 px-4 py-4 rounded-3xl`}
+      onClick={handleCloseModal}
       style={{
         zIndex: 90,
       }}
@@ -150,19 +151,14 @@ const TaskList = ({ setIsOneTimeTaskOpen }) => {
           backgroundImage: `url(/assets/images/task_panel.webp)`,
           backgroundPosition: "center",
         }}
+        onClick={(event) => {
+          event.stopPropagation();
+        }}
       >
         <div className="text-left grid w-full gap-1 pt-[1rem]
           sm:pt-0
           md:gap-4
           lg:pt-0">
-          <button
-            className="w-[5rem] pl-4 text-[#80E8FF] font-outfit font-semibold hover:brightness-75"
-            type="button"
-            onClick={handleCloseModal}
-          >
-            &lt; &nbsp; Back
-          </button>
-
           <h3 className="text-[1.5rem] lg:text-[2rem] pl-4 text-[#FFAA00]">Complete missions to earn free coins</h3>
           <div className="max-h-[320px] grid grid-cols-1 gap-3 px-4 overflow-x-hidden overflow-y-auto custom-scrollbar
             md:max-h-[200px] 

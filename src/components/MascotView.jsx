@@ -237,87 +237,49 @@ const MascotView = ({ openModal, setOpenModal }) => {
 
   return (
     <div
-      className={`flex justify-center items-start h-screen w-screen xl:pb-16 transition-all duration-700
+      className={`flex justify-center items-start h-full w-screen transition-all duration-700 mt-[-4rem] xl:mt-[-8rem]
       ${startSlide ? 'translate-y-0' : 'translate-y-full'}`}
     >
+
       <div
-        className=" w-full xl:w-5/6 h-4/5 rounded-3xl p-3"
-        style={{
-          border: '2px solid var(--Color, #F4FBFF)',
-          background: 'rgba(155, 231, 255, 0.58)',
-          boxShadow: '0px 8px 30px 0px rgba(4, 161, 183, 0.40) inset, 0px 8px 30px 0px rgba(32, 0, 99, 0.40)',
-          backdropFilter: 'blur(15px)',
-        }}
+        className="flex w-full h-full rounded-2xl"
+        onClick={handleTap}
       >
-        <div className="absolute flex w-full justify-between -top-9">
-          <img
-            src={'/assets/images/clicker-character/ring01.webp'}
-            alt="ring"
-            className="object-cover w-12 absolute left-2"
-          />
-          <img
-            src={'/assets/images/clicker-character/ring01.webp'}
-            alt="ring"
-            className="object-cover w-12 opacity-0"
-          />
-          <img
-            src={'/assets/images/clicker-character/ring01.webp'}
-            alt="ring"
-            className="object-cover w-12 opacity-0"
-          />
-          <img
-            src={'/assets/images/clicker-character/ring02.webp'}
-            alt="ring"
-            className="object-cover w-12 absolute right-8"
-          />
-        </div>
+        {userDetailsLoading || dailyLoginLoading ? (
+          <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center z-50">
+            <PropagateLoader color={'#FFB23F'} />
+          </div>
+        ) : (
+          <div className="flex justify-center items-center place-content-center h-full w-full">
+            {/* Plus One Effect */}
+            {plusOneEffect.show && (
+              <img
+                src={'/assets/images/clicker-character/plusOne.webp'}
+                alt="+1"
+                className="absolute w-40 h-40 animate-fadeInOut z-10"
+                style={{ left: `${plusOneEffect.left}%`, top: `${plusOneEffect.top}%` }}
+              />
+            )}
 
-        <div
-          className="flex w-full h-full rounded-2xl"
-          onClick={handleTap}
-          style={{
-            backgroundImage: 'url("/assets/images/clicker-character/mascotBg.webp")',
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-            backgroundRepeat: 'no-repeat',
-          }}
-        >
-          {userDetailsLoading || dailyLoginLoading ? (
-            <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center z-50">
-              <PropagateLoader color={'#FFB23F'} />
-            </div>
-          ) : (
-            <div className="flex justify-center items-center place-content-center h-full w-full">
-              {/* Plus One Effect */}
-              {plusOneEffect.show && (
+            {/* Preloaded Mascot Images */}
+            {mascotImages.map((src, index) => (
+              <div
+                key={index}
+                className={`transition-transform duration-1000 overflow-visible flex justify-center 
+                  ${startSlide ? 'translate-y-0' : 'translate-y-full'}
+                `}
+              >
                 <img
-                  src={'/assets/images/clicker-character/plusOne.webp'}
-                  alt="+1"
-                  className="absolute w-40 h-40 animate-fadeInOut z-10"
-                  style={{ left: `${plusOneEffect.left}%`, top: `${plusOneEffect.top}%` }}
-                />
-              )}
-
-              {/* Preloaded Mascot Images */}
-              {mascotImages.map((src, index) => (
-                <div
-                  key={index}
-                  className={`absolute bottom-[12rem] xl:bottom-20 transition-transform duration-1000 overflow-visible flex justify-center
-                    ${startSlide ? 'translate-y-0' : 'translate-y-full'}
+                  src={src}
+                  alt={`Game mascot ${index}`}
+                  className={`transition-opacity max-h-[45dvh] xs:max-h-[60dvh] xl:max-h-[60dvh] h-full w-full
+                    ${imgIndex === index ? 'block' : 'hidden'}
                   `}
-                >
-                  <img
-                    src={src}
-                    alt={`Game mascot ${index}`}
-                    className={`transition-opacity min-w-[50rem] w-3/4 xl:w-3/4 mb-[-4rem] xl:mb-0
-                      ${imgIndex === index ? 'block' : 'hidden'}
-                    `}
-                  />
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
+                />
+              </div>
+            ))}
+          </div>
+        )}
       </div>
 
       {isOpenRewardModal && (

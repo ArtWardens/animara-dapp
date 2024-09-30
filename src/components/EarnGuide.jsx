@@ -129,16 +129,15 @@ function EarnGuide({ openModal, setOpenModal, setIsOneTimeTaskOpen }) {
 
   return (
     <>
-      <div className="absolute bottom-0 xl:bottom-64 flex justify-center w-full xl:w-[81%] h-[30dvh] xl:h-44 pb-8">
-        <img
-          src={'/assets/images/clicker-character/button-footerBg.webp'}
-          alt="ring"
-          className={`absolute inset-0 w-full h-full object-cover rounded-b-[0.75rem] transition-opacity duration-500 ${
-            guideSlideUp ? 'opacity-100' : 'opacity-0'
-          }`}
-        />
-
-        <div className="flex flex-row items-center justify-center space-x-[0.5rem] xl:space-x-[2rem] w-full mt-[5rem]">
+      <div className="w-full max-h-[200px] h-full flex items-end justify-center xl:mt-[-8rem]">
+        <div className={`flex flex-row items-center justify-center space-x-[0.5rem] xl:space-x-[2rem] rounded-b-3xl w-full transition-opacity duration-500 ${guideSlideUp ? 'opacity-100' : 'opacity-0'}`}
+          style={{
+            backgroundImage: 'url("/assets/images/clicker-character/button-footerBg.webp")',
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            backgroundRepeat: 'no-repeat',
+          }}
+        >
           <div
             className={`w-full relative rounded-3xl xl:rounded-2xl xl:w-auto flex justify-center items-center xl:items-end transition-transform duration-500 ease-in-out ${
               showBoosts ? 'translate-y-0 opacity-100' : 'translate-y-full opacity-0'
@@ -149,7 +148,7 @@ function EarnGuide({ openModal, setOpenModal, setIsOneTimeTaskOpen }) {
                 setShowBoostsModal(true);
                 setOpenModal('boosts');
               }}
-              className="flex flex-col xl:flex-row px-[2rem] xl:px-[2.5rem] py-[2rem] xl:py-[1rem] mb-5 tracking-wider bg-[#49DEFF] shadow-[0px_4px_4px_0px_rgba(255,210,143,0.61)_inset] rounded-2xl xl:rounded-full border-orange-300 justify-center items-center gap-2 hover:bg-[#80E8FF] hover:shadow-[0px_1px_2px_0px_rgba(198,115,1,0.66)] hover:border-[#FFC85A]  hover:scale-105 transition-transform duration-200 text-sm xl:text-xl font-bold font-outfit xl:whitespace-nowrap"
+              className="flex flex-col xl:flex-row px-[1rem] xs:px-[2rem] xl:px-[2.5rem] py-[1rem] xs:py-[2rem] xl:py-[1rem] mb-5 tracking-wider bg-[#49DEFF] shadow-[0px_4px_4px_0px_rgba(255,210,143,0.61)_inset] rounded-2xl xl:rounded-full border-orange-300 justify-center items-center gap-2 hover:bg-[#80E8FF] hover:shadow-[0px_1px_2px_0px_rgba(198,115,1,0.66)] hover:border-[#FFC85A]  hover:scale-105 transition-transform duration-200 text-sm xl:text-xl font-bold font-outfit xl:whitespace-nowrap"
             >
               <img
                 src="/assets/images/clicker-character/boosts-icon.png"
@@ -180,7 +179,7 @@ function EarnGuide({ openModal, setOpenModal, setIsOneTimeTaskOpen }) {
             }`}
           >
             <button
-              className="flex flex-col xl:flex-row px-[2rem] xl:px-[2.5rem] py-[2rem] xl:py-[1rem] mb-5 tracking-wider bg-[#49DEFF] shadow-[0px_4px_4px_0px_rgba(255,210,143,0.61)_inset] rounded-2xl xl:rounded-full border-orange-300 justify-center items-center gap-2 hover:bg-[#80E8FF] hover:shadow-[0px_1px_2px_0px_rgba(198,115,1,0.66)] hover:border-[#FFC85A]  hover:scale-105 transition-transform duration-200 text-sm xl:text-xl font-bold font-outfit xl:whitespace-nowrap"
+              className="flex flex-col xl:flex-row px-[1rem] xs:px-[2rem] xl:px-[2.5rem] py-[1rem] xs:py-[2rem] xl:py-[1rem] mb-5 tracking-wider bg-[#49DEFF] shadow-[0px_4px_4px_0px_rgba(255,210,143,0.61)_inset] rounded-2xl xl:rounded-full border-orange-300 justify-center items-center gap-2 hover:bg-[#80E8FF] hover:shadow-[0px_1px_2px_0px_rgba(198,115,1,0.66)] hover:border-[#FFC85A]  hover:scale-105 transition-transform duration-200 text-sm xl:text-xl font-bold font-outfit xl:whitespace-nowrap"
               onClick={() => setIsOneTimeTaskOpen('true')}
             >
               <img
@@ -218,7 +217,8 @@ function EarnGuide({ openModal, setOpenModal, setIsOneTimeTaskOpen }) {
 
       {openModal === 'boosts' && (
         <div
-          className={`fixed left-0 top-0 flex h-full min-h-screen w-full items-center justify-center bg-dark/90 px-4 py-4`}
+          className={`fixed left-0 top-0 flex h-full w-full items-center justify-center bg-dark/90 px-4 py-4 rounded-3xl`}
+          onClick={closeModal}
           style={{
             zIndex: 90,
           }}
@@ -234,19 +234,14 @@ function EarnGuide({ openModal, setOpenModal, setIsOneTimeTaskOpen }) {
               backgroundImage: `url(/assets/images/recharge_panel.webp)`,
               backgroundPosition: 'center',
             }}
+            onClick={(event) => {
+              event.stopPropagation();
+            }}
           >
             <div className="text-left grid w-full gap-1
               sm:pt-[2rem]
               md:gap-4 mb-8
               lg:gap-4 lg-8">
-              <button
-                className="w-[4rem] text-[#80E8FF] font-outfit font-semibold hover:brightness-75"
-                type="button"
-                onClick={closeModal}
-              >
-                &lt; &nbsp; Back
-              </button>
-
               <h3 className="text-[1.5rem] lg:text-[2rem] text-[#FFAA00]">Free Daily Boosters</h3>
               {isRecharging ? (
                 // loader

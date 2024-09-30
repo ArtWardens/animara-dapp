@@ -57,10 +57,10 @@ function EnergyRegeneration({ isOneTimeTaskOpen, setIsOneTimeTaskOpen }) {
 
   return (
     <>
-      <div className="absolute flex flex-col xl:grid grid-cols-3 gap-3 justify-center items-center w-full mx-auto pt-8 xl:px-12 top-[8rem] xl:top-8 z-[50]">
+      <div className="flex flex-col xl:grid grid-cols-3 gap-1 xl:gap-3 justify-center items-center w-full mt-[-3rem] xl:mt-[4rem] z-[50]">
         {/* explora point display */}
         <div
-          className={`items-center justify-center transition-opacity duration-700 ${
+          className={`flex items-center justify-center transition-opacity duration-700 ${
             showFirstDiv ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0'
           }`}
           style={{
@@ -69,14 +69,14 @@ function EnergyRegeneration({ isOneTimeTaskOpen, setIsOneTimeTaskOpen }) {
           }}
         >
           <div
-            className="flex flex-row gap-1 py-5 px-6 rounded-3xl"
+            className="flex flex-row gap-1 py-3 xl:py-5 px-4 xl:px-6 rounded-3xl"
             style={{
               background: '#002b4c',
               backgroundBlendMode: 'multiply',
               boxShadow: '3px 2px 0px 0px #60ACFF inset',
             }}
           >
-            <img src="/assets/icons/explora-point.webp" alt="profit icon" className="w-16 h-16 my-auto mr-2" />
+            <img src="/assets/icons/explora-point.webp" alt="profit icon" className="w-10 xl:w-16 h-10 xl:h-16 my-auto mr-2" />
             {userDetailsLoading ? (
               <div className="h-18 w-16 flex justify-center items-center">
                 <MoonLoader size={25} color={'#80E8FF'} />
@@ -114,6 +114,11 @@ function EnergyRegeneration({ isOneTimeTaskOpen, setIsOneTimeTaskOpen }) {
               className="text-center border-2 border-white border-solid rounded-tl-3xl rounded-tr-md rounded-br-3xl rounded-bl-md pt-1 pb-2"
             />
           )}
+        </div>
+
+      {/* Leaderboard button */}
+        <div className="flex items-center justify-center">
+          <img src="/assets/icons/leaderboard.webp" alt="leaderboard icon" className="w-[15rem] xl:w-[25rem] h-auto transition-all duration-300 hover:scale-110 " />
         </div>
       </div>
 
