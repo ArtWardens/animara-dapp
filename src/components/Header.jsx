@@ -91,24 +91,23 @@ function Header() {
     <div className="w-full container pb-52">
       {/* User Card */}
       <div
-        className={`flex flex-row absolute max-w-[70dvw] top-[3rem] z-10 p-1 pr-4 gap-2 left-[1rem] xl:left-[4rem] ${currentUser?.ownsNFT && currentUser?.walletAddr !== '' ? 'glowing-border' : 'default-border'} ${
-          mobileMenuOpen ? 'hidden' : ''
-        }`}
+        className={`flex flex-row absolute md:min-w-[300px] lg:min-w-[300px] max-w-[70dvw] top-[4rem] z-10 p-1 pr-4 gap-2 left-[1rem] xl:left-[5rem] 
+          ${currentUser?.ownsNFT && currentUser?.walletAddr !== '' ? 'glowing-border' : 'default-border'} 
+          ${mobileMenuOpen ? 'hidden' : ''}`}
       >
         {/* profile picture */}
-        <div className="p-1 w-20 h-20 relative">
+        <div className="w-28 h-28 absolute -top-[18px] -left-4 profile-border flex justify-center items-center">
           <button onClick={handleEditProfile} className="group relative ">
             {loadingImage && (
-              <div className="h-18 flex justify-center items-center">
-                <MoonLoader color={'#FFB23F'} />
+              <div className="h-18 flex justify-center items-center bg-[#003459] rounded-full">
+                <MoonLoader color={'#FFFFFF'} />
               </div>
             )}
             <img
               src={getProfilePic()}
               alt="profile"
-              className="justify-self-center rounded-full w-24 group-hover:brightness-[0.55] transition-all duration-300"
+              className="justify-self-center rounded-full w-16 group-hover:brightness-[0.55] transition-all duration-300"
               style={{
-                border: '4px solid var(--80E8FF, #80E8FF)',
                 background: '#111928 50%',
                 backgroundSize: 'cover',
                 backgroundRepeat: 'no-repeat',
@@ -129,23 +128,21 @@ function Header() {
           </button>
         </div>
 
+        <div class="flex-none w-12">
+        </div>
         {/* user details */}
-        <div className="flex flex-col place-content-center flex-shrink">
-          <div className="font-outfit text-md flex">
-            <p>{currentUser?.name || 'Animara User'}</p>
-            <p className="ml-2 xs:ml-4 font-LuckiestGuy text-[#F46700] text-md">LV.{currentUser?.level}</p>
+        <div className="flex flex-col place-content-center flex-grow">
+          <div className="pt-1 pl-8 font-LuckiestGuy text-md flex bg-[#003459]">
+            <p className="flex-1">{currentUser?.name || 'Animara User'}</p>
+            <p className="flex-1 ml-2 xs:ml-4 font-LuckiestGuy text-[#80E8FF] text-md text-right">LV.{currentUser?.level}</p>
           </div>
 
-          <div className="gap-1 xs:gap-2 flex">
+          <div className="bg-gradient-to-l from-[#003459] from-20% via-[#0032A1] via-40% to-[#2D72FF] pb-1 pl-8 gap-1 xs:gap-2 flex">
             <img className="w-6 xs:w-8 object-contain" src={'/assets/images/clicker-character/gem.webp'} alt="gem" />
             <div className="relative flex items-center justify-center max-w-44">
               <span
                 ref={coinsDisplayRef}
-                className="relative text-2xl xs:text-3xl text-amber-500 tracking-normal w-full overflow-hidden text-left"
-                style={{
-                  WebkitTextStrokeWidth: '1.75px',
-                  WebkitTextStrokeColor: 'var(--Color-11, #FFF)',
-                }}
+                className="relative text-2xl xs:text-3xl text-[#FFC85A] font-LuckiestGuy tracking-normal w-full overflow-hidden text-left drop-shadow-md"
               >
                 {formatNumberWithCommas(localCoins)}
               </span>

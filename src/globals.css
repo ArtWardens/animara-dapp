@@ -203,11 +203,14 @@ body:active {
 }
 
 /* Header */
+.profile-border {
+  background-image: url('../public/assets/images/profile_border.webp');
+  background-size: cover;
+}
 .default-border {
-  border: 3px solid #F4FBFF;
-  border-radius: 500px 200px 200px 500px;
-  background: var(--0163BE, #0163BE);
-  box-shadow: 3px 2px 0px 0px #517296 inset;
+  border-radius: 50px;
+  background: linear-gradient(to left, #003459 30%, #2D72FF);
+  padding: 4px 25px 4px 0;
 }
 
 @property --angle {
