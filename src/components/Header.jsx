@@ -3,6 +3,7 @@ import { useDispatch } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom/dist';
 import { MoonLoader } from 'react-spinners';
 import { logOut, useUserDetails, useLocalCoins, setMobileMenuOpen, useMobileMenuOpen } from '../sagaStore/slices';
+import DynamicNumberDisplay from './DynamicNumberDisplay';
 
 function Header() {
   const mobileMenuOpen = useMobileMenuOpen();
@@ -91,8 +92,8 @@ function Header() {
     <div className="w-full container pb-52">
       {/* User Card */}
       <div
-        className={`flex flex-row absolute md:min-w-[300px] lg:min-w-[300px] max-w-[70dvw] top-[4rem] z-10 p-1 pr-4 gap-2 left-[1rem] xl:left-[5rem] 
-          ${currentUser?.ownsNFT && currentUser?.walletAddr !== '' ? 'glowing-border' : 'default-border'} 
+        className={`flex flex-row absolute md:min-w-[300px] lg:min-w-[300px] max-w-[70dvw] top-[4rem] z-10 p-1 pr-4 gap-2
+          ${currentUser?.ownsNFT && currentUser?.walletAddr !== '' ? 'glowing-border left-[2rem] xl:left-[6rem]' : 'default-border left-[1rem] xl:left-[5rem]'} 
           ${mobileMenuOpen ? 'hidden' : ''}`}
       >
         {/* profile picture */}
@@ -245,12 +246,14 @@ function Header() {
             </div>
 
             <div
-              className={`w-full h-full text-center scale-125 -z-50 ${window.innerHeight < 768 ? 'p-[3.5rem]' : 'p-[5rem]'}`}
+              className={`w-full h-full text-center scale-125 -z-50 py-[3rem] px-[1rem]
+                bg-cover bg-no-repeat 
+                md:md:bg-contain md:px-[3.5rem]
+                lg:bg-contain
+              `}
               style={{
                 backgroundImage: 'url("/assets/images/clicker-character/sticky-Note.webp")',
-                backgroundSize: 'contain',
                 backgroundPosition: 'center',
-                backgroundRepeat: 'no-repeat',
               }}
             >
               {loadingImage && (
@@ -259,38 +262,39 @@ function Header() {
                 </div>
               )}
 
-              <img
-                src={getProfilePic()}
-                alt="profile"
-                className={`items-center rounded-full mx-auto ${window.innerHeight < 768 ? 'w-[10dvh] mb-0' : 'w-20 mb-2'}`}
-                style={{
-                  border: '4px solid var(--80E8FF, #80E8FF)',
-                  background: '#111928 50%',
-                  backgroundSize: 'cover',
-                  backgroundRepeat: 'no-repeat',
-                }}
-                onClick={handleEditProfile}
-              />
-              {currentUser?.isKOL && (
-                <span className="bg-sky-700 rounded-lg items-center xl:ml-[1rem] p-2">
-                  <span className="text-white text-xs tracking-wider font-outfit whitespace-nowrap">Certified KOL</span>
-                </span>
-              )}
-              <p className="text-md text-[#003459] font-medium font-outfit mt-[0.5rem]"> {currentUser?.name}</p>
-              <div className="gap-[0.5rem] flex place-content-center">
-                <img className="w-5 object-contain" src={'/assets/images/clicker-character/gem.webp'} alt="gem" />
-                <div className="items-center justify-center">
-                  <span
-                    className="text-[32px] xl:text-4xl text-amber-500 tracking-normal pr-2"
-                    style={{
-                      WebkitTextStrokeWidth: '1.5px',
-                      WebkitTextStrokeColor: 'var(--Color-11, #FFF)',
-                    }}
-                  >
-                    {formatNumberWithCommas(currentUser?.coins)}
-                  </span>
-                </div>
+              <div className={`w-full h-32 flex align-middle justify-center
+                ${currentUser?.ownsNFT && currentUser?.walletAddr !== '' ? 'nft-profile-border bg-cover' : 'profile-border bg-cover'}
+              `}>
+                <img
+                  src={getProfilePic()}
+                  alt="profile"
+                  className={`rounded-full m-auto ${window.innerHeight < 768 ? 'w-[10dvh]' : 'w-20'}`}
+                  style={{
+                    background: '#111928 50%',
+                  }}
+                  onClick={handleEditProfile}
+                />
               </div>
+              {currentUser?.isKOL && (
+                <div className="bg-sky-700 rounded-lg items-center p-2 m-auto w-fit">
+                  <span className="text-white text-xs tracking-wider font-outfit whitespace-nowrap">Certified KOL</span>
+                </div>
+              )}
+              <p className={`text-md text-[#003459] font-medium font-outfit ${currentUser?.isKOL ? 'mt-[0.5rem': '-mt-2'}`}> {currentUser?.name}</p>
+              <DynamicNumberDisplay 
+                number={currentUser?.coins} 
+                divClassName={"gap-[0.5rem] flex place-content-center"}
+                imgSrc={"/assets/images/clicker-character/gem.webp"}
+                imgClassName={"w-10 object-contain"}
+                spanClassName={"text-[32px] xl:text-4xl text-[#FFAA00] tracking-normal font-LuckiestGuy pr-2"}
+              />
+              <DynamicNumberDisplay 
+                number={currentUser?.profitPerHour} 
+                divClassName={"gap-[0.5rem] flex place-content-center"}
+                imgSrc={"/assets/icons/explora-point.webp"}
+                imgClassName={"w-10 object-contain"}
+                spanClassName={"text-[32px] xl:text-4xl text-[#00B9E1] tracking-normal font-LuckiestGuy pr-2"}
+              />
             </div>
 
             <div

@@ -205,11 +205,15 @@ body:active {
 /* Header */
 .profile-border {
   background-image: url('../public/assets/images/profile_border.webp');
-  background-size: cover;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
 }
 .nft-profile-border {
   background-image: url('../public/assets/images/nft_profile_border.webp');
-  background-size: cover;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
 }
 .default-border {
   border-radius: 50px;
