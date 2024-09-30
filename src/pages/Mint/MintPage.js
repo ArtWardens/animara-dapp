@@ -536,11 +536,11 @@ function MintPage() {
                     <img 
                       src={videoSource}
                       alt="ghost"
-                      className="mx-auto rounded-3xl"
+                      className="mx-auto rounded-3xl pointer-events-none"
                     />
                     :
                     <video
-                      className="mx-auto rounded-3xl"
+                      className="mx-auto rounded-3xl pointer-events-none"
                       controls={false}
                       autoPlay
                       loop
