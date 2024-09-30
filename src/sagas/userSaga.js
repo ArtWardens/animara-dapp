@@ -595,6 +595,10 @@ export function* claimCashbackSaga({ payload }) {
   let claimId;
   try {
     const result = yield call(claimCashbackImpl);
+    if (result.data.error === "insufficient-funds"){
+      toast.warn('Insufficient Funds to submit claim. Please ensure the wallet have at least 0.002 SOL to claim cashback');
+      yield put(claimCashbackError(result.data));
+    }
     const serializedTxn = result.serializedTxn;
     claimId = result.claimId;
     const finalizationResult = yield call(finalizeCashbackTxnImpl, payload.sendTransaction, serializedTxn, process.env.REACT_APP_RPC_TIMEOUT);

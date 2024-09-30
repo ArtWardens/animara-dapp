@@ -10,6 +10,8 @@ const claimCashbackImpl = async () => {
       return result.data;
     } else if (result.data.error === "no-wallet"){
       return result.data;
+    } else if (result.data.error === "insufficient-funds"){
+      return result.data;
     } 
     throw result.data.error;
   }
