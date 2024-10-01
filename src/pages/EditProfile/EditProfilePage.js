@@ -327,7 +327,7 @@ const EditProfilePage = () => {
                     >
                       <div className={`w-[200px] h-[60px] px-[30px] py-5 rounded-[26px] border justify-center items-center flex ${hasChanges ? "border-orange-300 hover:bg-amber-300" : "border-white bg-slate-400"}`}>
                         <div className="text-center text-white text-xl font-bold capitalize leading-tight">
-                          {!updateProfileLoading
+                          {updateProfileLoading
                             ? <div className="flex items-center justify-center">
                               <MoonLoader size={40} color={'#FFB23F'}/>
                             </div>
