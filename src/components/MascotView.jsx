@@ -15,7 +15,7 @@ import {
   useDailyLoginLoading,
 } from '../sagaStore/slices';
 import { getAllImagePaths } from '../utils/getImagePath';
-import { mascots } from '../utils/constants';
+import { mascots } from '../utils/constants'; // Ensure mascots import is here
 
 const MascotView = ({ openModal, setOpenModal }) => {
   const dispatch = useAppDispatch();
@@ -30,7 +30,7 @@ const MascotView = ({ openModal, setOpenModal }) => {
   const [imgIndex, setImgIndex] = useState(0);
   const [mascotImages, setMascotImages] = useState([]);
   const [plusOneEffect, setPlusOneEffect] = useState({ show: false, left: 0, top: 0 });
-  const [currentMascot, setCurrentMascot] = useState(mascots[0]);
+  const [currentMascot, setCurrentMascot] = useState(mascots[0]); // Set initial mascot from mascots array
   const [mascotSound] = useSound(currentMascot?.sound);
   const [isOpenRewardModal, setIsOpenRewardModal] = useState(false);
   const [rewardModalFading, setRewardModalFading] = useState(false);
@@ -231,7 +231,7 @@ const MascotView = ({ openModal, setOpenModal }) => {
 
   return (
     <div
-      className={`flex justify-center items-end h-screen w-screen xl:pb-16 transition-all duration-700
+      className={`flex justify-center items-start h-screen w-screen xl:pb-16 transition-all duration-700
       ${startSlide ? 'translate-y-0' : 'translate-y-full'}`}
     >
       <div
@@ -314,7 +314,12 @@ const MascotView = ({ openModal, setOpenModal }) => {
 
       {isOpenRewardModal && (
         <div
-          className={`fixed top-0 flex h-full w-full items-center justify-center bg-dark/90 transition-opacity duration-500 ${rewardModalFading ? 'opacity-0' : 'opacity-100'}`}
+          className={`fixed top-0 flex flex-col h-full w-full items-center justify-center bg-dark/90 transition-opacity duration-500
+            ${rewardModalFading ? 'opacity-0' : 'opacity-100'}
+          `}
+          style={{
+            zIndex: 100,
+          }}
         >
           <video
             src={videoSource} // Dynamically select the video based on currentUser.ownsNFT
@@ -346,8 +351,16 @@ const MascotView = ({ openModal, setOpenModal }) => {
               WebkitTextStrokeColor: 'var(--Color-11, #FFF)',
             }}
           >
-            1.5X
-            <p></p>
+            1.1X
+            <p
+              className="absolute text-[8vh] font-bold transition-all duration-1000 transform text-amber-500 tracking-normal"
+              style={{
+                WebkitTextStrokeWidth: '0.25vh',
+                WebkitTextStrokeColor: 'var(--Color-11, #FFF)',
+              }}
+            >
+              
+            </p>
           </div>
         </div>
       )}
