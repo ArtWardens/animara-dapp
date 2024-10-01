@@ -595,7 +595,7 @@ export function* claimCashbackSaga({ payload }) {
   let claimId;
   try {
     const result = yield call(claimCashbackImpl);
-    if (result.data.error === "insufficient-funds"){
+    if (result.error === "insufficient-funds"){
       toast.warn('Insufficient Funds to submit claim. Please ensure the wallet have at least 0.002 SOL to claim cashback');
       yield put(claimCashbackError(result.data));
     }
@@ -619,15 +619,15 @@ export function* claimCashbackSaga({ payload }) {
       // this error happens when user do not have enough sol to submit transaction
       toast.warn('Insufficient SOL to send transaction');
     } else {
+      console.error('Failed to claim cashback with error: ', error);
       toast.error('Failed to claim cashback');
     }
     // cancel claim in db if already created
     if (claimId){
       console.log(`cancelling cashback`);
       yield call(cancelCashbackClaimImpl, claimId);
-    }else{
-      yield put(claimCashbackError(error));
     }
+    yield put(claimCashbackError(error));
   }
 }
 
