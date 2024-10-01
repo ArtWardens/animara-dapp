@@ -5,6 +5,7 @@ import ProgressBar from './FancyProgressBar/ProgressBar.tsx';
 import { useLocalStamina, useRechargeLoading, useUserDetails, useUserDetailsLoading } from '../sagaStore/slices';
 import TaskList from '../components/TaskList.jsx';
 import MintingWarningNotice from './MintingWarningNotice.jsx';
+import LeaderBoardModal from './LeaderBoardModal.jsx';
 
 function EnergyRegeneration({ isOneTimeTaskOpen, setIsOneTimeTaskOpen }) {
   const currentUser = useUserDetails();
@@ -15,7 +16,18 @@ function EnergyRegeneration({ isOneTimeTaskOpen, setIsOneTimeTaskOpen }) {
   const [progressBarWidth, setProgressBarWidth] = useState(0);
   const [showFirstDiv, setShowFirstDiv] = useState(false);
   const [showProgressBar, setShowProgressBar] = useState(false);
+  const [showLeaderBoardOption, setShowLeaderBoardOption] = useState(false);
   const [isNoticeOpen, setIsNoticeOpen] = useState(false);
+  const [isLeaderBoardOpen, setIsLeaderBoardOpen] = useState(false);
+
+  // Toggle notice component
+  const handleLeaderBoardClick = () => {
+    setIsLeaderBoardOpen(true); 
+  };
+
+  const closeLeaderBoard = () => {
+    setIsLeaderBoardOpen(false); 
+  };
 
   // Toggle notice component
   const handleInfoClick = () => {
@@ -36,9 +48,14 @@ function EnergyRegeneration({ isOneTimeTaskOpen, setIsOneTimeTaskOpen }) {
       setShowProgressBar(true);
     }, 500);
 
+    const showLeaderBoardOption = setTimeout(() => {
+      setShowLeaderBoardOption(true);
+    }, 700);
+
     return () => {
       clearTimeout(firstDivTimer);
       clearTimeout(progressBarTimer);
+      clearTimeout(showLeaderBoardOption);
     };
   }, []);
 
@@ -57,10 +74,10 @@ function EnergyRegeneration({ isOneTimeTaskOpen, setIsOneTimeTaskOpen }) {
 
   return (
     <>
-      <div className="absolute flex flex-col xl:grid grid-cols-3 gap-3 justify-center items-center w-full mx-auto pt-8 xl:px-12 top-[8rem] xl:top-8 z-[50]">
+      <div className="flex flex-col xl:grid grid-cols-3 gap-3 justify-center items-center w-full mt-[-3rem] xl:mt-[4rem] z-[50]">
         {/* explora point display */}
         <div
-          className={`items-center justify-center transition-opacity duration-700 ${
+          className={`flex items-center justify-center transition-opacity duration-700 ${
             showFirstDiv ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0'
           }`}
           style={{
@@ -69,14 +86,14 @@ function EnergyRegeneration({ isOneTimeTaskOpen, setIsOneTimeTaskOpen }) {
           }}
         >
           <div
-            className="flex flex-row gap-1 py-5 px-6 rounded-3xl"
+            className="flex flex-row gap-1 py-3 xl:py-5 px-4 xl:px-6 rounded-3xl"
             style={{
               background: '#002b4c',
               backgroundBlendMode: 'multiply',
               boxShadow: '3px 2px 0px 0px #60ACFF inset',
             }}
           >
-            <img src="/assets/icons/explora-point.webp" alt="profit icon" className="w-16 h-16 my-auto mr-2" />
+            <img src="/assets/icons/explora-point.webp" alt="profit icon" className="w-10 xl:w-16 h-10 xl:h-16 my-auto mr-2" />
             {userDetailsLoading ? (
               <div className="h-18 w-16 flex justify-center items-center">
                 <MoonLoader size={25} color={'#80E8FF'} />
@@ -115,9 +132,24 @@ function EnergyRegeneration({ isOneTimeTaskOpen, setIsOneTimeTaskOpen }) {
             />
           )}
         </div>
+
+        {/* Leaderboard button */}
+        <div className={`flex items-center justify-center ${
+            showLeaderBoardOption ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0'
+          }`}>
+          <img 
+            src="/assets/icons/leaderboard.webp" 
+            alt="leaderboard icon" 
+            className="w-[15rem] xl:w-[25rem] h-auto transition-all duration-300 hover:scale-110 " 
+            onClick={handleLeaderBoardClick}
+          />
+        </div>
       </div>
 
       {isOneTimeTaskOpen && <TaskList setIsOneTimeTaskOpen={setIsOneTimeTaskOpen} />}
+
+      {/* Conditionally render the LeaderBoard component */}
+      {isLeaderBoardOpen && <LeaderBoardModal handleCloseLeaderboard={closeLeaderBoard} />}
 
       {/* Conditionally render the MintingVipPass component */}
       {isNoticeOpen && <MintingWarningNotice onClose={closeNotice} />}
