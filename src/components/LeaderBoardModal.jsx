@@ -38,7 +38,8 @@ const LeaderBoardModal = ({ handleCloseLeaderboard }) => {
 
   return (
     <div
-      className={`fixed left-0 top-0 flex h-full min-h-screen w-full items-center justify-center bg-dark/90 px-4 py-4`}
+      className={`fixed left-0 top-0 flex h-full amin-h-screen w-full items-center justify-center bg-dark/90 px-4 py-4 rounded-3xl`}  
+      onClick={closeModal}
       style={{
         zIndex: 90,
       }}
@@ -54,21 +55,10 @@ const LeaderBoardModal = ({ handleCloseLeaderboard }) => {
           backgroundImage: `url(/assets/images/leaderboard_panel.webp)`,
           backgroundPosition: 'center',
         }}
+        onClick={(event) => {
+          event.stopPropagation();
+        }}
       >
-        <div className="text-left grid w-full gap-1
-          sm:pt-[2rem]
-          md:gap-4 mb-2
-          lg:gap-4 lg-8">
-          <button
-            className="w-[4rem] text-[#80E8FF] font-outfit font-semibold hover:brightness-75"
-            type="button"
-            onClick={closeModal}
-          >
-            &lt; &nbsp; Back
-          </button>
-
-        </div>
-
         {leaderboardLoading || !leaderBoardLoaded ? (
         // loader
         <div className="pt-4 flex align-middle justify-center">
