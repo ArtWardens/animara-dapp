@@ -151,14 +151,15 @@ const TaskList = ({ setIsOneTimeTaskOpen }) => {
           backgroundImage: `url(/assets/images/task_panel.webp)`,
           backgroundPosition: "center",
         }}
-        onClick={(event) => {
-          event.stopPropagation();
-        }}
       >
         <div className="text-left grid w-full gap-1 pt-[1rem]
           sm:pt-0
           md:gap-4
-          lg:pt-0">
+          lg:pt-0"
+          onClick={(event) => {
+            event.stopPropagation();
+          }}
+        >
           <h3 className="text-[1.5rem] lg:text-[2rem] pl-4 text-[#FFAA00]">Complete missions to earn free coins</h3>
           <div className="max-h-[320px] grid grid-cols-1 gap-3 px-4 overflow-x-hidden overflow-y-auto custom-scrollbar
             md:max-h-[200px] 
