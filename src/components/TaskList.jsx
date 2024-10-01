@@ -142,7 +142,7 @@ const TaskList = ({ setIsOneTimeTaskOpen }) => {
     >
       <div
         className={`
-              relative w-[100%] max-w-[1000px] max-h-[95%] px-[2rem] py-[6rem] rounded-[20px] text-center 
+              relative w-[100%] max-w-[1000px] px-[2rem] py-[6rem] rounded-[20px] text-center 
               bg-cover bg-no-repeat 
               md:px-[4rem] md:py-[14rem] md:bg-contain md:min-h-[750px] 
               lg:px-[7rem] lg:py-[14rem] lg:bg-contain lg:min-h-[750px]

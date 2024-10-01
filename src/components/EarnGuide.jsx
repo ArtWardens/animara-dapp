@@ -22,6 +22,7 @@ function EarnGuide({ openModal, setOpenModal, setIsOneTimeTaskOpen }) {
   const [showTasks, setShowTasks] = useState(false);
   const [isRecharging, setIsRecharging] = useState(false);
   const [showBoostsModal, setShowBoostsModal] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
 
   const handleUserUpgrades = () => {
     setOpenModal('upgrades');
@@ -59,6 +60,19 @@ function EarnGuide({ openModal, setOpenModal, setIsOneTimeTaskOpen }) {
     dispatch(rechargeStamina({ opType: StaminaRechargeTypeInvite }));
     setShowPopup(false);
   };
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    // Initial check
+    handleResize();
+
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   // intro animation
   useEffect(() => {
@@ -129,8 +143,8 @@ function EarnGuide({ openModal, setOpenModal, setIsOneTimeTaskOpen }) {
 
   return (
     <>
-      <div className="w-full max-h-[200px] h-full flex items-end justify-center xl:mt-[-8rem]">
-        <div className={`flex flex-row items-center justify-center space-x-[0.5rem] xl:space-x-[2rem] rounded-b-3xl w-full transition-opacity duration-500 ${guideSlideUp ? 'opacity-100' : 'opacity-0'}`}
+      <div className="w-full flex flex-row justify-center items-center mt-[-2rem] xl:mt-[-4rem] z-[50]">
+        <div className={`flex w-full p-[1rem] rounded-b-3xl transition-opacity duration-500 ${guideSlideUp ? 'opacity-100' : 'opacity-0'}`}
           style={{
             backgroundImage: 'url("/assets/images/clicker-character/button-footerBg.webp")',
             backgroundSize: 'cover',
@@ -138,57 +152,59 @@ function EarnGuide({ openModal, setOpenModal, setIsOneTimeTaskOpen }) {
             backgroundRepeat: 'no-repeat',
           }}
         >
-          <div
-            className={`w-full relative rounded-3xl xl:rounded-2xl xl:w-auto flex justify-center items-center xl:items-end transition-transform duration-500 ease-in-out ${
-              showBoosts ? 'translate-y-0 opacity-100' : 'translate-y-full opacity-0'
-            }`}
-          >
-            <button
-              onClick={() => {
-                setShowBoostsModal(true);
-                setOpenModal('boosts');
-              }}
-              className="flex flex-col xl:flex-row px-[1rem] xs:px-[2rem] xl:px-[2.5rem] py-[1rem] xs:py-[2rem] xl:py-[1rem] mb-5 tracking-wider bg-[#49DEFF] shadow-[0px_4px_4px_0px_rgba(255,210,143,0.61)_inset] rounded-2xl xl:rounded-full border-orange-300 justify-center items-center gap-2 hover:bg-[#80E8FF] hover:shadow-[0px_1px_2px_0px_rgba(198,115,1,0.66)] hover:border-[#FFC85A]  hover:scale-105 transition-transform duration-200 text-sm xl:text-xl font-bold font-outfit xl:whitespace-nowrap"
+          <div className="w-full flex flex-row items-center justify-center space-x-[0.5rem] xl:space-x-[2rem] mt-[2rem]">
+            <div
+              className={`w-full relative rounded-3xl xl:rounded-2xl xl:w-auto flex justify-center items-center xl:items-end transition-transform duration-500 ease-in-out ${
+                showBoosts ? 'translate-y-0 opacity-100' : 'translate-y-full opacity-0'
+              }`}
             >
-              <img
-                src="/assets/images/clicker-character/boosts-icon.png"
-                className="h-auto w-[60%] xl:w-[40%] "
-                alt="boosts-icon"
-              />
-              Boosts
-            </button>
-          </div>
+              <button
+                onClick={() => {
+                  setShowBoostsModal(true);
+                  setOpenModal('boosts');
+                }}
+                className="flex flex-col xl:flex-row px-[1rem] xs:px-[2rem] xl:px-[2.5rem] py-[1rem] xs:py-[2rem] xl:py-[1rem] mb-5 tracking-wider bg-[#49DEFF] shadow-[0px_4px_4px_0px_rgba(255,210,143,0.61)_inset] rounded-2xl xl:rounded-full border-orange-300 justify-center items-center gap-2 hover:bg-[#80E8FF] hover:shadow-[0px_1px_2px_0px_rgba(198,115,1,0.66)] hover:border-[#FFC85A]  hover:scale-105 transition-transform duration-200 text-sm xl:text-xl font-bold font-outfit xl:whitespace-nowrap"
+              >
+                <img
+                  src="/assets/images/clicker-character/boosts-icon.png"
+                  className="h-auto w-[60%] xl:w-[40%] "
+                  alt="boosts-icon"
+                />
+                Boosts
+              </button>
+            </div>
 
-          <div
-            className={`w-full relative rounded-3xl xl:rounded-2xl xl:w-auto flex justify-center items-center xl:items-end transition-transform duration-500 ease-in-out ${
-              showUpgrades ? 'translate-y-0 opacity-100' : 'translate-y-full opacity-0'
-            }`}
-          >
-            <button
-              className="flex flex-col xl:flex-row px-[2.5rem] py-[1rem] mb-5 tracking-wider bg-[#FFB23F] shadow-[0px_4px_4px_0px_rgba(255,210,143,0.61)_inset] rounded-2xl xl:rounded-full border-orange-300 justify-center items-center xl:gap-2 hover:bg-[#FFDC62] hover:shadow-[0px_1px_2px_0px_rgba(198,115,1,0.66)] hover:border-[#FFC85A]  hover:scale-105 transition-transform duration-200 text-sm xl:text-xl font-bold font-outfit xl:whitespace-nowrap"
-              onClick={handleUserUpgrades}
+            <div
+              className={`w-full relative rounded-3xl xl:rounded-2xl xl:w-auto flex justify-center items-center xl:items-end transition-transform duration-500 ease-in-out ${
+                showUpgrades ? 'translate-y-0 opacity-100' : 'translate-y-full opacity-0'
+              }`}
             >
-              <img src="/assets/images/clicker-character/star-icon.png" className="h-auto xl:w-[20%]" alt="star-icon" />
-              Upgrades & Explore Animara
-            </button>
-          </div>
+              <button
+                className="flex flex-col xl:flex-row px-[1.75rem] xl:px-[2.5rem] py-[2rem] xl:py-[1rem] mb-5 tracking-wider bg-[#FFB23F] shadow-[0px_4px_4px_0px_rgba(255,210,143,0.61)_inset] rounded-2xl xl:rounded-full border-orange-300 justify-center items-center xl:gap-2 hover:bg-[#FFDC62] hover:shadow-[0px_1px_2px_0px_rgba(198,115,1,0.66)] hover:border-[#FFC85A]  hover:scale-105 transition-transform duration-200 text-sm xl:text-xl font-bold font-outfit xl:whitespace-nowrap"
+                onClick={handleUserUpgrades}
+              >
+                <img src="/assets/images/clicker-character/star-icon.png" className="h-auto xl:w-[20%]" alt="star-icon" />
+                {isMobile ? "Upgrades" : "Upgrades & Explore Animara"}
+              </button>
+            </div>
 
-          <div
-            className={`w-full relative rounded-3xl xl:rounded-2xl xl:w-auto flex justify-center items-center xl:items-end transition-transform duration-500 ease-in-out ${
-              showTasks ? 'translate-y-0 opacity-100' : 'translate-y-full opacity-0'
-            }`}
-          >
-            <button
-              className="flex flex-col xl:flex-row px-[1rem] xs:px-[2rem] xl:px-[2.5rem] py-[1rem] xs:py-[2rem] xl:py-[1rem] mb-5 tracking-wider bg-[#49DEFF] shadow-[0px_4px_4px_0px_rgba(255,210,143,0.61)_inset] rounded-2xl xl:rounded-full border-orange-300 justify-center items-center gap-2 hover:bg-[#80E8FF] hover:shadow-[0px_1px_2px_0px_rgba(198,115,1,0.66)] hover:border-[#FFC85A]  hover:scale-105 transition-transform duration-200 text-sm xl:text-xl font-bold font-outfit xl:whitespace-nowrap"
-              onClick={() => setIsOneTimeTaskOpen('true')}
+            <div
+              className={`w-full relative rounded-3xl xl:rounded-2xl xl:w-auto flex justify-center items-center xl:items-end transition-transform duration-500 ease-in-out ${
+                showTasks ? 'translate-y-0 opacity-100' : 'translate-y-full opacity-0'
+              }`}
             >
-              <img
-                src="/assets/images/clicker-character/tasks-icon.png"
-                className="h-auto w-[60%] xl:w-[40%]"
-                alt="tasks-icon"
-              />
-              Tasks
-            </button>
+              <button
+                className="flex flex-col xl:flex-row px-[1rem] xs:px-[2rem] xl:px-[2.5rem] py-[1rem] xs:py-[2rem] xl:py-[1rem] mb-5 tracking-wider bg-[#49DEFF] shadow-[0px_4px_4px_0px_rgba(255,210,143,0.61)_inset] rounded-2xl xl:rounded-full border-orange-300 justify-center items-center gap-2 hover:bg-[#80E8FF] hover:shadow-[0px_1px_2px_0px_rgba(198,115,1,0.66)] hover:border-[#FFC85A]  hover:scale-105 transition-transform duration-200 text-sm xl:text-xl font-bold font-outfit xl:whitespace-nowrap"
+                onClick={() => setIsOneTimeTaskOpen('true')}
+              >
+                <img
+                  src="/assets/images/clicker-character/tasks-icon.png"
+                  className="h-auto w-[60%] xl:w-[40%]"
+                  alt="tasks-icon"
+                />
+                Tasks
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -196,6 +212,7 @@ function EarnGuide({ openModal, setOpenModal, setIsOneTimeTaskOpen }) {
       {openModal === 'leaderboard' && (
         <div
           className={`fixed left-0 top-0 flex h-full min-h-screen w-full items-center justify-center bg-dark/90 px-4 py-5 ${openModal ? 'animate-openModal' : 'animate-modalClose'}`}
+          onClick={closeModal}
           style={{
             zIndex: 90,
           }}
@@ -210,6 +227,9 @@ function EarnGuide({ openModal, setOpenModal, setIsOneTimeTaskOpen }) {
               backgroundSize: 'contain',
               backgroundPosition: 'center',
               backgroundRepeat: 'no-repeat',
+            }}
+            onClick={(event) => {
+              event.stopPropagation();
             }}
           ></div>
         </div>

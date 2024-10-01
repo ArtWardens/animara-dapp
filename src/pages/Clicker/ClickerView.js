@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Box } from '@mui/material';
 import Modal from '@mui/material/Modal';
 import { useAppDispatch } from '../../hooks/storeHooks';
-import { useUserDetails, closeDailyPopup, updateDailyLogin, useIsOpenDailyPopup } from '../../sagaStore/slices';
+import { useUserDetails, closeDailyPopup, updateDailyLogin, useIsOpenDailyPopup, settleTapSession, useLocalStamina, useLocalCoins, } from '../../sagaStore/slices';
 import MascotView from '../../components/MascotView';
 import EarnGuide from '../../components/EarnGuide';
 import EnergyRegeneration from '../../components/EnergyRegeneration';
@@ -13,11 +13,23 @@ import DynamicNumberDisplay from '../../components/DynamicNumberDisplay';
 const ClickerView = () => {
   const dispatch = useAppDispatch();
   const currentUser = useUserDetails();
+  const localCoins = useLocalCoins();
+  const localStamina = useLocalStamina();
   const isOpenDailyPopup = useIsOpenDailyPopup();
   const [isLeaderboardOpen, setIsLeaderboardOpen] = useState(false);
   const [isOneTimeTaskOpen, setIsOneTimeTaskOpen] = useState(false);
   const [openModal, setOpenModal] = useState("");
   const [showPanel, setShowPanel] = useState(false);
+  const [isOpenRewardModal, setIsOpenRewardModal] = useState(false);  
+  const [rewardModalFading, setRewardModalFading] = useState(false);
+
+  // grant depletion rewards when local stamina is fully consumed
+  useEffect(() => {
+    if (!currentUser || localStamina !== 0 || isOpenRewardModal || !currentUser.canGetDepletionReward) return;
+
+    dispatch(settleTapSession({ newCointAmt: localCoins, newStamina: localStamina }));
+    setIsOpenRewardModal(true);
+  }, [dispatch, localStamina, localCoins, currentUser, isOpenRewardModal]);
 
   // Initialize
   useEffect(() => {
@@ -43,6 +55,14 @@ const ClickerView = () => {
     }
   }, [isOpenDailyPopup]);
 
+  const closeRewardModal = () => {
+    setRewardModalFading(true);
+    setTimeout(() => {
+      setIsOpenRewardModal(false);
+      setRewardModalFading(false);
+    }, 500);
+  };
+
   const handleClose = () => {
     setShowPanel(false);
     const timerPanel = setTimeout(() => {
@@ -55,7 +75,7 @@ const ClickerView = () => {
   };
 
   return (
-    <div className="w-full max-w-[90dvw] flex justify-center mt-[-1rem]">
+    <div className="w-full min-w-[450px] max-w-[90dvw] min-h-[650px] flex justify-center mt-[-1rem]">
       <div 
         className="relative w-full max-h-[90dvh] h-auto rounded-3xl p-3 transition-all duration-300"
         style={{
@@ -191,6 +211,22 @@ const ClickerView = () => {
             <ClickerUpgrades
               onClose={() => setOpenModal('')} // Close modal when done
             />
+          )}
+
+          {isOpenRewardModal && (
+            <div
+              className={`fixed inset-0 flex bg-dark bg-opacity-75 justify-center items-center z-[999] transition-opacity duration-500 ${rewardModalFading ? 'opacity-0' : 'opacity-100'}`}
+            >
+              <video
+                src="https://storage.animara.world/depletion-reward-w-number.webm"
+                autoPlay
+                loop={false}
+                muted
+                playsInline
+                onEnded={closeRewardModal}
+                className="object-cover w-full h-full"
+              />
+            </div>
           )}
         </div>
       </div>

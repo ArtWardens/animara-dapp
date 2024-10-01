@@ -92,11 +92,11 @@ const ClickerUpgrades = ({ onClose }) => {
   return (
     <div className="w-full max-w-[90dvw]">
       <div 
-        className={`fixed inset-0 flex bg-dark bg-opacity-75 justify-center items-start z-50 transition-all duration-300
+        className={`fixed inset-0 flex bg-dark bg-opacity-75 justify-center items-center z-50 transition-all duration-300
         ${slideUpgrades? `opacity-100` : `opacity-0`}`}
         onClick={handleBack}>
         <div
-          className={`relative w-full xl:w-5/6 h-4/5 rounded-3xl p-3 mt-[10rem] transition-all duration-300 z-[100] ${slideUpgrades? `translate-y-0 opacity-100` : `translate-y-60 opacity-0`}`}
+          className={`relative w-full xl:w-5/6 h-4/5 rounded-3xl p-3 amt-[10rem] transition-all duration-300 z-[100] ${slideUpgrades? `translate-y-0 opacity-100` : `translate-y-60 opacity-0`}`}
           style={{
             border: "2px solid var(--Color, #F4FBFF)",
             background: "rgba(155, 231, 255, 0.58)",
