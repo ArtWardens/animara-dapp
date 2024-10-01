@@ -6,10 +6,13 @@ const wait = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 const finalizeCashbackTxnImpl = async (sendTransaction, serializedTxn, timeout) => {
   // Deserialize the transaction from the backend
   const txn = web3.Transaction.from(Buffer.from(serializedTxn, "base64"));
-  
+  console.log(txn);
   // Set up the Solana connection
   const connection = new web3.Connection(process.env.REACT_APP_RPC, 'confirmed');
   
+  // Send the transaction (includes prompting the user to sign it)
+  const signature = await sendTransaction(txn, connection);
+
   // Create a promise that resolves with a timeout
   const timeoutPromise = new Promise((resolve) => {
     setTimeout(() => {
@@ -19,9 +22,6 @@ const finalizeCashbackTxnImpl = async (sendTransaction, serializedTxn, timeout) 
 
   // Create a promise that resolves when the transaction is confirmed
   const transactionPromise = (async () => {
-    // Send the transaction (includes prompting the user to sign it)
-    const signature = await sendTransaction(txn, connection);
-    
     // Confirm the transaction
     // confirmTransaction is deperacted
     // https://solana.com/docs/rpc/deprecated/confirmtransaction
