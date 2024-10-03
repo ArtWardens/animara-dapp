@@ -246,9 +246,9 @@ function Header() {
             </div>
 
             <div
-              className={`w-full h-full text-center scale-125 -z-50 py-[3rem] px-[1rem]
+              className={`w-full h-full text-center -z-50 py-[3rem] px-[1rem] scale-110
                 bg-cover bg-no-repeat 
-                md:md:bg-contain md:px-[3.5rem]
+                md:bg-contain md:px-[3.5rem]
                 lg:bg-contain
               `}
               style={{
@@ -262,13 +262,13 @@ function Header() {
                 </div>
               )}
 
-              <div className={`w-full h-32 flex align-middle justify-center
+              <div className={`w-32 h-32 flex m-auto
                 ${currentUser?.ownsNFT && currentUser?.walletAddr !== '' ? 'nft-profile-border' : 'profile-border'}
               `}>
                 <img
                   src={getProfilePic()}
                   alt="profile"
-                  className={`rounded-full m-auto ${window.innerHeight < 768 ? 'w-[10dvh]' : 'w-20'}`}
+                  className={`rounded-full m-auto w-20`}
                   style={{
                     background: '#111928 50%',
                   }}
