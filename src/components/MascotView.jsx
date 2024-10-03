@@ -217,7 +217,7 @@ const MascotView = ({ openModal, setOpenModal }) => {
 
   return (
     <div
-      className={`flex justify-center items-start h-full w-screen transition-all duration-700 mt-[-4rem] xl:mt-[-12rem]
+      className={`flex justify-center items-start h-full w-screen transition-all duration-700 mt-[-4rem] lg:mt-[-12rem]
       ${startSlide ? 'translate-y-0' : 'translate-y-full'}`}
     >
 
@@ -252,7 +252,7 @@ const MascotView = ({ openModal, setOpenModal }) => {
                 <img
                   src={src}
                   alt={`Game mascot ${index}`}
-                  className={`transition-opacity max-h-[45dvh] xs:max-h-[60dvh] xl:max-h-[60dvh] h-full w-full scale-110 xl:scale-110
+                  className={`transition-opacity max-h-[45dvh] xs:max-h-[60dvh] lg:max-h-[60dvh] h-full w-full scale-110 lg:scale-110
                     ${imgIndex === index ? 'block' : 'hidden'}
                   `}
                 />

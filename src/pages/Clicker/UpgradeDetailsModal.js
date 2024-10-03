@@ -101,7 +101,10 @@ const UpgradeDetailsModal = ({ upgrade, isMaxLevel, onClose }) => {
 
   return (
     <>
-      <div className="fixed inset-0  backdrop-blur-xl rounded-xl flex justify-center items-center z-[200] overflow-hidden">
+      <div 
+        className="fixed inset-0  backdrop-blur-xl rounded-xl flex justify-center items-center z-[200] overflow-hidden"
+        onClick={onClose}
+      >
         {!isUserLocationLoading &&
         (showMaxLevelMessage || isExploredSuccessfully) ? (
           <>
@@ -184,7 +187,7 @@ const UpgradeDetailsModal = ({ upgrade, isMaxLevel, onClose }) => {
 
           {/* Mobile upgrade message panel view */}      
           <div
-            className={`flex xl:hidden flex-col items-center justify-center px-[4rem] py-[12rem] rounded-xl transition-all duration-300 ${showModal ? `opacity-100 scale-100` : `opacity-0 scale-0`}`}
+            className={`flex xl:hidden flex-col items-center justify-center px-[4rem] py-[6rem] rounded-xl transition-all duration-300 ${showModal ? `opacity-100 scale-100` : `opacity-0 scale-0`}`}
             style={{
               backgroundImage: `url("/assets/images/clicker-character/successfull-mobile-bg.png")`,
               backgroundSize: "contain",
@@ -216,11 +219,11 @@ const UpgradeDetailsModal = ({ upgrade, isMaxLevel, onClose }) => {
                   </p>
                   {newlyUnlockedLocations &&
                     newlyUnlockedLocations.length > 0 && (
-                      <div className="mt-[2rem]">
-                        <p className="text-3xl text-white font-bold tracking-wider mb-[1rem]">
+                      <div className="mt-6 lg:mt-[2rem]">
+                        <p className="text-xl lg:text-3xl text-white font-bold tracking-wider mb-2 lg:mb-[1rem]">
                           New Locations Unlocked:
                         </p>
-                        <ul className="list-none list-inside text-2xl text-[#c4c4c4]">
+                        <ul className="list-none list-inside text-lg lg:text-2xl text-[#c4c4c4]">
                           {newlyUnlockedLocations.map((locationId, index) => (
                             <li className="mb-[0.5rem]" key={index}>
                               {t(locationId)}
@@ -235,7 +238,7 @@ const UpgradeDetailsModal = ({ upgrade, isMaxLevel, onClose }) => {
 
             <div className="w-full flex items-center justify-center">
               <button
-                className="bg-[#ffdc61] text-white mt-[1rem] px-8 py-2 rounded-full text-lg uppercase flex items-center justify-center hover:shadow-[0px_4px_4px_0px_#FFFBEF_inset]"
+                className="bg-[#ffdc61] text-white mt-2 lg:mt-[1rem] px-8 py-2 rounded-full text-lg uppercase flex items-center justify-center hover:shadow-[0px_4px_4px_0px_#FFFBEF_inset]"
                 onClick={() => {
                   handleLevelUp();
                 }}
@@ -257,15 +260,6 @@ const UpgradeDetailsModal = ({ upgrade, isMaxLevel, onClose }) => {
             }}
             onClick={(e) => e.stopPropagation()}
           >
-            {/* Close Button */}
-            <button
-              className="absolute top-20 right-20 text-white text-4xl hover:brightness-75"
-              onClick={onClose}
-              disabled={isUserLocationLoading}
-            >
-              &times;
-            </button>
-
             {/* Modal Content */}
             <div className="flex flex-col items-center text-center space-y-4">
               <p className="text-2xl text-yellow-300 mt-2 font-semibold">
@@ -342,24 +336,15 @@ const UpgradeDetailsModal = ({ upgrade, isMaxLevel, onClose }) => {
 
           {/* Mobile upgrade details panel view */}
           <div
-            className={`relative xl:hidden px-[6rem] py-[8rem] rounded-xl bg-no-repeat bg-contain transition-all duration-300 ${showModal ? `opacity-100 scale-100` : `opacity-0 scale-0`}`}
+            className={`relative xl:hidden px-[1rem] py-[4rem] rounded-xl bg-no-repeat bg-contain transition-all duration-300 ${showModal ? `opacity-100 scale-100` : `opacity-0 scale-0`}`}
             style={{
               backgroundImage: `url("/assets/images/clicker-character/upgrades-details-mobile-bg.webp")`,
               backgroundPosition: "center",
             }}
             onClick={(e) => e.stopPropagation()}
           >
-            {/* Close Button */}
-            <button
-              className="relative w-full flex justify-end text-white text-4xl hover:brightness-75"
-              onClick={onClose}
-              disabled={isUserLocationLoading}
-            >
-              &times;
-            </button>
-
             {/* Modal Content */}
-            <div className=" w-[80%] min-w-[350px] flex flex-col items-center text-center space-y-4">
+            <div className="w-[300px] flex flex-col items-center text-center space-y-4">
               <p className="text-2xl text-yellow-300 mt-2 font-semibold">
                 <span className="inline-flex items-center">
                   <img
@@ -370,21 +355,21 @@ const UpgradeDetailsModal = ({ upgrade, isMaxLevel, onClose }) => {
                 </span>
               </p>
 
-              <h2 className="text-4xl text-[#FFAA00] font-LuckiestGuy uppercase tracking-wider">
+              <h2 className="text-xl lg:text-4xl text-[#FFAA00] font-LuckiestGuy uppercase tracking-wider">
                 {t(upgrade.locationId)}
               </h2>
 
               <div className="flex flex-row items-center justify-between">
-                <p className="text-sm font-sans mr-[1rem]">with</p>
+                <p className="text-xs lg:text-sm font-sans mr-[1rem]">with</p>
                 <img
                   src={"/assets/images/clicker-character/gem.webp"}
                   alt="gem"
-                  className="w-6 h-6 mr-2"
+                  className="w-4 lg:w-6 h-4 lg:h-6 mr-1 lg:mr-2"
                 />
                 <p>{upgrade.nextLevelUpgradeCost}</p>
               </div>
 
-              <p className="text-white text-base font-sans">
+              <p className="text-white text-sm lg:text-base font-sans">
                 {t(`${upgrade.locationId}-${upgrade.level + 1}`)}
               </p>
 
