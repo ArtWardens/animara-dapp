@@ -134,7 +134,7 @@ const TaskList = ({ setIsOneTimeTaskOpen }) => {
 
   return (
     <div
-      className={`fixed left-0 top-0 flex h-full w-full items-center justify-center bg-dark/90 px-4 py-4 rounded-3xl`}
+      className={`fixed left-0 top-0 flex h-full w-full items-center justify-center bg-dark/90 px-4 py-4`}
       onClick={handleCloseModal}
       style={{
         zIndex: 90,

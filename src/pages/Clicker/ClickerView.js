@@ -75,7 +75,7 @@ const ClickerView = () => {
   };
 
   return (
-    <div className="w-full min-w-[450px] max-w-[90dvw] min-h-[650px] flex justify-center mt-[-1rem]">
+    <div className="w-full min-w-[450px] max-w-[90dvw] min-h-[700px] xs:min-h-[800px] flex justify-center mt-[-1rem]">
       <div 
         className="relative w-full max-h-[90dvh] h-auto rounded-3xl p-3 transition-all duration-300"
         style={{
@@ -207,13 +207,19 @@ const ClickerView = () => {
           </Modal>
 
           {/* Upgrade panel */}
-          {openModal === 'upgrades' && (
+          <Modal
+            open={openModal === 'upgrades'}
+            className="h-screen w-screen flex flex-1 overflow-x-hidden overflow-y-auto"
+          >
             <ClickerUpgrades
               onClose={() => setOpenModal('')} // Close modal when done
             />
-          )}
+          </Modal>
 
-          {isOpenRewardModal && (
+          <Modal
+            open={isOpenRewardModal}
+            className="h-screen w-screen flex flex-1 overflow-x-hidden overflow-y-auto"
+          > 
             <div
               className={`fixed inset-0 flex bg-dark bg-opacity-75 justify-center items-center z-[999] transition-opacity duration-500 ${rewardModalFading ? 'opacity-0' : 'opacity-100'}`}
             >
@@ -227,7 +233,7 @@ const ClickerView = () => {
                 className="object-cover w-full h-full"
               />
             </div>
-          )}
+          </Modal>
         </div>
       </div>
     </div>

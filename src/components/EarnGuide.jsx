@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { PropTypes } from 'prop-types';
+import Modal from '@mui/material/Modal';
 import { useUserDetails, useLocalStamina, useRechargeLoading, rechargeStamina } from '../sagaStore/slices';
 import { useAppDispatch } from '../hooks/storeHooks.js';
 import { StaminaRechargeTypeBasic, StaminaRechargeTypeInvite } from '../utils/constants';
@@ -143,7 +144,7 @@ function EarnGuide({ openModal, setOpenModal, setIsOneTimeTaskOpen }) {
 
   return (
     <>
-      <div className="w-full flex flex-row justify-center items-center lg:mt-[-4rem] z-[50]">
+      <div className="w-full flex flex-row justify-center items-center xs:mt-[-4rem] lg:mt-[-4rem] z-[50]">
         <div className={`flex w-full max-h-[150px] p-[1rem] rounded-b-3xl transition-opacity duration-500 ${guideSlideUp ? 'opacity-100' : 'opacity-0'}`}
           style={{
             backgroundImage: 'url("/assets/images/clicker-character/button-footerBg.webp")',
@@ -235,9 +236,12 @@ function EarnGuide({ openModal, setOpenModal, setIsOneTimeTaskOpen }) {
         </div>
       )}
 
-      {openModal === 'boosts' && (
+      <Modal
+        open={openModal === 'boosts'}
+        className="h-screen w-screen flex flex-1 overflow-x-hidden overflow-y-auto"
+      >
         <div
-          className={`fixed left-0 top-0 flex h-full w-full items-center justify-center bg-dark/90 px-4 py-4 rounded-3xl`}
+          className={`fixed left-0 top-0 flex h-full min-h-[800px] w-full items-center justify-center bg-dark/90 px-4 py-4`}
           onClick={closeModal}
           style={{
             zIndex: 90,
@@ -346,7 +350,7 @@ function EarnGuide({ openModal, setOpenModal, setIsOneTimeTaskOpen }) {
             {showPopup && <ReferPopup onClose={handleReferCompletion} />}
           </div>
         </div>
-      )}
+      </Modal>
     </>
   );
 }
