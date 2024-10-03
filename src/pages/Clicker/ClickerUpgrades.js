@@ -92,7 +92,7 @@ const ClickerUpgrades = ({ onClose }) => {
   return (
     <div className="w-full max-w-[90dvw]">
       <div 
-        className={`fixed inset-0 flex bg-dark bg-opacity-75 justify-center items-center z-50 transition-all duration-300
+        className={`h-full min-h-[700px] fixed inset-0 flex bg-dark bg-opacity-75 justify-center items-center z-50 transition-all duration-300
         ${slideUpgrades? `opacity-100` : `opacity-0`}`}
         onClick={handleBack}>
         <div
@@ -174,10 +174,10 @@ const ClickerUpgrades = ({ onClose }) => {
                   <PropagateLoader color={"#FFB23F"} />
                 </div>
               ) : (
-                <div className="flex flex-col xl:flex-row justify-start mt-[2rem] xl:mt-[4rem] xl:gap-[6rem] overflow-y-auto">
+                <div className="flex flex-col xl:flex-row justify-start mt-[2rem] xl:mt-[4rem] xl:gap-[6rem] overflow-y-auto lg:scrollbar-webkit-white">
                   {/* Menu bar */}
                   <div className="w-full xl:w-[16dvw] h-full flex flex-col">
-                    <div className="flex flex-row xl:flex-col xl:mt-[2.5rem] p-[2rem] xl:p-2 overflow-auto mb-[1rem] xl:mb-0">
+                    <div className="flex flex-row xl:flex-col xl:mt-[2.5rem] p-[2rem] xl:p-2 overflow-y-auto lg:scrollbar-webkit-white mb-[1rem] xl:mb-0">
                     {menuOptions.map((option, index) => (
                       <div
                         key={index}
@@ -257,7 +257,7 @@ const ClickerUpgrades = ({ onClose }) => {
                       userLocations.filter(
                         (location) => location.region === selectedOption
                       ).length > 0 ? (
-                        <div className="h-full flex flex-col xl:flex-row flex-wrap items-center justify-start gap-4 amt-4 p-4 overflow-y-auto">
+                        <div className="h-full w-full max-w-[1480px] flex flex-col xl:flex-row flex-wrap items-center justify-start gap-4 amt-4 p-4 overflow-y-auto scrollbar-webkit-white">
                           {userLocations
                             .filter((location) => location.region === selectedOption)
                             .sort((a, b) => (a.level >= 0 && b.level === -1 ? -1 : 1)) // Sort unlocked locations first
