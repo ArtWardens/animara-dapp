@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
+import { useTranslation } from "react-i18next";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAppDispatch } from "../../hooks/storeHooks.js";
 import "../../styles/Home.module.css";
@@ -15,6 +16,7 @@ const SignupPage = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const isIOS = useIsIOS();
+  const { t: tLogin } = useTranslation("login");
   const location = useLocation();
   const isAuthLoading = useAuthLoading();
   const isAuthenticated = useUserAuthenticated();
@@ -55,7 +57,7 @@ const SignupPage = () => {
     );
   }, [username, email, password, confirmPassword, referralCode, agreeTNC]);
 
-  const togglePassword = () => {
+  const togglePasswordVisiblity = () => {
     setShowPassword(!showPassword);
   };
 
@@ -204,7 +206,7 @@ const SignupPage = () => {
       classNames="fade"
       unmountOnExit
     >
-      <div className="min-h-screen relative flex overflow-hidden">
+      <div className="h-[100dvh] relative flex overflow-hidden">
       <div ref={nodeRef} className="fade-mask-layer -translate-x-full"></div>
         {/* Background Image */}
         <img 
@@ -225,12 +227,12 @@ const SignupPage = () => {
         {/* Sign up Card Latest */}
         <div className="relative left-[50%] -translate-x-1/2 lg:left-[75%] self-center sm:max-h-[59.5rem] max-w-[25rem] sm:max-w-[27.5rem] rounded-[2.5rem] p-[2.5rem] gap-[1.25rem] bg-[#003459] shadow-[0.5rem_0.375rem_0.625rem_0_rgba(0,0,0,0.2)] font-bignoodle">
           {/* Upper Section */}
-          <div className="relative self-center space-y-[0.75rem] xl:space-y-[1.25rem] flex flex-col">
+          <div className="relative self-center xs:space-y-[0.75rem] xl:space-y-[1.25rem] flex flex-col">
             <div className="flex-none">
               {isIOS?
                 <img 
                   src="/assets/icons/AnimaraLogo.webp" alt="logo"
-                  className="h-[5rem] w-[5rem]"
+                  className="h-[2.5rem] xs:h-[5rem] w-[2.5rem] xs:w-[5rem]"
                 />
                 :
                 <video 
@@ -243,8 +245,8 @@ const SignupPage = () => {
               }
             </div>
             <div className="grow">
-              <p className="text-[2.5rem] leading-[2.75rem] text-[#FFC85A]">Sign up</p>
-              <p className="text-[#C5C5C5] font-outfit">Begin your adventure in Animara</p>
+              <p className="text-2xl xs:text-[2.5rem] xs:leading-[2.75rem] text-[#FFC85A]">Sign up</p>
+              <p className="text-[#C5C5C5] text-xs xs:text-base font-outfit">Begin your adventure in Animara</p>
             </div>
 
             {/* Username */}
@@ -255,7 +257,7 @@ const SignupPage = () => {
             value={username}
             required
             onChange={(e) => setUsername(e.target.value)}
-            className="mt-6 w-full outline-none  rounded-[0.625rem] border border-[#245F89] py-[0.875rem] px-[1rem] font-outfit text-dark-2"
+            className="mt-2 xs:mt-6 w-full outline-none  rounded-[0.625rem] border border-[#245F89] py-[0.875rem] px-[1rem] font-outfit text-dark-2"
           />
 
           {/* Email */}
@@ -271,36 +273,71 @@ const SignupPage = () => {
           {!isEmailValid && <p className="text-red-500">{emailError}</p>}
 
           {/* Password */}
-          <div className="relative mt-2">
-            <div className="flex flex-row">
+          <div className="relative flex flex-col mt-2">
+            {/* password input */}
+            <div className="grid grid-rows-1">
+              {/* input */}
               <input
+                disabled={isAuthLoading}
                 type={showPassword ? "text" : "password"}
-                placeholder="Password"
+                placeholder={tLogin("Password")}
                 value={password}
                 onChange={handlePasswordChange}
-                className={`w-full outline-none  rounded-[0.625rem] border py-[0.875rem] px-[1rem] font-outfit text-dark-2 ${getPasswordInputBorderClass()}`}
+                className={`col-start-1 row-start-1 w-full outline-none rounded-[0.625rem] border border-[#245F89] py-[0.875rem] pl-[1rem] pr-10 font-outfit text-dark-2 ${getPasswordInputBorderClass()}`}
                 required
               />
-              <img
-                onClick={togglePassword}
-                src="../assets/images/eye.svg"
-                alt="show password"
-                className={`absolute top-1/2 right-3 -translate-y-1/2 -translate-x-3 ${isPasswordValid ? 'mt-0' : 'mt-[-1.5rem]'} `}
-              />
+              {/* show password button */}
+              <div className="col-start-1 row-start-1 flex mr-4 ml-auto my-auto">
+                {showPassword?
+                  <img
+                    onClick={togglePasswordVisiblity}
+                    src="/assets/icons/eye-open.svg"
+                    alt="show password"
+                    className="h-4 w-4"
+                  />
+                :
+                  <img
+                    onClick={togglePasswordVisiblity}
+                    src="/assets/icons/eye-close.svg"
+                    alt="show password"
+                    className="h-4 w-4"
+                  />}
+              </div>
             </div>
             {!isPasswordValid && <p className="text-red-500">{passwordError}</p>}
           </div>
 
           {/* Confirm Password */}
           <div className="relative mt-2">
-            <input
-              type={showPassword ? "text" : "password"}
-              placeholder="Confirm Password"
-              value={confirmPassword}
-              onChange={handleConfirmPasswordChange}
-              className={`w-full outline-none  rounded-[0.625rem] border py-[0.875rem] px-[1rem] font-outfit text-dark-2 ${getConfirmPasswordInputBorderClass()}`}
-              required
-            />
+            <div className="grid grid-rows-1">
+              {/* input */}
+              <input
+                disabled={isAuthLoading}
+                type={showPassword ? "text" : "password"}
+                placeholder="Confirm Password"
+                value={confirmPassword}
+                onChange={handleConfirmPasswordChange}
+                className={`col-start-1 row-start-1 w-full outline-none rounded-[0.625rem] border border-[#245F89] py-[0.875rem] pl-[1rem] pr-10 font-outfit text-dark-2 ${getConfirmPasswordInputBorderClass()}`}
+                required
+              />
+              {/* show password button */}
+              <div className="col-start-1 row-start-1 flex mr-4 ml-auto my-auto">
+                {showPassword?
+                  <img
+                    onClick={togglePasswordVisiblity}
+                    src="/assets/icons/eye-open.svg"
+                    alt="show password"
+                    className="h-4 w-4"
+                  />
+                :
+                  <img
+                    onClick={togglePasswordVisiblity}
+                    src="/assets/icons/eye-close.svg"
+                    alt="show password"
+                    className="h-4 w-4"
+                  />}
+              </div>
+            </div>
             {!doPasswordsMatch && (
               <p className="text-red-500">Passwords do not match</p>
             )}
@@ -324,7 +361,7 @@ const SignupPage = () => {
               value={agreeTNC}
               onChange={(e) => setAgreeTNC(e.target.checked)}
               className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:accent-[#49DEFF] dark:focus:accent-[#49DEFF] dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
-            <label htmlFor="link-checkbox" className="ms-2 text-sm font-outfit text-gray-900 dark:text-gray-300">
+            <label htmlFor="link-checkbox" className="ms-2 text-xs xs:text-sm font-outfit text-gray-900 dark:text-gray-300">
               By signing up, I agree to Animara&#39;s <a href="https://animara.world/terms-and-conditions" className="text-[#49DEFF] dark:text-[#49DEFF] hover:underline">Terms & Condition</a>
             </label>
           </div>
@@ -335,7 +372,7 @@ const SignupPage = () => {
             id="signup-button"
             disabled={isAuthLoading || !hasInput}
             onClick={handleSignUpWithEmail}
-            className={`mt-3 font-outfit font-bold text-[1rem] leading-[1rem] w-full rounded-[1.25rem] border-[0.4px] py-[1.25rem] px-[2rem] ${
+            className={`mt-3 font-outfit font-bold text-[1rem] leading-[1rem] w-full rounded-[1.25rem] border-[0.4px] py-[1rem] xs:py-[1.25rem] px-[1rem] xs:px-[2rem] ${
               isAuthLoading || !hasInput
                 ? 'bg-gray-400 border-gray-300 text-gray-200'
                 : 'bg-[#FFB23F] border-[#E59E69] text-[#FFF5F5] hover:brightness-75'
@@ -361,10 +398,10 @@ const SignupPage = () => {
                 </svg>
               </div>
             ) : (
-              <span className="">Sign Up</span>
+              <span className="text-sm xs:text-base">Sign Up</span>
             )}
           </button>
-          <p className="mt-4 font-outfit text-[0.875rem] leading-[1rem] text-center">
+          <p className="mt-4 font-outfit text-xs xs:text-[0.875rem] leading-[1rem] text-center">
               Already have an account? &nbsp;
               <Link
                 to="/login"
@@ -375,7 +412,7 @@ const SignupPage = () => {
           </p>
 
             {/* Policies */}
-          <div className="mt-3 flex gap-8 font-outfit text-[#C5C5C5] text-[1rem] text-center justify-center">
+          <div className="mt-3 flex gap-8 font-outfit text-[#C5C5C5] text-sm xs:text-[1rem] text-center justify-center">
             <Link to="https://animara.world/privacy-policy" className="hover:brightness-75 ">Privacy Policy</Link>
             <span>|</span>
             <Link to="https://animara.world/terms-and-conditions" className="hover:brightness-75 ">Terms & Conditions</Link>

@@ -88,11 +88,12 @@ export const guardChecker = async (
       assertAccountExists(account);
       solBalance = account.lamports;
     } catch (e) {
+      console.log(`check allowed failed with error: `, e);
       for (const eachGuard of guardsToCheck) {
         guardReturn.push({
           label: eachGuard.label,
           allowed: false,
-          reason: "Wallet does not exist. Do you have SOL?",
+          reason: "Wallet does not exist",
           maxAmount: 0
         });
       }

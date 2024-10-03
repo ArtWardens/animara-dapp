@@ -167,13 +167,16 @@ export const userSlice = createSlice({
     },
     resetPassword: (state) =>{
       state.resetPasswordLoading = true;
+      state.authLoading = true;
     },
     resetPasswordSuccess: (state, { payload }) => {
       state.resetPasswordLoading = false;
+      state.authLoading = false;
     },
     resetPasswordError: (state, { payload }) => {
       state.error = payload;
       state.resetPasswordLoading = false;
+      state.authLoading = false;
     },
     updateProfile: (state, { payload }) =>{
       state.updateProfileLoading = true;

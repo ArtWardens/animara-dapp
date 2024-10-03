@@ -76,8 +76,8 @@ const TaskList = ({ setIsOneTimeTaskOpen }) => {
           <div
             key={index}
             disabled={taskIdToComplete !== ''}
-            className={`${isTaskCompleted ? "" : "dark:hover:bg-[#0a4780] hover:border-1 hover:shadow-[0px_4px_4px_0px_#FFFBEF_inset,0px_-4px_4px_0px_rgba(255,249,228,0.48),0px_5px_4px_0px_rgba(232,140,72,0.48)] transition-all duration-300 hover:scale-105"} 
-            bg-[#003459] w-full py-2 px-3.5 rounded-md items-center flex space-x-6`}
+            className={`${isTaskCompleted ? "" : "dark:hover:bg-[#0a4780] hover:border-1 hover:shadow-[0px_4px_4px_0px_#FFFBEF_inset,0px_-4px_4px_0px_rgba(255,249,228,0.48),0px_5px_4px_0px_rgba(232,140,72,0.48)] transition-all duration-300 hover:scale-[1.025]"} 
+            bg-[#003459] w-full py-2 px-6 rounded-md items-center flex space-x-6`}
             onClick={() => isTaskCompleted ? null : handleTaskClick(task)}
           >
             <div className="w-[15%] flex justify-center items-center">
@@ -134,17 +134,18 @@ const TaskList = ({ setIsOneTimeTaskOpen }) => {
 
   return (
     <div
-      className={`fixed left-0 top-0 flex h-full min-h-screen w-full items-center justify-center bg-dark/90 px-4 py-4`}
+      className={`fixed left-0 top-0 flex h-full w-full items-center justify-center bg-dark/90 px-4 py-4 rounded-3xl`}
+      onClick={handleCloseModal}
       style={{
         zIndex: 90,
       }}
     >
       <div
         className={`
-              relative w-[100%] max-w-[1000px] max-h-[95%] px-[2rem] py-[6rem] rounded-[20px] text-center 
+              relative w-[100%] max-w-[1000px] px-[2rem] py-[6rem] rounded-[20px] text-center 
               bg-cover bg-no-repeat 
               md:px-[4rem] md:py-[14rem] md:bg-contain md:min-h-[750px] 
-              lg:px-[10rem] lg:py-[14rem] lg:bg-contain lg:min-h-[750px]
+              lg:px-[7rem] lg:py-[14rem] lg:bg-contain lg:min-h-[750px]
               ${showTaskModal ? 'animate-slideInFromBottom' : 'animate-slideOutToBottom'}`}
         style={{
           backgroundImage: `url(/assets/images/task_panel.webp)`,
@@ -154,17 +155,13 @@ const TaskList = ({ setIsOneTimeTaskOpen }) => {
         <div className="text-left grid w-full gap-1 pt-[1rem]
           sm:pt-0
           md:gap-4
-          lg:pt-0">
-          <button
-            className="w-[4rem] text-[#80E8FF] font-outfit font-semibold hover:brightness-75"
-            type="button"
-            onClick={handleCloseModal}
-          >
-            &lt; &nbsp; Back
-          </button>
-
-          <h3 className="text-[1.5rem] lg:text-[2rem] text-[#FFAA00]">Complete missions to earn free coins</h3>
-          <div className="max-h-[320px] grid grid-cols-1 gap-3 pr-4 overflow-y-auto custom-scrollbar
+          lg:pt-0"
+          onClick={(event) => {
+            event.stopPropagation();
+          }}
+        >
+          <h3 className="text-[1.5rem] lg:text-[2rem] pl-4 text-[#FFAA00]">Complete missions to earn free coins</h3>
+          <div className="max-h-[320px] grid grid-cols-1 gap-3 px-4 overflow-x-hidden overflow-y-auto custom-scrollbar
             md:max-h-[200px] 
             lg:max-h-[260px]">
             {renderOneTimeTaskList}
