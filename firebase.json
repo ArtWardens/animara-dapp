@@ -1,6 +1,7 @@
 {
   "hosting": {
     "public": "build",
+    "site": "animara-dapp-internal",
     "ignore": [
       "firebase.json",
       "**/.*",

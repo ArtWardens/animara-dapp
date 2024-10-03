@@ -245,6 +245,9 @@ function MintPage() {
         if (guard.reason === "Not enough SOL!") {
           setInsufficentBalance(true);
         }
+        if (guard.reason === "Wallet does not exist"){
+          setInsufficentBalance(true);
+        }
         if (guard.allowed) {
           allowed = true;
           break;
@@ -257,7 +260,7 @@ function MintPage() {
 
     checkEligibilityFunc();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [umi, checkEligibility, firstRun, currentUser]);
+  }, [umi, checkEligibility, firstRun, currentUser, walletAddr]);
 
   const handleMintOrBind = () => {
     if (currentUser?.walletAddr === '') {
@@ -971,7 +974,7 @@ function MintPage() {
                                 `bg-[#FFDC62] border-[#E59E69] `
                                 :
                                 `bg-slate-400 border-slate-400`}`}
-                            disabled={(!isAllowed || mintingNFT) && currentUser.walletAddr !== ''}
+                            disabled={(!isAllowed || mintingNFT) && currentUser?.walletAddr !== ''}
                             onClick={handleMintOrBind}>
                             {mintingNFT ?
                               <MoonLoader color={"#E59E69"} size={40} />

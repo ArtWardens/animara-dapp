@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
+import { useTranslation } from "react-i18next";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAppDispatch } from "../../hooks/storeHooks.js";
 import "../../styles/Home.module.css";
@@ -15,6 +16,7 @@ const SignupPage = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const isIOS = useIsIOS();
+  const { t: tLogin } = useTranslation("login");
   const location = useLocation();
   const isAuthLoading = useAuthLoading();
   const isAuthenticated = useUserAuthenticated();
@@ -55,7 +57,7 @@ const SignupPage = () => {
     );
   }, [username, email, password, confirmPassword, referralCode, agreeTNC]);
 
-  const togglePassword = () => {
+  const togglePasswordVisiblity = () => {
     setShowPassword(!showPassword);
   };
 
@@ -271,36 +273,71 @@ const SignupPage = () => {
           {!isEmailValid && <p className="text-red-500">{emailError}</p>}
 
           {/* Password */}
-          <div className="relative mt-2">
-            <div className="flex flex-row">
+          <div className="relative flex flex-col mt-2">
+            {/* password input */}
+            <div className="grid grid-rows-1">
+              {/* input */}
               <input
+                disabled={isAuthLoading}
                 type={showPassword ? "text" : "password"}
-                placeholder="Password"
+                placeholder={tLogin("Password")}
                 value={password}
                 onChange={handlePasswordChange}
-                className={`w-full outline-none  rounded-[0.625rem] border py-[0.875rem] px-[1rem] font-outfit text-dark-2 ${getPasswordInputBorderClass()}`}
+                className={`col-start-1 row-start-1 w-full outline-none rounded-[0.625rem] border border-[#245F89] py-[0.875rem] pl-[1rem] pr-10 font-outfit text-dark-2 ${getPasswordInputBorderClass()}`}
                 required
               />
-              <img
-                onClick={togglePassword}
-                src="../assets/images/eye.svg"
-                alt="show password"
-                className={`absolute top-1/2 right-3 -translate-y-1/2 -translate-x-3 ${isPasswordValid ? 'mt-0' : 'mt-[-1.5rem]'} `}
-              />
+              {/* show password button */}
+              <div className="col-start-1 row-start-1 flex mr-4 ml-auto my-auto">
+                {showPassword?
+                  <img
+                    onClick={togglePasswordVisiblity}
+                    src="/assets/icons/eye-open.svg"
+                    alt="show password"
+                    className="h-4 w-4"
+                  />
+                :
+                  <img
+                    onClick={togglePasswordVisiblity}
+                    src="/assets/icons/eye-close.svg"
+                    alt="show password"
+                    className="h-4 w-4"
+                  />}
+              </div>
             </div>
             {!isPasswordValid && <p className="text-red-500">{passwordError}</p>}
           </div>
 
           {/* Confirm Password */}
           <div className="relative mt-2">
-            <input
-              type={showPassword ? "text" : "password"}
-              placeholder="Confirm Password"
-              value={confirmPassword}
-              onChange={handleConfirmPasswordChange}
-              className={`w-full outline-none  rounded-[0.625rem] border py-[0.875rem] px-[1rem] font-outfit text-dark-2 ${getConfirmPasswordInputBorderClass()}`}
-              required
-            />
+            <div className="grid grid-rows-1">
+              {/* input */}
+              <input
+                disabled={isAuthLoading}
+                type={showPassword ? "text" : "password"}
+                placeholder="Confirm Password"
+                value={confirmPassword}
+                onChange={handleConfirmPasswordChange}
+                className={`col-start-1 row-start-1 w-full outline-none rounded-[0.625rem] border border-[#245F89] py-[0.875rem] pl-[1rem] pr-10 font-outfit text-dark-2 ${getConfirmPasswordInputBorderClass()}`}
+                required
+              />
+              {/* show password button */}
+              <div className="col-start-1 row-start-1 flex mr-4 ml-auto my-auto">
+                {showPassword?
+                  <img
+                    onClick={togglePasswordVisiblity}
+                    src="/assets/icons/eye-open.svg"
+                    alt="show password"
+                    className="h-4 w-4"
+                  />
+                :
+                  <img
+                    onClick={togglePasswordVisiblity}
+                    src="/assets/icons/eye-close.svg"
+                    alt="show password"
+                    className="h-4 w-4"
+                  />}
+              </div>
+            </div>
             {!doPasswordsMatch && (
               <p className="text-red-500">Passwords do not match</p>
             )}

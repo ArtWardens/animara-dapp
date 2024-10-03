@@ -171,23 +171,40 @@ const LoginPage = () => {
               className="mt-3 w-full outline-none  rounded-[0.625rem] border border-[#245F89] py-[0.875rem] px-[1rem] font-outfit text-dark-2"
             />
             {/* Password */}
-            <div className="relative mt-2">
-              <input
-                disabled={isAuthLoading}
-                type={showPassword ? "text" : "password"}
-                placeholder={tLogin("Password")}
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="w-full outline-none  rounded-[0.625rem] border border-[#245F89] py-[0.875rem] px-[1rem] font-outfit text-dark-2"
-                required
-              />
-              <img
-                onClick={togglePasswordVisiblity}
-                src="../assets/images/eye.svg"
-                alt="show password"
-                className="absolute top-1/2 right-3 -translate-y-1/2 -translate-x-3 "
-              />
-              <div className="flex h-auto mt-2 align-item-send">
+            <div className="relative flex flex-col mt-2">
+              {/* password input */}
+              <div className="grid grid-rows-1">
+                {/* input */}
+                <input
+                  disabled={isAuthLoading}
+                  type={showPassword ? "text" : "password"}
+                  placeholder={tLogin("Password")}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="col-start-1 row-start-1 w-full outline-none rounded-[0.625rem] border border-[#245F89] py-[0.875rem] pl-[1rem] pr-10 font-outfit text-dark-2"
+                  required
+                />
+                {/* show password button */}
+                <div className="col-start-1 row-start-1 flex mr-4 ml-auto my-auto">
+                  {showPassword?
+                    <img
+                      onClick={togglePasswordVisiblity}
+                      src="/assets/icons/eye-open.svg"
+                      alt="show password"
+                      className="h-4 w-4"
+                    />
+                  :
+                    <img
+                      onClick={togglePasswordVisiblity}
+                      src="/assets/icons/eye-close.svg"
+                      alt="show password"
+                      className="h-4 w-4"
+                    />}
+                </div>
+              </div>
+
+              {/* forgot password */}
+              <div className="flex h-auto mt-2 align-items-end">
                 <Link
                   to="/forgot-password"
                   className="ml-auto hover:brightness-75"
