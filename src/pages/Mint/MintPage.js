@@ -536,11 +536,11 @@ function MintPage() {
                     <img 
                       src={videoSource}
                       alt="ghost"
-                      className="mx-auto rounded-3xl"
+                      className="mx-auto rounded-3xl pointer-events-none"
                     />
                     :
                     <video
-                      className="mx-auto rounded-3xl"
+                      className="mx-auto rounded-3xl pointer-events-none"
                       controls={false}
                       autoPlay
                       loop
@@ -691,16 +691,17 @@ function MintPage() {
                     </div>
 
                     {/* Mobile minting row*/}
-                    <div className="-mb-4 w-full flex flex-row items-center justify-evenly ml-[-2rem] xs:ml-0">
-                  {/* VIP pass button */}
-                  <div className="w-auto mr-[-2rem] mb-[5rem] z-[50]"> 
-                    <img
-                      src="/assets/icons/vip-pass.webp"
-                      alt="vip pass icon"
-                      className="w-full h-auto transition-transform duration-200 scale-125 hover:scale-110 "
-                      onClick={handlePassClick} 
-                    />
-                  </div>
+                    {getRemainingNFTs() !== '' 
+                    ? <div className="-mb-4 w-full flex flex-row items-center justify-evenly ml-[-2rem] xs:ml-0">
+                      {/* VIP pass button */}
+                      <div className="w-auto mr-[-2rem] mb-[5rem] z-[50]"> 
+                        <img
+                          src="/assets/icons/vip-pass.webp"
+                          alt="vip pass icon"
+                          className="w-full h-auto transition-transform duration-200 scale-125 hover:scale-110 "
+                          onClick={handlePassClick} 
+                        />
+                      </div>
 
                       {/* Mobile mint button */}
                       <div
@@ -755,7 +756,8 @@ function MintPage() {
                           onClick={handleInfoClick} 
                         />
                       </div>
-                    </div>
+                      </div>
+                    : <></>}
 
                     <WalletInfo label="Using Wallet" />
                   </div>
@@ -799,7 +801,7 @@ function MintPage() {
 
               {/* Desktop View */}
               <div
-                className={`w-full xl:w-[50%] p-3 hidden lg:block rounded-3xl transition-all duration-500
+                className={`w-full xl:w-[50%] p-3 hidden xl:block rounded-3xl transition-all duration-500
                   ${slideMintPanel ? `translate-x-0 opacity-100` : `translate-x-60 opacity-0`}`}
                 style={{
                   border: "2px solid var(--Color, #F4FBFF)",
@@ -830,7 +832,7 @@ function MintPage() {
 
                 {/* mint panel content */}
                 <div
-                  className="flex flex-col items-center rounded-2xl bg-opacity-75 place-content-center p-6 min-h-[60vh] lg:min-h-[80dvh] 2xl:min-h-[50dvh]"
+                  className="flex flex-col items-center rounded-2xl bg-opacity-75 place-content-center p-6 h-full"
                   style={{
                     backgroundImage:
                       'url("/assets/images/clicker-character/mintBBG.webp")',
@@ -936,72 +938,74 @@ function MintPage() {
                   </div>
 
                   {/* Desktop Minting row */}
-                  <div className="w-full flex flex-row items-center justify-center">
-                    {/* VIP pass button */}
-                    <div className="w-[30%]"> 
-                      <img
-                        src="/assets/icons/vip-pass.webp"
-                        alt="vip pass icon"
-                        className="w-full h-full transition-transform duration-200 hover:scale-110 "
-                        onClick={handlePassClick} 
-                      />
-                    </div>
+                  {getRemainingNFTs() !== '' 
+                  ? <div className="w-full flex flex-row items-center justify-center">
+                      {/* VIP pass button */}
+                      <div className="w-[30%]"> 
+                        <img
+                          src="/assets/icons/vip-pass.webp"
+                          alt="vip pass icon"
+                          className="w-full h-full transition-transform duration-200 hover:scale-110 "
+                          onClick={handlePassClick} 
+                        />
+                      </div>
 
-                    {/* Minting button */}
-                    <div
-                      className={`w-[40%] justify-center items-center inline-flex transition-transform duration-200 
-                          ${(isAllowed && !mintingNFT) || currentUser?.walletAddr === '' ? `hover:scale-105` : ``}`}
-                      onMouseEnter={() => isAllowed ? setGhostExcited(true) : setGhostExcited(false)}
-                      onMouseLeave={() => !mintingNFT ? setGhostExcited(false) : setGhostExcited(true)}
-                    >
-                      {!isPhantomInstalled ? 
-                        <button
-                          className="h-[80px] w-[250px] m-auto"
-                          onClick={openPhantom}>
-                          <span className=' text-red-300 text-center text-xl lg:text-3xl'>
-                            {`Open Phantom Wallet`}    
-                          </span>
-                        </button>
-                        :
-                        loadingCandyMachine ?
-                          <span className='h-20 m-auto text-amber-300 text-xl lg:text-3xl animate-pulse'>
-                            {`Loading`}  
-                          </span>
-                          :
+                      {/* Minting button */}
+                      <div
+                        className={`w-[40%] justify-center items-center inline-flex transition-transform duration-200 
+                            ${(isAllowed && !mintingNFT) || currentUser?.walletAddr === '' ? `hover:scale-105` : ``}`}
+                        onMouseEnter={() => isAllowed ? setGhostExcited(true) : setGhostExcited(false)}
+                        onMouseLeave={() => !mintingNFT ? setGhostExcited(false) : setGhostExcited(true)}
+                      >
+                        {!isPhantomInstalled ? 
                           <button
-                            className={`h-[80px] w-[250px] rounded-full border justify-center items-center inline-flex shadow-[0px_4px_4px_0px_#FFFBEF_inset,0px_-4px_4px_0px_rgba(255,249,228,0.48),0px_5px_4px_0px_rgba(232,140,72,0.48)] 
-                              ${isAllowed || currentUser?.walletAddr === '' ?
-                                `bg-[#FFDC62] border-[#E59E69] `
-                                :
-                                `bg-slate-400 border-slate-400`}`}
-                            disabled={(!isAllowed || mintingNFT) && currentUser?.walletAddr !== ''}
-                            onClick={handleMintOrBind}>
-                            {mintingNFT ?
-                              <MoonLoader color={"#E59E69"} size={40} />
-                              :
-                              <div
-                                className="text-center text-white text-2xl font-normal"
-                                style={{
-                                  textShadow: "0px 2px 0.6px rgba(240, 139, 0, 0.66)",
-                                }}
-                              >
-                                <span className="">{currentUser?.walletAddr === '' ? `Bind Wallet` : isAllowed ? `Mint Now` : insufficentBalance ? `Insufficient Funds` : `Mint Disabled`}</span>
-                              </div>
-                            }
+                            className="h-[80px] w-[250px] m-auto"
+                            onClick={openPhantom}>
+                            <span className=' text-red-300 text-center text-xl lg:text-3xl'>
+                              {`Open Phantom Wallet`}    
+                            </span>
                           </button>
-                      }
-                    </div>
+                          :
+                          loadingCandyMachine ?
+                            <span className='h-20 m-auto text-amber-300 text-xl lg:text-3xl animate-pulse'>
+                              {`Loading`}  
+                            </span>
+                            :
+                            <button
+                              className={`h-[80px] w-[250px] rounded-full border justify-center items-center inline-flex shadow-[0px_4px_4px_0px_#FFFBEF_inset,0px_-4px_4px_0px_rgba(255,249,228,0.48),0px_5px_4px_0px_rgba(232,140,72,0.48)] 
+                                ${isAllowed || currentUser?.walletAddr === '' ?
+                                  `bg-[#FFDC62] border-[#E59E69] `
+                                  :
+                                  `bg-slate-400 border-slate-400`}`}
+                              disabled={(!isAllowed || mintingNFT) && currentUser?.walletAddr !== ''}
+                              onClick={handleMintOrBind}>
+                              {mintingNFT ?
+                                <MoonLoader color={"#E59E69"} size={40} />
+                                :
+                                <div
+                                  className="text-center text-white text-2xl font-normal"
+                                  style={{
+                                    textShadow: "0px 2px 0.6px rgba(240, 139, 0, 0.66)",
+                                  }}
+                                >
+                                  <span className="">{currentUser?.walletAddr === '' ? `Bind Wallet` : isAllowed ? `Mint Now` : insufficentBalance ? `Insufficient Funds` : `Mint Disabled`}</span>
+                                </div>
+                              }
+                            </button>
+                        }
+                      </div>
 
-                    {/* Info button */}
-                    <div className="w-[30%]"> 
-                      <img
-                        src="/assets/icons/info.webp"
-                        alt="info icon"
-                        className="w-[2rem] h-auto ml-[1rem] transition-transform duration-200 hover:scale-110 "
-                        onClick={handleInfoClick} 
-                      />
-                    </div>
-                  </div>
+                      {/* Info button */}
+                      <div className="w-[30%]"> 
+                        <img
+                          src="/assets/icons/info.webp"
+                          alt="info icon"
+                          className="w-[2rem] h-auto ml-[1rem] transition-transform duration-200 hover:scale-110 "
+                          onClick={handleInfoClick} 
+                        />
+                      </div>
+                    </div> 
+                  : <></>}
 
                   {/* wallet info */}
                   <WalletInfo label="Using Wallet" />

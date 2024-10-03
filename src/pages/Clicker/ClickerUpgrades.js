@@ -105,6 +105,7 @@ const ClickerUpgrades = ({ onClose }) => {
             backdropFilter: "blur(15px)",
             zIndex: 100,
           }}
+          onClick={(e) => e.stopPropagation()}
         >
           <div className="absolute flex w-full justify-between -top-9">
             <img
@@ -138,10 +139,7 @@ const ClickerUpgrades = ({ onClose }) => {
             </div>
 
             {/* this line got problem */}
-            <div className="h-full flex flex-col justify-start overflow-y-auto mt-[3rem]"
-            onClick={(event) => {
-              event.stopPropagation();
-            }}> 
+            <div className="h-full flex flex-col justify-start overflow-y-auto mt-[3rem]"> 
               <div className="w-full flex flex-row flex-wrap items-center justify-between mt-[2rem] px-[4rem]">
                 <div className="xl:w-[30%]">
                   <p className="" >
