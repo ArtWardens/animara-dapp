@@ -147,12 +147,12 @@ const EditProfilePage = () => {
             <div className="w-full px-[2rem]">
               {/* Back button */}
               <div className="w-full flex items-start justify-start mb-2">
-                <a
+                <button
                   onClick={handleBackClick}
                   className="text-white text-sm font-outfit tracking-wide hover:text-amber-500 transition-colors "
                 >
                   &lt;&nbsp;Back
-                </a>
+                </button>
               </div>
               {/* header */}
               <div className="w-full xl:w-[100%] header flex justify-between items-center space-x-[2rem] lg:space-x-[8rem]">
@@ -178,46 +178,41 @@ const EditProfilePage = () => {
                 </div>
                 {/* Profile picture */}
                 <div
-                  className="flex w-24 h-24 items-center justify-center rounded-full border overflow-hidden relative group"
+                  className="flex w-24 h-24 items-center justify-center rounded-full border group relative"
                   onClick={() => {
                     inputFile.current?.click();
                   }}
-                  style={{
-                    flexShrink: 0,
-                    borderRadius: "500px",
-                    border: "2.5px solid var(--80E8FF, #80E8FF)",
-                    background: `url(${imageData || user?.photoUrl}) black 50% / cover no-repeat`,
-                  }}
                 >
-                  {user?.photoUrl ? (
+                  <div
+                    className={`flex items-center justify-center rounded-full border overflow-hidden group
+                       w-24 h-24 absolute
+                       xs:w-40 xs:h-40 lg:w-40 lg:h-40 
+                      ${user?.ownsNFT && user?.walletAddr !== '' ? 'nft-profile-border right-0' : 'profile-border -right-4'}
+                    `}
+                  >
+                    {user?.photoUrl ? (
+                      <img
+                        src={imageData || getProfilePic()}
+                        alt="pfp"
+                        className="justify-self-center rounded-full w-12 xs:w-24 lg:w-24 group-hover:brightness-[0.55] transition-all duration-300"
+                        onError={(e) => {
+                          e.target.onerror = null;
+                          e.target.src = "/assets/images/activeDog.webp";
+                        }}
+                      />
+                    ) : (
+                      <img
+                        src="/assets/images/activeDog.webp"
+                        alt="pfp"
+                        className="justify-self-center rounded-full w-12 xs:w-24 lg:w-24 group-hover:brightness-[0.55] transition-all duration-300"
+                      />
+                    )}
                     <img
-                      src={imageData || getProfilePic()}
-                      alt="pfp"
-                      className="group-hover:brightness-75 h-full w-full object-cover"
-                      onError={(e) => {
-                        e.target.onerror = null;
-                        e.target.src = "/assets/images/activeDog.webp";
-                      }}
+                      src="/assets/icons/edit.webp"
+                      alt="edit"
+                      className="invisible group-hover:visible absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 text-white fill-white"
                     />
-                  ) : (
-                    <img
-                      src="/assets/images/activeDog.webp"
-                      alt="pfp"
-                      className="justify-self-center rounded-full w-24 group-hover:brightness-[0.55] transition-all duration-300"
-                      style={{
-                        border: '4px solid var(--80E8FF, #80E8FF)',
-                        background: '#111928 50%',
-                        backgroundSize: 'auto',
-                        backgroundRepeat: 'repeat',
-                        display: 'block',
-                      }}
-                    />
-                  )}
-                  <img
-                    src="/assets/icons/edit.webp"
-                    alt="edit"
-                    className="invisible group-hover:visible absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 text-white fill-white"
-                  />
+                  </div>
                 </div>
                 <input
                   type="file"

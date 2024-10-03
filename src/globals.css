@@ -203,11 +203,22 @@ body:active {
 }
 
 /* Header */
+.profile-border {
+  background-image: url('../public/assets/images/profile_border.webp');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+.nft-profile-border {
+  background-image: url('../public/assets/images/nft_profile_border.webp');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
 .default-border {
-  border: 3px solid #F4FBFF;
-  border-radius: 500px 200px 200px 500px;
-  background: var(--0163BE, #0163BE);
-  box-shadow: 3px 2px 0px 0px #517296 inset;
+  border-radius: 50px;
+  background: linear-gradient(to left, #003459 30%, #2D72FF);
+  padding: 4px 25px 4px 0;
 }
 
 @property --angle {
@@ -220,7 +231,8 @@ body:active {
   --c1: #F4FBFF;
   --c2: transparent;
   z-index: 91;
-  border-radius: 500px 200px 200px 500px;
+  border-radius: 50px;
+  padding: 7px 25px 7px 0;
   /* Fallback for older browsers / version */
   background: linear-gradient(
     20deg,
@@ -229,7 +241,7 @@ body:active {
     #ffffff 33%,
     transparent 49.5%,
     transparent 66%,
-    #0163be60 85.5%,
+    #FFB800 85.5%,
     #ffffff 100%
   )
   0 100% / 100% 200%;
@@ -249,22 +261,28 @@ body:active {
   inset: 3px;
   z-index: -1;
   border-radius: inherit;
-  background: var(--0163BE, #0163be);
+  background: linear-gradient(to left, #573A00 30%, #FFB800);
 }
 
 .glowing-border:hover {
   background: linear-gradient(
     20deg,
-    #00f8f1,
-    #ffbd1e20 16.5%,
+    #ffff4d,
+    #FFB800 16.5%,
     #fe848f 33%,
-    #fe848f20 49.5%,
-    #00f8f1 66%,
-    #0163be60 85.5%,
+    #573A00 49.5%,
+    #ffff4d 66%,
+    #FFB800 85.5%,
     #fe848f 100%
   )
   0 100% / 100% 200%;
   animation: header-glow 5s infinite linear;
+}
+
+.glowing-border:hover .user-detail-1,
+.glowing-border:hover .user-detail-2 {
+  background: none;
+  background-color: transparent;
 }
 
 .glowing-border:hover::before,
