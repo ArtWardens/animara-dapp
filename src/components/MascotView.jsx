@@ -252,7 +252,7 @@ const MascotView = ({ openModal, setOpenModal }) => {
                 <img
                   src={src}
                   alt={`Game mascot ${index}`}
-                  className={`transition-opacity max-h-[45dvh] xs:max-h-[60dvh] lg:max-h-[60dvh] h-full w-full scale-110 lg:scale-110
+                  className={`transition-opacity lg:max-h-[60dvh] h-full w-full scale-110 lg:scale-110
                     ${imgIndex === index ? 'block' : 'hidden'}
                   `}
                 />

@@ -75,7 +75,7 @@ const ClickerView = () => {
   };
 
   return (
-    <div className="w-full min-w-[450px] max-w-[90dvw] min-h-[700px] xs:min-h-[800px] flex justify-center mt-[-1rem]">
+    <div className="w-full min-w-[450px] max-w-[90dvw] xs:min-h-[800px] flex justify-center mt-[-1rem]">
       <div 
         className="relative w-full max-h-[90dvh] h-auto rounded-3xl p-3 transition-all duration-300"
         style={{

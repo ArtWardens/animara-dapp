@@ -21,7 +21,7 @@ function EnergyRegeneration({ isOneTimeTaskOpen, setIsOneTimeTaskOpen }) {
   const [isNoticeOpen, setIsNoticeOpen] = useState(false);
   const [isLeaderBoardOpen, setIsLeaderBoardOpen] = useState(false);
 
-  // Toggle notice component
+  // Toggle leaderboard component
   const handleLeaderBoardClick = () => {
     setIsLeaderBoardOpen(true); 
   };
@@ -135,7 +135,7 @@ function EnergyRegeneration({ isOneTimeTaskOpen, setIsOneTimeTaskOpen }) {
         </div>
 
         {/* Leaderboard button */}
-        <div className={`flex items-center justify-center ${
+        <div className={`hidden lg:flex items-center justify-center ${
             showLeaderBoardOption ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0'
           }`}>
           <img 
