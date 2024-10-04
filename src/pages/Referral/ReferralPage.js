@@ -175,11 +175,11 @@ function ReferralPage() {
   }, [currentUser]);
 
   const getTotalClaimable = useCallback(() => {
-    if (!currentUser) { return `no-claim`; }
+    if (!currentUser) { return `0 sol`; }
 
 
     if (basicClaimable + nftClaimable === 0){
-      return `no-claim`;
+      return `0 sol`;
     }else{
       if (currentUser.ownsNFT){
         // selectively combine both claimable amt based on if user owns nft
@@ -376,10 +376,10 @@ function ReferralPage() {
             <div className={`hidden lg:flex w-full items-center transition-all duration-500
                 ${showPanel ? `opacity-100 scale-100` : `opacity-0 scale-0`}`}>
               {/* referral stats & cashback */}
-              <div className="w-[60%] flex hover:scale-105 transition-all duration-500"
+              <div className="w-[60%] flex "
               >
                 {/* Referral stats */}
-                <div className="w-[65%] h-auto aspect-[2.33] border-dashed border-r-4 border-transparent">
+                <div className="w-[70%] h-auto aspect-[2.33] border-dashed border-r-4 border-transparent transition-all duration-300 hover:scale-105">
                   {/* card background */}
                   <div
                     className="flex flex-col w-full h-full py-6"
@@ -404,27 +404,17 @@ function ReferralPage() {
                           </div>
                         </div>
                         :
-                        <div className="flex ml-9">
+                        <div className="flex flex-row ml-9">
                           {/* NFT Purchase */}
-                          <div className="flex w-1/2">
+                          <div className="flex w-1/3">
                             <div className="flex flex-col justify-start items-start">
                               <p
                                 className="text-amber-500 text-xl lg:text-3xl xl:text-5xl"
-                                style={{
-                                  WebkitTextStrokeWidth: '2px',
-                                  WebkitTextStrokeColor: 'var(--Color-11, #FFF)',
-                                  textShadow: '0px 2px 4px rgba(0, 0, 0, 0.25)',
-                                }}
                               >
                                 {nftPurchasedReferralCount}
                               </p>
                               <p
                                 className="text-amber-500 text-base xl:text-xl leading-relaxed"
-                                style={{
-                                  WebkitTextStrokeWidth: '0.75px',
-                                  WebkitTextStrokeColor: 'var(--Color-11, #FFF)',
-                                  textShadow: '0px 2px 4px rgba(0, 0, 0, 0.25)',
-                                }}
                               >
                                 NFT MINTS
                               </p>
@@ -434,25 +424,15 @@ function ReferralPage() {
                             </div>
                           </div>
                           {/* Friends invited */}
-                          <div className="flex w-1/2">
+                          <div className="flex w-1/3 mr-3">
                             <div className="flex flex-col justify-start items-start">
                               <p
-                                className="text-sky-700 text-xl lg:text-3xl xl:text-5xl"
-                                style={{
-                                  WebkitTextStrokeWidth: '2px',
-                                  WebkitTextStrokeColor: 'var(--Color-11, #FFF)',
-                                  textShadow: '0px 2px 4px rgba(0, 0, 0, 0.25)',
-                                }}
+                                className="text-[#0163BE] text-xl lg:text-3xl xl:text-5xl"
                               >
                                 {referralCount}
                               </p>
                               <p
-                                className="text-sky-700 text-base xl:text-xl leading-relaxed"
-                                style={{
-                                  WebkitTextStrokeWidth: '0.75px',
-                                  WebkitTextStrokeColor: 'var(--Color-11, #FFF)',
-                                  textShadow: '0px 2px 4px rgba(0, 0, 0, 0.25)',
-                                }}
+                                className="text-[#0163BE] text-base xl:text-xl leading-relaxed"
                               >
                                 FRIENDS INVITED
                               </p>
@@ -461,17 +441,36 @@ function ReferralPage() {
                               </div>
                             </div>
                           </div>
+                          {/* Claimable cashback */}
+                          <div className="flex w-1/3">
+                            <div className="flex flex-col justify-start items-start">
+                              <p className="text-[#FFAA00] text-xl lg:text-3xl xl:text-5xl">
+                                {getTotalClaimable() == '0 sol' ? '0' : getTotalClaimable()} <span className="text-base font-normal uppercase">sol</span>
+                              </p>
+                              <p
+                                className="text-[#FFAA00] text-base xl:text-lg font-normal leading-relaxed"
+                              >
+                                total claimed
+                              </p>
+                              <p className="w-[80%] text-neutral-700 text-[0.5rem] xl:text-xs font-semibold font-outfit mb-2">
+                                Track your claimed earnings in total claimed.
+                              </p>
+                              <p className="text-[#00B9E1] text-sm font-normal font-outfit underline transition-all duration-500 hover:scale-105">
+                                View claim history
+                              </p>
+                            </div>
+                          </div>
                         </div>}
                     </div>
                   </div>
                 </div>
 
                 {/* Cashback */}
-                <div className="w-[35%] h-auto aspect-[1.246]">
+                <div className="w-[35%] h-auto aspect-[1.246] transition-all duration-300 hover:scale-105">
                   <div
                     className="h-full aspect-[1.246] place-content-center"
                     style={{
-                      backgroundImage: 'url("/assets/images/clicker-character/ticketWeb01.webp")',
+                      backgroundImage: getTotalClaimable() === '0 sol' ? 'url("/assets/images/clicker-character/ticket-black.webp")' : 'url("/assets/images/clicker-character/ticketWeb01.webp")',
                       backgroundSize: 'contain',
                       backgroundPosition: 'center',
                       backgroundRepeat: 'no-repeat',
@@ -484,10 +483,50 @@ function ReferralPage() {
                         </div>
                       </div>
                       :
-                      getTotalClaimable() === 'no-claim' ?
-                        <div className="w-full h-full p-4 flex-col place-content-center inline-flex">
-                          <span className="text-center w-full">You claimed everything</span>
-                          <span className="text-center w-full text-xs font-outfit">Get your referrals to mint NFT to claim more!</span>
+                      getTotalClaimable() === '0 sol' ?
+                        <div className="w-full h-full p-4 flex-col justify-center items-center inline-flex">
+                          {/* Claimable Amount */}
+                          <div className="flex-col justify-center items-center flex">
+                            <div className="mb-2 text-center text-sm font-normal leading-none tracking-wide">NFT Cashback</div>
+                            <div
+                              className="my-2 text-center text-white text-2xl xl:text-4xl leading-8 tracking-wide"
+                              style={{
+                                textShadow: '0px 2px 4px rgba(0, 0, 0, 0.25)',
+                              }}
+                            >
+                              {getTotalClaimable()}
+                            </div>
+                          </div>
+
+                          {/* Description */}
+                          <div className="w-full flex items-center justify-center">
+                            <p className="text-white text-base text-center font-semibold font-outfit tracking-normal">
+                              Claim cashbacks by inviting friends to buy NFTs!
+                            </p>
+                          </div>
+
+                          {/* Claim button */}
+                          <div className={`my-auto justify-center items-center inline-flex transition-transform duration-200 hover:scale-105`}>
+                            <button
+                              className={`border-slate-300 bg-slate-300 h-[48px] w-[160px] rounded-full border justify-center items-center inline-flex shadow-[0px_4px_4px_0px_#FFFBEF_inset,0px_-4px_4px_0px_rgba(265,249,228,0.48),0px_5px_4px_0px_rgba(0,0,0,0.48)] cursor-pointer`}
+                              onClick={handleClaimCashbackOrBind}>
+                              {claimCashbackLoading ?
+                                <div className="h-18 w-16 flex justify-center items-center">
+                                  <MoonLoader size={25} color={'#d97706'} />
+                                </div>
+                                :
+                                <div
+                                  className={`text-center text-white 
+                                  ${!currentUser.walletAddr ? 'text-xl' :  getTotalClaimable() === '0 sol' ? 'text-sm ' : 'text-2xl'}`}
+                                  style={{
+                                    textShadow: '0px 2px 0.6px rgb(71, 85, 105, 0.66)'
+                                  }}
+                                >
+                                  <span className={`hover:text-shadow-none`}>{claimCashbackLoading ? 'Loading' : !currentUser.walletAddr ? `Bind Wallet` : getTotalClaimable() === '0 sol' ? 'Claimed Everything' : getTotalClaimable() === '-' ? 'Mint Now' : `Claim`}</span>
+                                </div>
+                              }
+                            </button>
+                          </div>
                         </div>
                         :
                         <div className="w-full h-full p-4 flex-col justify-center items-center inline-flex">
@@ -508,11 +547,11 @@ function ReferralPage() {
 
                           {/* Claim button */}
                           <div className={`my-auto justify-center items-center inline-flex transition-transform duration-200
-                            ${claimCashbackLoading ||  getTotalClaimable() === 'no-claim' ? '' : 'hover:scale-105'}`}>
+                            ${claimCashbackLoading ||  getTotalClaimable() === '0 sol' ? '' : 'hover:scale-105'}`}>
                             <button
-                              disabled={claimCashbackLoading ||  getTotalClaimable() === 'no-claim'}
+                              disabled={claimCashbackLoading ||  getTotalClaimable() === '0 sol'}
                               className={`h-[48px] w-[160px] rounded-full border justify-center items-center inline-flex shadow-[0px_4px_4px_0px_#FFFBEF_inset,0px_-4px_4px_0px_rgba(255,249,228,0.48),0px_5px_4px_0px_rgba(232,140,72,0.48)] cursor-pointer
-                                ${claimCashbackLoading ||  getTotalClaimable() === 'no-claim' ?
+                                ${claimCashbackLoading ||  getTotalClaimable() === '0 sol' ?
                                   " border-slate-300 bg-slate-300"
                                   :
                                   " border-amber-600 bg-amber-300 hover:bg-amber-400"}`}
@@ -524,16 +563,16 @@ function ReferralPage() {
                                 :
                                 <div
                                   className={`text-center text-white 
-                                  ${!currentUser.walletAddr ? 'text-xl' : claimCashbackLoading ||  getTotalClaimable() === 'no-claim' ? 'text-sm ' : 'text-2xl'}`}
+                                  ${!currentUser.walletAddr ? 'text-xl' : claimCashbackLoading ||  getTotalClaimable() === '0 sol' ? 'text-sm ' : 'text-2xl'}`}
                                   style={{
-                                    textShadow: `${claimCashbackLoading ||  getTotalClaimable() === 'no-claim' ?
+                                    textShadow: `${claimCashbackLoading ||  getTotalClaimable() === '0 sol' ?
                                       '0px 2px 0.6px rgb(71, 85, 105, 0.66)'
                                       :
                                       '0px 2px 0.6px rgba(240, 139, 0, 0.66)'
                                       }`
                                   }}
                                 >
-                                  <span className={`hover:text-shadow-none ${claimCashbackLoading ? 'animate-pulse': ''}`}>{claimCashbackLoading ? 'Loading' : !currentUser.walletAddr ? `Bind Wallet` : getTotalClaimable() === 'no-claim' ? 'Claimed Everything' : getTotalClaimable() === '-' ? 'Mint Now' : `Claim`}</span>
+                                  <span className={`hover:text-shadow-none ${claimCashbackLoading ? 'animate-pulse': ''}`}>{claimCashbackLoading ? 'Loading' : !currentUser.walletAddr ? `Bind Wallet` : getTotalClaimable() === '0 sol' ? 'Claimed Everything' : getTotalClaimable() === '-' ? 'Mint Now' : `Claim`}</span>
                                 </div>
                               }
                             </button>
@@ -745,7 +784,7 @@ function ReferralPage() {
                           </div>
                         </div>
                         :
-                        getTotalClaimable() === 'no-claim' ?
+                        getTotalClaimable() === '0 sol' ?
                           <div className="w-full h-full p-4 flex-col place-content-center inline-flex">
                             <span className="text-center w-full">You claimed everything</span>
                             <span className="text-center w-full text-xs font-outfit">Get your referrals to mint NFT to claim more!</span>
@@ -769,14 +808,14 @@ function ReferralPage() {
 
                             {/* Claim button */}
                             <div className={`my-auto justify-center items-center inline-flex transition-transform duration-200
-                              ${claimCashbackLoading || getTotalClaimable() === 'no-claim' ?
+                              ${claimCashbackLoading || getTotalClaimable() === '0 sol' ?
                                 ''
                                 :
                                 'hover:scale-105'}`}>
                               <button
-                                disabled={claimCashbackLoading || getTotalClaimable() === 'no-claim'}
+                                disabled={claimCashbackLoading || getTotalClaimable() === '0 sol'}
                                 className={`h-[4rem] w-[10rem] rounded-full border justify-center items-center inline-flex shadow-[0px_4px_4px_0px_#FFFBEF_inset,0px_-4px_4px_0px_rgba(255,249,228,0.48),0px_5px_4px_0px_rgba(232,140,72,0.48)] cursor-pointer
-                                  ${claimCashbackLoading || getTotalClaimable() === 'no-claim' ?
+                                  ${claimCashbackLoading || getTotalClaimable() === '0 sol' ?
                                     " border-slate-300 bg-slate-300"
                                     :
                                     " border-amber-600 bg-amber-300 hover:bg-amber-400 hover:pl-[24px] hover:pr-[20px] hover:shadow-[0px_4px_4px_0px_rgba(255,210,143,0.61)_inset,0px_4px_4px_0px_rgba(136,136,136,0.48)]"}`}
@@ -788,16 +827,16 @@ function ReferralPage() {
                                   :
                                   <div
                                     className={`text-center 
-                                    ${currentUser.walletAddr === '' ? 'text-white text-xl' : claimCashbackLoading || getTotalClaimable() === 'no-claim' ? 'text-slate-100 text-sm ' : 'text-white text-2xl'}`}
+                                    ${currentUser.walletAddr === '' ? 'text-white text-xl' : claimCashbackLoading || getTotalClaimable() === '0 sol' ? 'text-slate-100 text-sm ' : 'text-white text-2xl'}`}
                                     style={{
-                                      textShadow: `${claimCashbackLoading || getTotalClaimable() === 'no-claim' ?
+                                      textShadow: `${claimCashbackLoading || getTotalClaimable() === '0 sol' ?
                                         '0px 2px 0.6px rgb(71, 85, 105, 0.66)'
                                         :
                                         '0px 2px 0.6px rgba(240, 139, 0, 0.66)'
                                         }`
                                     }}
                                   >
-                                    <span className={`hover:text-shadow-none ${claimCashbackLoading ? 'animate-pulse': ''}`}>{claimCashbackLoading ? 'Loading' : !currentUser.walletAddr ? `Bind Wallet` : getTotalClaimable() === 'no-claim' ? 'Claimed Everything' : getTotalClaimable() === '-' ? 'Mint Now' : `Claim`}</span>
+                                    <span className={`hover:text-shadow-none ${claimCashbackLoading ? 'animate-pulse': ''}`}>{claimCashbackLoading ? 'Loading' : !currentUser.walletAddr ? `Bind Wallet` : getTotalClaimable() === '0 sol' ? 'Claimed Everything' : getTotalClaimable() === '-' ? 'Mint Now' : `Claim`}</span>
                                   </div>
                                 }
                               </button>

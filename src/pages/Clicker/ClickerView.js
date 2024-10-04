@@ -100,9 +100,9 @@ const ClickerView = () => {
   };
 
   return (
-    <div className="w-full min-w-[450px] max-w-[90dvw] min-h-[650px] flex justify-center mt-[-1rem]">
-      <div
-        className="relative w-full max-h-[90dvh] h-auto rounded-3xl p-3 transition-all duration-300"
+    <div className="w-full min-w-[450px] max-w-[90dvw] xs:min-h-[800px] flex justify-center mt-[-1rem] lg:mt-0">
+      <div 
+        className="relative w-full min-h-[800px] max-h-[90dvh] h-auto rounded-3xl p-3 transition-all duration-300"
         style={{
           border: '2px solid var(--Color, #F4FBFF)',
           background: 'rgba(155, 231, 255, 0.58)',
@@ -123,7 +123,7 @@ const ClickerView = () => {
           />
         </div>
 
-        <div className="w-full min-h-[60dvh] xl:min-h-[80dvh] h-full flex flex-col justify-start items-center rounded-3xl"
+        <div className="w-full min-h-[800px] xl:min-h-[80dvh] h-full flex flex-col justify-start items-center rounded-3xl"
           style={{
             backgroundImage: 'url("/assets/images/clicker-character/mascotBg.webp")',
             backgroundSize: 'cover',
@@ -236,16 +236,19 @@ const ClickerView = () => {
           </Modal>
 
           {/* Upgrade panel */}
-          {openModal === 'upgrades' && (
+          <Modal
+            open={openModal === 'upgrades'}
+            className="h-screen w-screen flex flex-1 overflow-x-hidden overflow-y-auto"
+          >
             <ClickerUpgrades
               onClose={() => setOpenModal('')} // Close modal when done
             />
-          )}
+          </Modal>
 
           <Modal
             open={isOpenRewardModal}
             className="h-screen w-screen flex flex-1 overflow-x-hidden overflow-y-auto"
-          >
+          > 
             <div
               className={`fixed top-0 flex flex-col h-full w-full items-center justify-center bg-dark/90 transition-opacity duration-500
                 ${rewardModalFading ? 'opacity-0' : 'opacity-100'}
