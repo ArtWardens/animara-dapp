@@ -120,7 +120,7 @@ const ClickerUpgrades = ({ onClose }) => {
               backgroundRepeat: "no-repeat",
             }}
           >
-            <div className="absolute w-full top-0 flex items-center justify-center px-[4rem] pointer-events-none">
+            <div className="absolute w-full top-0 left-0 flex items-center justify-center px-[4rem] pointer-events-none">
                 <img
                   src={"/assets/images/clicker-character/explore-animara.webp"}
                   alt="explore-animara"
