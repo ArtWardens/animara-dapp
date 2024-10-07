@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react';
 import { PropTypes } from 'prop-types';
-import useSound from 'use-sound';
 import { PropagateLoader } from 'react-spinners';
 import { useAppDispatch } from '../hooks/storeHooks.js';
 import {
@@ -15,7 +14,6 @@ import {
   useDailyLoginLoading,
 } from '../sagaStore/slices';
 import { getAllImagePaths } from '../utils/getImagePath';
-import { mascots } from '../utils/constants';
 
 const MascotView = ({ openModal, setOpenModal }) => {
   const dispatch = useAppDispatch();
@@ -30,8 +28,6 @@ const MascotView = ({ openModal, setOpenModal }) => {
   const [imgIndex, setImgIndex] = useState(0);
   const [mascotImages, setMascotImages] = useState([]);
   const [plusOneEffect, setPlusOneEffect] = useState({ show: false, left: 0, top: 0 });
-  const [currentMascot, setCurrentMascot] = useState(mascots[0]);
-  const [mascotSound] = useSound(currentMascot?.sound);
   const [startSlide, setStartSlide] = useState(false);
   const [isInteractive, setIsInteractive] = useState(false);
   const idleTimerRef = useRef(null);
@@ -61,10 +57,6 @@ const MascotView = ({ openModal, setOpenModal }) => {
   useEffect(() => {
     if (isInitialized) return;
     if (!currentUser) return;
-
-    // Determine current mascot based on the user's level
-    const mascotIndex = mascots.findIndex((mascot) => (currentUser?.level || 0) <= mascot.maxLevel);
-    setCurrentMascot(mascots[mascotIndex]);
 
     // Preload images for smoother transitions
     const images = getAllImagePaths(currentUser);
@@ -179,9 +171,8 @@ const MascotView = ({ openModal, setOpenModal }) => {
       setupSettler();
     }
 
-    // Dispatch action to consume stamina and play sound
+    // Dispatch action to consume stamina
     dispatch(consumeStamina({ staminaToConsume: 1, coinToGain: 1 }));
-    mascotSound();
 
     // Display the floating +1 effect
     const randomLeft = Math.random() * 70 + 15;
@@ -199,7 +190,6 @@ const MascotView = ({ openModal, setOpenModal }) => {
     currentUser,
     localStamina,
     isInteractive,
-    mascotSound,
     localCoins,
     openModal,
     setOpenModal,

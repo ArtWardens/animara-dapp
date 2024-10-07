@@ -287,16 +287,16 @@ const ClickerView = () => {
                 }}
               >
                 1.1X
-                <br />
-                <span
-                  className="text-[6vh]"
+                <br/>
+                <p
+                  className="text-[5vh] mt-[-2.5rem]"
                   style={{
                     WebkitTextStrokeWidth: '0.25vh',
                     WebkitTextStrokeColor: 'var(--Color-11, #FFF)',
                   }}
                 >
                   (150+15)
-                </span>
+                </p>
               </div>
             </div>
           </Modal>
