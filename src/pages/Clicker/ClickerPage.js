@@ -19,7 +19,7 @@ function ClickerPage() {
           
       <Header />
 
-      <div className={`flex items-start justify-center h-full gap-4 ${mobileMenuOpen ? `hidden` : ``}`}>
+      <div className={`flex items-start justify-center h-full gap-4 xl:mt-[-2rem] ${mobileMenuOpen ? `hidden` : ``}`}>
         <ClickerView />
       </div>
     </div>

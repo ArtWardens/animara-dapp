@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { PropTypes } from 'prop-types';
 import { MoonLoader } from 'react-spinners';
+import Modal from '@mui/material/Modal';
 import ProgressBar from './FancyProgressBar/ProgressBar.tsx';
 import { useLocalStamina, useRechargeLoading, useUserDetails, useUserDetailsLoading } from '../sagaStore/slices';
 import TaskList from '../components/TaskList.jsx';
@@ -20,7 +21,7 @@ function EnergyRegeneration({ isOneTimeTaskOpen, setIsOneTimeTaskOpen }) {
   const [isNoticeOpen, setIsNoticeOpen] = useState(false);
   const [isLeaderBoardOpen, setIsLeaderBoardOpen] = useState(false);
 
-  // Toggle notice component
+  // Toggle leaderboard component
   const handleLeaderBoardClick = () => {
     setIsLeaderBoardOpen(true); 
   };
@@ -134,7 +135,7 @@ function EnergyRegeneration({ isOneTimeTaskOpen, setIsOneTimeTaskOpen }) {
         </div>
 
         {/* Leaderboard button */}
-        <div className={`flex items-center justify-center ${
+        <div className={`hidden lg:flex items-center justify-center ${
             showLeaderBoardOption ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0'
           }`}>
           <img 
@@ -146,13 +147,29 @@ function EnergyRegeneration({ isOneTimeTaskOpen, setIsOneTimeTaskOpen }) {
         </div>
       </div>
 
-      {isOneTimeTaskOpen && <TaskList setIsOneTimeTaskOpen={setIsOneTimeTaskOpen} />}
+      {/* Conditionally render the TaskList component */}
+      <Modal
+        open={isOneTimeTaskOpen}
+        className="h-screen w-screen flex flex-1 overflow-x-hidden overflow-y-auto"
+      >
+        <TaskList setIsOneTimeTaskOpen={setIsOneTimeTaskOpen} />
+      </Modal>
 
       {/* Conditionally render the LeaderBoard component */}
-      {isLeaderBoardOpen && <LeaderBoardModal handleCloseLeaderboard={closeLeaderBoard} />}
+      <Modal
+        open={isLeaderBoardOpen}
+        className="h-screen w-screen flex flex-1 overflow-x-hidden overflow-y-auto"
+      >
+        <LeaderBoardModal handleCloseLeaderboard={closeLeaderBoard} />
+      </Modal>
 
       {/* Conditionally render the MintingVipPass component */}
-      {isNoticeOpen && <MintingWarningNotice onClose={closeNotice} />}
+      <Modal
+        open={isNoticeOpen}
+        className="h-screen w-screen flex flex-1 overflow-x-hidden overflow-y-auto"
+      >
+        <MintingWarningNotice onClose={closeNotice} />
+      </Modal>
     </>
   );
 }

@@ -164,7 +164,42 @@ const tailwinConfig = {
   },
   plugins: [
     require("tailgrids/plugin"),
-    // require("tw-elements/plugin")
+    function ({ addUtilities }) {
+      const newUtilities = {
+        ".scrollbar-thin": {
+          scrollbarWidth: "thin",
+          scrollbarColor: "rgb(31 29 29) white"
+        },
+        ".scrollbar-webkit-blue": {
+          "&::-webkit-scrollbar": {
+            width: "8px"
+          },
+          "&::-webkit-scrollbar-track": {
+            background: "#003459",
+            borderRadius: "20px",
+          },
+          "&::-webkit-scrollbar-thumb": {
+            background: "#0163BE",
+            borderRadius: "20px",
+          },
+        },
+        ".scrollbar-webkit-white": {
+          "&::-webkit-scrollbar": {
+            width: "8px"
+          },
+          "&::-webkit-scrollbar-track": {
+            background: "#ffffff",
+            borderRadius: "20px",
+          },
+          "&::-webkit-scrollbar-thumb": {
+            background: "#bcbcbc",
+            borderRadius: "20px",
+          },
+        }
+      }
+
+      addUtilities(newUtilities, ["responsive", "hover"])
+    }
   ],
 };
 

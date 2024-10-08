@@ -92,7 +92,7 @@ function Header() {
     <div className="w-full container pb-52">
       {/* User Card */}
       <div
-        className={`flex flex-row absolute md:min-w-[300px] lg:min-w-[300px] max-w-[70dvw] top-[4rem] z-10 p-1 pr-4 gap-2
+        className={`flex flex-row absolute md:min-w-[300px] lg:min-w-[300px] max-w-[70dvw] top-[4rem] z-10 lg:ml-14 p-1 pr-2 gap-2 lg:scale-[120%]
           ${currentUser?.ownsNFT && currentUser?.walletAddr !== '' ? 'glowing-border left-[2rem] xl:left-[6rem]' : 'default-border left-[1rem] xl:left-[5rem]'} 
           ${mobileMenuOpen ? 'hidden' : ''}`}
       >
