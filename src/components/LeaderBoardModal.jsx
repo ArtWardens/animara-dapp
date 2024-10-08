@@ -93,7 +93,7 @@ const LeaderBoardModal = ({ handleCloseLeaderboard }) => {
                 <img
                   src={"/assets/images/clicker-character/leaderboard.webp"}
                   alt="leaderboard"
-                  className="w-[100%] lg:w-[50%] xs:mt-[-1rem] lg:mt-[-2rem] overflow-visible"
+                  className="w-[100%] lg:w-[50%] max-w-[800px] xs:mt-[-1rem] lg:mt-[-2rem] overflow-visible"
                 />
           </div>
 
