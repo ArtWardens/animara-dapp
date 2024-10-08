@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { PropTypes } from 'prop-types';
 import { useAppDispatch } from '../hooks/storeHooks';
 import {
@@ -19,18 +19,19 @@ const LeaderBoardModal = ({ handleCloseLeaderboard }) => {
   const [showLeaderBoardModal, setShowLeaderBoardModal] = useState(true);
   const [slideUpgrades, setSlideUpgrades] = useState(false);
 
+  const closeAnimTimer = useRef(null);
+
   const closeModal = () => {
-    if (showLeaderBoardModal) {
-      setShowLeaderBoardModal(false);
-    }
+    if (closeAnimTimer.current){ return; }
 
-    const timerPanel = setTimeout(() => {
+    setSlideUpgrades(false);
+
+    closeAnimTimer.current = setTimeout(()=>{
+      if (showLeaderBoardModal) {
+        setShowLeaderBoardModal(false);
+      }
       handleCloseLeaderboard();
-    }, 300);
-
-    return () => {
-      clearTimeout(timerPanel);
-    };
+    }, 200);
   };
 
   useEffect(() => {
@@ -93,7 +94,7 @@ const LeaderBoardModal = ({ handleCloseLeaderboard }) => {
                 <img
                   src={"/assets/images/clicker-character/leaderboard.webp"}
                   alt="leaderboard"
-                  className="w-[100%] lg:w-[50%] max-w-[800px] xs:mt-[-1rem] lg:mt-[-2rem] overflow-visible"
+                  className="w-[100%] lg:w-[50%] max-w-[800px] mt-[-1.5rem] xs:mt-[-2rem] lg:mt-[-6rem] overflow-visible"
                 />
           </div>
 

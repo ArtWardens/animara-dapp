@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { Modal } from '@mui/material';
 import { StaminaRechargeTypeBasic, StaminaRechargeTypeInvite } from '../utils/constants';
 import { useUserDetails, useLocalStamina, useRechargeLoading, rechargeStamina } from '../sagaStore/slices';
@@ -16,6 +16,7 @@ const RechargeModal = ({ closeModal }) => {
   const [enableInviteRecharge, setEnableInviteRecharge] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
   const [slideUpgrades, setSlideUpgrades] = useState(false);
+  const closeAnimTimer = useRef(null);
 
   const handleChargeEnergy = () => {
     if (currentUser.staminaRechargeRemaining > 0 && enableStaminaRecharge) {
@@ -48,6 +49,17 @@ const RechargeModal = ({ closeModal }) => {
     };
   }, []);
 
+  // close Modal
+  const handleCloseModal = () => {
+    if (closeAnimTimer.current){ return; }
+
+    setSlideUpgrades(false);
+
+    closeAnimTimer.current = setTimeout(()=>{
+      closeModal();
+    }, 200);
+  };
+
   // auto close modal after energy recharge
   useEffect(() => {
     if (isRecharging && !rechargeLoading) {
@@ -72,7 +84,7 @@ const RechargeModal = ({ closeModal }) => {
       <div 
         className={`h-full min-h-[700px] fixed inset-0 flex bg-dark bg-opacity-75 justify-center items-center z-90 transition-all duration-300
         ${slideUpgrades? `opacity-100` : `opacity-0`}`}
-        onClick={closeModal}
+        onClick={handleCloseModal}
       >
         <div
           className={`relative w-full lg:w-[90dvw] h-4/5 rounded-3xl p-3 amt-[10rem] transition-all duration-300 z-[100] ${slideUpgrades? `translate-y-0 opacity-100` : `translate-y-60 opacity-0`}`}
@@ -116,7 +128,7 @@ const RechargeModal = ({ closeModal }) => {
               <img
                 src={"/assets/images/clicker-character/recharge.webp"}
                 alt="explore-animara"
-                className="w-[100%] lg:w-[50%] max-w-[800px] xs:mt-[-1rem] lg:mt-[-2rem] overflow-visible"
+                className="w-[100%] lg:w-[50%] max-w-[1200px] mt-[-1.5rem] xs:mt-[-2rem] lg:mt-[-6rem] overflow-visible"
               />
           </div>
 
@@ -124,7 +136,7 @@ const RechargeModal = ({ closeModal }) => {
               <h3 className="text-[1.5rem] lg:text-[2rem] text-[#FFAA00]">Free Daily Boosters</h3>
               {isRecharging ? (
                 // loader
-                <div className="pt-4 flex align-middle justify-center">
+                <div className="w-full h-full flex items-center justify-center">
                   <svg
                     aria-hidden="true"
                     className="w-8 h-8 text-Fuchsia-200 animate-spin dark:text-Fuchsia-200 fill-yellow-600"
