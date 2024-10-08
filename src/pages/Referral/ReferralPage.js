@@ -184,7 +184,7 @@ function ReferralPage() {
     }else{
       if (currentUser.ownsNFT){
         // selectively combine both claimable amt based on if user owns nft
-        return `${currentUser.ownsNFT ? (basicClaimable + nftClaimable).toFixed(4) : basicClaimable.toFixed(4)} SOL`;
+        return `${currentUser.ownsNFT ? (basicClaimable + nftClaimable).toFixed(4) : basicClaimable.toFixed(4)}`;
       }else{
         if (basicClaimable !== 0){
           return `${basicClaimable}`;
@@ -807,7 +807,7 @@ function ReferralPage() {
                                 textShadow: '0px 2px 4px rgba(0, 0, 0, 0.25)',
                               }}
                             >
-                              {getTotalClaimable() == '0 sol' ? '0' : getTotalClaimable()} sol
+                              {getTotalClaimable() === '0 sol' ? '0' : getTotalClaimable()} sol
                             </div>
                           </div>
 
