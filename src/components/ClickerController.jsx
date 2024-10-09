@@ -59,6 +59,16 @@ const ClickerController = ({ Children }) => {
     }
   }, [dispatch, isAuthLoading, isAuthenticated, navigate, mintDate]);
 
+  // check if is new user or not
+  useEffect(() => {
+    if (currentUser) {
+      if (currentUser.isNewUser) {
+        navigate('/tutorial');
+      }
+    }
+    
+  }, [currentUser]);
+
   // check if user have a referrer or not
   useEffect(() => {
     if (currentUser) {
