@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { Box } from '@mui/material';
 import Modal from '@mui/material/Modal';
 import { useAppDispatch } from '../../hooks/storeHooks';
@@ -24,14 +24,26 @@ const ClickerView = () => {
   const [rewardModalFading, setRewardModalFading] = useState(false);
   const [showWord, setShowWord] = useState(false); // State to manage word display after 2.5 seconds
   const [showCongratulations, setShowCongratulations] = useState(false); // Manage "Congratulations" visibility
+  const audioRef = useRef(null);
+  const audioSource = `/sounds/${currentUser?.level || 1}-successHits.mp3`;
 
   // grant depletion rewards when local stamina is fully consumed
   useEffect(() => {
     if (!currentUser || localStamina !== 0 || isOpenRewardModal || !currentUser.canGetDepletionReward) return;
 
     dispatch(settleTapSession({ newCointAmt: localCoins, newStamina: localStamina }));
-    setIsOpenRewardModal(true);
+
+    if (audioRef.current) {
+      audioRef.current.play();
+    }
+
+    // setIsOpenRewardModal(true);
   }, [dispatch, localStamina, localCoins, currentUser, isOpenRewardModal]);
+
+  // Handler for when the audio finishes playing
+  const handleAudioEnded = () => {
+    setIsOpenRewardModal(true);
+  };
 
   // Initialize
   useEffect(() => {
@@ -245,6 +257,13 @@ const ClickerView = () => {
             />
           </Modal>
 
+          <audio 
+            ref={audioRef} 
+            src={audioSource}  // Dynamic audio source based on user's level
+            onEnded={handleAudioEnded}  // When the audio finishes playing, open the modal
+            style={{ display: 'none' }}  // Hide the audio player element
+          />
+
           <Modal
             open={isOpenRewardModal}
             className="h-screen w-screen flex flex-1 overflow-x-hidden overflow-y-auto"
@@ -279,24 +298,14 @@ const ClickerView = () => {
               </div>
 
               <div
-                className={`absolute text-[12vh] font-bold justify-center transition-all duration-1000 transform text-amber-500 tracking-normal
+                className={`absolute text-[18vh] font-bold justify-center transition-all duration-1000 transform text-amber-500 tracking-normal
                 ${showCongratulations ? 'opacity-100 scale-150 pb-20 translate-x-0' : 'opacity-0 scale-0 pb-0 translate-x-6'}`}
                 style={{
-                  WebkitTextStrokeWidth: '0.4vh',
+                  WebkitTextStrokeWidth: '0.45vh',
                   WebkitTextStrokeColor: 'var(--Color-11, #FFF)',
                 }}
               >
                 1.1X
-                <br/>
-                <p
-                  className="text-[5vh] mt-[-2.5rem]"
-                  style={{
-                    WebkitTextStrokeWidth: '0.25vh',
-                    WebkitTextStrokeColor: 'var(--Color-11, #FFF)',
-                  }}
-                >
-                  (150+15)
-                </p>
               </div>
             </div>
           </Modal>
