@@ -765,10 +765,11 @@ function ReferralPage() {
                                 >
                                   total claimed
                                 </p>
-                                <p className="w-[80%] text-neutral-700 text-[0.5rem] xl:text-xs font-semibold font-outfit mb-2">
+                                {/* body */}
+                                <p className="text-neutral-700 text-xs font-semibold font-outfit ml-0 sm:ml-[1rem]">
                                   Track your claimed earnings in total claimed.
                                 </p>
-                                <p className="text-[#00B9E1] text-sm font-normal font-outfit underline transition-all duration-500 hover:scale-105">
+                                <p className="text-[#00B9E1] text-sm font-normal font-outfit underline ml-0 sm:ml-[1rem] transition-all duration-500 hover:scale-105">
                                   View claim history
                                 </p>
                               </div>
