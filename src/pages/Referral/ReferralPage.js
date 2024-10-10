@@ -11,6 +11,7 @@ import WalletBindingPanel from "../../components/SolanaWallet/WalletBindingPanel
 import StyledQRCode from "../../components/StyledQRCode";
 import Header from "../../components/Header.jsx";
 import { PropagateLoader } from "react-spinners";
+import CashbackClaimHistoryModal from "../../components/CashbackClaimHistoryModal.jsx";
 
 function ReferralPage() {
   const dispatch = useAppDispatch();
@@ -37,6 +38,7 @@ function ReferralPage() {
   const [carouselFading, setCarouselFading] = useState(false);
   const [showWalletBindingPanel, setShowWalletBindingPanel] = useState(false);
   const [walletBindingAnim, setWalletBindingAnim] = useState(false);
+  const [showClaimHistory, setShowClaimHistory] = useState(false);
 
   // screen size handler
   useEffect(() => {
@@ -202,14 +204,14 @@ function ReferralPage() {
   }, [nftClaimable]);
 
   const handleClaimCashbackOrBind = () => {
-    if (currentUser.walletAddr === '') {
+    if (currentUser?.walletAddr === '') {
       // special case 1: has claimable but wallet not binded yet to claim
       setShowWalletBindingPanel(true);
       setWalletBindingAnim(true);
       setTimeout(() => {
         setWalletBindingAnim(false);
       }, 300);
-    }else if (!currentUser.ownsNFT && basicClaimable === 0 && nftClaimable >= 0 && currentUser.walletAddr !== ''){
+    }else if (!currentUser.ownsNFT && basicClaimable === 0 && nftClaimable >= 0 && currentUser?.walletAddr !== ''){
       // special case 2: only have nft claimables to claim but doesnt own nft yet
       navigate('/mint');
     }else {
@@ -456,9 +458,11 @@ function ReferralPage() {
                               <p className="w-[80%] text-neutral-700 text-[0.5rem] xl:text-xs font-semibold font-outfit mb-2">
                                 Track your claimed earnings in total claimed.
                               </p>
-                              <p className="text-[#00B9E1] text-sm font-normal font-outfit underline transition-all duration-500 hover:scale-105">
+                              <button className="text-[#00B9E1] text-sm font-normal font-outfit underline transition-all duration-500 hover:scale-105"
+                                onClick={()=>{setShowClaimHistory(true)}}
+                              >
                                 View claim history
-                              </p>
+                              </button>
                             </div>
                           </div>
                         </div>}
@@ -518,12 +522,12 @@ function ReferralPage() {
                                 :
                                 <div
                                   className={`text-center text-white 
-                                  ${!currentUser.walletAddr ? 'text-xl' :  getTotalClaimable() === '0 sol' ? 'text-sm ' : 'text-2xl'}`}
+                                  ${!currentUser?.walletAddr ? 'text-xl' :  getTotalClaimable() === '0 sol' ? 'text-sm ' : 'text-2xl'}`}
                                   style={{
                                     textShadow: '0px 2px 0.6px rgb(71, 85, 105, 0.66)'
                                   }}
                                 >
-                                  <span className={`hover:text-shadow-none`}>{claimCashbackLoading ? 'Loading' : !currentUser.walletAddr ? `Bind Wallet` : getTotalClaimable() === '0 sol' ? 'Mint Now' : `Claim`}</span>
+                                  <span className={`hover:text-shadow-none`}>{claimCashbackLoading ? 'Loading' : !currentUser?.walletAddr ? `Bind Wallet` : getTotalClaimable() === '0 sol' ? 'Mint Now' : `Claim`}</span>
                                 </div>
                               }
                             </button>
@@ -570,7 +574,7 @@ function ReferralPage() {
                                 :
                                 <div
                                   className={`text-center text-white 
-                                  ${!currentUser.walletAddr ? 'text-xl' : claimCashbackLoading ||  getTotalClaimable() === '0 sol' ? 'text-sm ' : 'text-2xl'}`}
+                                  ${!currentUser?.walletAddr ? 'text-xl' : claimCashbackLoading ||  getTotalClaimable() === '0 sol' ? 'text-sm ' : 'text-2xl'}`}
                                   style={{
                                     textShadow: `${claimCashbackLoading ||  getTotalClaimable() === '0 sol' ?
                                       '0px 2px 0.6px rgb(71, 85, 105, 0.66)'
@@ -579,7 +583,7 @@ function ReferralPage() {
                                       }`
                                   }}
                                 >
-                                  <span className={`hover:text-shadow-none ${claimCashbackLoading ? 'animate-pulse': ''}`}>{claimCashbackLoading ? 'Loading' : !currentUser.walletAddr ? `Bind Wallet` : getTotalClaimable() === '0 sol' ? 'Claimed Everything' : getTotalClaimable() === '-' ? 'Mint Now' : `Claim`}</span>
+                                  <span className={`hover:text-shadow-none ${claimCashbackLoading ? 'animate-pulse': ''}`}>{claimCashbackLoading ? 'Loading' : !currentUser?.walletAddr ? `Bind Wallet` : getTotalClaimable() === '0 sol' ? 'Claimed Everything' : getTotalClaimable() === '-' ? 'Mint Now' : `Claim`}</span>
                                 </div>
                               }
                             </button>
@@ -768,9 +772,11 @@ function ReferralPage() {
                                 <p className="w-[80%] text-neutral-700 text-[0.5rem] xl:text-xs font-semibold font-outfit mb-2">
                                   Track your claimed earnings in total claimed.
                                 </p>
-                                <p className="text-[#00B9E1] text-sm font-normal font-outfit underline transition-all duration-500 hover:scale-105">
+                                <button className="text-[#00B9E1] text-sm font-normal font-outfit underline transition-all duration-500 hover:scale-105"
+                                  onClick={()=>{setShowClaimHistory(true)}}
+                                >
                                   View claim history
-                                </p>
+                                </button>
                               </div>
                             </div>
                           </div>}
@@ -834,7 +840,7 @@ function ReferralPage() {
                                 :
                                 <div
                                   className={`text-center 
-                                  ${currentUser.walletAddr === '' ? 'text-white text-xl' : claimCashbackLoading || getTotalClaimable() === '0 sol' ? 'text-slate-100 text-sm ' : 'text-white text-2xl'}`}
+                                  ${currentUser?.walletAddr === '' ? 'text-white text-xl' : claimCashbackLoading || getTotalClaimable() === '0 sol' ? 'text-slate-100 text-sm ' : 'text-white text-2xl'}`}
                                   style={{
                                     textShadow: `${claimCashbackLoading || getTotalClaimable() === '0 sol' ?
                                       '0px 2px 0.6px rgb(71, 85, 105, 0.66)'
@@ -843,7 +849,7 @@ function ReferralPage() {
                                       }`
                                   }}
                                 >
-                                  <span className={`hover:text-shadow-none ${claimCashbackLoading ? 'animate-pulse': ''}`}>{claimCashbackLoading ? 'Loading' : !currentUser.walletAddr ? `Bind Wallet` : getTotalClaimable() === '0 sol' ? 'Mint Now' : `Claim`}</span>
+                                  <span className={`hover:text-shadow-none ${claimCashbackLoading ? 'animate-pulse': ''}`}>{claimCashbackLoading ? 'Loading' : !currentUser?.walletAddr ? `Bind Wallet` : getTotalClaimable() === '0 sol' ? 'Mint Now' : `Claim`}</span>
                                 </div>
                               }
                             </button>
@@ -893,7 +899,7 @@ function ReferralPage() {
                                   :
                                   <div
                                     className={`text-center 
-                                    ${currentUser.walletAddr === '' ? 'text-white text-xl' : claimCashbackLoading || getTotalClaimable() === '0 sol' ? 'text-slate-100 text-sm ' : 'text-white text-2xl'}`}
+                                    ${currentUser?.walletAddr === '' ? 'text-white text-xl' : claimCashbackLoading || getTotalClaimable() === '0 sol' ? 'text-slate-100 text-sm ' : 'text-white text-2xl'}`}
                                     style={{
                                       textShadow: `${claimCashbackLoading || getTotalClaimable() === '0 sol' ?
                                         '0px 2px 0.6px rgb(71, 85, 105, 0.66)'
@@ -902,7 +908,7 @@ function ReferralPage() {
                                         }`
                                     }}
                                   >
-                                    <span className={`hover:text-shadow-none ${claimCashbackLoading ? 'animate-pulse': ''}`}>{claimCashbackLoading ? 'Loading' : !currentUser.walletAddr ? `Bind Wallet` : getTotalClaimable() === '0 sol' ? 'Claimed Everything' : getTotalClaimable() === '-' ? 'Mint Now' : `Claim`}</span>
+                                    <span className={`hover:text-shadow-none ${claimCashbackLoading ? 'animate-pulse': ''}`}>{claimCashbackLoading ? 'Loading' : !currentUser?.walletAddr ? `Bind Wallet` : getTotalClaimable() === '0 sol' ? 'Claimed Everything' : getTotalClaimable() === '-' ? 'Mint Now' : `Claim`}</span>
                                   </div>
                                 }
                               </button>
@@ -1007,15 +1013,22 @@ function ReferralPage() {
           {!bindingWallet ?
             <button
               className={`text-2xl rounded-lg m-8 mb-12 mt-0 py-2 px-8 hover:scale-110 transition-all duration-300
-                ${currentUser.walletAddr !== '' && !bindingWallet ? `bg-amber-400` : `bg-red-400 `}`}
+                ${currentUser?.walletAddr !== '' && !bindingWallet ? `bg-amber-400` : `bg-red-400 `}`}
               onClick={handleBackToMint}
             >
-              {currentUser.walletAddr !== '' && !bindingWallet ? `Claim Cashback` : `Close`}
+              {currentUser?.walletAddr !== '' && !bindingWallet ? `Claim Cashback` : `Close`}
             </button>
             :
             <></>
           }
         </div>
+        :
+        <></>
+      }
+
+      {/* Claim History Modal */}
+      {showClaimHistory ? 
+        <CashbackClaimHistoryModal setShowClaimHistory={setShowClaimHistory} />
         :
         <></>
       }

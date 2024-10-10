@@ -39,6 +39,7 @@ import {
 import {
   claimCashbackImpl,
   cancelCashbackClaimImpl,
+  getCashbackClaimHistoryImpl,
 } from '../firebase/cashback.js'
 import {
   closeDailyPopup,
@@ -125,6 +126,9 @@ import {
   checkUserLastPeriodicBatchTime,
   checkUserLastPeriodicBatchTimeSuccess,
   checkUserLastPeriodicBatchTimeError,
+  getCashbackClaimHistory,
+  getCashbackClaimHistoryError,
+  getCashbackClaimHistorySuccess,
 } from "../sagaStore/slices";
 import {
   StaminaRechargeTypeBasic,
@@ -649,6 +653,18 @@ export function* checkUserLastPeriodicBatchTimeSaga() {
   }
 }
 
+export function* getCashbackClaimHistorySaga() {
+  try {
+    const cashbackClaimHistory = yield call(getCashbackClaimHistoryImpl);
+    yield put(getCashbackClaimHistorySuccess(cashbackClaimHistory));
+    return cashbackClaimHistory;
+  } 
+  catch (error) {
+    yield put(getCashbackClaimHistoryError(error));
+    toast.error("Failed to get cashback claim history. Please try again. ");
+  }
+}
+
 export function* userSagaWatcher() {
   yield takeLatest(signupWithEmail.type, signupWithEmailSaga);
   yield takeLatest(loginWithEmail.type, loginWithEmailSaga);
@@ -679,4 +695,5 @@ export function* userSagaWatcher() {
   yield takeLatest(claimCashback.type, claimCashbackSaga);
   yield takeLatest(fetchDates.type, fetchDatesSaga);
   yield takeLatest(checkUserLastPeriodicBatchTime.type, checkUserLastPeriodicBatchTimeSaga);
+  yield takeLatest(getCashbackClaimHistory.type, getCashbackClaimHistorySaga);
 }

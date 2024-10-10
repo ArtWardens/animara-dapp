@@ -61,6 +61,9 @@ const userInitialState = {
   claimCashbackLoading: false,
   getUserLastPeriodicBatchTimeLoading: false,
   userLastPeriodicBatchTime: null,
+  cashbackClaimHistory: null,
+  getcashbackClaimHistoryLoading: false,
+  getcashbackClaimHistorySuccess: false,
 };
 
 export const userSlice = createSlice({
@@ -539,6 +542,20 @@ export const userSlice = createSlice({
       state.error = payload;
       state.getUserLastPeriodicBatchTimeLoading = false;
     },
+    getCashbackClaimHistory: (state, { payload }) => {
+      state.getCashbackClaimHistoryLoading = true;
+      state.getCashbackClaimHistorySuccess = false;
+    },
+    getCashbackClaimHistorySuccess: (state, { payload }) => {
+      state.getCashbackClaimHistoryLoading = false;
+      state.cashbackClaimHistory = payload;
+      state.getCashbackClaimHistorySuccess = true;
+    },
+    getCashbackClaimHistoryError: (state, { payload }) => {
+      state.getCashbackClaimHistoryLoading = false;
+      state.error = payload;
+      state.getCashbackClaimHistorySuccess = true;
+    },
   },
 });
 
@@ -634,6 +651,9 @@ export const {
   checkUserLastPeriodicBatchTime,
   checkUserLastPeriodicBatchTimeSuccess,
   checkUserLastPeriodicBatchTimeError,
+  getCashbackClaimHistory,
+  getCashbackClaimHistorySuccess,
+  getCashbackClaimHistoryError,
 } = userSlice.actions;
 
 export const useAuthLoading = () => useAppSelector((state) => state.user.authLoading);
@@ -692,6 +712,9 @@ export const useEarlyBirdDate = () => useAppSelector((state) => state.user.early
 export const useLevelUpCoinReward = () => useAppSelector((state) => state.user.levelUpCoinReward);
 export const useUserLastPeriodicBatchTimeLoading = () => useAppSelector((state) => state.user.getUserLastPeriodicBatchTimeLoading);
 export const useUserLastPeriodicBatchTime = () => useAppSelector((state) => state.user.userLastPeriodicBatchTime);
+export const useCashbackClaimHistoryDetails = () => useAppSelector((state) => state.user.cashbackClaimHistory);
+export const useCashbackClaimHistoryLoading = () => useAppSelector((state) => state.user.getCashbackClaimHistoryLoading);
+export const useCashbackClaimHistoryLoadSuccess = () => useAppSelector((state) => state.user.getCashbackClaimHistorySuccess);
 
 const userReducer = userSlice.reducer;
 
