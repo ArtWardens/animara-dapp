@@ -495,7 +495,7 @@ function ReferralPage() {
                                 textShadow: '0px 2px 4px rgba(0, 0, 0, 0.25)',
                               }}
                             >
-                              {getTotalClaimable()} sol
+                              {getTotalClaimable() === '0 sol' ? '0' : getTotalClaimable()} sol
                             </div>
                           </div>
 
@@ -518,12 +518,12 @@ function ReferralPage() {
                                 :
                                 <div
                                   className={`text-center text-white 
-                                  ${!currentUser.walletAddr ? 'text-xl' :  getTotalClaimable() === '0 sol' ? 'text-sm ' : 'text-2xl'}`}
+                                  ${!currentUser?.walletAddr ? 'text-xl' :  getTotalClaimable() === '0 sol' ? 'text-sm ' : 'text-2xl'}`}
                                   style={{
                                     textShadow: '0px 2px 0.6px rgb(71, 85, 105, 0.66)'
                                   }}
                                 >
-                                  <span className={`hover:text-shadow-none`}>{claimCashbackLoading ? 'Loading' : !currentUser.walletAddr ? `Bind Wallet` : getTotalClaimable() === '0 sol' ? 'Mint Now' : `Claim`}</span>
+                                  <span className={`hover:text-shadow-none`}>{claimCashbackLoading ? 'Loading' : !currentUser?.walletAddr ? `Bind Wallet` : getTotalClaimable() === '0 sol' ? 'Mint Now' : `Claim`}</span>
                                 </div>
                               }
                             </button>
@@ -540,7 +540,7 @@ function ReferralPage() {
                                 textShadow: '0px 2px 4px rgba(0, 0, 0, 0.25)',
                               }}
                             >
-                              {getTotalClaimable()} sol
+                              {getTotalClaimable() === '0 sol' ? '0' : getTotalClaimable()} sol
                             </div>
                           </div>
                           
@@ -570,7 +570,7 @@ function ReferralPage() {
                                 :
                                 <div
                                   className={`text-center text-white 
-                                  ${!currentUser.walletAddr ? 'text-xl' : claimCashbackLoading ||  getTotalClaimable() === '0 sol' ? 'text-sm ' : 'text-2xl'}`}
+                                  ${!currentUser?.walletAddr ? 'text-xl' : claimCashbackLoading ||  getTotalClaimable() === '0 sol' ? 'text-sm ' : 'text-2xl'}`}
                                   style={{
                                     textShadow: `${claimCashbackLoading ||  getTotalClaimable() === '0 sol' ?
                                       '0px 2px 0.6px rgb(71, 85, 105, 0.66)'
@@ -579,7 +579,7 @@ function ReferralPage() {
                                       }`
                                   }}
                                 >
-                                  <span className={`hover:text-shadow-none ${claimCashbackLoading ? 'animate-pulse': ''}`}>{claimCashbackLoading ? 'Loading' : !currentUser.walletAddr ? `Bind Wallet` : getTotalClaimable() === '0 sol' ? 'Claimed Everything' : getTotalClaimable() === '-' ? 'Mint Now' : `Claim`}</span>
+                                  <span className={`hover:text-shadow-none ${claimCashbackLoading ? 'animate-pulse': ''}`}>{claimCashbackLoading ? 'Loading' : !currentUser?.walletAddr ? `Bind Wallet` : getTotalClaimable() === '0 sol' ? 'Claimed Everything' : getTotalClaimable() === '-' ? 'Mint Now' : `Claim`}</span>
                                 </div>
                               }
                             </button>
@@ -835,7 +835,7 @@ function ReferralPage() {
                                 :
                                 <div
                                   className={`text-center 
-                                  ${currentUser.walletAddr === '' ? 'text-white text-xl' : claimCashbackLoading || getTotalClaimable() === '0 sol' ? 'text-slate-100 text-sm ' : 'text-white text-2xl'}`}
+                                  ${currentUser?.walletAddr === '' ? 'text-white text-xl' : claimCashbackLoading || getTotalClaimable() === '0 sol' ? 'text-slate-100 text-sm ' : 'text-white text-2xl'}`}
                                   style={{
                                     textShadow: `${claimCashbackLoading || getTotalClaimable() === '0 sol' ?
                                       '0px 2px 0.6px rgb(71, 85, 105, 0.66)'
@@ -844,7 +844,7 @@ function ReferralPage() {
                                       }`
                                   }}
                                 >
-                                  <span className={`hover:text-shadow-none ${claimCashbackLoading ? 'animate-pulse': ''}`}>{claimCashbackLoading ? 'Loading' : !currentUser.walletAddr ? `Bind Wallet` : getTotalClaimable() === '0 sol' ? 'Mint Now' : `Claim`}</span>
+                                  <span className={`hover:text-shadow-none ${claimCashbackLoading ? 'animate-pulse': ''}`}>{claimCashbackLoading ? 'Loading' : !currentUser?.walletAddr ? `Bind Wallet` : getTotalClaimable() === '0 sol' ? 'Mint Now' : `Claim`}</span>
                                 </div>
                               }
                             </button>
@@ -894,7 +894,7 @@ function ReferralPage() {
                                   :
                                   <div
                                     className={`text-center 
-                                    ${currentUser.walletAddr === '' ? 'text-white text-xl' : claimCashbackLoading || getTotalClaimable() === '0 sol' ? 'text-slate-100 text-sm ' : 'text-white text-2xl'}`}
+                                    ${currentUser?.walletAddr === '' ? 'text-white text-xl' : claimCashbackLoading || getTotalClaimable() === '0 sol' ? 'text-slate-100 text-sm ' : 'text-white text-2xl'}`}
                                     style={{
                                       textShadow: `${claimCashbackLoading || getTotalClaimable() === '0 sol' ?
                                         '0px 2px 0.6px rgb(71, 85, 105, 0.66)'
@@ -903,7 +903,7 @@ function ReferralPage() {
                                         }`
                                     }}
                                   >
-                                    <span className={`hover:text-shadow-none ${claimCashbackLoading ? 'animate-pulse': ''}`}>{claimCashbackLoading ? 'Loading' : !currentUser.walletAddr ? `Bind Wallet` : getTotalClaimable() === '0 sol' ? 'Claimed Everything' : getTotalClaimable() === '-' ? 'Mint Now' : `Claim`}</span>
+                                    <span className={`hover:text-shadow-none ${claimCashbackLoading ? 'animate-pulse': ''}`}>{claimCashbackLoading ? 'Loading' : !currentUser?.walletAddr ? `Bind Wallet` : getTotalClaimable() === '0 sol' ? 'Claimed Everything' : getTotalClaimable() === '-' ? 'Mint Now' : `Claim`}</span>
                                   </div>
                                 }
                               </button>
