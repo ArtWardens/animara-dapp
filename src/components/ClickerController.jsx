@@ -4,7 +4,7 @@ import { useWalletModal } from '@solana/wallet-adapter-react-ui';
 import { useWalletMultiButton } from '@solana/wallet-adapter-base-ui';
 import { useAppDispatch } from '../hooks/storeHooks';
 import { useNavigate } from 'react-router-dom/dist';
-import { getUser, fetchDates, useMintDate, checkUserLastPeriodicBatchTime } from '../sagaStore/slices';
+import { getUser, fetchDates, useMintDate, checkUserLastPeriodicBatchTime, useUpdateStatusLoading } from '../sagaStore/slices';
 import {
   useUserDetails,
   useBindWalletLoading,
@@ -23,6 +23,7 @@ const ClickerController = ({ Children }) => {
   const isAuthenticated = useUserAuthenticated();
   const isAuthLoading = useAuthLoading();
   const currentUser = useUserDetails();
+  const updateStatusLoading = useUpdateStatusLoading();
   const mintDate = useMintDate();
   const bindingWallet = useBindWalletLoading();
   const {
@@ -61,9 +62,11 @@ const ClickerController = ({ Children }) => {
 
   // check if is new user or not
   useEffect(() => {
-    if (currentUser) {
-      if (currentUser.isNewUser) {
-        navigate('/tutorial');
+    if (!updateStatusLoading) {
+      if(currentUser) {
+        if (currentUser.isNewUser) {
+          navigate('/tutorial');
+        }
       }
     }
     

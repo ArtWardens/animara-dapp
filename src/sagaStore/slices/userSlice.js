@@ -14,6 +14,8 @@ const userInitialState = {
   updateProfile: [],
   updateProfileLoading: false,
   getUserLoading: false,
+  updateStatus: [],
+  updateStatusLoading: false,
   dailyLoginLoading: false,
   getLeaderBoardLoading: false,
   getLeaderBoardSuccess: false,
@@ -192,6 +194,17 @@ export const userSlice = createSlice({
     updateProfileError: (state, { payload }) => {
       state.error = payload;
       state.updateProfileLoading = false;
+    },
+    updateStatus: (state, { payload }) =>{
+      state.updateStatusLoading = true;
+    },
+    updateStatusSuccess: (state, { payload }) => {
+      state.updateStatusLoading = false;
+      state.updateStatus = payload;
+    },
+    updateStatusError: (state, { payload }) => {
+      state.updateStatusLoading = false;
+      state.updateStatus = payload;
     },
     setError: (state, { payload }) => {
       state.error = payload;
@@ -573,6 +586,9 @@ export const {
   updateProfile,
   updateProfileSuccess,
   updateProfileError,
+  updateStatus,
+  updateStatusSuccess,
+  updateStatusError,
   setError,
   clearLoginError,
   getUser,
@@ -653,6 +669,7 @@ export const useResetPasswordLoading = () => useAppSelector((state) => state.use
 export const useUpdateProfileLoading = () => useAppSelector((state) => state.user.updateProfileLoading);
 export const useUserDetails = () => useAppSelector((state) => state.user.user);
 export const useUserDetailsLoading = () => useAppSelector((state) => state.user.getUserLoading);
+export const useUpdateStatusLoading = () => useAppSelector((state) => state.user.updateStatusLoading);
 export const useLeaderBoardDetails = () => useAppSelector((state) => state.user.leaderBoard);
 export const useLeaderBoardLoading = () => useAppSelector((state) => state.user.getLeaderBoardLoading);
 export const useLeaderBoardLoadSuccess = () => useAppSelector((state) => state.user.getLeaderBoardSuccess);

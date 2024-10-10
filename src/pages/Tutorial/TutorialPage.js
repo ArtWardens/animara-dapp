@@ -1,8 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom/dist';
+import { useAppDispatch } from "../../hooks/storeHooks";
+import { updateStatus, useUpdateStatusLoading } from "../../sagaStore/slices";
+import { MoonLoader } from "react-spinners";
 
 const TutorialPage = () => {
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  const updateStatusLoading = useUpdateStatusLoading();
   
   const [isMobile, setIsMobile] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -37,7 +42,8 @@ const TutorialPage = () => {
   // redirect to anitap
   const handleClick = () => {
     // update user status here 
-    // then
+    dispatch(updateStatus());
+
     navigate('/anitap');
   };
 
@@ -76,7 +82,7 @@ const TutorialPage = () => {
           backgroundRepeat: "no-repeat",
         }}
       >
-        <div className="w-full lg:min-w-[1600px] flex flex-col px-[1rem] lg:px-[10rem] py-[4rem]">
+        <div className="w-full lg:min-w-[1600px] h-full flex flex-col justify-center px-[1rem] lg:px-[10rem] py-[4rem]">
           {/* demo header row */}
           <div className={`w-full flex flex-row ${isMobile ? 'items-center' : 'items-start'} justify-between z-[100]`}>
             <img
@@ -91,65 +97,73 @@ const TutorialPage = () => {
             />
           </div>
 
-          {/* tutorial row */}
-          <div 
-            className={`w-full min-w-[200px] lg:min-w-[1600px] h-full min-h-[600px] xs:min-h-[800px] lg:min-h-[1000px] flex flex-col lg:flex-row items-center ${isMobile ? 'justify-start' : 'justify-center'} gap-[2rem] mt-0 lg:mt-[-8rem] p-[2rem] xs:p-[4rem] lg:p-[12rem] z-[10]`}
-            style={{
-              backgroundImage: isMobile ? 'url("/assets/images/tutorial-bg-mobile.webp")' : 'url("/assets/images/tutorial-bg.webp")',
-              backgroundSize: "contain",
-              backgroundPosition: "center",
-              backgroundRepeat: "no-repeat",
-            }}
-          >
-              {/* tutorial descriptions */}
-              <div className="w-[80%] lg:w-[30%] h-full flex flex-col items-center ml-[0rem] lg:ml-[5rem] mt-[1rem] xs:mt-[2rem] lg:mt-[2rem]">
-                <div className="w-full max-w-[300px] lg:max-w-[700px] flex flex-col items-center lg:items-start justify-center">
-                  <h1 className="min-h-[55px] text-[#FFAA00] text-xl lg:text-4xl text-center lg:text-left font-normal lg:whitespace-nowrap mb-2 lg:mb-[3rem]">{tutorials[currentIndex].title}</h1>
+          {/* Loading */}
+          {updateStatusLoading ? (
+            <div className="w-full h-full min-h-[50dvh] flex justify-center items-center">
+              <MoonLoader color="#FFAA00" size={50} />
+            </div>
+          ) : (
+            <>
+              {/* tutorial row */}
+              <div 
+                className={`w-full min-w-[200px] lg:min-w-[1600px] h-full min-h-[600px] xs:min-h-[800px] lg:min-h-[1000px] flex flex-col lg:flex-row items-center ${isMobile ? 'justify-start' : 'justify-center'} gap-[2rem] mt-0 lg:mt-[-8rem] p-[2rem] xs:p-[4rem] lg:p-[12rem] z-[10]`}
+                style={{
+                  backgroundImage: isMobile ? 'url("/assets/images/tutorial-bg-mobile.webp")' : 'url("/assets/images/tutorial-bg.webp")',
+                  backgroundSize: "contain",
+                  backgroundPosition: "center",
+                  backgroundRepeat: "no-repeat",
+                }}
+              >
+                  {/* tutorial descriptions */}
+                  <div className="w-[80%] lg:w-[30%] h-full flex flex-col items-center ml-[0rem] lg:ml-[5rem] mt-[1rem] xs:mt-[2rem] lg:mt-[2rem]">
+                    <div className="w-full max-w-[300px] lg:max-w-[700px] flex flex-col items-center lg:items-start justify-center">
+                      <h1 className="min-h-[55px] text-[#FFAA00] text-xl lg:text-4xl text-center lg:text-left font-normal lg:whitespace-nowrap mb-2 lg:mb-[3rem]">{tutorials[currentIndex].title}</h1>
 
-                  <p className="w-[100%] lg:w-[20dvw] h-full min-h-[260px] lg:min-h-[350px] flex flex-col items-center lg:items-start text-white text-sm lg:text-xl text-center lg:text-left font-outfit font-normal lg:mb-[3rem]"> 
-                    {tutorials[currentIndex].description.split("\n").map((text, index) => (
-                      <React.Fragment key={index}>
-                        {text}
-                        <br />
-                      </React.Fragment>
-                    ))}
-                    <button
-                      className={`bg-[#ffdc61] ${currentIndex === 3 ? 'block' : 'hidden'} text-white font-LuckiestGuy mt-8 px-8 py-2 rounded-full text-lg uppercase flex items-center justify-center hover:shadow-[0px_4px_4px_0px_#FFFBEF_inset]`}
-                      onClick={handleClick}
-                    >
-                      okay
-                    </button>
-                  </p>
-                </div>
+                      <p className="w-[100%] lg:w-[20dvw] h-full min-h-[260px] lg:min-h-[350px] flex flex-col items-center lg:items-start text-white text-sm lg:text-xl text-center lg:text-left font-outfit font-normal lg:mb-[3rem]"> 
+                        {tutorials[currentIndex].description.split("\n").map((text, index) => (
+                          <React.Fragment key={index}>
+                            {text}
+                            <br />
+                          </React.Fragment>
+                        ))}
+                        <button
+                          className={`bg-[#ffdc61] ${currentIndex === 3 ? 'block' : 'hidden'} text-white font-LuckiestGuy mt-8 px-8 py-2 rounded-full text-lg uppercase flex items-center justify-center hover:shadow-[0px_4px_4px_0px_#FFFBEF_inset]`}
+                          onClick={handleClick}
+                        >
+                          okay
+                        </button>
+                      </p>
+                    </div>
 
-                {/* Buttons */}
-                <div className="w-full max-w-[400px] flex flex-row justify-center lg:justify-between gap-[4rem] lg:mb-[3rem]">
-                  <button 
-                    className={`${currentIndex === 0 ? 'hidden' : 'block'} text-white text-base font-outfit font-medium transition-all duration-300 hover:scale-110`} 
-                    onClick={handlePrevious}
-                  >
-                    {isMobile ? '\u2190' : '\u2190 Previous'}
-                  </button>
-                  <button 
-                    className={`${currentIndex === 3 ? 'hidden' : 'block'} text-white text-base font-outfit font-medium transition-all duration-300 hover:scale-110`} 
-                    onClick={handleNext}
-                  >
-                    {isMobile ? '\u2192' : 'Next \u2192'}
-                  </button>
-                </div>
+                    {/* Buttons */}
+                    <div className="w-full max-w-[400px] flex flex-row justify-center lg:justify-between gap-[4rem] lg:mb-[3rem]">
+                      <button 
+                        className={`${currentIndex === 0 ? 'hidden' : 'block'} text-white text-base font-outfit font-medium transition-all duration-300 hover:scale-110`} 
+                        onClick={handlePrevious}
+                      >
+                        {isMobile ? '\u2190' : '\u2190 Previous'}
+                      </button>
+                      <button 
+                        className={`${currentIndex === 3 ? 'hidden' : 'block'} text-white text-base font-outfit font-medium transition-all duration-300 hover:scale-110`} 
+                        onClick={handleNext}
+                      >
+                        {isMobile ? '\u2192' : 'Next \u2192'}
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* tutorial mascot */}
+                  <div className="w-full lg:w-[50%] flex items-center justify-center lg:mr-[-3rem] lg:mb-[-10rem]">
+                    <img
+                      src={tutorials[currentIndex].mascot}
+                      alt="demo-menu"
+                      className="w-auto h-full max-h-[150px] xs:max-h-[400px] lg:max-h-[700px] object-cover"
+                    />
+                  </div>
+                
               </div>
-
-              {/* tutorial mascot */}
-              <div className="w-full lg:w-[50%] flex items-center justify-center lg:mr-[-3rem] lg:mb-[-10rem]">
-                <img
-                  src={tutorials[currentIndex].mascot}
-                  alt="demo-menu"
-                  className="w-auto h-full max-h-[150px] xs:max-h-[400px] lg:max-h-[700px] object-cover"
-                />
-              </div>
-            
-          </div>
-
+            </>
+          )}
           
         </div>
       </div>
