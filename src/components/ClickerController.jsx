@@ -122,7 +122,6 @@ const ClickerController = ({ Children }) => {
     }
     // console.log("init lastBatchTimeRef: ", lastBatchTimeRef);
     setCurrentPeriodicBatchTime(lastBatchTimeRef);
-    console.log(lastBatchTimeRef);
 
     // Schedule the next check for the next 5-minute interval
     const timeUntilNextInterval = calculateNextInterval();
