@@ -59,7 +59,7 @@ const TutorialPage = () => {
   // detect is mobile or not
   useEffect(()=>{
     const detectMobile = () => {
-      setIsMobile(window.innerWidth < 1024);
+      setIsMobile(window.innerWidth <= 1024 && window.innerHeight > window.innerWidth);
     };
 
     detectMobile();
@@ -74,7 +74,7 @@ const TutorialPage = () => {
   return(
     <>
       <div 
-        className={`min-h-screen h-full flex flex-col z-30`}
+        className={`min-h-screen h-full flex flex-col items-center z-30`}
         style={{
           backgroundImage: 'url("/assets/images/clicker-character/clickerWall.webp")',
           backgroundSize: "cover",
@@ -82,18 +82,18 @@ const TutorialPage = () => {
           backgroundRepeat: "no-repeat",
         }}
       >
-        <div className="w-full lg:min-w-[1600px] h-full flex flex-col justify-center px-[1rem] lg:px-[10rem] py-[4rem]">
+        <div className="w-full lg:max-w-[1920px] h-full flex flex-col justify-center px-[1rem]lg:px-[10rem] py-[4rem]">
           {/* demo header row */}
           <div className={`w-full flex flex-row ${isMobile ? 'items-center' : 'items-start'} justify-between z-[100]`}>
             <img
               src={"/assets/images/demo-header.webp"}
               alt="demo-header"
-              className="w-auto h-[10dvh] lg:min-h-[150px] object-contain"
+              className="w-auto h-[9dvh] xs:h-[10dvh] lg:min-h-[150px] object-contain"
             />
             <img
               src={isMobile ? `/assets/images/demo-mobile-menu.webp` : `${tutorials[currentIndex].menu}`}
               alt="demo-menu"
-              className={`w-auto h-6 lg:h-[20dvh] lg:min-h-[200px] object-contain`}
+              className={`w-auto h-6 lg:h-[20dvh] lg:min-h-[200px] object-contain ${isMobile ? 'mr-4' : 'mr-0'}`}
             />
           </div>
 
@@ -106,7 +106,7 @@ const TutorialPage = () => {
             <>
               {/* tutorial row */}
               <div 
-                className={`w-full min-w-[200px] lg:min-w-[1600px] h-full min-h-[600px] xs:min-h-[800px] lg:min-h-[1000px] flex flex-col lg:flex-row items-center ${isMobile ? 'justify-start' : 'justify-center'} gap-[2rem] mt-0 lg:mt-[-8rem] p-[2rem] xs:p-[4rem] lg:p-[12rem] z-[10]`}
+                className={`w-full min-w-[200px] lg:max-w-[1800px] h-full min-h-[600px] xs:min-h-[800px] lg:min-h-[800px] 2xl:min-h-[1000px] flex flex-col lg:flex-row items-center ${isMobile ? 'justify-start' : 'justify-center'} gap-[2rem] mt-0 lg:mt-[-8rem] p-[2rem] xs:p-[4rem] lg:p-[6rem] z-[10]`}
                 style={{
                   backgroundImage: isMobile ? 'url("/assets/images/tutorial-bg-mobile.webp")' : 'url("/assets/images/tutorial-bg.webp")',
                   backgroundSize: "contain",
@@ -115,11 +115,11 @@ const TutorialPage = () => {
                 }}
               >
                   {/* tutorial descriptions */}
-                  <div className="w-[80%] lg:w-[30%] h-full flex flex-col items-center ml-[0rem] lg:ml-[5rem] mt-[1rem] xs:mt-[2rem] lg:mt-[2rem]">
+                  <div className="w-[80%] lg:w-[30%] h-full flex flex-col items-center ml-[0rem] xl:ml-[5rem] mt-[1rem] xs:mt-[2rem] lg:mt-[2rem]">
                     <div className="w-full max-w-[300px] lg:max-w-[700px] flex flex-col items-center lg:items-start justify-center">
-                      <h1 className="min-h-[55px] text-[#FFAA00] text-xl lg:text-4xl text-center lg:text-left font-normal lg:whitespace-nowrap mb-2 lg:mb-[3rem]">{tutorials[currentIndex].title}</h1>
+                      <h1 className="min-h-[55px] lg:min-h-0 text-[#FFAA00] text-xl lg:text-2xl xl:text-4xl text-center lg:text-left font-normal lg:whitespace-nowrap mb-2 2xl:mb-[3rem]">{tutorials[currentIndex].title}</h1>
 
-                      <p className="w-[100%] lg:w-[20dvw] h-full min-h-[260px] lg:min-h-[350px] flex flex-col items-center lg:items-start text-white text-sm lg:text-xl text-center lg:text-left font-outfit font-normal lg:mb-[3rem]"> 
+                      <p className="w-[100%] lg:w-[30dvw] xl:w-[25dvw] h-full min-h-[260px] xl:min-h-[365px] flex flex-col items-center lg:items-start text-white text-sm lg:text-base xl:text-xl text-center lg:text-left font-outfit font-normal xl:mb-[3rem]"> 
                         {tutorials[currentIndex].description.split("\n").map((text, index) => (
                           <React.Fragment key={index}>
                             {text}
@@ -136,7 +136,7 @@ const TutorialPage = () => {
                     </div>
 
                     {/* Buttons */}
-                    <div className="w-full max-w-[400px] flex flex-row justify-center lg:justify-between gap-[4rem] lg:mb-[3rem]">
+                    <div className="w-full max-w-[400px] flex flex-row justify-center lg:justify-between gap-[4rem] 2xl:mb-[3rem]">
                       <button 
                         className={`${currentIndex === 0 ? 'hidden' : 'block'} text-white text-base font-outfit font-medium transition-all duration-300 hover:scale-110`} 
                         onClick={handlePrevious}
@@ -153,7 +153,7 @@ const TutorialPage = () => {
                   </div>
 
                   {/* tutorial mascot */}
-                  <div className="w-full lg:w-[50%] flex items-center justify-center lg:mr-[-3rem] lg:mb-[-10rem]">
+                  <div className="w-full lg:w-[50%] flex items-center justify-center lg:mr-[-3rem] lg:mb-[-5rem]">
                     <img
                       src={tutorials[currentIndex].mascot}
                       alt="demo-menu"
