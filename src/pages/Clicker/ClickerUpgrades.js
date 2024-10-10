@@ -124,7 +124,7 @@ const ClickerUpgrades = ({ onClose }) => {
                 <img
                   src={"/assets/images/clicker-character/explore-animara.webp"}
                   alt="explore-animara"
-                  className="w-[100%] lg:w-[50%] xs:mt-[-1rem] lg:mt-[-2rem] overflow-visible"
+                  className="w-[100%] lg:w-[50%] mt-[-1rem] lg:mt-[-3rem] overflow-visible"
                 />
             </div>
 
@@ -142,10 +142,10 @@ const ClickerUpgrades = ({ onClose }) => {
                   <PropagateLoader color={"#FFB23F"} />
                 </div>
               ) : (
-                <div className="flex flex-col lg:flex-row justify-start mt-[2rem] lg:mt-[4rem] lg:gap-[1rem] overflow-y-auto lg:scrollbar-webkit-white">
+                <div className="w-full lg:max-w-[87dvw] h-full max-h-[55dvh] flex flex-col lg:flex-row justify-start mt-[2rem] lg:mt-[4rem] lg:gap-[1rem] overflow-y-auto custom-scrollbar">
                   {/* Menu bar */}
                   <div className="w-full lg:w-[16dvw] h-full flex flex-col">
-                    <div className="h-full lg:min-h-[800px] flex flex-row lg:flex-col lg:mt-[2.5rem] p-[2rem] lg:p-2 overflow-y-auto lg:scrollbar-webkit-white mb-[1rem] lg:mb-0">
+                    <div className="h-full lg:min-h-[800px] flex flex-row lg:flex-col lg:mt-[2.5rem] p-[2rem] lg:p-2 overflow-y-auto custom-scrollbar mb-[1rem] lg:mb-0">
                     {menuOptions.map((option, index) => (
                       <div
                         key={index}
@@ -225,7 +225,7 @@ const ClickerUpgrades = ({ onClose }) => {
                       userLocations.filter(
                         (location) => location.region === selectedOption
                       ).length > 0 ? (
-                        <div className="h-full w-full max-w-[1480px] flex flex-col lg:flex-row flex-wrap items-center justify-start gap-4 amt-4 p-4 overflow-y-auto scrollbar-webkit-white">
+                        <div className="h-full w-full max-w-[1480px] flex flex-col lg:flex-row flex-wrap items-center justify-start gap-4 amt-4 p-4 overflow-y-auto custom-scrollbar">
                           {userLocations
                             .filter((location) => location.region === selectedOption)
                             .sort((a, b) => (a.level >= 0 && b.level === -1 ? -1 : 1)) // Sort unlocked locations first

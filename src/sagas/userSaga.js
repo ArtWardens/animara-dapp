@@ -18,6 +18,7 @@ import {
   dailyLoginImpl,
   getReferralStatsImpl,
   registerNFTImpl,
+  updateUserStatusImpl,
 } from "../firebase/user";
 import { handleGetLeaderboard, getLeaderboardImpl } from "../firebase/leaderboard";
 import {
@@ -129,6 +130,8 @@ import {
   getCashbackClaimHistory,
   getCashbackClaimHistoryError,
   getCashbackClaimHistorySuccess,
+  updateStatus,
+  updateStatusSuccess,
 } from "../sagaStore/slices";
 import {
   StaminaRechargeTypeBasic,
@@ -327,6 +330,17 @@ export function* updateUserProfileSaga({ payload }) {
     yield put(updateProfileError(error));
     toast.error("Failed to update profile. Please try again");
     console.log(error);
+  }
+}
+
+export function* updateUserStatusSaga({ payload }) {
+  try {
+    const result = yield call(updateUserStatusImpl, payload);
+    yield put(updateStatusSuccess(result));
+
+  } catch (error) {
+    yield put(updateProfileError(error));
+    toast.error("Failed to update user status.");
   }
 }
 
@@ -683,6 +697,7 @@ export function* userSagaWatcher() {
   yield takeLatest(getEarlyBirdOneTimeTaskList.type, getEarlyBirdOneTimeTaskListSaga);
   yield takeLatest(completeOneTimeTask.type, updateOneTimeTaskSaga);
   yield takeLatest(updateProfile.type, updateUserProfileSaga);
+  yield takeLatest(updateStatus.type, updateUserStatusSaga);
   yield takeLatest(consumeStamina.type, consumeStaminaSaga);
   yield takeLatest(settleTapSession.type, settleTapSessionSaga);
   yield takeLatest(rechargeStamina.type, rechargeStaminaSaga);

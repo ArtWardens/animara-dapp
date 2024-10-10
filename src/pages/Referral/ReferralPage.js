@@ -499,7 +499,7 @@ function ReferralPage() {
                                 textShadow: '0px 2px 4px rgba(0, 0, 0, 0.25)',
                               }}
                             >
-                              {getTotalClaimable()} sol
+                              {getTotalClaimable() === '0 sol' ? '0' : getTotalClaimable()} sol
                             </div>
                           </div>
 
@@ -544,7 +544,7 @@ function ReferralPage() {
                                 textShadow: '0px 2px 4px rgba(0, 0, 0, 0.25)',
                               }}
                             >
-                              {getTotalClaimable()} sol
+                              {getTotalClaimable() === '0 sol' ? '0' : getTotalClaimable()} sol
                             </div>
                           </div>
                           
@@ -769,7 +769,8 @@ function ReferralPage() {
                                 >
                                   total claimed
                                 </p>
-                                <p className="w-[80%] text-neutral-700 text-[0.5rem] xl:text-xs font-semibold font-outfit mb-2">
+                                {/* body */}
+                                <p className="text-neutral-700 text-xs font-semibold font-outfit ml-0 sm:ml-[1rem]">
                                   Track your claimed earnings in total claimed.
                                 </p>
                                 <button className="text-[#00B9E1] text-sm font-normal font-outfit underline transition-all duration-500 hover:scale-105"

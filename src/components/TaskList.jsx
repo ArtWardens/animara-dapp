@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState, useRef } from 'react';
 import { PropTypes } from "prop-types";
 import { FaInstagram, FaTwitter, FaTelegramPlane, FaYoutube, FaLink } from 'react-icons/fa';
 import { getOneTimeTaskList, completeOneTimeTask, useOneTimeTaskList, useOneTimeTaskListSuccess, useTaskIdToComplete, useUserDetails } from '../sagaStore/slices';
@@ -13,6 +13,7 @@ const TaskList = ({ setIsOneTimeTaskOpen }) => {
   const taskIdToComplete = useTaskIdToComplete();
   const [showTaskModal, setShowTaskModal] = useState(true);
   const [slideUpgrades, setSlideUpgrades] = useState(false);
+  const closeAnimTimer = useRef(null);
 
   useEffect(() => {
     if(!getOneTimeTaskListSuccess){
@@ -31,17 +32,16 @@ const TaskList = ({ setIsOneTimeTaskOpen }) => {
   },[dispatch, getOneTimeTaskListSuccess, oneTimeTaskList]);
 
   const handleCloseModal = () => {
-    if(showTaskModal) {
-      setShowTaskModal(false);
-    }
-    
-    const timerPanel = setTimeout(() => {
-      setIsOneTimeTaskOpen(false);
-    }, 300);
+    if (closeAnimTimer.current){ return; }
 
-    return () => {
-      clearTimeout(timerPanel);
-    };
+    setSlideUpgrades(false);
+
+    closeAnimTimer.current = setTimeout(()=>{
+      if(showTaskModal) {
+        setShowTaskModal(false);
+      }
+      setIsOneTimeTaskOpen(false);
+    }, 200);
   };
 
   const getIconComponent = (actionType) => {
@@ -175,7 +175,7 @@ const TaskList = ({ setIsOneTimeTaskOpen }) => {
             />
           </div>
 
-          <div className="w-full h-full flex flex-col items-center justify-center gap-1 pt-[1rem] lg:px-[4rem] rounded-3xl"
+          <div className="w-full h-full flex flex-col items-center justify-start gap-1 pt-[1rem] lg:px-[4rem] rounded-3xl"
             style={{
               backgroundImage:
                 'url("/assets/images/clicker-character/mascotBg.webp")',
@@ -191,15 +191,20 @@ const TaskList = ({ setIsOneTimeTaskOpen }) => {
                 <img
                   src={"/assets/images/clicker-character/task.webp"}
                   alt="task"
-                  className="w-[100%] lg:w-[50%] max-w-[800px] xs:mt-[-1rem] lg:mt-[-2rem] overflow-visible"
+                  className="w-[100%] lg:w-[50%] max-w-[800px] mt-[-1.5rem] xs:mt-[-2rem] lg:mt-[-6rem] overflow-visible"
                 />
             </div>
 
-            <div className="w-full flex items-start">
-              <h3 className="text-[1.5rem] lg:text-[2rem] pl-4 mt-[4rem] lg:mt-[10rem] text-[#FFAA00]">Complete missions to earn free coins</h3>
-            </div>
-            <div className="w-full h-full flex flex-col justify-start gap-3 mt-[2rem] px-4 overflow-x-hidden overflow-y-auto custom-scrollbar">
-              {renderOneTimeTaskList}
+            <div className="w-full flex items-start justify-center">
+              <div className="w-full lg:max-w-[70dvw] flex flex-col ">
+                <div className="mt-[4rem] lg:mt-[10rem]">
+                  <h3 className="text-[1.5rem] lg:text-[2rem] pl-4 text-[#FFAA00]">Complete missions to earn free coins</h3>
+                </div>
+
+                <div className="w-full h-full max-h-[50dvh] flex flex-col justify-start gap-3 mt-[2rem] px-4 overflow-x-hidden overflow-y-auto custom-scrollbar z-100">
+                  {renderOneTimeTaskList}
+                </div>
+              </div>
             </div>
           </div>
         </div>
