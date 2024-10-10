@@ -39,6 +39,7 @@ const ClickerController = ({ Children }) => {
   const [currentPeriodicBatchTime, setCurrentPeriodicBatchTime] = useState(null);
   const timeoutIdRef = useRef(null);
   const retryCountRef = useRef(0);
+  const dispatchingRef = useRef(false);
 
   const handleLogout = () => {
     dispatch(logOut());
@@ -110,7 +111,7 @@ const ClickerController = ({ Children }) => {
 
   // Init countdown
   const initCountdownForNextInterval = () => {
-    console.log('init countdown');
+    // console.log('init countdown');
     // reset retry count
     retryCountRef.current = 0;
     let lastBatchTimeRef;
@@ -121,21 +122,24 @@ const ClickerController = ({ Children }) => {
     }
     // console.log("init lastBatchTimeRef: ", lastBatchTimeRef);
     setCurrentPeriodicBatchTime(lastBatchTimeRef);
+    console.log(lastBatchTimeRef);
 
     // Schedule the next check for the next 5-minute interval
     const timeUntilNextInterval = calculateNextInterval();
-    console.log('timeUntilNextInterval: ', timeUntilNextInterval);
+    // console.log('timeUntilNextInterval: ', timeUntilNextInterval);
 
     if (timeoutIdRef.current) {
       clearTimeout(timeoutIdRef.current);
-      console.log('Cleared timeout with in init: ', timeoutIdRef.current);
+      // console.log('Cleared timeout with in init: ', timeoutIdRef.current);
     }
 
     //random wait time between 0 - 5 seconds
     const randomWaitTime = Math.floor(Math.random() * 5000);
-    console.log('randomWaitTime: ', randomWaitTime);
+    // console.log('randomWaitTime: ', randomWaitTime);
+    dispatchingRef.current = true;
     timeoutIdRef.current = setTimeout(() => {
-      console.log('Dispatching scheduled check interval');
+      // console.log('Dispatching scheduled check interval');
+      dispatchingRef.current = false;
       dispatch(checkUserLastPeriodicBatchTime());
     }, timeUntilNextInterval + randomWaitTime);
   };
@@ -148,8 +152,8 @@ const ClickerController = ({ Children }) => {
     const scheduleHours = process.env.REACT_APP_SCHEDULE_INTERVAL_HOURS || '*';
     const scheduleMinutes = process.env.REACT_APP_SCHEDULE_INTERVAL_MINUTES || '*';
 
-    console.log('scheduleHours', scheduleHours);
-    console.log('scheduleHours === *', scheduleHours === '*');
+    // console.log('scheduleHours', scheduleHours);
+    // console.log('scheduleHours === *', scheduleHours === '*');
 
     if (scheduleHours === '*') {
       const minutesInterval = scheduleMinutes === '*' ? 1 : parseInt(scheduleMinutes, 10);
@@ -163,11 +167,11 @@ const ClickerController = ({ Children }) => {
 
       // If the next interval is the current time or earlier, move to the next interval block
       if (nextInterval.getTime() <= now.getTime()) {
-        console.log('same interval, move to next');
+        // console.log('same interval, move to next');
         nextInterval.setUTCMinutes(nextInterval.getUTCMinutes() + minutesInterval, 0, 0);
       }
-      console.log('minutesInterval', minutesInterval);
-      console.log('test next minute: ', minutes);
+      // console.log('minutesInterval', minutesInterval);
+      // console.log('test next minute: ', minutes);
 
       // Calculate time until the next interval
       const timeUntilNextInterval = nextInterval.getTime() - now.getTime();
@@ -185,10 +189,10 @@ const ClickerController = ({ Children }) => {
 
       // If the next interval is the current time or earlier, move to the next interval block
       if (nextInterval.getTime() <= now.getTime()) {
-        console.log('same interval, move to next');
+        // console.log('same interval, move to next');
         nextInterval.setUTCHours(nextInterval.getUTCHours() + hoursInterval, 0, 0, 0);
       }
-      console.log('test next hour: ', hours);
+      // console.log('test next hour: ', hours);
 
       // Calculate time until the next interval
       const timeUntilNextInterval = nextInterval.getTime() - now.getTime();
@@ -197,6 +201,8 @@ const ClickerController = ({ Children }) => {
   };
 
   const scheduleCheckForNextInterval = () => {
+    // console.log(dispatchingRef.current);
+    if (dispatchingRef.current === true) return;
     let lastBatchTimeRef;
     if (lastPeriodicBatchTime instanceof Timestamp === false) {
       lastBatchTimeRef = lastPeriodicBatchTime;
@@ -205,6 +211,7 @@ const ClickerController = ({ Children }) => {
     }
 
     if (!currentPeriodicBatchTime) {
+      // console.log('return after init');
       initCountdownForNextInterval();
       return;
     }
@@ -214,24 +221,32 @@ const ClickerController = ({ Children }) => {
       retryCountRef.current++;
 
       if (retryCountRef.current === 1) {
+        // console.log('10');
         if (timeoutIdRef.current) {
           clearTimeout(timeoutIdRef.current);
         }
+        dispatchingRef.current = true;
         timeoutIdRef.current = setTimeout(() => {
+          dispatchingRef.current = false;
           dispatch(checkUserLastPeriodicBatchTime());
         }, 10 * 1000); // 10 seconds
       } else if (retryCountRef.current === 2) {
+        // console.log('30');
         if (timeoutIdRef.current) {
           clearTimeout(timeoutIdRef.current);
         }
+        dispatchingRef.current = true;
         timeoutIdRef.current = setTimeout(() => {
+          dispatchingRef.current = false;
           dispatch(checkUserLastPeriodicBatchTime());
         }, 30 * 1000); // 30 seconds
       } else {
+        // console.log('up to date');
         initCountdownForNextInterval();
       }
     } else {
       // If batch success and is finished, reset the retry counter
+      // console.log('dispatch user');
       dispatch(getUser());
       initCountdownForNextInterval();
     }
