@@ -11,8 +11,9 @@ import EarlyBirdPage from "./pages/EarlyBird/EarlyBirdPage";
 import VerifyEmailPage from "./pages/VerifyEmail/VerifyEmailPage";
 import LimitedAccessPage from "./pages/VerifyEmail/LimitedAccessPage";
 import MintPage from "./pages/Mint/MintPage";
-// import ClickerPage from "./pages/Clicker/ClickerPage";
-import LockPage from "./pages/Lock/LockPage.js";
+import ClickerPage from "./pages/Clicker/ClickerPage";
+// import LockPage from "./pages/Lock/LockPage.js";
+import TutorialPage from "./pages/Tutorial/TutorialPage";
 import AppLayout from './components/AppLayout';
 import { GlobalProvider } from './context/ContextProvider';
 import rootSaga from './sagas';
@@ -106,10 +107,11 @@ export const App = () => {
                     <Route path="/limited-access" element={<LimitedAccessPage />} />
                     <Route path="/verify-email" element={<VerifyEmailPage />} />
                     <Route path="/edit-profile" element={<ClickerController Children={EditProfilePage} />} />
-                    <Route path="/anitap" element={<ClickerController Children={LockPage} />} />
+                    <Route path="/anitap" element={<ClickerController Children={ClickerPage} />} />
                     <Route path="/referral" element={<ClickerController Children={ReferralPage} />} />
                     <Route path="/early-bird" element={<ClickerController Children={EarlyBirdPage} />} />
                     <Route path="/mint" element={<ClickerController Children={MintPage} />} />
+                    <Route path="/tutorial" element={<ClickerController Children={TutorialPage} />} />
                     <Route path="*" element={<Error404Page />} />
                   </Route>
                 </Routes>

@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState, useRef } from 'react';
 import { PropTypes } from "prop-types";
 import { FaInstagram, FaTwitter, FaTelegramPlane, FaYoutube, FaLink } from 'react-icons/fa';
 import { getOneTimeTaskList, completeOneTimeTask, useOneTimeTaskList, useOneTimeTaskListSuccess, useTaskIdToComplete, useUserDetails } from '../sagaStore/slices';
@@ -12,25 +12,36 @@ const TaskList = ({ setIsOneTimeTaskOpen }) => {
   const getOneTimeTaskListSuccess = useOneTimeTaskListSuccess();
   const taskIdToComplete = useTaskIdToComplete();
   const [showTaskModal, setShowTaskModal] = useState(true);
+  const [slideUpgrades, setSlideUpgrades] = useState(false);
+  const closeAnimTimer = useRef(null);
 
   useEffect(() => {
     if(!getOneTimeTaskListSuccess){
       dispatch(getOneTimeTaskList());
     }
+
+    // intro animations
+    const timerUpgrades = setTimeout(() => {
+      setSlideUpgrades(true);
+    }, 250);
+
+    return () => {
+      clearTimeout(timerUpgrades);
+    };
+
   },[dispatch, getOneTimeTaskListSuccess, oneTimeTaskList]);
 
   const handleCloseModal = () => {
-    if(showTaskModal) {
-      setShowTaskModal(false);
-    }
-    
-    const timerPanel = setTimeout(() => {
-      setIsOneTimeTaskOpen(false);
-    }, 300);
+    if (closeAnimTimer.current){ return; }
 
-    return () => {
-      clearTimeout(timerPanel);
-    };
+    setSlideUpgrades(false);
+
+    closeAnimTimer.current = setTimeout(()=>{
+      if(showTaskModal) {
+        setShowTaskModal(false);
+      }
+      setIsOneTimeTaskOpen(false);
+    }, 200);
   };
 
   const getIconComponent = (actionType) => {
@@ -133,41 +144,71 @@ const TaskList = ({ setIsOneTimeTaskOpen }) => {
   },[dispatch, oneTimeTaskList, currentUser?.uid, currentUser?.completedTask, taskIdToComplete]);
 
   return (
-    <div
-      className={`fixed left-0 top-0 flex h-full w-full items-center justify-center bg-dark/90 px-4 py-4 rounded-3xl`}
-      onClick={handleCloseModal}
-      style={{
-        zIndex: 90,
-      }}
-    >
-      <div
-        className={`
-              relative w-[100%] max-w-[1000px] px-[2rem] py-[6rem] rounded-[20px] text-center 
-              bg-cover bg-no-repeat 
-              md:px-[4rem] md:py-[14rem] md:bg-contain md:min-h-[750px] 
-              lg:px-[7rem] lg:py-[14rem] lg:bg-contain lg:min-h-[750px]
-              ${showTaskModal ? 'animate-slideInFromBottom' : 'animate-slideOutToBottom'}`}
-        style={{
-          backgroundImage: `url(/assets/images/task_panel.webp)`,
-          backgroundPosition: "center",
-        }}
-      >
-        <div className="text-left grid w-full gap-1 pt-[1rem]
-          sm:pt-0
-          md:gap-4
-          lg:pt-0"
-          onClick={(event) => {
-            event.stopPropagation();
+    <div className="w-full max-w-[90dvw]">
+      <div 
+        className={`h-full min-h-[700px] fixed inset-0 flex bg-dark bg-opacity-75 justify-center items-center z-90 transition-all duration-300
+        ${slideUpgrades? `opacity-100` : `opacity-0`}`}
+        onClick={handleCloseModal}>
+        <div
+          className={`relative w-full lg:w-[90dvw] h-4/5 rounded-3xl p-3 amt-[10rem] transition-all duration-300 z-[100] ${slideUpgrades? `translate-y-0 opacity-100` : `translate-y-60 opacity-0`}`}
+          style={{
+            border: "2px solid var(--Color, #F4FBFF)",
+            background: "rgba(155, 231, 255, 0.58)",
+            boxShadow:
+              "0px 8px 30px 0px rgba(4, 161, 183, 0.40) inset, 0px 8px 30px 0px rgba(32, 0, 99, 0.40)",
+            backdropFilter: "blur(15px)",
+            zIndex: 100,
           }}
-        >
-          <h3 className="text-[1.5rem] lg:text-[2rem] pl-4 text-[#FFAA00]">Complete missions to earn free coins</h3>
-          <div className="max-h-[320px] grid grid-cols-1 gap-3 px-4 overflow-x-hidden overflow-y-auto custom-scrollbar
-            md:max-h-[200px] 
-            lg:max-h-[260px]">
-            {renderOneTimeTaskList}
+            onClick={(e) => e.stopPropagation()}
+          >
+            
+          <div className="absolute flex w-full justify-between -top-9">
+            <img
+              src={"/assets/images/clicker-character/ring01.webp"}
+              alt="ring"
+              className="object-cover w-12 absolute left-2"
+            />
+            <img
+              src={"/assets/images/clicker-character/ring02.webp"}
+              alt="ring"
+              className="object-cover w-12 absolute right-8"
+            />
+          </div>
+
+          <div className="w-full h-full flex flex-col items-center justify-start gap-1 pt-[1rem] lg:px-[4rem] rounded-3xl"
+            style={{
+              backgroundImage:
+                'url("/assets/images/clicker-character/mascotBg.webp")',
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+              backgroundRepeat: "no-repeat",
+            }}
+            onClick={(event) => {
+              event.stopPropagation();
+            }}
+          >
+            <div className="absolute w-full top-0 left-0 flex items-center justify-center px-[4rem] pointer-events-none">
+                <img
+                  src={"/assets/images/clicker-character/task.webp"}
+                  alt="task"
+                  className="w-[100%] lg:w-[50%] max-w-[800px] mt-[-1.5rem] xs:mt-[-2rem] lg:mt-[-6rem] overflow-visible"
+                />
+            </div>
+
+            <div className="w-full flex items-start justify-center">
+              <div className="w-full lg:max-w-[70dvw] flex flex-col ">
+                <div className="mt-[4rem] lg:mt-[10rem]">
+                  <h3 className="text-[1.5rem] lg:text-[2rem] pl-4 text-[#FFAA00]">Complete missions to earn free coins</h3>
+                </div>
+
+                <div className="w-full h-full max-h-[50dvh] flex flex-col justify-start gap-3 mt-[2rem] px-4 overflow-x-hidden overflow-y-auto custom-scrollbar z-100">
+                  {renderOneTimeTaskList}
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
+    </div>
     </div>
   );
 };
