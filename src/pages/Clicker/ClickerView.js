@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { Box } from '@mui/material';
 import Modal from '@mui/material/Modal';
 import { useAppDispatch } from '../../hooks/storeHooks';
@@ -20,16 +20,30 @@ const ClickerView = () => {
   const [isOneTimeTaskOpen, setIsOneTimeTaskOpen] = useState(false);
   const [openModal, setOpenModal] = useState("");
   const [showPanel, setShowPanel] = useState(false);
-  const [isOpenRewardModal, setIsOpenRewardModal] = useState(false);  
+  const [isOpenRewardModal, setIsOpenRewardModal] = useState(false);
   const [rewardModalFading, setRewardModalFading] = useState(false);
+  const [showWord, setShowWord] = useState(false); // State to manage word display after 2.5 seconds
+  const [showCongratulations, setShowCongratulations] = useState(false); // Manage "Congratulations" visibility
+  const audioRef = useRef(null);
+  const audioSource = `/sounds/${currentUser?.level || 1}-successHits.mp3`;
 
   // grant depletion rewards when local stamina is fully consumed
   useEffect(() => {
     if (!currentUser || localStamina !== 0 || isOpenRewardModal || !currentUser.canGetDepletionReward) return;
 
     dispatch(settleTapSession({ newCointAmt: localCoins, newStamina: localStamina }));
-    setIsOpenRewardModal(true);
+
+    if (audioRef.current) {
+      audioRef.current.play();
+    }
+
+    // setIsOpenRewardModal(true);
   }, [dispatch, localStamina, localCoins, currentUser, isOpenRewardModal]);
+
+  // Handler for when the audio finishes playing
+  const handleAudioEnded = () => {
+    setIsOpenRewardModal(true);
+  };
 
   // Initialize
   useEffect(() => {
@@ -48,20 +62,43 @@ const ClickerView = () => {
       const timerPanel = setTimeout(() => {
         setShowPanel(true);
       }, 500);
-  
+
       return () => {
         clearTimeout(timerPanel);
       };
     }
   }, [isOpenDailyPopup]);
 
+  // Reward modal close handler
   const closeRewardModal = () => {
     setRewardModalFading(true);
     setTimeout(() => {
       setIsOpenRewardModal(false);
       setRewardModalFading(false);
+      setShowWord(false);
+      setShowCongratulations(false);
     }, 500);
   };
+
+  const handleVideoPlay = () => {
+    setTimeout(() => {
+      setShowWord(true);
+      setTimeout(() => {
+        setShowWord(false);
+      }, 3000);
+    }, 2500);
+
+    if (currentUser?.ownsNFT) {
+      setTimeout(() => {
+        setShowCongratulations(true);
+        setTimeout(() => {
+          setShowCongratulations(false);
+        }, 3300);
+      }, 7750);
+    }
+  };
+
+  const videoSource = currentUser?.ownsNFT ? '/assets/images/boxCoin_full.webm' : '/assets/images/boxCoin_normal.webm';
 
   const handleClose = () => {
     setShowPanel(false);
@@ -106,7 +143,7 @@ const ClickerView = () => {
             backgroundRepeat: 'no-repeat',
           }}
         >
-          <EnergyRegeneration 
+          <EnergyRegeneration
             isOneTimeTaskOpen={isOneTimeTaskOpen}
             setIsOneTimeTaskOpen={setIsOneTimeTaskOpen}
           />
@@ -130,7 +167,7 @@ const ClickerView = () => {
             open={isOpenDailyPopup}
             className="h-screen w-screen flex flex-1 overflow-x-hidden overflow-y-auto"
           >
-            <div className="fixed inset-0  backdrop-blur-xl rounded-xl flex justify-center items-center z-[200] overflow-hidden">
+            <div className="fixed inset-0 backdrop-blur-xl rounded-xl flex justify-center items-center z-[200] overflow-hidden">
               <div className={`min-h-[800px] w-[100%] relative rounded-xl 
               daily-reward-bg bg-no-repeat bg-cover
               md:min-h-[unset] md:bg-[length:100%_70%] 
@@ -145,10 +182,10 @@ const ClickerView = () => {
                 {/* Close Button */}
                 <button
                   className="absolute top-[6rem] right-[2.5rem] text-white text-4xl hover:brightness-75
-                  xs:top-[4rem]
-                  md:top-[13rem] md:right-[5rem]
-                  lg:top-[10rem] lg:right-[6rem] 
-                  xl:top-[8rem]" 
+                  xs:top-[6rem]
+                  md:top-[12rem] md:right-[4rem]
+                  lg:top-[10rem] lg:right-[5rem] 
+                  xl:top-[8rem]"
                   onClick={handleClose}
                 >
                   &times;
@@ -175,26 +212,30 @@ const ClickerView = () => {
                       Accure Coins For Loggin Into The Game Daily Without Skipping
                     </span>
                   </div>
-                  <Box className="max-h-[300px] overflow-y-auto py-3 pl-2 pr-4 w-full grid grid-cols-2 gap-2 custom-scrollbar
-                    xs:max-h-[400px]
-                    sm:max-h-[450px] sm:grid-cols-3 
-                    md:max-h-[250px] md:grid-cols-5
-                    lg:max-h-[unset] lg:grid-cols-7">
-                    {dailyLoginRewards.map((dayReward, index) => {
+                  <Box className="overflow-y-auto py-3 px-3 w-full grid grid-cols-2 gap-3 custom-scrollbar
+                    max-h-[400px] xs:max-h-[320px]
+                    sm:max-h-[400px] sm:grid-cols-3 
+                    md:max-h-[350px] md:grid-cols-5
+                    lg:max-h-[300px] lg:grid-cols-7
+                    xl:max-h-[250px]
+                  ">
+                    {dailyLoginRewards
+                    .slice(0, currentUser?.ownsNFT ? 28 : 14)
+                    .map((dayReward, index) => {
                       const isSelected = index < currentUser?.loginDays;
                       return (
                         <Box
                           className={`${isSelected ? 'bg-[#FFAA00]' : 'bg-[#3C3C3C]'} rounded-md py-1.5 flex transition-all duration-300 hover:scale-105 will-change-transform backface-hidden`}
                           key={index}
                         >
-                          <div className={`flex flex-1 flex-col items-center justify-center text-xs space-y-1 ${isSelected ? 'text-white' : 'text-[#C5C5C5]'}`}>
-                            <span className='font-outfit font-normal'>Day {index + 1}</span>
-                            <DynamicNumberDisplay 
+                          <div className={`flex flex-1 flex-col h-20 lg:h-24 items-center justify-center text-sm space-y-1 gap-1 ${isSelected ? 'text-white' : 'text-[#C5C5C5]'}`}>
+                            <span className='font-outfit font-based'>Day {index + 1}</span>
+                            <DynamicNumberDisplay
                               number={dayReward}
                               divClassName={"block"}
-                              imgClassName={"w-5 h-5 m-auto"}
+                              imgClassName={"w-8 h-8 m-auto"}
                               imgSrc={isSelected ? 'assets/images/coin.webp' : 'assets/images/coin-disable.webp'}
-                              spanClassName={isSelected ? 'text-white' : 'text-[#C5C5C5]'}
+                              spanClassName={`${isSelected ? 'text-white' : 'text-[#C5C5C5]'} flex items-center justify-center`}
                             />
                           </div>
                         </Box>
@@ -216,22 +257,56 @@ const ClickerView = () => {
             />
           </Modal>
 
+          <audio 
+            ref={audioRef} 
+            src={audioSource}  // Dynamic audio source based on user's level
+            onEnded={handleAudioEnded}  // When the audio finishes playing, open the modal
+            style={{ display: 'none' }}  // Hide the audio player element
+          />
+
           <Modal
             open={isOpenRewardModal}
             className="h-screen w-screen flex flex-1 overflow-x-hidden overflow-y-auto"
           > 
             <div
-              className={`fixed inset-0 flex bg-dark bg-opacity-75 justify-center items-center z-[999] transition-opacity duration-500 ${rewardModalFading ? 'opacity-0' : 'opacity-100'}`}
+              className={`fixed top-0 flex flex-col h-full w-full items-center justify-center bg-dark/90 transition-opacity duration-500
+                ${rewardModalFading ? 'opacity-0' : 'opacity-100'}
+              `}
+              style={{
+                zIndex: 100,
+              }}
             >
               <video
-                src="https://storage.animara.world/depletion-reward-w-number.webm"
+                src={videoSource}
                 autoPlay
                 loop={false}
-                muted
                 playsInline
                 onEnded={closeRewardModal}
-                className="object-cover w-full h-full"
+                onPlay={handleVideoPlay}
+                className="absolute object-cover object-center w-full lg:w-auto h-auto lg:h-full"
               />
+
+              <div
+                className={`absolute text-[18vh] font-bold transition-all duration-1000 transform text-amber-500 tracking-normal
+                ${showWord ? 'opacity-100 scale-150 pb-20 translate-x-0' : 'opacity-0 scale-0 pb-0 translate-x-6'}`}
+                style={{
+                  WebkitTextStrokeWidth: '0.45vh',
+                  WebkitTextStrokeColor: 'var(--Color-11, #FFF)',
+                }}
+              >
+                +{currentUser?.depletionReward}
+              </div>
+
+              <div
+                className={`absolute text-[18vh] font-bold justify-center transition-all duration-1000 transform text-amber-500 tracking-normal
+                ${showCongratulations ? 'opacity-100 scale-150 pb-20 translate-x-0' : 'opacity-0 scale-0 pb-0 translate-x-6'}`}
+                style={{
+                  WebkitTextStrokeWidth: '0.45vh',
+                  WebkitTextStrokeColor: 'var(--Color-11, #FFF)',
+                }}
+              >
+                {currentUser?.randomMultiplier}x
+              </div>
             </div>
           </Modal>
         </div>
