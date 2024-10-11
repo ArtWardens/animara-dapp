@@ -8,7 +8,7 @@ export const AudioProvider = ({ children }) => {
   const location = useLocation(); // Get current route
   const [currentTrack, setCurrentTrack] = useState(null);  // Track currently playing
   const [isUserInteracted, setIsUserInteracted] = useState(false);  // Detect user interaction
-  const [volume, setVolume] = useState(0.25);  // Default volume to 25%
+  const [volume, setVolume] = useState(0.5);  // Default volume to 25%
 
   // Function to start the audio once the user interacts with the document
   const handleUserInteraction = () => {
