@@ -773,7 +773,7 @@ function ReferralPage() {
                                 <p className="text-neutral-700 text-xs font-semibold font-outfit ml-0 sm:ml-[1rem]">
                                   Track your claimed earnings in total claimed.
                                 </p>
-                                <button className="text-[#00B9E1] text-sm font-normal font-outfit underline transition-all duration-500 hover:scale-105"
+                                <button className="text-[#00B9E1] text-left text-sm font-normal font-outfit underline ml-0 sm:ml-[1rem] transition-all duration-500 hover:scale-105"
                                   onClick={()=>{setShowClaimHistory(true)}}
                                 >
                                   View claim history
