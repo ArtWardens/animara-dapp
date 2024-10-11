@@ -197,7 +197,7 @@ const TaskList = ({ setIsOneTimeTaskOpen }) => {
 
             <div className="w-full flex items-start justify-center">
               <div className="w-full lg:max-w-[70dvw] flex flex-col ">
-                <div className="mt-[4rem] lg:mt-[10rem]">
+                <div className="mt-[4rem] lg:mt-[6rem]">
                   <h3 className="text-[1.5rem] lg:text-[2rem] pl-4 text-[#FFAA00]">Complete missions to earn free coins</h3>
                 </div>
 
