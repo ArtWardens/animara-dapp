@@ -231,8 +231,9 @@ const MascotView = ({ setOpenModal }) => {
                   src={src}
                   draggable="false"
                   alt={`Game mascot ${index}`}
-                  className={`transition-opacity lg:max-h-[60dvh] h-full w-full scale-[150%] lg:scale-[125%] mt-[-1rem] xs:mt-[-5rem] lg:mt-[-8rem]
-                    ${imgIndex === index ? 'block' : 'hidden'}`}
+                  className={`transition-opacity lg:max-h-[60dvh] h-full w-full scale-[150%] md:scale-[110%] lg:scale-[125%] mt-[-1rem] xs:mt-[-5rem] lg:mt-[-8rem]
+                    ${imgIndex === index ? 'block' : 'hidden'}
+                  `}
                 />
               </div>
             ))}
