@@ -15,7 +15,7 @@ import {
 } from '../sagaStore/slices';
 import { getAllImagePaths } from '../utils/getImagePath';
 
-const MascotView = ({ openModal, setOpenModal }) => {
+const MascotView = ({ setOpenModal }) => {
   const dispatch = useAppDispatch();
   const currentUser = useUserDetails();
   const localCoins = useLocalCoins();

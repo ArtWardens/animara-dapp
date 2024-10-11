@@ -331,7 +331,8 @@ export const userSlice = createSlice({
         ...currentUser,
         coins: payload.newCoins + coinDiff,
         stamina: payload.newStamina + staminaDiff,
-        canGetDepletionReward: payload.canGetDepletionReward
+        canGetDepletionReward: payload.canGetDepletionReward,
+        randomMultiplier: payload.randomMultiplier
       }
       state.localCoins = payload.newCoins + coinDiff;
       state.localStamina = payload.newStamina + staminaDiff;

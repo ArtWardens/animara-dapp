@@ -305,7 +305,7 @@ const ClickerView = () => {
                   WebkitTextStrokeColor: 'var(--Color-11, #FFF)',
                 }}
               >
-                1.1X
+                {currentUser?.randomMultiplier}x
               </div>
             </div>
           </Modal>
