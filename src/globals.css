@@ -193,7 +193,6 @@ body:active {
 /* Custom scrollbar */
 .custom-scrollbar::-webkit-scrollbar {
   width: 6px;
-  height: 8px;
 }
 .custom-scrollbar::-webkit-scrollbar-track {
   background: #282119aa;

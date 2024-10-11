@@ -11,7 +11,7 @@ import Header from "../../components/Header.jsx";
 import WalletInfo from "../../components/SolanaWallet/WalletInfo.jsx";
 import WalletBindingPanel from "../../components/SolanaWallet/WalletBindingPanel.jsx";
 import { useAppDispatch } from "../../hooks/storeHooks.js";
-import { getUser, mintNFT, useMintingNFT, useNFTMinted, resetMintedNFT, useBindWalletLoading, useUserDetails, useMintDate } from "../../sagaStore/slices/userSlice.js";
+import { mintNFT, useMintingNFT, useNFTMinted, resetMintedNFT, useBindWalletLoading, useUserDetails, useMintDate } from "../../sagaStore/slices/userSlice.js";
 import { useMobileMenuOpen } from '../../sagaStore/slices';
 import { startCountdown } from "../../firebase/countDown";
 import MintingWarningNotice from "../../components/MintingWarningNotice.jsx";
@@ -315,7 +315,6 @@ function MintPage() {
   const onShowNftClose = () => {
     setIsShowNftOpen(false);
     dispatch(resetMintedNFT());
-    dispatch(getUser());
   }
 
   useEffect(() => {

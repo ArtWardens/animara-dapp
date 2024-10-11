@@ -1,4 +1,4 @@
-import { auth, db, storage, updateUserLastLogin, dailyLogin, getReferralStats, firstLoginLinkReferral, registerNFT, updateUserStatus } from "../firebase/firebaseConfig";
+import { auth, db, storage, updateUserLastLogin, dailyLogin, getReferralStats, firstLoginLinkReferral, registerNFT } from "../firebase/firebaseConfig";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { getDownloadURL, ref, uploadString } from "firebase/storage";
 import { getIdTokenResult, updateProfile } from "firebase/auth";
@@ -156,20 +156,6 @@ const registerNFTImpl = async () =>{
   }
 }
 
-const updateUserStatusImpl = async () =>{
-  try {
-    const idToken = await auth.currentUser.getIdToken(false);
-    const { data } = await updateUserStatus({idToken: idToken});
-    if (data.error){
-        throw data.error;
-    }
-    return data;
-  }catch (error) {
-      console.log("Failed to update user status: ", error);
-      throw error;
-  }
-}
-
 export {
     getUserDataImpl,
     updateUserProfileImpl,
@@ -177,5 +163,4 @@ export {
     dailyLoginImpl,
     getReferralStatsImpl,
     registerNFTImpl,
-    updateUserStatusImpl,
 };

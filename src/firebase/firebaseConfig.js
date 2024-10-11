@@ -52,8 +52,6 @@ const claimCashback = httpsCallable(functions, "claimCashback");
 const cancelCashbackClaim = httpsCallable(functions, "cancelCashbackClaim");
 const checkUserLastPeriodicBatchTime = httpsCallable(functions, "checkUserLastPeriodicBatchTime");
 const getNewLeaderBoard = httpsCallable(functions, "getLeaderboard");
-const getCashbackClaimHistory = httpsCallable(functions, "getCashbackClaimHistory");
-const updateUserStatus = httpsCallable(functions, "updateUserStatus");
 
 export {
   auth,
@@ -79,6 +77,4 @@ export {
   cancelCashbackClaim,
   checkUserLastPeriodicBatchTime,
   getNewLeaderBoard,
-  getCashbackClaimHistory,
-  updateUserStatus,
 };
