@@ -451,7 +451,7 @@ export function* consumeStaminaSaga(){
 export function* settleTapSessionSaga({ payload }) {
   try{
     const result = yield call(settleTapSessionImpl, payload);
-    yield put(settleTapSessionSuccess(result.data));
+    yield put(settleTapSessionSuccess(result));
   }catch (error){
     // to localize
     toast.error('Failed to sync game progress');
