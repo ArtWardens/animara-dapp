@@ -27,6 +27,8 @@ const ClickerView = () => {
   const [showCongratulations, setShowCongratulations] = useState(false); // Manage "Congratulations" visibility
   const audioRef = useRef(null);
   const audioSource = `/sounds/${currentUser?.level || 1}-successHits.mp3`;
+
+  const modalDelay = 2000;
   
   // grant depletion rewards when local stamina is fully consumed
   useEffect(() => {
@@ -38,7 +40,12 @@ const ClickerView = () => {
       audioRef.current.play();
     }
 
-    // setIsOpenRewardModal(true);
+    const openModalTimeout = setTimeout(() => {
+      setIsOpenRewardModal(true);
+    }, modalDelay);
+
+    return () => clearTimeout(openModalTimeout);
+
   }, [dispatch, localStamina, localCoins, currentUser, isOpenRewardModal]);
 
   // Handler for when the audio finishes playing
@@ -48,9 +55,7 @@ const ClickerView = () => {
 
   // Initialize
   useEffect(() => {
-    if (!currentUser) {
-      return;
-    }
+    if (!currentUser) return;
     // check and popup daily login
     if (!currentUser?.loggedInToday) {
       dispatch(updateDailyLogin());
@@ -84,10 +89,6 @@ const ClickerView = () => {
   const handleVideoPlay = () => {
     setTimeout(() => {
       setShowWord(true);
-      const displayText = currentUser?.ownsNFT
-      ? `${currentUser?.randomMultiplier}x`
-      : `+${currentUser?.depletionReward}`;
-      setShowWord(displayText);
       setTimeout(() => {
         setShowWord(false);
       }, 3000);
@@ -299,7 +300,10 @@ const ClickerView = () => {
                   WebkitTextStrokeColor: 'var(--Color-11, #FFF)',
                 }}
               >
-                {showWord}
+                {currentUser?.ownsNFT 
+                    ? `${currentUser?.randomMultiplier ?? 1.1}x`
+                    : `+${currentUser?.depletionReward ?? 0}`
+                }
               </div>
 
               <div
@@ -310,7 +314,7 @@ const ClickerView = () => {
                   WebkitTextStrokeColor: 'var(--Color-11, #FFF)',
                 }}
               >
-                  +{(currentUser?.randomMultiplier ?? 1) * (currentUser?.depletionReward ?? 0)}
+                  +{currentUser?.randomMultiplier * currentUser?.depletionReward}
               </div>
             </div>
           </Modal>
