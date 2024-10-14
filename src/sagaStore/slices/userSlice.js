@@ -353,6 +353,7 @@ export const userSlice = createSlice({
       }
       state.localCoins = payload.newCoins + coinDiff;
       state.localStamina = payload.newStamina + staminaDiff;
+      state.randomMultiplier = payload.randomMultiplier;
       state.settleTapSessionLoading = false;
     },
     settleTapSessionError: (state, { payload }) => {
@@ -361,9 +362,11 @@ export const userSlice = createSlice({
         // reset stamina and coin amt to server values
         state.user.stamina = payload.stamina;
         state.user.coins = payload.coins;
+        state.user.randomMultiplier = payload.randomMultiplier;
 
         state.localStamina = payload.stamina;
         state.localCoins = payload.coins;
+        state.randomMultiplier = payload.randomMultiplier;
       }
       state.error = payload;
       state.settleTapSessionLoading = false;

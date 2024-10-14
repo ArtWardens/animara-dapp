@@ -2,14 +2,13 @@ import React, { useEffect, useState, useRef } from 'react';
 import { Box } from '@mui/material';
 import Modal from '@mui/material/Modal';
 import { useAppDispatch } from '../../hooks/storeHooks';
-import { useUserDetails, closeDailyPopup, updateDailyLogin, useIsOpenDailyPopup, settleTapSession, useLocalStamina, useLocalCoins, } from '../../sagaStore/slices';
+import { useUserDetails, closeDailyPopup, updateDailyLogin, useIsOpenDailyPopup, settleTapSession, useLocalStamina, useLocalCoins, getUser } from '../../sagaStore/slices';
 import MascotView from '../../components/MascotView';
 import EarnGuide from '../../components/EarnGuide';
 import EnergyRegeneration from '../../components/EnergyRegeneration';
 import ClickerUpgrades from './ClickerUpgrades';
 import { dailyLoginRewards } from '../../utils/constants';
 import DynamicNumberDisplay from '../../components/DynamicNumberDisplay';
-
 
 const ClickerView = () => {
   const dispatch = useAppDispatch();
@@ -43,6 +42,7 @@ const ClickerView = () => {
 
   // Handler for when the audio finishes playing
   const handleAudioEnded = () => {
+    dispatch(getUser());
     setIsOpenRewardModal(true);
   };
 
