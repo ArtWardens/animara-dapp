@@ -82,11 +82,11 @@ const ClickerUpgrades = ({ onClose }) => {
   return (
     <div className="w-full max-w-[90dvw]">
       <div 
-        className={`h-full min-h-[700px] fixed inset-0 flex bg-dark bg-opacity-75 justify-center items-center z-50 transition-all duration-300
+        className={`h-full min-h-[700px] fixed inset-0 flex bg-dark bg-opacity-75 justify-center items-end z-50 transition-all duration-300
         ${slideUpgrades? `opacity-100` : `opacity-0`}`}
         onClick={handleBack}>
         <div
-          className={`relative w-full lg:w-[90dvw] h-4/5 rounded-3xl p-3 amt-[10rem] transition-all duration-300 z-[100] ${slideUpgrades? `translate-y-0 opacity-100` : `translate-y-60 opacity-0`}`}
+          className={`relative w-full lg:w-[90dvw] h-[90%] rounded-3xl p-3 amt-[10rem] transition-all duration-300 z-[100] ${slideUpgrades? `translate-y-0 opacity-100` : `translate-y-60 opacity-0`}`}
           style={{
             border: "2px solid var(--Color, #F4FBFF)",
             background: "rgba(155, 231, 255, 0.58)",
@@ -142,7 +142,7 @@ const ClickerUpgrades = ({ onClose }) => {
                   <PropagateLoader color={"#FFB23F"} />
                 </div>
               ) : (
-                <div className="w-full lg:max-w-[87dvw] h-full max-h-[55dvh] flex flex-col lg:flex-row justify-start mt-[2rem] lg:mt-[4rem] lg:gap-[1rem] overflow-y-auto custom-scrollbar">
+                <div className="w-full lg:max-w-[87dvw] h-full max-h-[70dvh] lg:max-h-[55dvh] flex flex-col lg:flex-row justify-start mt-[2rem] lg:mt-[4rem] lg:gap-[1rem] overflow-y-auto custom-scrollbar">
                   {/* Menu bar */}
                   <div className="w-full lg:w-[16dvw] h-full flex flex-col">
                     <div className="h-full lg:min-h-[800px] flex flex-row lg:flex-col lg:mt-[2.5rem] p-[2rem] lg:p-2 overflow-y-auto custom-scrollbar mb-[1rem] lg:mb-0">

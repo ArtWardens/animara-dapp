@@ -82,12 +82,12 @@ const RechargeModal = ({ closeModal }) => {
   return(
     <div className="w-full max-w-[90dvw]">
       <div 
-        className={`h-full min-h-[700px] fixed inset-0 flex bg-dark bg-opacity-75 justify-center items-center z-90 transition-all duration-300
+        className={`h-full min-h-[700px] fixed inset-0 flex bg-dark bg-opacity-75 justify-center items-end z-90 transition-all duration-300
         ${slideUpgrades? `opacity-100` : `opacity-0`}`}
         onClick={handleCloseModal}
       >
         <div
-          className={`relative w-full lg:w-[90dvw] h-4/5 rounded-3xl p-3 amt-[10rem] transition-all duration-300 z-[100] ${slideUpgrades? `translate-y-0 opacity-100` : `translate-y-60 opacity-0`}`}
+          className={`relative w-full lg:w-[90dvw] h-[90%] rounded-3xl p-3 amt-[10rem] transition-all duration-300 z-[100] ${slideUpgrades? `translate-y-0 opacity-100` : `translate-y-60 opacity-0`}`}
           style={{
             border: "2px solid var(--Color, #F4FBFF)",
             background: "rgba(155, 231, 255, 0.58)",
