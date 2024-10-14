@@ -26,6 +26,7 @@ const ClickerView = () => {
   const [showCongratulations, setShowCongratulations] = useState(false); // Manage "Congratulations" visibility
   const audioRef = useRef(null);
   const audioSource = `/sounds/${currentUser?.level || 1}-successHits.mp3`;
+  const modalDelay = 2000;
 
   // grant depletion rewards when local stamina is fully consumed
   useEffect(() => {
@@ -37,7 +38,11 @@ const ClickerView = () => {
       audioRef.current.play();
     }
 
-    // setIsOpenRewardModal(true);
+    const openModalTimeout = setTimeout(() => {
+      setIsOpenRewardModal(true);
+    }, modalDelay);
+
+    return () => clearTimeout(openModalTimeout);
   }, [dispatch, localStamina, localCoins, currentUser, isOpenRewardModal]);
 
   // Handler for when the audio finishes playing
@@ -47,9 +52,7 @@ const ClickerView = () => {
 
   // Initialize
   useEffect(() => {
-    if (!currentUser) {
-      return;
-    }
+    if (!currentUser) return;
     // check and popup daily login
     if (!currentUser?.loggedInToday) {
       dispatch(updateDailyLogin());
@@ -294,7 +297,10 @@ const ClickerView = () => {
                   WebkitTextStrokeColor: 'var(--Color-11, #FFF)',
                 }}
               >
-                +{currentUser?.depletionReward}
+                {currentUser?.ownsNFT 
+                  ? `${currentUser?.randomMultiplier ?? 1.1}x`
+                  : `+${currentUser?.depletionReward ?? 0}`
+                }
               </div>
 
               <div
@@ -305,7 +311,7 @@ const ClickerView = () => {
                   WebkitTextStrokeColor: 'var(--Color-11, #FFF)',
                 }}
               >
-                {currentUser?.randomMultiplier}x
+                +{currentUser?.randomMultiplier * currentUser?.depletionReward}
               </div>
             </div>
           </Modal>
