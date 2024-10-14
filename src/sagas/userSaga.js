@@ -18,6 +18,7 @@ import {
   dailyLoginImpl,
   getReferralStatsImpl,
   registerNFTImpl,
+  updateUserStatusImpl,
 } from "../firebase/user";
 import { handleGetLeaderboard, getLeaderboardImpl } from "../firebase/leaderboard";
 import {
@@ -39,6 +40,7 @@ import {
 import {
   claimCashbackImpl,
   cancelCashbackClaimImpl,
+  getCashbackClaimHistoryImpl,
 } from '../firebase/cashback.js'
 import {
   closeDailyPopup,
@@ -125,6 +127,11 @@ import {
   checkUserLastPeriodicBatchTime,
   checkUserLastPeriodicBatchTimeSuccess,
   checkUserLastPeriodicBatchTimeError,
+  getCashbackClaimHistory,
+  getCashbackClaimHistoryError,
+  getCashbackClaimHistorySuccess,
+  updateStatus,
+  updateStatusSuccess,
 } from "../sagaStore/slices";
 import {
   StaminaRechargeTypeBasic,
@@ -326,6 +333,17 @@ export function* updateUserProfileSaga({ payload }) {
   }
 }
 
+export function* updateUserStatusSaga({ payload }) {
+  try {
+    const result = yield call(updateUserStatusImpl, payload);
+    yield put(updateStatusSuccess(result));
+
+  } catch (error) {
+    yield put(updateProfileError(error));
+    toast.error("Failed to update user status.");
+  }
+}
+
 export function* getUserSaga() {
   try{
     const uid = getCurrentUserIdImpl();
@@ -433,7 +451,7 @@ export function* consumeStaminaSaga(){
 export function* settleTapSessionSaga({ payload }) {
   try{
     const result = yield call(settleTapSessionImpl, payload);
-    yield put(settleTapSessionSuccess(result.data));
+    yield put(settleTapSessionSuccess(result));
   }catch (error){
     // to localize
     toast.error('Failed to sync game progress');
@@ -649,6 +667,18 @@ export function* checkUserLastPeriodicBatchTimeSaga() {
   }
 }
 
+export function* getCashbackClaimHistorySaga() {
+  try {
+    const cashbackClaimHistory = yield call(getCashbackClaimHistoryImpl);
+    yield put(getCashbackClaimHistorySuccess(cashbackClaimHistory));
+    return cashbackClaimHistory;
+  } 
+  catch (error) {
+    yield put(getCashbackClaimHistoryError(error));
+    toast.error("Failed to get cashback claim history. Please try again. ");
+  }
+}
+
 export function* userSagaWatcher() {
   yield takeLatest(signupWithEmail.type, signupWithEmailSaga);
   yield takeLatest(loginWithEmail.type, loginWithEmailSaga);
@@ -667,6 +697,7 @@ export function* userSagaWatcher() {
   yield takeLatest(getEarlyBirdOneTimeTaskList.type, getEarlyBirdOneTimeTaskListSaga);
   yield takeLatest(completeOneTimeTask.type, updateOneTimeTaskSaga);
   yield takeLatest(updateProfile.type, updateUserProfileSaga);
+  yield takeLatest(updateStatus.type, updateUserStatusSaga);
   yield takeLatest(consumeStamina.type, consumeStaminaSaga);
   yield takeLatest(settleTapSession.type, settleTapSessionSaga);
   yield takeLatest(rechargeStamina.type, rechargeStaminaSaga);
@@ -679,4 +710,5 @@ export function* userSagaWatcher() {
   yield takeLatest(claimCashback.type, claimCashbackSaga);
   yield takeLatest(fetchDates.type, fetchDatesSaga);
   yield takeLatest(checkUserLastPeriodicBatchTime.type, checkUserLastPeriodicBatchTimeSaga);
+  yield takeLatest(getCashbackClaimHistory.type, getCashbackClaimHistorySaga);
 }
