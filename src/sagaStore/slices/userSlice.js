@@ -14,8 +14,6 @@ const userInitialState = {
   updateProfile: [],
   updateProfileLoading: false,
   getUserLoading: false,
-  updateStatus: [],
-  updateStatusLoading: false,
   dailyLoginLoading: false,
   getLeaderBoardLoading: false,
   getLeaderBoardSuccess: false,
@@ -52,7 +50,6 @@ const userInitialState = {
   nftPurchasedReferralCount: 0,
   basicClaimable: 0,
   nftClaimable: 0,
-  totalClaimed: 0,
   bindWalletLoading: false,
   mintingNFT: false,
   nftMinted: null,
@@ -63,9 +60,6 @@ const userInitialState = {
   claimCashbackLoading: false,
   getUserLastPeriodicBatchTimeLoading: false,
   userLastPeriodicBatchTime: null,
-  cashbackClaimHistory: null,
-  getcashbackClaimHistoryLoading: false,
-  getcashbackClaimHistorySuccess: false,
 };
 
 export const userSlice = createSlice({
@@ -197,17 +191,6 @@ export const userSlice = createSlice({
     updateProfileError: (state, { payload }) => {
       state.error = payload;
       state.updateProfileLoading = false;
-    },
-    updateStatus: (state, { payload }) =>{
-      state.updateStatusLoading = true;
-    },
-    updateStatusSuccess: (state, { payload }) => {
-      state.updateStatusLoading = false;
-      state.updateStatus = payload;
-    },
-    updateStatusError: (state, { payload }) => {
-      state.updateStatusLoading = false;
-      state.updateStatus = payload;
     },
     setError: (state, { payload }) => {
       state.error = payload;
@@ -349,7 +332,7 @@ export const userSlice = createSlice({
         coins: payload.newCoins + coinDiff,
         stamina: payload.newStamina + staminaDiff,
         canGetDepletionReward: payload.canGetDepletionReward,
-        randomMultiplier: payload.randomMultiplier
+        randomMultiplier: payload.randomMultiplier,
       }
       state.localCoins = payload.newCoins + coinDiff;
       state.localStamina = payload.newStamina + staminaDiff;
@@ -476,7 +459,6 @@ export const userSlice = createSlice({
       state.nftPurchasedReferralCount = payload.nftPurchasedReferralCount;
       state.basicClaimable = payload.basicClaimable;
       state.nftClaimable = payload.nftClaimable;
-      state.totalClaimed = payload.totalClaimed;
       state.referralStatLoading = false;
     },
     getReferralStatsError: (state, { payload }) => {
@@ -556,20 +538,6 @@ export const userSlice = createSlice({
       state.error = payload;
       state.getUserLastPeriodicBatchTimeLoading = false;
     },
-    getCashbackClaimHistory: (state, { payload }) => {
-      state.getCashbackClaimHistoryLoading = true;
-      state.getCashbackClaimHistorySuccess = false;
-    },
-    getCashbackClaimHistorySuccess: (state, { payload }) => {
-      state.getCashbackClaimHistoryLoading = false;
-      state.cashbackClaimHistory = payload;
-      state.getCashbackClaimHistorySuccess = true;
-    },
-    getCashbackClaimHistoryError: (state, { payload }) => {
-      state.getCashbackClaimHistoryLoading = false;
-      state.error = payload;
-      state.getCashbackClaimHistorySuccess = true;
-    },
   },
 });
 
@@ -604,9 +572,6 @@ export const {
   updateProfile,
   updateProfileSuccess,
   updateProfileError,
-  updateStatus,
-  updateStatusSuccess,
-  updateStatusError,
   setError,
   clearLoginError,
   getUser,
@@ -668,9 +633,6 @@ export const {
   checkUserLastPeriodicBatchTime,
   checkUserLastPeriodicBatchTimeSuccess,
   checkUserLastPeriodicBatchTimeError,
-  getCashbackClaimHistory,
-  getCashbackClaimHistorySuccess,
-  getCashbackClaimHistoryError,
 } = userSlice.actions;
 
 export const useAuthLoading = () => useAppSelector((state) => state.user.authLoading);
@@ -690,7 +652,6 @@ export const useResetPasswordLoading = () => useAppSelector((state) => state.use
 export const useUpdateProfileLoading = () => useAppSelector((state) => state.user.updateProfileLoading);
 export const useUserDetails = () => useAppSelector((state) => state.user.user);
 export const useUserDetailsLoading = () => useAppSelector((state) => state.user.getUserLoading);
-export const useUpdateStatusLoading = () => useAppSelector((state) => state.user.updateStatusLoading);
 export const useLeaderBoardDetails = () => useAppSelector((state) => state.user.leaderBoard);
 export const useLeaderBoardLoading = () => useAppSelector((state) => state.user.getLeaderBoardLoading);
 export const useLeaderBoardLoadSuccess = () => useAppSelector((state) => state.user.getLeaderBoardSuccess);
@@ -719,7 +680,6 @@ export const useReferralCount = () => useAppSelector((state) => state.user.refer
 export const useNFTPurchasedReferralCount = () => useAppSelector((state) => state.user.nftPurchasedReferralCount);
 export const useBasicClaimable = () => useAppSelector((state) => state.user.basicClaimable);
 export const useNftClaimable = () => useAppSelector((state) => state.user.nftClaimable);
-export const useTotalClaimed = () => useAppSelector((state) => state.user.totalClaimed);
 export const useBindWalletLoading = () => useAppSelector((state) => state.user.bindWalletLoading);
 export const useMintingNFT = () => useAppSelector((state) => state.user.mintingNFT);
 export const useNFTMinted = () => useAppSelector((state) => state.user.nftMinted);
@@ -730,9 +690,6 @@ export const useEarlyBirdDate = () => useAppSelector((state) => state.user.early
 export const useLevelUpCoinReward = () => useAppSelector((state) => state.user.levelUpCoinReward);
 export const useUserLastPeriodicBatchTimeLoading = () => useAppSelector((state) => state.user.getUserLastPeriodicBatchTimeLoading);
 export const useUserLastPeriodicBatchTime = () => useAppSelector((state) => state.user.userLastPeriodicBatchTime);
-export const useCashbackClaimHistoryDetails = () => useAppSelector((state) => state.user.cashbackClaimHistory);
-export const useCashbackClaimHistoryLoading = () => useAppSelector((state) => state.user.getCashbackClaimHistoryLoading);
-export const useCashbackClaimHistoryLoadSuccess = () => useAppSelector((state) => state.user.getCashbackClaimHistorySuccess);
 
 const userReducer = userSlice.reducer;
 

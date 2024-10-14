@@ -10,6 +10,7 @@ import ClickerUpgrades from './ClickerUpgrades';
 import { dailyLoginRewards } from '../../utils/constants';
 import DynamicNumberDisplay from '../../components/DynamicNumberDisplay';
 
+
 const ClickerView = () => {
   const dispatch = useAppDispatch();
   const currentUser = useUserDetails();
@@ -27,6 +28,8 @@ const ClickerView = () => {
   const audioRef = useRef(null);
   const audioSource = `/sounds/${currentUser?.level || 1}-successHits.mp3`;
 
+  const modalDelay = 2000;
+  
   // grant depletion rewards when local stamina is fully consumed
   useEffect(() => {
     if (!currentUser || localStamina !== 0 || isOpenRewardModal || !currentUser.canGetDepletionReward) return;
@@ -37,7 +40,12 @@ const ClickerView = () => {
       audioRef.current.play();
     }
 
-    // setIsOpenRewardModal(true);
+    const openModalTimeout = setTimeout(() => {
+      setIsOpenRewardModal(true);
+    }, modalDelay);
+
+    return () => clearTimeout(openModalTimeout);
+
   }, [dispatch, localStamina, localCoins, currentUser, isOpenRewardModal]);
 
   // Handler for when the audio finishes playing
@@ -47,9 +55,7 @@ const ClickerView = () => {
 
   // Initialize
   useEffect(() => {
-    if (!currentUser) {
-      return;
-    }
+    if (!currentUser) return;
     // check and popup daily login
     if (!currentUser?.loggedInToday) {
       dispatch(updateDailyLogin());
@@ -287,14 +293,17 @@ const ClickerView = () => {
               />
 
               <div
-                className={`absolute text-[18vh] font-bold transition-all duration-1000 transform text-amber-500 tracking-normal
+                className={`absolute text-[18vh] font-bold justify-center transition-all duration-1000 transform text-amber-500 tracking-normal
                 ${showWord ? 'opacity-100 scale-150 pb-20 translate-x-0' : 'opacity-0 scale-0 pb-0 translate-x-6'}`}
                 style={{
                   WebkitTextStrokeWidth: '0.45vh',
                   WebkitTextStrokeColor: 'var(--Color-11, #FFF)',
                 }}
               >
-                +{currentUser?.depletionReward}
+                {currentUser?.ownsNFT 
+                    ? `${currentUser?.randomMultiplier ?? 1.1}x`
+                    : `+${currentUser?.depletionReward ?? 0}`
+                }
               </div>
 
               <div
@@ -305,7 +314,7 @@ const ClickerView = () => {
                   WebkitTextStrokeColor: 'var(--Color-11, #FFF)',
                 }}
               >
-                {currentUser?.randomMultiplier}x
+                  +{currentUser?.randomMultiplier * currentUser?.depletionReward}
               </div>
             </div>
           </Modal>
