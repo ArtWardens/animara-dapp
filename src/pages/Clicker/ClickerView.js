@@ -25,7 +25,7 @@ const ClickerView = () => {
   const [showWord, setShowWord] = useState(false); // State to manage word display after 2.5 seconds
   const [showCongratulations, setShowCongratulations] = useState(false); // Manage "Congratulations" visibility
   const audioRef = useRef(null);
-  const audioSource = `/sounds/${currentUser?.level || 1}-successHits.mp3`;
+  const audioSource = `https://storage.animara.world/${currentUser?.level || 1}-successHits.mp3`;
   
   // grant depletion rewards when local stamina is fully consumed
   useEffect(() => {
@@ -97,7 +97,7 @@ const ClickerView = () => {
     }
   };
 
-  const videoSource = currentUser?.ownsNFT ? '/assets/images/boxCoin_full.webm' : '/assets/images/boxCoin_normal.webm';
+  const videoSource = currentUser?.ownsNFT ? 'https://storage.animara.world/boxCoin_full.webm' : 'https://storage.animara.world/boxCoin_normal.webm';
 
   const handleClose = () => {
     setShowPanel(false);
@@ -268,7 +268,7 @@ const ClickerView = () => {
             className="h-screen w-screen flex flex-1 overflow-x-hidden overflow-y-auto"
           > 
             <div
-              className={`fixed top-0 flex flex-col h-full w-full items-center justify-center bg-dark/90 transition-opacity duration-500
+              className={`fixed top-0 flex flex-col h-full w-full items-center justify-center bg-dark/90 transition-opacity duration-500 scale-150 lg:scale-100
                 ${rewardModalFading ? 'opacity-0' : 'opacity-100'}
               `}
               style={{
@@ -284,12 +284,11 @@ const ClickerView = () => {
                 className="absolute object-cover object-center w-full lg:w-auto h-auto lg:h-full"
               >
                 <source src={videoSource} type="video/webm" />
-                Browser does not support the video tab
               </video>
 
               <div
-                className={`absolute text-[18vh] font-bold justify-center transition-all duration-1000 transform text-amber-500 tracking-normal
-                ${showWord ? 'opacity-100 scale-150 pb-20 translate-x-0' : 'opacity-0 scale-0 pb-0 translate-x-6'}`}
+                className={`absolute text-[12vh] lg:text-[18vh] font-bold justify-center transition-all duration-1000 transform text-amber-500 tracking-normal
+                ${showWord ? 'opacity-100 scale-150 pb-8 lg:pb-20 translate-x-0' : 'opacity-0 scale-0 pb-0 translate-x-6'}`}
                 style={{
                   WebkitTextStrokeWidth: '0.45vh',
                   WebkitTextStrokeColor: 'var(--Color-11, #FFF)',
@@ -302,8 +301,8 @@ const ClickerView = () => {
               </div>
 
               <div
-                className={`absolute text-[18vh] font-bold justify-center transition-all duration-1000 transform text-amber-500 tracking-normal
-                ${showCongratulations ? 'opacity-100 scale-150 pb-20 translate-x-0' : 'opacity-0 scale-0 pb-0 translate-x-6'}`}
+                className={`absolute text-[12vh] lg:text-[18vh] font-bold justify-center transition-all duration-1000 transform text-amber-500 tracking-normal
+                ${showCongratulations ? 'opacity-100 scale-150 pb-8 lg:pb-20 translate-x-0' : 'opacity-0 scale-0 pb-0 translate-x-6'}`}
                 style={{
                   WebkitTextStrokeWidth: '0.45vh',
                   WebkitTextStrokeColor: 'var(--Color-11, #FFF)',
