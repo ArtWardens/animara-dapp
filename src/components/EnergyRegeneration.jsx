@@ -152,7 +152,9 @@ function EnergyRegeneration({ isOneTimeTaskOpen, setIsOneTimeTaskOpen }) {
         open={isOneTimeTaskOpen}
         className="h-screen w-screen flex flex-1 overflow-x-hidden overflow-y-auto"
       >
-        <TaskList setIsOneTimeTaskOpen={setIsOneTimeTaskOpen} />
+        <div>
+          <TaskList setIsOneTimeTaskOpen={setIsOneTimeTaskOpen} />
+        </div>
       </Modal>
 
       {/* Conditionally render the LeaderBoard component */}
@@ -160,7 +162,9 @@ function EnergyRegeneration({ isOneTimeTaskOpen, setIsOneTimeTaskOpen }) {
         open={isLeaderBoardOpen}
         className="h-screen w-screen flex flex-1 overflow-x-hidden overflow-y-auto"
       >
-        <LeaderBoardModal handleCloseLeaderboard={closeLeaderBoard} />
+        <div>
+          <LeaderBoardModal handleCloseLeaderboard={closeLeaderBoard} />
+        </div>
       </Modal>
 
       {/* Conditionally render the MintingVipPass component */}
@@ -168,7 +172,9 @@ function EnergyRegeneration({ isOneTimeTaskOpen, setIsOneTimeTaskOpen }) {
         open={isNoticeOpen}
         className="h-screen w-screen flex flex-1 overflow-x-hidden overflow-y-auto"
       >
-        <MintingWarningNotice onClose={closeNotice} />
+        <div>
+          <MintingWarningNotice onClose={closeNotice} />
+        </div>
       </Modal>
     </>
   );

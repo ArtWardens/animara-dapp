@@ -120,7 +120,7 @@ const LeaderBoardModal = ({ handleCloseLeaderboard }) => {
             </div>
             ) : (
               <div 
-                className="w-full h-full max-h-[350px] md:max-h-[280px] grid grid-cols-1 gap-1 lg:pr-4 overflow-x-hidden overflow-y-auto custom-scrollbar">
+                className="w-full h-full max-h-[350px] md:max-h-[280px] lg:max-h-[800px] grid grid-cols-1 gap-1 lg:pr-4 overflow-x-hidden overflow-y-auto custom-scrollbar">
                 {leaderboard && leaderboard.length > 0 ? (
                   leaderboard.map((item, index) => {
                     let backgroundImage;
@@ -144,17 +144,16 @@ const LeaderBoardModal = ({ handleCloseLeaderboard }) => {
                         break;
                     }
                     return (
-                      <>
-                        <div key={index} 
+                      <div key={index} 
                           className="flex space-x-2 justify-stretch font-LuckiestGuy text-left
                             h-[58px] px-[2rem]
                             md:h-[50px] md:px-[3rem]  
-                            lg:h-[50px] lg:px-[8rem]"
+                            lg:h-auto lg:px-[8rem]"
                           style={{
                             backgroundImage: backgroundImage,
                           }}>
                           {top3ImgSrc ? (
-                            <img src={top3ImgSrc} alt="medal" className="object-cover w-[36px] mr-1"></img>
+                            <img src={top3ImgSrc} alt="medal" className="object-contain w-[36px] mr-1"></img>
                           ) : (
                             <div className="w-[36px] mr-1"></div>
                           )}
@@ -163,16 +162,15 @@ const LeaderBoardModal = ({ handleCloseLeaderboard }) => {
                             md:grid md:grid-cols-[60%_40%] md:gap-2 
                             lg:grid lg:grid-cols-[60%_40%] lg:gap-2 
                             ">
-                            <p className="truncate text-[1rem] xs:text-xl lg:text-2xl drop-shadow-[3px_2px_4px_rgba(32,91,121,1)] my-auto">{item.name}</p>
+                            <p className="truncate text-[1rem] xs:text-xl lg:text-2xl xl:text-4xl drop-shadow-[3px_2px_4px_rgba(32,91,121,1)] my-auto">{item.name}</p>
                             <DynamicNumberDisplay 
                               number={item.profitPerHour} 
                               imgSrc={"/assets/icons/explora-point.webp"}
                               imgClassName={"w-[15px] h-[15px] xs:w-[20px] xs:h-[20px] lg:w-[30px] lg:h-[30px] mr-1 drop-shadow-xl"}
-                              spanClassName={"inline-block text-transparent text-[1rem] xs:text-xl lg:text-2xl drop-shadow-xl bg-clip-text bg-gradient-to-b from-[#E9FFEE] to-[#00E0FF] font-bold"}
+                              spanClassName={"inline-block text-transparent text-[1rem] xs:text-xl lg:text-2xl xl:text-4xl drop-shadow-xl bg-clip-text bg-gradient-to-b from-[#E9FFEE] to-[#00E0FF] font-bold"}
                             />
                           </div>
                         </div>
-                      </>
                     )})
                 ) : (
                   // Fallback if leaderboard is empty
