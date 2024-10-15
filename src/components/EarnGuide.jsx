@@ -1,8 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { PropTypes } from 'prop-types';
-import Modal from '@mui/material/Modal';
-import LeaderBoardModal from './LeaderBoardModal.jsx';
-import RechargeModal from './RechargeModal.jsx';
 
 function EarnGuide({ openModal, setOpenModal, setIsOneTimeTaskOpen }) {
 
@@ -12,35 +9,19 @@ function EarnGuide({ openModal, setOpenModal, setIsOneTimeTaskOpen }) {
   const [showBoosts, setShowBoosts] = useState(false);
   const [showUpgrades, setShowUpgrades] = useState(false);
   const [showTasks, setShowTasks] = useState(false);
-  const [showBoostsModal, setShowBoostsModal] = useState(false);
   const [showLeaderBoardOption, setShowLeaderBoardOption] = useState(false);
-  const [isLeaderBoardOpen, setIsLeaderBoardOpen] = useState(false);
 
   // Toggle leaderboard component
   const handleLeaderBoardClick = () => {
-    setIsLeaderBoardOpen(true); 
-  };
-
-  const closeLeaderBoard = () => {
-    setIsLeaderBoardOpen(false); 
+    setOpenModal('leaderboard');
   };
 
   const handleUserUpgrades = () => {
     setOpenModal('upgrades');
   };
 
-  const closeModal = () => {
-    if (showBoostsModal) {
-      setShowBoostsModal(false);
-    }
-
-    const timerPanel = setTimeout(() => {
-      setOpenModal('');
-    }, 300);
-
-    return () => {
-      clearTimeout(timerPanel);
-    };
+  const handleUserRecharge = () => {
+    setOpenModal('boosts');
   };
 
    // intro animation
@@ -131,10 +112,7 @@ function EarnGuide({ openModal, setOpenModal, setIsOneTimeTaskOpen }) {
                 }`}
               >
                 <button
-                  onClick={() => {
-                    setShowBoostsModal(true);
-                    setOpenModal('boosts');
-                  }}
+                  onClick={handleUserRecharge}
                   className="min-w-[100px] flex flex-col lg:flex-row px-[1rem] lg:px-[2.5rem] py-[1rem] lg:py-[1rem] mb-5 tracking-wider bg-[#49DEFF] shadow-[0px_4px_4px_0px_rgba(255,210,143,0.61)_inset] rounded-2xl lg:rounded-full border-orange-300 justify-center items-center gap-2 hover:bg-[#80E8FF] hover:shadow-[0px_1px_2px_0px_rgba(198,115,1,0.66)] hover:border-[#FFC85A]  hover:scale-105 transition-transform duration-200 text-sm lg:text-xl font-bold font-outfit lg:whitespace-nowrap"
                 >
                   <img
@@ -170,7 +148,7 @@ function EarnGuide({ openModal, setOpenModal, setIsOneTimeTaskOpen }) {
               >
                 <button
                   className="min-w-[100px] flex flex-col lg:flex-row px-[1rem] lg:px-[2.5rem] py-[1rem] lg:py-[1rem] mb-5 tracking-wider bg-[#49DEFF] shadow-[0px_4px_4px_0px_rgba(255,210,143,0.61)_inset] rounded-2xl lg:rounded-full border-orange-300 justify-center items-center gap-2 hover:bg-[#80E8FF] hover:shadow-[0px_1px_2px_0px_rgba(198,115,1,0.66)] hover:border-[#FFC85A]  hover:scale-105 transition-transform duration-200 text-sm lg:text-xl font-bold font-outfit lg:whitespace-nowrap"
-                  onClick={() => setIsOneTimeTaskOpen('true')}
+                  onClick={() => setIsOneTimeTaskOpen(true)}
                 >
                   <img
                     src="/assets/images/clicker-character/tasks-icon.png"
@@ -184,21 +162,6 @@ function EarnGuide({ openModal, setOpenModal, setIsOneTimeTaskOpen }) {
           </div>
         </div>
       </div>
-
-      <Modal
-        open={openModal === 'boosts'}
-        className="h-screen w-screen flex flex-1 overflow-x-hidden overflow-y-auto"
-      >
-        <RechargeModal closeModal={closeModal}/>  
-      </Modal>
-
-      {/* Conditionally render the LeaderBoard component */}
-      <Modal
-        open={isLeaderBoardOpen}
-        className="h-screen w-screen flex flex-1 overflow-x-hidden overflow-y-auto"
-      >
-        <LeaderBoardModal handleCloseLeaderboard={closeLeaderBoard} />
-      </Modal>
     </>
   );
 }

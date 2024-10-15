@@ -6,7 +6,7 @@ import { useAppDispatch } from '../hooks/storeHooks.js';
 import ReferPopup from './ReferPopup';
 import DynamicNumberDisplay from './DynamicNumberDisplay';
 
-const RechargeModal = ({ closeModal }) => {
+function RechargeModal ({ onClose }) {
   const dispatch = useAppDispatch();
   const currentUser = useUserDetails();
   const localStamina = useLocalStamina();
@@ -56,7 +56,7 @@ const RechargeModal = ({ closeModal }) => {
     setSlideUpgrades(false);
 
     closeAnimTimer.current = setTimeout(()=>{
-      closeModal();
+      onClose();
     }, 200);
   };
 
@@ -64,9 +64,9 @@ const RechargeModal = ({ closeModal }) => {
   useEffect(() => {
     if (isRecharging && !rechargeLoading) {
       setIsRecharging(false);
-      closeModal();
+      onClose();
     }
-  }, [isRecharging, rechargeLoading, closeModal]);
+  }, [isRecharging, rechargeLoading, onClose]);
 
   // lock stamina recharge when max stamina
   useEffect(() => {
@@ -219,7 +219,9 @@ const RechargeModal = ({ closeModal }) => {
             open={showPopup}
             className="h-screen w-screen flex flex-1 overflow-x-hidden overflow-y-auto"
           >
-            <ReferPopup onClose={handleReferCompletion} />
+            <div>
+              <ReferPopup onClose={handleReferCompletion} />
+            </div>
           </Modal>
         </div>
       </div>

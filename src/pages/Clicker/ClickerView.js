@@ -9,6 +9,8 @@ import EnergyRegeneration from '../../components/EnergyRegeneration';
 import ClickerUpgrades from './ClickerUpgrades';
 import { dailyLoginRewards } from '../../utils/constants';
 import DynamicNumberDisplay from '../../components/DynamicNumberDisplay';
+import LeaderBoardModal from '../../components/LeaderBoardModal';
+import RechargeModal from '../../components/RechargeModal';
 
 const ClickerView = () => {
   const dispatch = useAppDispatch();
@@ -246,14 +248,33 @@ const ClickerView = () => {
             </div>
           </Modal>
 
+          {/* Boosts panel */}
+          <Modal
+            open={openModal === 'boosts'}
+            className="h-screen w-screen flex flex-1 overflow-x-hidden overflow-y-auto"
+          >
+            <div>
+              <RechargeModal onClose={() => setOpenModal('')} />  
+            </div>
+          </Modal>
+
           {/* Upgrade panel */}
           <Modal
             open={openModal === 'upgrades'}
             className="h-screen w-screen flex flex-1 overflow-x-hidden overflow-y-auto"
           >
-            <ClickerUpgrades
-              onClose={() => setOpenModal('')} // Close modal when done
-            />
+            <div>
+              <ClickerUpgrades onClose={() => setOpenModal('')} />
+            </div>
+          </Modal>
+
+          <Modal
+            open={openModal === 'leaderboard'}
+            className="h-screen w-screen flex flex-1 overflow-x-hidden overflow-y-auto"
+          >
+            <div>
+              <LeaderBoardModal onClose={() => setOpenModal('')} />
+            </div>
           </Modal>
 
           <audio 
