@@ -141,7 +141,7 @@ const MascotView = ({ setOpenModal }) => {
 
   const handleTap = useCallback((event) => {
     if (!isInteractive) return;
-    if (localStamina === 0) {
+    if (localStamina === 0 && currentUser.stamina === 0) {
       setOpenModal('boosts');
       return;
     }
