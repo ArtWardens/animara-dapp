@@ -276,14 +276,16 @@ const ClickerView = () => {
               }}
             >
               <video
-                src={videoSource}
                 autoPlay
                 loop={false}
                 playsInline
                 onEnded={closeRewardModal}
                 onPlay={handleVideoPlay}
                 className="absolute object-cover object-center w-full lg:w-auto h-auto lg:h-full"
-              />
+              >
+                <source src={videoSource} type="video/webm" />
+                Browser does not support the video tab
+              </video>
 
               <div
                 className={`absolute text-[18vh] font-bold justify-center transition-all duration-1000 transform text-amber-500 tracking-normal
