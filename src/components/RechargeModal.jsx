@@ -6,7 +6,7 @@ import { useAppDispatch } from '../hooks/storeHooks.js';
 import ReferPopup from './ReferPopup';
 import DynamicNumberDisplay from './DynamicNumberDisplay';
 
-function RechargeModal ({ onClose }) {
+const RechargeModal = ({ onClose }) => {
   const dispatch = useAppDispatch();
   const currentUser = useUserDetails();
   const localStamina = useLocalStamina();
@@ -136,7 +136,7 @@ function RechargeModal ({ onClose }) {
               <h3 className="text-[1.5rem] lg:text-[2rem] text-[#FFAA00]">Free Daily Boosters</h3>
               {isRecharging ? (
                 // loader
-                <div className="w-full h-full flex items-center justify-center">
+                <div className="w-full h-[25%] flex items-center justify-center">
                   <svg
                     aria-hidden="true"
                     className="w-8 h-8 text-Fuchsia-200 animate-spin dark:text-Fuchsia-200 fill-yellow-600"

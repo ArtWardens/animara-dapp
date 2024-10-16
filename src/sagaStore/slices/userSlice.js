@@ -40,6 +40,7 @@ const userInitialState = {
   getEarlyBirdOneTimeTaskListSuccess: false,
   earlyBirdOneTimeTask: [],
   settleTapSessionLoading: false,
+  settleTapSessionSuccess: false,
   rechargeStaminaLoading: false,
   rechargeOpType: '',
   userLocationsLoading: false,
@@ -337,6 +338,7 @@ export const userSlice = createSlice({
     },
     settleTapSession: (state) => {
       state.settleTapSessionLoading = true;
+      state.settleTapSessionSuccess = false;
       state.snapshotCoins = state.localCoins;
       state.snapshotStamina = state.localStamina;
     },
@@ -355,6 +357,7 @@ export const userSlice = createSlice({
       state.localStamina = payload.newStamina + staminaDiff;
       state.randomMultiplier = payload.randomMultiplier;
       state.settleTapSessionLoading = false;
+      state.settleTapSessionSuccess = true;
     },
     settleTapSessionError: (state, { payload }) => {
       // check & handle desync error
@@ -370,6 +373,7 @@ export const userSlice = createSlice({
       }
       state.error = payload;
       state.settleTapSessionLoading = false;
+      state.settleTapSessionSuccess = true;
     },
     rechargeStamina: (state, { payload }) => {
       state.rechargeStaminaLoading = true;
@@ -709,6 +713,7 @@ export const useEarlyBirdOneTimeTaskList = () => useAppSelector((state) => state
 export const useEarlyBirdOneTimeTaskListSuccess = () => useAppSelector((state) => state.user.getEarlyBirdOneTimeTaskListSuccess);
 export const useUserAuthenticated = () => useAppSelector((state) => state.user.isAuthenticated);
 export const useSettleTapSessionLoading = () => useAppSelector((state) => state.user.settleTapSessionLoading);
+export const useSettleTapSessionLoadSuccess = () => useAppSelector((state) => state.user.settleTapSessionSuccess);
 export const useLocalCoins = () => useAppSelector((state) => state.user.localCoins);
 export const useLocalStamina = () => useAppSelector((state) => state.user.localStamina);
 export const useRechargeLoading = () => useAppSelector((state) => state.user.rechargeStaminaLoading);

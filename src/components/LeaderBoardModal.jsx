@@ -9,14 +9,13 @@ import {
 } from '../sagaStore/slices';
 import DynamicNumberDisplay from './DynamicNumberDisplay';
 
-const LeaderBoardModal = ({ handleCloseLeaderboard }) => {
+const LeaderBoardModal = ({ onClose }) => {
   const dispatch = useAppDispatch();
 
   const leaderboard = useNewLeaderBoardDetails();
   const leaderboardLoading = useNewLeaderBoardLoading();
   const leaderBoardLoaded = useNewLeaderBoardLoadSuccess();
   
-  const [showLeaderBoardModal, setShowLeaderBoardModal] = useState(true);
   const [slideUpgrades, setSlideUpgrades] = useState(false);
 
   const closeAnimTimer = useRef(null);
@@ -27,10 +26,7 @@ const LeaderBoardModal = ({ handleCloseLeaderboard }) => {
     setSlideUpgrades(false);
 
     closeAnimTimer.current = setTimeout(()=>{
-      if (showLeaderBoardModal) {
-        setShowLeaderBoardModal(false);
-      }
-      handleCloseLeaderboard();
+      onClose();
     }, 200);
   };
 
@@ -78,7 +74,7 @@ const LeaderBoardModal = ({ handleCloseLeaderboard }) => {
               className="object-cover w-12 absolute right-8"
             />
           </div>
-          <div className="w-full h-full flex flex-col items-center justify-center gap-1 pt-[1rem] lg:px-[4rem] rounded-3xl"
+          <div className="w-full h-full flex flex-col items-center gap-1 pb-[2rem] pt-[3rem] md:pt-[8rem] lg:pt-[4rem] lg:px-[4rem] rounded-3xl"
             style={{
               backgroundImage:
                 'url("/assets/images/clicker-character/mascotBg.webp")',
@@ -120,7 +116,7 @@ const LeaderBoardModal = ({ handleCloseLeaderboard }) => {
             </div>
             ) : (
               <div 
-                className="w-full h-full max-h-[350px] md:max-h-[280px] lg:max-h-[800px] grid grid-cols-1 gap-1 lg:pr-4 overflow-x-hidden overflow-y-auto custom-scrollbar">
+                className="w-full h-auto max-h-[90%] grid grid-cols-1 gap-1 lg:pr-4 overflow-x-hidden overflow-y-auto custom-scrollbar">
                 {leaderboard && leaderboard.length > 0 ? (
                   leaderboard.map((item, index) => {
                     let backgroundImage;
@@ -187,7 +183,6 @@ const LeaderBoardModal = ({ handleCloseLeaderboard }) => {
 };
 
 LeaderBoardModal.propTypes = {
-  handleCloseLeaderboard: PropTypes.func,
   countdown: PropTypes.number,
   timeRemaining: PropTypes.number,
 };
