@@ -31,7 +31,7 @@ const ClickerView = () => {
   
   // grant depletion rewards when local stamina is fully consumed
   useEffect(() => {
-    if (!currentUser || localStamina !== 0 || isOpenRewardModal || !currentUser.canGetDepletionReward) return;
+    if (!currentUser?.stamina || localStamina !== 0 || isOpenRewardModal || !currentUser.canGetDepletionReward) return;
 
     dispatch(settleTapSession({ newCointAmt: localCoins, newStamina: localStamina }));
 
