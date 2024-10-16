@@ -35,9 +35,9 @@ const ClickerView = () => {
   useEffect(() => {
     if (!currentUser || localStamina !== 0 || isOpenRewardModal || !currentUser.canGetDepletionReward) return;
     dispatch(settleTapSession({ newCointAmt: localCoins, newStamina: localStamina }));
-    console.log("clicker view dispatching");
-    console.log(currentUser?.coins, " vs", localCoins);
-    console.log(currentUser?.stamina, " vs", localStamina);
+    // console.log("clicker view dispatching");
+    // console.log(currentUser?.coins, " vs", localCoins);
+    // console.log(currentUser?.stamina, " vs", localStamina);
     // Dispatch might be slow due to internet speed or cpu slow
     if (audioRef.current) {
       audioRef.current.play();
