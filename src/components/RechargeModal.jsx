@@ -6,7 +6,7 @@ import { useAppDispatch } from '../hooks/storeHooks.js';
 import ReferPopup from './ReferPopup';
 import DynamicNumberDisplay from './DynamicNumberDisplay';
 
-function RechargeModal ({ onClose }) {
+const RechargeModal = ({ onClose }) => {
   const dispatch = useAppDispatch();
   const currentUser = useUserDetails();
   const localStamina = useLocalStamina();

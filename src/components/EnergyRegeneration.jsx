@@ -163,7 +163,7 @@ function EnergyRegeneration({ isOneTimeTaskOpen, setIsOneTimeTaskOpen }) {
         className="h-screen w-screen flex flex-1 overflow-x-hidden overflow-y-auto"
       >
         <div>
-          <LeaderBoardModal handleCloseLeaderboard={closeLeaderBoard} />
+          <LeaderBoardModal onClose={closeLeaderBoard} />
         </div>
       </Modal>
 

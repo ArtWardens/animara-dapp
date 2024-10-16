@@ -9,14 +9,13 @@ import {
 } from '../sagaStore/slices';
 import DynamicNumberDisplay from './DynamicNumberDisplay';
 
-const LeaderBoardModal = ({ handleCloseLeaderboard }) => {
+const LeaderBoardModal = ({ onClose }) => {
   const dispatch = useAppDispatch();
 
   const leaderboard = useNewLeaderBoardDetails();
   const leaderboardLoading = useNewLeaderBoardLoading();
   const leaderBoardLoaded = useNewLeaderBoardLoadSuccess();
   
-  const [showLeaderBoardModal, setShowLeaderBoardModal] = useState(true);
   const [slideUpgrades, setSlideUpgrades] = useState(false);
 
   const closeAnimTimer = useRef(null);
@@ -27,10 +26,7 @@ const LeaderBoardModal = ({ handleCloseLeaderboard }) => {
     setSlideUpgrades(false);
 
     closeAnimTimer.current = setTimeout(()=>{
-      if (showLeaderBoardModal) {
-        setShowLeaderBoardModal(false);
-      }
-      handleCloseLeaderboard();
+      onClose();
     }, 200);
   };
 
@@ -187,7 +183,6 @@ const LeaderBoardModal = ({ handleCloseLeaderboard }) => {
 };
 
 LeaderBoardModal.propTypes = {
-  handleCloseLeaderboard: PropTypes.func,
   countdown: PropTypes.number,
   timeRemaining: PropTypes.number,
 };
