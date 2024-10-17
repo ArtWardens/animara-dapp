@@ -156,12 +156,15 @@ const MascotView = ({ setOpenModal }) => {
 
     const clickLeft = event.clientX;
     const clickTop = event.clientY;
+    
+    const headerElement = document.getElementById("header-coins");
+    const headerRect = headerElement?.getBoundingClientRect();
 
     const newEffectId = Date.now();
 
     setPlusOneEffects((prevEffects) => [
       ...prevEffects,
-      { id: newEffectId, left: clickLeft, top: clickTop, fadeOut: false }
+      { id: newEffectId, left: clickLeft, top: clickTop, fadeOut: false, targetLeft: headerRect.left - clickLeft, targetTop: headerRect.top - clickTop - 300 }
     ]);
 
     setTimeout(() => {
@@ -221,7 +224,7 @@ const MascotView = ({ setOpenModal }) => {
                   top: `${effect.top}px`,
                   transition: 'transform 0.3s ease, opacity 0.5s ease 0.1s',
                   opacity: effect.fadeOut ? 0 : 1,
-                  transform: effect.fadeOut ? 'translate(-60%, -200%) scale(1.1)' : 'translate(-60%, -200%) scale(1)',
+                  transform: effect.fadeOut ? `translate(${effect.targetLeft}px, ${effect.targetTop}px) scale(.25)` : 'translate(-60%, -200%) scale(1)',
                 }}
               />
             ))}
