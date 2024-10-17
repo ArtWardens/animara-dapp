@@ -263,9 +263,10 @@ const ClickerUpgrades = ({ onClose }) => {
                                       </p>
                                       <div className="flex flex-row">
                                         <DynamicNumberDisplay 
-                                          number={location.level === 0 && location.level !== -1
-                                              ? location.nextLevelExploraPts
-                                              : location.currentExploraPts}
+                                          // number={location.level === 0 && location.level !== -1
+                                          //     ? location.nextLevelExploraPts
+                                          //     : location.currentExploraPts}
+                                          number={location.nextLevelExploraPts - location.currentExploraPts}
                                           imgSrc={"/assets/icons/explora-point.webp"}
                                           imgClassName={"w-6 h-6 mr-1"}
                                           spanClassName={"text-[#00E0FF]"}
