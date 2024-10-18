@@ -80,7 +80,7 @@ function EarnGuide({ openModal, setOpenModal, setIsOneTimeTaskOpen }) {
 
   return (
     <>
-      <div className="w-full flex flex-row justify-center items-center mt-[-8rem] lg:mt-[-4rem] z-[50]">
+      <div className="w-full flex flex-row justify-center items-center mt-[-8rem] md:mt-[-4rem] lg:mt-[-4rem] z-[50]">
         <div className={`flex w-full p-[1rem] rounded-b-3xl transition-opacity duration-500 ${guideSlideUp ? 'opacity-100' : 'opacity-0'}`}
           style={{
             backgroundImage: 'url("/assets/images/clicker-character/button-footerBg.webp")',

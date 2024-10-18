@@ -393,7 +393,7 @@ function MintPage() {
 
           <div className={`flex-1 w-full flex flex-col pb-24  ${mobileMenuOpen ? `hidden` : ``}`}>
             {/* Page Content */}
-            <div className="w-full flex flex-col xl:flex-row justify-between tracking-wider container">
+            <div className="container flex flex-col justify-between w-full tracking-wider xl:flex-row">
 
               {/* Floating Coins */}
               <img
@@ -442,14 +442,14 @@ function MintPage() {
                       <img
                         src={"/assets/images/clicker-character/gem.webp"}
                         alt="gem"
-                        className="ml-2 w-6 h-6"
+                        className="w-6 h-6 ml-2"
                       />
                       <h3 className="w-full text-2xl text-white text-wrap ">STEP 1</h3>
                     </div>
                     <p
                       className="text-[#c4c4c4] text-base font-medium font-outfit leading-tight tracking-wide"
                     >
-                      Mint your nft and unlock your <span className="text-white text-base font-bold leading-tight tracking-wide">Animara (VIP Value Pass)</span> today.
+                      Mint your nft and unlock your <span className="text-base font-bold leading-tight tracking-wide text-white">Animara (VIP Value Pass)</span> today.
                     </p>
                   </div>
                 </div>
@@ -463,14 +463,14 @@ function MintPage() {
                       <img
                         src={"/assets/images/clicker-character/gem.webp"}
                         alt="gem"
-                        className="ml-2 w-6 h-6"
+                        className="w-6 h-6 ml-2"
                       />
                       <h3 className="w-full text-2xl text-white text-wrap ">STEP 2</h3>
                     </div>
                     <p
                       className="text-[#c4c4c4] text-base font-medium font-outfit leading-tight tracking-wide"
                     >
-                      Link your phantom wallet , start own your <span className="text-white text-base font-bold leading-tight tracking-wide">NFT Character</span> on Animara.
+                      Link your phantom wallet , start own your <span className="text-base font-bold leading-tight tracking-wide text-white">NFT Character</span> on Animara.
                     </p>
                   </div>
                 </div>
@@ -484,14 +484,14 @@ function MintPage() {
                       <img
                         src={"/assets/images/clicker-character/gem.webp"}
                         alt="gem"
-                        className="ml-2 w-6 h-6"
+                        className="w-6 h-6 ml-2"
                       />
                       <h3 className="w-full text-2xl text-white text-wrap ">STEP 3</h3>
                     </div>
                     <p
                       className="text-[#c4c4c4] text-base font-medium font-outfit leading-tight tracking-wide"
                     >
-                      Compete in the Animara leaderboard event and compete to win prizes worth up to <span className="text-white text-base font-bold leading-tight tracking-wide">365k USDC</span>!
+                      Compete in the Animara leaderboard event and compete to win prizes worth up to <span className="text-base font-bold leading-tight tracking-wide text-white">365k USDC</span>!
                     </p>
                   </div>
                 </div>
@@ -500,14 +500,14 @@ function MintPage() {
                 <div className={`mb-8 pb-12 md:pb-0 lg:pb-0 transition-all duration-500
                     ${showTutorial ? `opacity-100` : `opacity-0`}
                   `}>
-                  <div className="sm:flex lg:flex items-center">
+                  <div className="items-center sm:flex lg:flex">
                     <img
                       src={"/assets/images/mint_video_icon.webp"}
                       alt="video"
                       className="mx-auto sm:ml-0 sm:mr-2 lg:ml-0 lg:mr-2 w-[120px] h-[120px]"
                     />
                     <div className="inline text-center sm:text-left lg:text-left">
-                      <h3 className="w-full text-2xl text-white text-wrap uppercase">click to view tutorial video now!</h3>
+                      <h3 className="w-full text-2xl text-white uppercase text-wrap">click to view tutorial video now!</h3>
                       <ul className="mx-auto sm:flex lg:flex sm:justify-start lg:justify-start">
                         <li><button
                           onClick={() => setTutorialVid("https://storage.animara.world/mint-anim.mp4")} // TODO: change link after video provided
@@ -516,7 +516,7 @@ function MintPage() {
                           Guide to Mint the NFT
                         </button></li>
                         <li>
-                        <span className="hidden sm:block lg:block font-outfit text-white text-lg">&nbsp;&nbsp;|&nbsp;&nbsp;</span>
+                        <span className="hidden text-lg text-white sm:block lg:block font-outfit">&nbsp;&nbsp;|&nbsp;&nbsp;</span>
                         </li>
                         <li>
                         <button
@@ -537,11 +537,11 @@ function MintPage() {
                     <img 
                       src={videoSource}
                       alt="ghost"
-                      className="mx-auto rounded-3xl pointer-events-none"
+                      className="mx-auto pointer-events-none rounded-3xl"
                     />
                     :
                     <video
-                      className="mx-auto rounded-3xl pointer-events-none"
+                      className="mx-auto pointer-events-none rounded-3xl"
                       controls={false}
                       autoPlay
                       loop
@@ -566,21 +566,21 @@ function MintPage() {
                   }}
                 >
                   {/* mint card background */}
-                  <div className="absolute flex w-full justify-between -top-8 safari-hidden">
+                  <div className="absolute flex justify-between w-full -top-8 safari-hidden">
                     <img
                       src={"/assets/images/clicker-character/ring01.webp"}
                       alt="ring"
-                      className="object-cover w-11 absolute left-2"
+                      className="absolute object-cover w-11 left-2"
                     />
                     <img
                       src={"/assets/images/clicker-character/ring01.webp"}
                       alt="ring"
-                      className="object-cover w-11 opacity-0"
+                      className="object-cover opacity-0 w-11"
                     />
                     <img
                       src={"/assets/images/clicker-character/ring02.webp"}
                       alt="ring"
-                      className="object-cover w-11 absolute right-8"
+                      className="absolute object-cover w-11 right-8"
                     />
                   </div>
 
@@ -598,10 +598,10 @@ function MintPage() {
                     {/* mint countdown */}
                     {isContainerVisible && (
                       <div className="p-3 px-6 bg-[#003260] rounded-3xl shadow-inner border border-[#7fc1ff] flex-col justify-self-center items-center gap-2 inline-flex">
-                        <p className="text-md pb-1">Minting Ends In</p>
+                        <p className="pb-1 text-md">Minting Ends In</p>
                         <div className="h-[50px] justify-start items-center inline-flex gap-1 pb-3">
                           <div className="w-12 h-1/2 bg-[#003260] shadow-inner flex-col justify-center items-center gap-1 inline-flex">
-                            <div className="w-12 h-8 flex-col justify-center items-center gap-4 flex">
+                            <div className="flex flex-col items-center justify-center w-12 h-8 gap-4">
                               <div className="text-center text-white text-[26px] tracking-wide font-outfit">
                                 {timeLeft.days}
                               </div>
@@ -610,11 +610,11 @@ function MintPage() {
                               Days
                             </div>
                           </div>
-                          <span className="text-white font-outfit font-semibold text-2xl">
+                          <span className="text-2xl font-semibold text-white font-outfit">
                             :
                           </span>
                           <div className="w-12 h-1/2 bg-[#003260] shadow-inner flex-col justify-center items-center gap-1 inline-flex">
-                            <div className="w-12 h-8 flex-col justify-center items-center gap-4 flex">
+                            <div className="flex flex-col items-center justify-center w-12 h-8 gap-4">
                               <div className="text-center text-white text-[26px] tracking-wide font-outfit">
                                 {timeLeft.hours}
                               </div>
@@ -623,11 +623,11 @@ function MintPage() {
                               Hours
                             </div>
                           </div>
-                          <span className="text-white font-outfit font-semibold text-2xl">
+                          <span className="text-2xl font-semibold text-white font-outfit">
                             :
                           </span>
                           <div className="w-12 h-1/2 bg-[#003260] shadow-inner flex-col justify-center items-center gap-1 inline-flex">
-                            <div className="w-12 h-8 flex-col justify-center items-center gap-4 flex">
+                            <div className="flex flex-col items-center justify-center w-12 h-8 gap-4">
                               <div className="text-center text-white text-[26px] tracking-wide font-outfit">
                                 {timeLeft.minutes}
                               </div>
@@ -636,11 +636,11 @@ function MintPage() {
                               Minutes
                             </div>
                           </div>
-                          <span className="text-white font-outfit font-semibold text-2xl">
+                          <span className="text-2xl font-semibold text-white font-outfit">
                             :
                           </span>
                           <div className="w-12 h-1/2 bg-[#003260] shadow-inner flex-col justify-center items-center gap-1 inline-flex">
-                            <div className="w-12 h-8 flex-col justify-center items-center gap-4 flex">
+                            <div className="flex flex-col items-center justify-center w-12 h-8 gap-4">
                               <div className="text-center text-white text-[26px] tracking-wide font-outfit">
                                 {timeLeft.seconds}
                               </div>
@@ -657,14 +657,14 @@ function MintPage() {
                     <img
                       src="/assets/images/clicker-character/nft-treasureBox.webp"
                       alt="NFT Treasure Box"
-                      className="object-contain w-72 h-auto -mt-2 -mb-2 hover:animate-treasureBoxTwerk"
+                      className="object-contain h-auto -mt-2 -mb-2 w-72 hover:animate-treasureBoxTwerk"
                     />
 
                     {/* Remaining NFTs */}
-                    <div className="w-full flex-col justify-center items-center inline-flex">
-                      <div className="flex-col justify-center items-center flex">
+                    <div className="inline-flex flex-col items-center justify-center w-full">
+                      <div className="flex flex-col items-center justify-center">
                         <div
-                          className="text-center text-amber-300 text-xl z-10"
+                          className="z-10 text-xl text-center text-amber-300"
                           style={{
                             textShadow: "0px 2px 4px rgba(0, 0, 0, 0.25)",
                           }}
@@ -676,10 +676,10 @@ function MintPage() {
                     </div>
                     
                     {/* mint price */}
-                    <div className="w-full flex-col justify-center items-center inline-flex">
-                      <div className="flex-col justify-center items-center flex">
+                    <div className="inline-flex flex-col items-center justify-center w-full">
+                      <div className="flex flex-col items-center justify-center">
                         <div
-                          className="text-center text-amber-500 text-5xl z-10"
+                          className="z-10 text-5xl text-center text-amber-500"
                           style={{
                             WebkitTextStrokeWidth: "3.5px",
                             WebkitTextStrokeColor: "var(--COlor-11, #FFF)",
@@ -706,7 +706,7 @@ function MintPage() {
 
                       {/* Mobile mint button */}
                       <div
-                        className={`w-[70%] justify-center items-center inline-flex z-[10] transition-transform duration-200 
+                        className={`w-[70%] xs:w-[80%] justify-center items-center inline-flex z-[10] transition-transform duration-200
                           ${(isAllowed && !mintingNFT) || currentUser?.walletAddr === '' ? `hover:scale-105` : ``}`}
                           onMouseEnter={() => isAllowed ? setGhostExcited(true) : setGhostExcited(false)}
                           onMouseLeave={() => !mintingNFT ? setGhostExcited(false) : setGhostExcited(true)}>
@@ -714,13 +714,13 @@ function MintPage() {
                           <button
                             className="h-[80px] w-[250px] m-auto bg-[#FFDC62] border-[#E59E69] rounded-full border justify-center items-center inline-flex shadow-[0px_4px_4px_0px_#FFFBEF_inset,0px_-4px_4px_0px_rgba(255,249,228,0.48),0px_5px_4px_0px_rgba(232,140,72,0.48)]"
                             onClick={openPhantom}>
-                            <span className=' text-white text-center text-xl alg:text-3xl font-normal'>
+                            <span className='font-normal text-center text-white text-l alg:text-3xl'>
                               {`Open in Phantom Wallet`}    
                             </span>
                           </button>
                         : 
                           loadingCandyMachine ? 
-                            <span className='h-20 m-auto text-amber-300 text-xl lg:text-3xl animate-pulse'>
+                            <span className='h-20 m-auto text-xl text-amber-300 lg:text-3xl animate-pulse'>
                               {`Loading`} 
                             </span>
                             :
@@ -736,7 +736,7 @@ function MintPage() {
                                 <MoonLoader color={"#E59E69"} size={40} />
                                 :
                                 <div
-                                  className="text-center text-white text-2xl font-normal"
+                                  className="text-2xl font-normal text-center text-white"
                                   style={{
                                     textShadow: "0px 2px 0.6px rgba(240, 139, 0, 0.66)",
                                   }}
@@ -772,7 +772,7 @@ function MintPage() {
                     {/* Web3 links */}
                     <div className="flex">
                       <a
-                        className="text-amber-500 text-lg font-medium leading-normal underline transition-all duration-300 hover:scale-105 hover:font-bold hover:text-amber-400  mb-2"
+                        className="mb-2 text-lg font-medium leading-normal underline transition-all duration-300 text-amber-500 hover:scale-105 hover:font-bold hover:text-amber-400"
                         href="https://solscan.io/"
                         target="_blank"
                         rel="noopener noreferrer"
@@ -780,10 +780,10 @@ function MintPage() {
                         Solscan
                       </a>
 
-                      <span className="text-white text-lg">&nbsp;&nbsp;|&nbsp;&nbsp;</span>
+                      <span className="text-lg text-white">&nbsp;&nbsp;|&nbsp;&nbsp;</span>
 
                       <a
-                        className="text-amber-500 text-lg font-medium leading-normal underline transition-all duration-300 hover:scale-105 hover:font-bold hover:text-amber-400  mb-2"
+                        className="mb-2 text-lg font-medium leading-normal underline transition-all duration-300 text-amber-500 hover:scale-105 hover:font-bold hover:text-amber-400"
                         href="https://wallet.magiceden.io/"
                         target="_blank"
                         rel="noopener noreferrer"
@@ -813,27 +813,27 @@ function MintPage() {
                 }}
               >
                 {/* Mint Panel background */}
-                <div className="absolute flex w-full justify-between -top-8">
+                <div className="absolute flex justify-between w-full -top-8">
                   <img
                     src={"/assets/images/clicker-character/ring01.webp"}
                     alt="ring"
-                    className="object-cover w-11 absolute left-2"
+                    className="absolute object-cover w-11 left-2"
                   />
                   <img
                     src={"/assets/images/clicker-character/ring01.webp"}
                     alt="ring"
-                    className="object-cover w-11 opacity-0"
+                    className="object-cover opacity-0 w-11"
                   />
                   <img
                     src={"/assets/images/clicker-character/ring02.webp"}
                     alt="ring"
-                    className="object-cover w-11 absolute right-8"
+                    className="absolute object-cover w-11 right-8"
                   />
                 </div>
 
                 {/* mint panel content */}
                 <div
-                  className="flex flex-col items-center rounded-2xl bg-opacity-75 place-content-center p-6 h-full"
+                  className="flex flex-col items-center h-full p-6 bg-opacity-75 rounded-2xl place-content-center"
                   style={{
                     backgroundImage:
                       'url("/assets/images/clicker-character/mintBBG.webp")',
@@ -845,10 +845,10 @@ function MintPage() {
                   {/* mint countdown */}
                   {isContainerVisible && (
                     <div className="-mt-24 p-3 px-6 bg-[#003260] rounded-3xl shadow-inner border border-[#7fc1ff] flex-col justify-self-center items-center gap-2 inline-flex">
-                      <p className="text-md pb-1">Minting Ends In</p>
+                      <p className="pb-1 text-md">Minting Ends In</p>
                       <div className="h-[50px] justify-start items-center inline-flex gap-1 pb-3">
                         <div className="w-12 h-1/2 bg-[#003260] shadow-inner flex-col justify-center items-center gap-1 inline-flex">
-                          <div className="w-12 h-8 flex-col justify-center items-center gap-4 flex">
+                          <div className="flex flex-col items-center justify-center w-12 h-8 gap-4">
                             <div className="text-center text-white text-[26px] tracking-wide font-outfit">
                               {timeLeft.days}
                             </div>
@@ -857,11 +857,11 @@ function MintPage() {
                             Days
                           </div>
                         </div>
-                        <span className="text-white font-outfit font-semibold text-2xl">
+                        <span className="text-2xl font-semibold text-white font-outfit">
                           :
                         </span>
                         <div className="w-12 h-1/2 bg-[#003260] shadow-inner flex-col justify-center items-center gap-1 inline-flex">
-                          <div className="w-12 h-8 flex-col justify-center items-center gap-4 flex">
+                          <div className="flex flex-col items-center justify-center w-12 h-8 gap-4">
                             <div className="text-center text-white text-[26px] tracking-wide font-outfit">
                               {timeLeft.hours}
                             </div>
@@ -870,11 +870,11 @@ function MintPage() {
                             Hours
                           </div>
                         </div>
-                        <span className="text-white font-outfit font-semibold text-2xl">
+                        <span className="text-2xl font-semibold text-white font-outfit">
                           :
                         </span>
                         <div className="w-12 h-1/2 bg-[#003260] shadow-inner flex-col justify-center items-center gap-1 inline-flex">
-                          <div className="w-12 h-8 flex-col justify-center items-center gap-4 flex">
+                          <div className="flex flex-col items-center justify-center w-12 h-8 gap-4">
                             <div className="text-center text-white text-[26px] tracking-wide font-outfit">
                               {timeLeft.minutes}
                             </div>
@@ -883,11 +883,11 @@ function MintPage() {
                             Minutes
                           </div>
                         </div>
-                        <span className="text-white font-outfit font-semibold text-2xl">
+                        <span className="text-2xl font-semibold text-white font-outfit">
                           :
                         </span>
                         <div className="w-12 h-1/2 bg-[#003260] shadow-inner flex-col justify-center items-center gap-1 inline-flex">
-                          <div className="w-12 h-8 flex-col justify-center items-center gap-4 flex">
+                          <div className="flex flex-col items-center justify-center w-12 h-8 gap-4">
                             <div className="text-center text-white text-[26px] tracking-wide font-outfit">
                               {timeLeft.seconds}
                             </div>
@@ -904,14 +904,14 @@ function MintPage() {
                   <img
                     src="/assets/images/clicker-character/nft-treasureBox.webp"
                     alt="NFT Treasure Box"
-                    className="object-contain w-96 h-96 -mt-2 -mb-10 hover:animate-treasureBoxTwerk"
+                    className="object-contain -mt-2 -mb-10 w-96 h-96 hover:animate-treasureBoxTwerk"
                   />
 
                   {/* Remaining NFTs */}
-                  <div className="w-full flex-col justify-center items-center inline-flex">
-                    <div className="flex-col justify-center items-center flex">
+                  <div className="inline-flex flex-col items-center justify-center w-full">
+                    <div className="flex flex-col items-center justify-center">
                       <div
-                        className="text-center text-amber-300 text-xl z-10"
+                        className="z-10 text-xl text-center text-amber-300"
                         style={{
                           textShadow: "0px 2px 4px rgba(0, 0, 0, 0.25)",
                         }}
@@ -923,10 +923,10 @@ function MintPage() {
                   </div>
 
                   {/* mint price */}
-                  <div className="w-full flex-col justify-center items-center inline-flex">
-                    <div className="flex-col justify-center items-center flex">
+                  <div className="inline-flex flex-col items-center justify-center w-full">
+                    <div className="flex flex-col items-center justify-center">
                       <div
-                        className="text-center text-amber-500 text-6xl z-10"
+                        className="z-10 text-6xl text-center text-amber-500"
                         style={{
                           WebkitTextStrokeWidth: "3.5px",
                           WebkitTextStrokeColor: "var(--COlor-11, #FFF)",
@@ -940,7 +940,7 @@ function MintPage() {
 
                   {/* Desktop Minting row */}
                   {getRemainingNFTs() !== '' 
-                  ? <div className="w-full flex flex-row items-center justify-center">
+                  ? <div className="flex flex-row items-center justify-center w-full">
                       {/* VIP pass button */}
                       <div className="w-[30%]"> 
                         <img
@@ -962,13 +962,13 @@ function MintPage() {
                           <button
                             className="h-[80px] w-[250px] m-auto"
                             onClick={openPhantom}>
-                            <span className=' text-red-300 text-center text-xl lg:text-3xl'>
+                            <span className='text-xl text-center text-red-300 lg:text-3xl'>
                               {`Open Phantom Wallet`}    
                             </span>
                           </button>
                           :
                           loadingCandyMachine ?
-                            <span className='h-20 m-auto text-amber-300 text-xl lg:text-3xl animate-pulse'>
+                            <span className='h-20 m-auto text-xl text-amber-300 lg:text-3xl animate-pulse'>
                               {`Loading`}  
                             </span>
                             :
@@ -984,7 +984,7 @@ function MintPage() {
                                 <MoonLoader color={"#E59E69"} size={40} />
                                 :
                                 <div
-                                  className="text-center text-white text-2xl font-normal"
+                                  className="text-2xl font-normal text-center text-white"
                                   style={{
                                     textShadow: "0px 2px 0.6px rgba(240, 139, 0, 0.66)",
                                   }}
@@ -1065,8 +1065,8 @@ function MintPage() {
             ? window.innerWidth > 500  ? '': 'flex-col'
             : `flex-col`}`}>
           {/* wallet binding panel */}
-          <div className="flex transiton-all duration-300">
-            <WalletBindingPanel className="w-full lx:w-1/2 my-auto p-12" />
+          <div className="flex duration-300 transiton-all">
+            <WalletBindingPanel className="w-full p-12 my-auto lx:w-1/2" />
           </div>
 
           <button
@@ -1116,17 +1116,17 @@ function MintPage() {
               {/* Static Content */}
               <div className="relative z-[101] flex flex-col items-center justify-center p-[1rem]">
                 <div className="w-full bg-gradient-to-t from-[#78bff2e1] to-[#7ae0ffe1] flex flex-col items-start p-[1rem] xl:p-[2rem] rounded-xl shadow-lg transition-all duration-300 hover:scale-105">
-                  <div className="w-full flex justify-center">
+                  <div className="flex justify-center w-full">
                     <span className="text-2xl xl:text-4xl text-center font-normal tracking-widest uppercase mb-[1rem] xl:mb-[2rem]">You minted</span>
                   </div>
-                  <div className="w-full flex justify-center">
+                  <div className="flex justify-center w-full">
                     <img 
                       className="w-[20rem] xl:w-[26rem] h-[20rem] xl:h-[26rem] mb-4"
                       src={nftMinted.offChainMetadata.image}
                       alt="NFT Minted"
                     />
                   </div>
-                  <span className="text-2xl xl:text-4xl text-left font-normal uppercase">{nftMinted.offChainMetadata.name}</span>
+                  <span className="text-2xl font-normal text-left uppercase xl:text-4xl">{nftMinted.offChainMetadata.name}</span>
                 </div>
 
                 <div>
@@ -1141,7 +1141,7 @@ function MintPage() {
 
               {/* Fade Out Overlay */}
               <div className={`flex justify-center items-center bg-white absolute z-[101] inset-0 w-screen h-screen pointer-events-none transition-all duration-300 ${mintFadeOut ? `opacity-0` : `opacity-100`}`}>
-                <span className="m-auto text-amber-400 text-5xl text-center animate-pulse">Loading</span>
+                <span className="m-auto text-5xl text-center text-amber-400 animate-pulse">Loading</span>
               </div>
             </div>
           )}

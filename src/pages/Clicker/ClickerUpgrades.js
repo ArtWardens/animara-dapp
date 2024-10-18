@@ -54,6 +54,7 @@ const ClickerUpgrades = ({ onClose }) => {
   const userLocations = useUserLocation();
   const currentUser = useUserDetails();
   const dailyComboMatched = useDailyComboMatched();
+  const optionRefs = useRef([]);
 
   useEffect(() => {
     if (!userLocations && !userLocationLoading) {
@@ -79,6 +80,20 @@ const ClickerUpgrades = ({ onClose }) => {
     }, 200);
   }
 
+  const handleOptionClick = (option, index) => {
+    setSelectedOption(option.name);
+
+      // Check if the screen width is below a certain threshold (e.g., 1024px for mobile)
+      if (window.innerWidth < 1024) {
+      // Scroll the selected element into view (only on mobile view)
+      optionRefs.current[index].scrollIntoView({
+        behavior: 'smooth',
+        block: 'center', // Aligns the item to the center vertically
+        inline: 'center' // Aligns the item to the center horizontally (important for horizontal scroll)
+      });
+    }
+  };
+
   return (
     <div className="w-full max-w-[90dvw]">
       <div 
@@ -97,21 +112,21 @@ const ClickerUpgrades = ({ onClose }) => {
           }}
           onClick={(e) => e.stopPropagation()}
         >
-          <div className="absolute flex w-full justify-between -top-9">
+          <div className="absolute flex justify-between w-full -top-9">
             <img
               src={"/assets/images/clicker-character/ring01.webp"}
               alt="ring"
-              className="object-cover w-12 absolute left-2"
+              className="absolute object-cover w-12 left-2"
             />
             <img
               src={"/assets/images/clicker-character/ring02.webp"}
               alt="ring"
-              className="object-cover w-12 absolute right-8"
+              className="absolute object-cover w-12 right-8"
             />
           </div>
 
           <div
-            className="flex flex-col w-full h-full rounded-2xl overflow-visible"
+            className="flex flex-col w-full h-full overflow-visible rounded-2xl"
             style={{
               backgroundImage:
                 'url("/assets/images/clicker-character/mascotBg.webp")',
@@ -129,8 +144,8 @@ const ClickerUpgrades = ({ onClose }) => {
             </div>
 
             {/* this line got problem */}
-            <div className="h-full flex flex-col justify-start overflow-y-auto mt-[6rem]"> 
-              <div className="w-full hidden lg:flex justify-center">
+            <div className="h-full flex flex-col justify-start overflow-y-auto mt-[1rem] sm:mt-[6rem] md:mt-[6rem] lg:mt-[6rem] xl:mt-[6rem] 2xl:mt-[6rem]">
+              <div className="justify-center hidden w-full lg:flex">
                   <p className="text-[#FFC85A] text-xl text-center font-normal uppercase">
                     upgrade & earn as you explore!
                   </p>
@@ -138,14 +153,14 @@ const ClickerUpgrades = ({ onClose }) => {
 
               {/* Show loader if loading is true, otherwise display the content */}
               {userLocationLoading ? (
-                <div className="h-full flex justify-center items-center ">
+                <div className="flex items-center justify-center h-full ">
                   <PropagateLoader color={"#FFB23F"} />
                 </div>
               ) : (
-                <div className="w-full lg:max-w-[87dvw] h-full max-h-[70dvh] lg:max-h-[55dvh] flex flex-col lg:flex-row justify-start mt-[2rem] lg:mt-[4rem] lg:gap-[1rem] overflow-y-auto custom-scrollbar">
+                <div className="w-full max-h-[100vh] lg:max-w-[87dvw] h-full max-h-[70dvh]   flex flex-col lg:flex-row justify-start mt-[2rem] lg:mt-[4rem] lg:gap-[1rem] overflow-y-auto custom-scrollbar xs:overflow-x-hidden">
                   {/* Menu bar */}
                   <div className="w-full lg:w-[16dvw] h-full flex flex-col">
-                    <div className="h-full lg:min-h-[800px] flex flex-row lg:flex-col lg:mt-[2.5rem] p-[2rem] lg:p-2 overflow-y-auto custom-scrollbar mb-[1rem] lg:mb-0">
+                    <div className="h-full lg:min-h-[800px] flex flex-row lg:flex-col lg:mt-[2.5rem] p-[2rem] lg:p-2 overflow-y-auto custom-scrollbar mb-[1rem] lg:mb-0 ">
                     {menuOptions.map((option, index) => (
                       <div
                         key={index}
@@ -168,8 +183,8 @@ const ClickerUpgrades = ({ onClose }) => {
                   </div>
 
                   <div className="w-full flex flex-col mr-0 lg:mr-[2rem] ">
-                    <div className="w-full flex flex-row flex-wrap justify-center lg:justify-between items-center p-4">
-                      <div className="hidden lg:flex flex-row">
+                    <div className="flex flex-row flex-wrap items-center justify-center w-full p-4 lg:justify-between">
+                      <div className="flex-row hidden lg:flex">
                         <img
                             src={`/assets/images/clicker-character/${selectedOption}-icon.webp`}
                             alt={`${selectedOption} icon`}
@@ -185,11 +200,11 @@ const ClickerUpgrades = ({ onClose }) => {
                         {/* Daily Combo Section */}
                         <div className={`flex flex-col lg:flex-row items-center ${dailyComboMatched.every(item => item !== "") ? "bg-[#ffa900]" : "bg-[#684500]"} rounded-3xl px-[2rem] py-[1rem] shadow-[0px_4px_4px_rgba(0,0,0,0.25)]`}>
                           <div className="flex flex-col mb-2 lg:mb-0">
-                            <div className="text-white text-base lg:text-xl font-LuckiestGuy font-normal tracking-wider ">
+                            <div className="text-base font-normal tracking-wider text-white lg:text-xl font-LuckiestGuy ">
                               DAILY COMBO
                             </div>
-                            <div className="flex flex-row items-center text-white text-sm lg:text-lg ">
-                              <img src="/assets/images/clicker-character/gem.webp" alt="currency icon" className="w-4 lg:w-6 h-auto" />
+                            <div className="flex flex-row items-center text-sm text-white lg:text-lg ">
+                              <img src="/assets/images/clicker-character/gem.webp" alt="currency icon" className="w-4 h-auto lg:w-6" />
                               <span className="mx-2">{totalProfit}</span>
                               <img 
                                 src={`/assets/images/clicker-character/${dailyComboMatched.every(item => item !== "") ? "checked" : "unchecked"}.webp`} 
@@ -212,7 +227,7 @@ const ClickerUpgrades = ({ onClose }) => {
                             <div className="text-[#00E0FF] text-2xl font-LuckiestGuy font-normal tracking-wider">
                               {currentUser?.profitPerHour || 0}
                             </div>
-                            <div className="text-white text-sm font-outfit">
+                            <div className="text-sm text-white font-outfit">
                               Explora Points
                             </div>
                           </div>
@@ -225,7 +240,7 @@ const ClickerUpgrades = ({ onClose }) => {
                       userLocations.filter(
                         (location) => location.region === selectedOption
                       ).length > 0 ? (
-                        <div className="h-full w-full max-w-[1480px] flex flex-col lg:flex-row flex-wrap items-center justify-start gap-4 amt-4 p-4 overflow-y-auto custom-scrollbar">
+                        <div className="h-full w-full max-w-[1480px] flex flex-col lg:flex-row flex-wrap items-center justify-start gap-4 amt-4 p-4 overflow-y-auto overflow-x-hidden custom-scrollbar">
                           {userLocations
                             .filter((location) => location.region === selectedOption)
                             .sort((a, b) => (a.level >= 0 && b.level === -1 ? -1 : 1)) // Sort unlocked locations first
@@ -257,8 +272,8 @@ const ClickerUpgrades = ({ onClose }) => {
                                         {location.level === -1 ? "-" : location.level}
                                       </p>
                                     </div>
-                                    <div className="w-full flex flex-row items-center justify-between">
-                                      <p className="text-white text-sm font-sans">
+                                    <div className="flex flex-row items-center justify-between w-full">
+                                      <p className="font-sans text-sm text-white">
                                         Explora Points
                                       </p>
                                       <div className="flex flex-row">
@@ -274,7 +289,7 @@ const ClickerUpgrades = ({ onClose }) => {
                                       </div>
                                     </div>
                                     <div className="w-full border-t-2 border-blue-400 my-[0.5rem]"></div>
-                                    <div className="w-full flex flex-row justify-between ">
+                                    <div className="flex flex-row justify-between w-full ">
                                       <p>
                                         {location.level === 0 && location.level !== -1
                                           ? "Explore"
@@ -324,7 +339,7 @@ const ClickerUpgrades = ({ onClose }) => {
                                           backgroundRepeat: "no-repeat",
                                         }}
                                         alt="Locked"
-                                        className="w-full h-full absolute inset-0"
+                                        className="absolute inset-0 w-full h-full"
                                       />
                                     </>
                                   )}
@@ -333,14 +348,14 @@ const ClickerUpgrades = ({ onClose }) => {
                             })}
                         </div>
                       ) : (
-                        <div className="flex justify-center items-end lg:items-center h-full">
+                        <div className="flex items-end justify-center h-full lg:items-center">
                           <p className="text-white text-center text-2xl mt-[4rem] lg:mt-0">
                             No upgrades available for this region
                           </p>
                         </div>
                       )
                     ) : (
-                      <p className="w-full h-full flex justify-center items-center text-white text-center">
+                      <p className="flex items-center justify-center w-full h-full text-center text-white">
                         No upgrades available
                       </p>
                     )}
