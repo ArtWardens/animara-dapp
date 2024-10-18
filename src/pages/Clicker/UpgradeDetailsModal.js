@@ -103,7 +103,11 @@ const UpgradeDetailsModal = ({ upgrade, isMaxLevel, onClose }) => {
     <>
       <div 
         className="fixed inset-0  backdrop-blur-xl rounded-xl flex justify-center items-center z-[200] overflow-hidden"
-        onClick={onClose}
+        onClick={() => {
+          if(isUserLocationLoading) return;
+          if (!isUserLocationLoading && (showMaxLevelMessage || isExploredSuccessfully)) return;
+          onClose();
+        }}
       >
         {!isUserLocationLoading &&
         (showMaxLevelMessage || isExploredSuccessfully) ? (
@@ -296,7 +300,8 @@ const UpgradeDetailsModal = ({ upgrade, isMaxLevel, onClose }) => {
                     Explora Points
                   </p>
                   <DynamicNumberDisplay 
-                    number={upgrade.currentExploraPts}
+                    // number={upgrade.currentExploraPts}
+                    number={currentUser?.profitPerHour || 0}
                     imgSrc={"/assets/icons/explora-point.webp"}
                     imgClassName={"w-6 h-6 mr-1"}
                     spanClassName={"text-2xl text-[#80e8ff] font-bold"}
@@ -306,7 +311,8 @@ const UpgradeDetailsModal = ({ upgrade, isMaxLevel, onClose }) => {
                     <>
                       <p className="text-white">&nbsp; → &nbsp;</p>
                       <DynamicNumberDisplay 
-                        number={upgrade.nextLevelExploraPts || 0}
+                        // number={upgrade.nextLevelExploraPts || 0}
+                        number={currentUser?.profitPerHour + upgrade.nextLevelExploraPts - upgrade.currentExploraPts || 0}
                         imgSrc={"/assets/icons/explora-point.webp"}
                         imgClassName={"w-6 h-6 mr-1"}
                         spanClassName={"text-2xl text-[#80e8ff] font-bold"}
