@@ -54,6 +54,7 @@ const ClickerUpgrades = ({ onClose }) => {
   const userLocations = useUserLocation();
   const currentUser = useUserDetails();
   const dailyComboMatched = useDailyComboMatched();
+  const optionRefs = useRef([]);
 
   useEffect(() => {
     if (!userLocations && !userLocationLoading) {
@@ -78,6 +79,20 @@ const ClickerUpgrades = ({ onClose }) => {
       onClose();
     }, 200);
   }
+
+  const handleOptionClick = (option, index) => {
+    setSelectedOption(option.name);
+
+      // Check if the screen width is below a certain threshold (e.g., 1024px for mobile)
+      if (window.innerWidth < 1024) {
+      // Scroll the selected element into view (only on mobile view)
+      optionRefs.current[index].scrollIntoView({
+        behavior: 'smooth',
+        block: 'center', // Aligns the item to the center vertically
+        inline: 'center' // Aligns the item to the center horizontally (important for horizontal scroll)
+      });
+    }
+  };
 
   return (
     <div className="w-full max-w-[90dvw]">
@@ -149,7 +164,8 @@ const ClickerUpgrades = ({ onClose }) => {
                     {menuOptions.map((option, index) => (
                       <div
                         key={index}
-                        onClick={() => setSelectedOption(option.name)}
+                        ref={(el) => (optionRefs.current[index] = el)}
+                        onClick={() => handleOptionClick(option, index)}
                         className={`max-w-[200px] w-auto flex justify-center items-center gap-1.5 p-5 mt-0 lg:mt-[1rem] ml-[1rem] lg:ml-0 rounded-[10px] border-8 border-white ${
                           selectedOption === option.name ? 'bg-[#FFB100] transform rotate-6' : 'bg-[#146CFC]'
                         } hover:pl-[24px] hover:pr-[20px] hover:rotate-6 hover:scale-105 transition-transform duration-300 ease-in-out`}
@@ -263,9 +279,10 @@ const ClickerUpgrades = ({ onClose }) => {
                                       </p>
                                       <div className="flex flex-row">
                                         <DynamicNumberDisplay 
-                                          number={location.level === 0 && location.level !== -1
-                                              ? location.nextLevelExploraPts
-                                              : location.currentExploraPts}
+                                          // number={location.level === 0 && location.level !== -1
+                                          //     ? location.nextLevelExploraPts
+                                          //     : location.currentExploraPts}
+                                          number={location.nextLevelExploraPts - location.currentExploraPts}
                                           imgSrc={"/assets/icons/explora-point.webp"}
                                           imgClassName={"w-6 h-6 mr-1"}
                                           spanClassName={"text-[#00E0FF]"}

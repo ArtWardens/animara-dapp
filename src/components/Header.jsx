@@ -153,6 +153,7 @@ function Header() {
             <div className="relative flex items-center justify-center max-w-44">
               <span
                 ref={coinsDisplayRef}
+                id="header-coins"
                 className="relative text-2xl xs:text-3xl text-[#FFC85A] font-LuckiestGuy tracking-normal w-full overflow-hidden text-left drop-shadow-md"
               >
                 {formatNumberWithCommas(localCoins)}
