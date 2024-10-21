@@ -166,14 +166,14 @@ const ClickerUpgrades = ({ onClose }) => {
                         key={index}
                         ref={(el) => (optionRefs.current[index] = el)}
                         onClick={() => handleOptionClick(option, index)}
-                        className={`max-w-[200px] w-auto flex justify-center items-center gap-1.5 p-5 mt-0 lg:mt-[1rem] ml-[1rem] lg:ml-0 rounded-[10px] border-8 border-white ${
+                        className={`min-w-[150px] max-w-[200px] w-auto flex justify-center items-center gap-1.5 p-5 mt-0 lg:mt-[1rem] ml-[1rem] lg:ml-0 rounded-[10px] border-8 border-white ${
                           selectedOption === option.name ? 'bg-[#FFB100] transform rotate-6' : 'bg-[#146CFC]'
                         } hover:pl-[24px] hover:pr-[20px] hover:rotate-6 hover:scale-105 transition-transform duration-300 ease-in-out`}
                       >
                         <img
                           src={option.icon}
                           alt={`${option.name} icon`}
-                          className="w-6 h-6 mr-4"
+                          className="w-6 h-6 lg:mr-4"
                         />
                         <span className="text-white text-base lg:text-xl capitalize leading-[18px]">
                           {option.name}

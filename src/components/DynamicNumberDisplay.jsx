@@ -20,7 +20,7 @@ const DynamicNumberDisplay = ({ number, divClassName, imgSrc, imgClassName, span
 
   // Format the number with commas for better readability
   const formatFullNumber = (num) => {
-    return num.toLocaleString();
+    return num?.toLocaleString();
   };
 
   // Check the available space and decide whether to show full or short number
