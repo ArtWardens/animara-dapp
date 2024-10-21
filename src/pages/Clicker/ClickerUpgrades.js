@@ -144,7 +144,7 @@ const ClickerUpgrades = ({ onClose }) => {
             </div>
 
             {/* this line got problem */}
-            <div className="h-full flex flex-col justify-start overflow-y-auto mt-[1rem] sm:mt-[6rem] md:mt-[6rem] lg:mt-[6rem] xl:mt-[6rem] 2xl:mt-[6rem]">
+            <div className="h-full flex flex-col justify-start overflow-y-auto mt-[6rem]"> 
               <div className="justify-center hidden w-full lg:flex">
                   <p className="text-[#FFC85A] text-xl text-center font-normal uppercase">
                     upgrade & earn as you explore!
