@@ -31,6 +31,8 @@ const ClickerView = () => {
   const effectiveLevel = (currentUser?.level - 1) % 20 + 1;
   const audioRef = useRef(null);
   const audioSource = `https://storage.animara.world/${effectiveLevel || 1}-successHits.mp3`;
+  const [animateDailyReward, setAnimateDailyReward] = useState(false);
+  const currentDayRef = useRef(null);
   
   // grant depletion rewards when local stamina is fully consumed
   useEffect(() => {
@@ -64,10 +66,25 @@ const ClickerView = () => {
     if (isOpenDailyPopup) {
       const timerPanel = setTimeout(() => {
         setShowPanel(true);
+        setTimeout(() => {
+          if (currentDayRef.current) {
+            currentDayRef.current.scrollIntoView({
+              behavior: 'smooth',
+              block: 'center',
+              inline: 'center'
+            });
+            setAnimateDailyReward(true);
+          }
+        }, 100);
       }, 500);
+
+      const animateDailyReward = setTimeout(() => {
+        setAnimateDailyReward(false);
+      }, 2000);
 
       return () => {
         clearTimeout(timerPanel);
+        clearTimeout(animateDailyReward);
       };
     }
   }, [isOpenDailyPopup]);
@@ -89,7 +106,7 @@ const ClickerView = () => {
       setShowWord(true);
       setTimeout(() => {
         setShowWord(false);
-      }, 3000);
+      }, 5000);
     }, 2500);
 
     if (currentUser?.ownsNFT) {
@@ -171,13 +188,16 @@ const ClickerView = () => {
             open={isOpenDailyPopup}
             className="h-screen w-screen flex flex-1 overflow-x-hidden overflow-y-auto"
           >
-            <div className="fixed inset-0 backdrop-blur-xl rounded-xl flex justify-center items-center z-[200] overflow-hidden">
-              <div className={`min-h-[800px] w-[100%] relative rounded-xl 
-              daily-reward-bg bg-no-repeat bg-cover
-              md:min-h-[unset] md:bg-[length:100%_70%] 
-              lg:max-w-[1100px] lg:bg-contain 
-              transition-all ease-in-out duration-500
-              ${showPanel ? `scale-100` : `scale-0`}`}
+            <div className="fixed inset-0 backdrop-blur-xl rounded-xl flex justify-center items-center z-[200] overflow-hidden"
+              onClick={handleClose}
+            >
+              <div className={`min-h-[800px] w-[100%] relative rounded-xl z-[201]
+                daily-reward-bg bg-no-repeat bg-cover
+                md:min-h-[unset] md:bg-[length:100%_70%] 
+                lg:max-w-[1100px] lg:bg-contain 
+                transition-all ease-in-out duration-500
+                ${showPanel ? `scale-100` : `scale-0`}`}
+                onClick={(e) => e.stopPropagation()}
                 style={{
                   backgroundImage: `url("/assets/images/clicker-character/upgrades-details-bg.webp")`,
                   backgroundPosition: "center",
@@ -227,10 +247,12 @@ const ClickerView = () => {
                     .slice(0, currentUser?.ownsNFT ? 28 : 14)
                     .map((dayReward, index) => {
                       const isSelected = index < currentUser?.loginDays;
+                      const isCurrentDay = (index + 1) === currentUser?.loginDays;
                       return (
                         <Box
-                          className={`${isSelected ? 'bg-[#FFAA00]' : 'bg-[#3C3C3C]'} rounded-md py-1.5 flex transition-all duration-300 hover:scale-105 will-change-transform backface-hidden`}
+                          className={`${isSelected ? 'bg-[#FFAA00]' : 'bg-[#3C3C3C]'} rounded-md py-1.5 flex transition-all duration-300 hover:scale-105 will-change-transform backface-hidden ${(isCurrentDay && animateDailyReward) ? "scale-110 z-20" : "scale-100"}`}
                           key={index}
+                          ref={isCurrentDay ? currentDayRef : null}
                         >
                           <div className={`flex flex-1 flex-col h-20 lg:h-24 items-center justify-center text-sm space-y-1 gap-1 ${isSelected ? 'text-white' : 'text-[#C5C5C5]'}`}>
                             <span className='font-outfit font-based'>Day {index + 1}</span>
@@ -240,6 +262,13 @@ const ClickerView = () => {
                               imgClassName={"w-8 h-8 m-auto"}
                               imgSrc={isSelected ? 'assets/images/coin.webp' : 'assets/images/coin-disable.webp'}
                               spanClassName={`${isSelected ? 'text-white' : 'text-[#C5C5C5]'} flex items-center justify-center`}
+                              spanContent={isSelected ? (
+                                <img 
+                                  src="/assets/images/daily_rewards_tick.webp" 
+                                  alt="coin" 
+                                  className={`ml-2 transition-all duration-500 ${isCurrentDay ? (animateDailyReward ? "w-10 h-8 animate-[spin_1s_ease-in-out]" : "w-5 h-4") : "w-5 h-4"}`} 
+                                />
+                              ) : ''}
                             />
                           </div>
                         </Box>
