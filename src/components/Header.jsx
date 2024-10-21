@@ -135,7 +135,7 @@ function Header() {
         </div>
         {/* user details */}
         <div className="flex flex-col place-content-center flex-grow">
-          <div className={`pt-1 pl-10 font-LuckiestGuy text-md flex user-detail-1
+          <div className={`pt-1 pl-10 font-LuckiestGuy text-[15px] xs:text-[18px] md:text-md lg:text-md flex user-detail-1
             ${currentUser?.ownsNFT && currentUser?.walletAddr !== '' ? 'bg-[#573A00]' : 'bg-[#003459]'}
           `}>
             <p className="flex-1">{currentUser?.name || 'Animara User'}</p>
@@ -154,7 +154,7 @@ function Header() {
               <span
                 ref={coinsDisplayRef}
                 id="header-coins"
-                className="relative text-2xl xs:text-3xl text-[#FFC85A] font-LuckiestGuy tracking-normal w-full overflow-hidden text-left drop-shadow-md"
+                className="relative text-[18px] xs:text-[3xl] lg:text-[3xl] text-[#FFC85A] font-LuckiestGuy tracking-normal w-full overflow-hidden text-left drop-shadow-md"
               >
                 {formatNumberWithCommas(localCoins)}
               </span>
