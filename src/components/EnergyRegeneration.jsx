@@ -86,7 +86,7 @@ function EnergyRegeneration({ isOneTimeTaskOpen, setIsOneTimeTaskOpen }) {
           }}
         >
           <div
-            className="flex flex-row gap-1 py-2 lg:py-5 px-4 lg:px-6 rounded-full lg:rounded-3xl items-center min-w-[46vh] lg:w-auto"
+            className="flex flex-row gap-1 py-2 lg:py-5 px-4 lg:px-6 rounded-full lg:rounded-3xl items-center w-[46vh] lg:w-auto"
             style={{
               background: '#002b4c',
               backgroundBlendMode: 'multiply',
