@@ -201,7 +201,7 @@ const TaskList = ({ setIsOneTimeTaskOpen }) => {
                   <h3 className="text-[1.5rem] lg:text-[2rem] pl-4 text-[#FFAA00]">Complete missions to earn free coins</h3>
                 </div>
 
-                <div className="w-full h-full max-h-[65dvh] sm:max-h-[50dvh] md:max-h-[50dvh] lg:max-h-[50dvh] xl:max-h-[50dvh] 2xl:max-h-[50dvh] flex flex-col justify-start gap-3 mt-[2rem] px-4 overflow-x-hidden overflow-y-auto custom-scrollbar z-100">
+                <div className="w-full h-full max-h-[65dvh] sm:max-h-[50dvh] lg:max-h-[50dvh] flex flex-col justify-start gap-3 mt-[2rem] px-4 overflow-x-hidden overflow-y-auto custom-scrollbar z-100">
                   {renderOneTimeTaskList}
                 </div>
 

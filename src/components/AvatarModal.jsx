@@ -22,9 +22,12 @@ const selectAvatarApi = async (avatarUrl) => {
 };
 
 const AvatarSelectionModal = ({ isOpen, onClose, onAvatarSave }) => {
-  const [selectedAvatar, setSelectedAvatar] = useState(null); 
+  const [selectedAvatarIndex, setSelectedAvatarIndex] = useState(null); 
 
   const avatars = [
+    '/assets/images/avatarBg.webp', 
+    '/assets/images/activeDog.webp', 
+    '/assets/images/activeDog.webp', 
     '/assets/images/activeDog.webp', 
     '/assets/images/activeDog.webp', 
     '/assets/images/activeDog.webp', 
@@ -37,31 +40,40 @@ const AvatarSelectionModal = ({ isOpen, onClose, onAvatarSave }) => {
 
   if (!isOpen) return null;
 
-  const handleAvatarClick = (avatar) => {
-    setSelectedAvatar(avatar); 
+  const handleAvatarClick = (index) => {
+    setSelectedAvatarIndex(index); 
   };
 
   const handleSaveChanges = async () => {
-    if (selectedAvatar) {
-      await selectAvatarApi(selectedAvatar);
+    if (selectedAvatarIndex !== null) {
+      const selectedAvatar = avatars[selectedAvatarIndex];
       onAvatarSave(selectedAvatar); 
     }
-    onClose();
+    handleClose();
+  };
+
+  const handleClose = () => {
+    setSelectedAvatarIndex(null); 
+    onClose(); 
   };
 
   return (
     <div 
       className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-[1000]" 
-      onClick={onClose} 
+      onClick={handleClose} 
     >
       <div 
-        className="relative w-full max-w-[95vw] bg-[#333] p-6 rounded-lg shadow-lg sm:max-w-[80vw] md:max-w-[600px] lg:max-w-[800px] xl:max-w-[900px]"
-        onClick={(e) => e.stopPropagation()} // Prevents closing when clicking inside the modal
+        className="relative w-full max-w-[95vw] p-6 rounded-lg shadow-lg sm:max-w-[80vw] md:max-w-[600px] lg:max-w-[800px] xl:max-w-[900px]"
+        style={{
+          backgroundImage: 'url("/assets/images/avatarBg.webp")',
+          backgroundRepeat: 'no-repeat', 
+        }}
+        onClick={(e) => e.stopPropagation()} 
       >
         {/* Close Button */}
         <button
           className="absolute w-8 h-8 text-2xl text-white top-3 right-3"
-          onClick={onClose}
+          onClick={handleClose} 
         >
           &times;
         </button>
@@ -79,9 +91,9 @@ const AvatarSelectionModal = ({ isOpen, onClose, onAvatarSave }) => {
               src={avatar}
               alt={`Avatar ${index + 1}`}
               className={`w-20 h-20 md:w-24 md:h-24 lg:w-28 lg:h-28 rounded-full cursor-pointer border-2 ${
-                selectedAvatar === avatar ? 'border-yellow-500' : 'border-transparent'
+                selectedAvatarIndex === index ? 'border-yellow-500' : 'border-transparent' 
               }`}
-              onClick={() => handleAvatarClick(avatar)} 
+              onClick={() => handleAvatarClick(index)} 
             />
           ))}
         </div>

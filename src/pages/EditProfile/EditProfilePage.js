@@ -32,7 +32,7 @@ const EditProfilePage = () => {
   const [imageData, setImageData] = useState(null);
   const [hasChanges, setHasChanges] = useState(false);
   const inputFile = useRef(null);
-  const [isAvatarModalOpen, setIsAvatarModalOpen] = useState(false); // Avatar Model
+  const [isAvatarModalOpen, setIsAvatarModalOpen] = useState(false); 
 
   const handleBackClick = () => {
     navigate(-1);
@@ -124,6 +124,12 @@ const EditProfilePage = () => {
     return photoUrl;
   }, [user]);
 
+  const handleAvatarSave = (avatar) => {
+    setImageData(avatar);  
+    setHasChanges(true);  
+  };
+
+  
   return (
     // background
     <div className="min-h-screen flex flex-col z-[-20]">
@@ -206,9 +212,13 @@ const EditProfilePage = () => {
                       />
                     ) : (
                       <img
-                        src="/assets/images/activeDog.webp"
-                        alt="pfp"
+                        src={imageData || getProfilePic()}  
+                        alt="profile pic"
                         className="justify-self-center rounded-full w-12 xs:w-24 lg:w-24 group-hover:brightness-[0.55] transition-all duration-300"
+                        onError={(e) => {
+                          e.target.onerror = null;
+                          e.target.src = "/assets/images/activeDog.webp"; // Fallback image
+                        }}
                       />
                     )}
                     <img
@@ -350,6 +360,7 @@ const EditProfilePage = () => {
             <AvatarSelectionModal 
               isOpen={isAvatarModalOpen} 
               onClose={() => setIsAvatarModalOpen(false)} 
+              onAvatarSave={handleAvatarSave} 
             />
           </div>
         </div>
