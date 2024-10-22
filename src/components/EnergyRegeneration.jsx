@@ -87,27 +87,27 @@ function EnergyRegeneration({ isOneTimeTaskOpen, setIsOneTimeTaskOpen }) {
           }}
         >
           <div
-            className="flex flex-row gap-1 py-3 lg:py-5 px-4 lg:px-6 rounded-3xl"
+            className="flex flex-row gap-1 py-3 lg:py-5 px-4 lg:px-6 rounded-full lg:rounded-3xl"
             style={{
               background: '#002b4c',
               backgroundBlendMode: 'multiply',
               boxShadow: '3px 2px 0px 0px #60ACFF inset',
             }}
           >
-            <img src="/assets/icons/explora-point.webp" alt="profit icon" className="w-10 lg:w-16 h-10 lg:h-16 my-auto mr-2" />
+            <img src="/assets/icons/explora-point.webp" alt="profit icon" className="w-8 lg:w-16 h-8 lg:h-16 my-auto mr-2" />
             {userDetailsLoading ? (
-              <div className="h-18 w-16 flex justify-center items-center">
+              <div className="h-16 w-16 lg:h-18 lg:w-16 flex justify-center items-center">
                 <MoonLoader size={25} color={'#80E8FF'} />
               </div>
             ) : (
-              <div className="flex flex-col mr-[1rem] my-auto">
-                <div className="text-[#00E0FF] text-2xl font-LuckiestGuy font-normal tracking-wider">
+              <div className="flex flex-row lg:flex-col mr-[1rem] my-auto">
+                <div className="text-[#00E0FF] text-xl lg:text-2xl font-LuckiestGuy font-normal tracking-wider">
                   {profitPerHour}
                 </div>
                 <div className="text-white text-sm font-outfit">Explora Points</div>
               </div>
             )}
-            <img src="/assets/icons/info-blue.webp" alt="info icon" className="w-8 h-8 my-auto mr-2 hover:scale-105" onClick={handleInfoClick}/>
+            <img src="/assets/icons/info-blue.webp" alt="info icon" className="w-4 h-4 lg:w-8 lg:h-8 my-auto mr-2 hover:scale-105" onClick={handleInfoClick}/>
           </div>
         </div>
 

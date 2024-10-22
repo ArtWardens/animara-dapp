@@ -108,9 +108,6 @@ const MascotView = ({ setOpenModal }) => {
     if (periodicSettlerTimerRef.current) return;
 
     if (!settlingTapSession && (currentUser?.coins !== localCoins || currentUser?.stamina !== localStamina)) {
-      // console.log("setupSettler dispatch");
-      // console.log(currentUser?.coins, " vs", localCoins);
-      // console.log(currentUser?.stamina, " vs", localStamina);
       dispatch(
         settleTapSession({
           newCointAmt: localCoins,

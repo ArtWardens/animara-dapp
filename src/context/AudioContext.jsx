@@ -30,7 +30,7 @@ export const AudioProvider = ({ children }) => {
     if (location.pathname === '/anitap') {
       if (currentTrack !== 'anitap') {
         setCurrentTrack('anitap');
-        audioRef.current.src = "https://storage.animara.world/anitap_bg_aud.mp3";
+        audioRef.current.src = "https://storage.animara.world/anitap_bg_audio.mp3";
       }
     } else {
       if (currentTrack !== 'dapp') {
