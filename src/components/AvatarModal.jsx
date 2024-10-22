@@ -1,25 +1,25 @@
 import React, { useState } from 'react';
 
-const selectAvatarApi = async (avatarUrl) => {
-  try {
-    const response = await fetch('/api/select-avatar', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ avatarUrl }), 
-    });
+// const selectAvatarApi = async (avatarUrl) => {
+//   try {
+//     const response = await fetch('/api/select-avatar', {
+//       method: 'POST',
+//       headers: {
+//         'Content-Type': 'application/json',
+//       },
+//       body: JSON.stringify({ avatarUrl }), 
+//     });
 
-    if (!response.ok) {
-      throw new Error('Failed to select avatar');
-    }
+//     if (!response.ok) {
+//       throw new Error('Failed to select avatar');
+//     }
 
-    const result = await response.json();
-    return result;
-  } catch (error) {
-    console.error('Error selecting avatar:', error);
-  }
-};
+//     const result = await response.json();
+//     return result;
+//   } catch (error) {
+//     console.error('Error selecting avatar:', error);
+//   }
+// };
 
 const AvatarSelectionModal = ({ isOpen, onClose, onAvatarSave }) => {
   const [selectedAvatarIndex, setSelectedAvatarIndex] = useState(null); 
