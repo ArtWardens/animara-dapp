@@ -75,7 +75,7 @@ function Header() {
 
   // Format number with commas
   const formatNumberWithCommas = (number) => {
-    return number ? number.toLocaleString() : '0';
+    return number ? number?.toLocaleString() : '0';
   };
 
   const getProfilePic = useCallback(() => {

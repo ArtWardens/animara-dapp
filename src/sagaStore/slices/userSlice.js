@@ -309,6 +309,7 @@ export const userSlice = createSlice({
         completedTask: taskList
       }
       state.taskIdToComplete = '';
+      state.localCoins = payload.updatedCoins;
     },
     completeOneTimeTaskError: (state, { payload }) => {
       state.taskIdToComplete = '';
