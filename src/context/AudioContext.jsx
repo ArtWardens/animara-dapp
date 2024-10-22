@@ -13,6 +13,7 @@ export const AudioProvider = ({ children }) => {
     // Load the initial mute state from localStorage (defaults to false)
     return localStorage.getItem('isMuted') === 'true';
   });
+  const [wasPausedDueToVisibility, setWasPausedDueToVisibility] = useState(false);  // To track if muted by visibility
 
   // Function to start the audio once the user interacts with the document
   const handleUserInteraction = () => {
@@ -21,7 +22,7 @@ export const AudioProvider = ({ children }) => {
       if (audioRef.current) {
         audioRef.current.volume = isMuted ? 0 : volume;  // Set volume or mute
         audioRef.current.play().catch(error => {
-          console.log("Autoplay prevented: ", error);
+          console.log("Autoplay prevented or audio play error: ", error);
         });
       }
     }
@@ -38,7 +39,28 @@ export const AudioProvider = ({ children }) => {
         audioRef.current.pause();  // Pause the audio when muted
       } else {
         audioRef.current.volume = volume;  // Restore volume
-        audioRef.current.play();  // Resume playback
+        audioRef.current.play().catch(error => {
+          console.log("Error resuming audio after unmute:", error);
+        });
+      }
+    }
+  };
+
+  // Handle tab visibility change for mobile/Safari
+  const handleVisibilityChange = () => {
+    if (document.hidden) {
+      // Mute the audio if the tab is hidden
+      if (audioRef.current && !isMuted) {
+        audioRef.current.pause();
+        setWasPausedDueToVisibility(true);  // Track that we paused due to visibility
+      }
+    } else {
+      // Unmute the audio if the tab is visible again and it was paused due to visibility
+      if (audioRef.current && wasPausedDueToVisibility && !isMuted) {
+        audioRef.current.play().catch(error => {
+          console.log("Error playing audio after visibility change:", error);
+        });
+        setWasPausedDueToVisibility(false);  // Reset the flag
       }
     }
   };
@@ -47,29 +69,42 @@ export const AudioProvider = ({ children }) => {
     if (!audioRef.current) return;
 
     // Play the appropriate audio based on the route
-    if (location.pathname === '/anitap') {
-      if (currentTrack !== 'anitap') {
-        setCurrentTrack('anitap');
-        audioRef.current.src = "https://storage.animara.world/anitap_bg_audio.mp3";
+    const playAudioTrack = () => {
+      if (location.pathname === '/anitap') {
+        if (currentTrack !== 'anitap') {
+          setCurrentTrack('anitap');
+          audioRef.current.src = "https://storage.animara.world/anitap_bg_audio.mp3";
+        }
+      } else {
+        if (currentTrack !== 'dapp') {
+          setCurrentTrack('dapp');
+          audioRef.current.src = "https://storage.animara.world/dapp_bg_aud.mp3";
+        }
       }
-    } else {
-      if (currentTrack !== 'dapp') {
-        setCurrentTrack('dapp');
-        audioRef.current.src = "https://storage.animara.world/dapp_bg_aud.mp3";
+
+      // Ensure audio plays if not muted
+      audioRef.current.volume = isMuted ? 0 : volume;
+      if (!isMuted) {
+        audioRef.current.play().catch(error => {
+          console.log("Error playing audio on route change:", error);
+          retryAudioPlay();  // Attempt to retry audio if it fails to play
+        });
       }
-    }
+    };
 
-    // Apply the mute state whenever the route or state changes
-    audioRef.current.volume = isMuted ? 0 : volume;
+    // Retry playing audio after a small delay in case of errors
+    const retryAudioPlay = () => {
+      setTimeout(() => {
+        if (audioRef.current && !isMuted) {
+          audioRef.current.play().catch(err => {
+            console.log("Retry failed:", err);
+          });
+        }
+      }, 1000); // Retry after 1 second
+    };
 
-    // Ensure audio is paused if muted
-    if (isMuted) {
-      audioRef.current.pause();
-    } else {
-      audioRef.current.play().catch(error => {
-        console.log("Error playing audio:", error);
-      });
-    }
+    // Play audio on location change
+    playAudioTrack();
   }, [location, currentTrack, volume, isMuted]);
 
   useEffect(() => {
@@ -77,17 +112,21 @@ export const AudioProvider = ({ children }) => {
     window.addEventListener('click', handleUserInteraction);
     window.addEventListener('keypress', handleUserInteraction);
 
+    // Add event listener for visibility change (to detect tab being hidden)
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+
     return () => {
       // Clean up event listeners
       window.removeEventListener('click', handleUserInteraction);
       window.removeEventListener('keypress', handleUserInteraction);
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
     };
-  }, [isUserInteracted]);
+  }, [isUserInteracted, isMuted, wasPausedDueToVisibility]);
 
   return (
     <AudioContext.Provider value={{ audioRef, volume, setVolume, isMuted, toggleMute }}>
       {children}
-      <audio ref={audioRef} autoPlay loop />  {/* Autoplay and looping enabled */}
+      <audio ref={audioRef} autoPlay loop />
     </AudioContext.Provider>
   );
 };
