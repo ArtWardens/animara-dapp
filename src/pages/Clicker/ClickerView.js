@@ -236,7 +236,7 @@ const ClickerView = () => {
                       Accure Coins For Loggin Into The Game Daily Without Skipping
                     </span>
                   </div>
-                  <Box className="overflow-y-auto py-3 px-3 w-full grid grid-cols-2 gap-3 custom-scrollbar
+                  <Box className="overflow-y-auto lg:py-3 px-3 w-full grid grid-cols-2 gap-3 custom-scrollbar
                     max-h-[400px] xs:max-h-[320px]
                     sm:max-h-[400px] sm:grid-cols-3 
                     md:max-h-[350px] md:grid-cols-5

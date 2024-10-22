@@ -16,26 +16,38 @@ function Header() {
   const trigger = useRef(null);
   const coinsDisplayRef = useRef(null);
 
-  // navigation bar setup
+  // State for mute/unmute functionality
+  const [isMuted, setIsMuted] = useState(false);
+
+  // Image sources for mute/unmute
+  const imageSrcUnmute = '/assets/icons/unmute-audio.webp';
+  const imageSrcMute = '/assets/icons/mute-audio.webp';
+
+  const handleMuteToggle = () => {
+    setIsMuted(!isMuted);
+    // Add logic to mute/unmute audio if needed
+  };
+
+  // Navigation setup
   const navDestinations = [
     { name: 'ANITAP', link: '/anitap' },
     { name: 'MINT', link: '/mint' },
     { name: 'REFERRAL', link: '/referral' },
   ];
+
   const handleButtonClick = (link) => {
     dispatch(setMobileMenuOpen(false));
     if (link) {
       navigate(link);
     }
   };
+
   const handleEditProfile = () => {
     navigate('/edit-profile');
   };
 
-  // setup logout button
-  const [imageSrcLogout, setImageSrcLogout] = useState('/assets/images/clicker-character/logout.webp');
-  const handleMouseEnterLogout = () => setImageSrcLogout('/assets/images/clicker-character/logout-hover.webp');
-  const handleMouseLeaveLogout = () => setImageSrcLogout('/assets/images/clicker-character/logout.webp');
+  // Setup logout button image source
+  const imageSrcLogout = '/assets/images/clicker-character/logout.webp';
 
   const handleLogout = () => {
     dispatch(logOut());
@@ -61,26 +73,22 @@ function Header() {
     adjustFontSize();
   }, [localCoins]);
 
-  // Function to format number with commas
+  // Format number with commas
   const formatNumberWithCommas = (number) => {
     return number ? number?.toLocaleString() : '0';
   };
 
   const getProfilePic = useCallback(() => {
-    // use placeholder image if user not loaded yet
     if (!currentUser) {
       return '/assets/images/activeDog.webp';
     }
 
-    // get user profile picture
     let photoUrl = currentUser.photoUrl;
 
-    // returns placeholder if profile picture is not set yet
     if (photoUrl === '') {
       photoUrl = '/assets/images/activeDog.webp';
     }
 
-    // process google user content
     if (photoUrl.indexOf('googleusercontent.com') !== -1) {
       photoUrl = `${photoUrl}?alt=media`;
     }
@@ -92,11 +100,11 @@ function Header() {
     <div className="w-full container pb-52">
       {/* User Card */}
       <div
-        className={`flex flex-row absolute md:min-w-[300px] lg:min-w-[300px] max-w-[70dvw] top-[4rem] z-10 lg:ml-14 p-1 pr-2 gap-2 lg:scale-[120%]
-          ${currentUser?.ownsNFT && currentUser?.walletAddr !== '' ? 'glowing-border left-[2rem] xl:left-[6rem]' : 'default-border left-[1rem] xl:left-[5rem]'} 
+        className={`flex flex-row absolute md:min-w-[300px] lg:min-w-[300px] max-w-[70dvw] top-[1.5rem] lg:top-[4rem] z-10 lg:ml-14 p-1 pr-2 gap-2 scale-[80%] lg:scale-[120%]
+          ${currentUser?.ownsNFT && currentUser?.walletAddr !== '' ? 'glowing-border left-[0.5rem] lg:left-[6rem]' : 'default-border left-[1rem] xl:left-[5rem]'} 
           ${mobileMenuOpen ? 'hidden' : ''}`}
       >
-        {/* profile picture */}
+        {/* Profile picture */}
         <div className={`w-28 h-28 absolute -top-[18px] -left-4 flex justify-center items-center
           ${currentUser?.ownsNFT && currentUser?.walletAddr !== '' ? 'nft-profile-border' : 'profile-border'}
         `}>
@@ -131,9 +139,9 @@ function Header() {
           </button>
         </div>
 
-        <div className="flex-none w-12">
-        </div>
-        {/* user details */}
+        <div className="flex-none w-12"></div>
+
+        {/* User details */}
         <div className="flex flex-col place-content-center flex-grow">
           <div className={`pt-1 pl-10 font-LuckiestGuy text-md flex user-detail-1
             ${currentUser?.ownsNFT && currentUser?.walletAddr !== '' ? 'bg-[#573A00]' : 'bg-[#003459]'}
@@ -145,8 +153,8 @@ function Header() {
           </div>
 
           <div className={`pb-1 pl-10 gap-1 xs:gap-2 flex user-detail-2
-            ${currentUser?.ownsNFT && currentUser?.walletAddr !== '' 
-              ? 'bg-gradient-to-l from-[#573A00] from-5% via-[#FFB800] via-90% to-[#FFFFFF]' 
+            ${currentUser?.ownsNFT && currentUser?.walletAddr !== ''
+              ? 'bg-gradient-to-l from-[#573A00] from-5% via-[#FFB800] via-90% to-[#FFFFFF]'
               : 'bg-gradient-to-l from-[#003459] from-20% via-[#0032A1] via-40% to-[#2D72FF]'}
           `}>
             <img className="w-6 xs:w-8 object-contain" src={'/assets/images/clicker-character/gem.webp'} alt="gem" />
@@ -180,20 +188,33 @@ function Header() {
           </button>
         ))}
 
+        {/* Logout button with hover effect */}
         <button
-          className="transition ease-in-out p-2 hover:scale-105"
-          onMouseEnter={handleMouseEnterLogout}
-          onMouseLeave={handleMouseLeaveLogout}
+          className="transition ease-in-out p-2 hover:scale-110 hover:opacity-80"
           onClick={handleLogout}
           ref={trigger}
         >
           <img src={imageSrcLogout} className="h-full w-full" alt="logout" />
         </button>
+
+        {/* Mute button */}
+        <button
+          className="transition ease-in-out p-2 ml-4 hover:scale-110 hover:opacity-80"
+          onClick={handleMuteToggle}
+          ref={trigger}
+        >
+          <img
+            src={isMuted ? imageSrcMute : imageSrcUnmute}
+            className="h-12 w-12"
+            alt="mute"
+          />
+        </button>
+
       </div>
 
       {/* Mobile Hamburger Menu Button */}
       <button
-        className="transition ease-in-out hover:scale-105 lg:hidden absolute top-[5rem] right-[2rem] xl:right-[4rem] z-50"
+        className="transition ease-in-out hover:scale-105 lg:hidden absolute top-[2.5rem] right-[1.5rem] xl:right-[4rem] z-50"
         onClick={() => dispatch(setMobileMenuOpen(!mobileMenuOpen))}
       >
         <svg
@@ -210,7 +231,7 @@ function Header() {
       {/* Mobile Menu */}
       {mobileMenuOpen && (
         <div
-          className="h-full absolute inset-0 z-40 flex flex-col items-center justify-start py-[3rem] px-[4rem] overflow-hidden"
+          className="h-full absolute inset-0 z-40 flex flex-col items-center justify-start py-[2rem] px-[3rem] overflow-hidden"
           style={{
             backgroundImage: 'url("/assets/images/clicker-character/clickerWall.webp")',
             backgroundSize: 'cover',
@@ -281,16 +302,16 @@ function Header() {
                   <span className="text-white text-xs tracking-wider font-outfit whitespace-nowrap">Certified KOL</span>
                 </div>
               )}
-              <p className={`text-md text-[#003459] font-medium font-outfit ${currentUser?.isKOL ? 'mt-[0.5rem': '-mt-2'}`}> {currentUser?.name}</p>
-              <DynamicNumberDisplay 
-                number={currentUser?.coins} 
+              <p className={`text-md text-[#003459] font-medium font-outfit ${currentUser?.isKOL ? 'mt-[0.5rem' : '-mt-2'}`}> {currentUser?.name}</p>
+              <DynamicNumberDisplay
+                number={currentUser?.coins}
                 divClassName={"gap-[0.5rem] flex place-content-center"}
                 imgSrc={"/assets/images/clicker-character/gem.webp"}
                 imgClassName={"w-10 object-contain"}
                 spanClassName={"text-[32px] xl:text-4xl text-[#FFAA00] tracking-normal font-LuckiestGuy pr-2"}
               />
-              <DynamicNumberDisplay 
-                number={currentUser?.profitPerHour} 
+              <DynamicNumberDisplay
+                number={currentUser?.profitPerHour}
                 divClassName={"gap-[0.5rem] flex place-content-center"}
                 imgSrc={"/assets/icons/explora-point.webp"}
                 imgClassName={"w-10 object-contain"}
@@ -322,16 +343,23 @@ function Header() {
             </div>
 
             {/* Logout button */}
-            <div className="pt-4">
+            <div className="pt-5">
               <button
-                className="transition ease-in-out hover:scale-105 flex items-center"
-                onMouseEnter={handleMouseEnterLogout}
-                onMouseLeave={handleMouseLeaveLogout}
+                className="transition ease-in-out hover:scale-110 hover:opacity-80 pr-4"
+                onClick={handleMuteToggle}
+              >
+                <img
+                  src={isMuted ? imageSrcMute : imageSrcUnmute}
+                  className="h-12 w-12"
+                  alt="mute"
+                />
+              </button>
+              <button
+                className="transition ease-in-out hover:scale-110 hover:opacity-80"
                 onClick={handleLogout}
                 ref={trigger}
               >
                 <img src={imageSrcLogout} className="h-12 w-12" alt="logout" />
-                <span className="ml-2 text-4xl text-[#ff647a] capitalize leading-9">LOGOUT</span>
               </button>
             </div>
           </div>
