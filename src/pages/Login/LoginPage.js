@@ -222,7 +222,7 @@ const LoginPage = () => {
               </div>
 
               <div className="flex items-center justify-between mt-4">
-                <div className="flex items-center">
+                <label className="flex items-center cursor-pointer">
                   <input
                     type="checkbox"
                     checked={rememberMe}
@@ -232,19 +232,18 @@ const LoginPage = () => {
                       isChecked ? localStorage.setItem('email', email) : localStorage.removeItem('email');
                       isChecked ? localStorage.setItem('password', password) : localStorage.removeItem('password');
                     }}
+                    className="mr-2" // Add some margin to separate the checkbox and the text
                   />
-                  <label className="ml-2 text-[#C5C5C5]">Remember Me</label>
-                </div>
+                  <span className="text-[#C5C5C5]">Remember Me</span>
+                </label>
 
-                <Link
-                  to="/forgot-password"
-                  className="hover:brightness-75"
-                >
+                <Link to="/forgot-password" className="hover:brightness-75">
                   <p className="text-amber-400 font-outfit text-[0.875rem] leading-[1rem]">
                     Forgot Password?
                   </p>
                 </Link>
               </div>
+
             </div>
 
             {/* Login Button */}
