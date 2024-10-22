@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 
-const DynamicNumberDisplay = ({ number, divClassName, imgSrc, imgClassName, spanClassName }) => {
+const DynamicNumberDisplay = ({ number, divClassName, imgSrc, imgClassName, spanClassName, spanContent }) => {
   const containerRef = useRef(null); // Reference to the component container
   const [showFullNumber, setShowFullNumber] = useState(true); // Track whether to show full or short form
 
@@ -52,7 +52,7 @@ const DynamicNumberDisplay = ({ number, divClassName, imgSrc, imgClassName, span
 
       {/* Display number based on available space */}
       <span className={`${spanClassName || "text-xl font-bold text-gray-800"}`}>
-        {showFullNumber ? formatFullNumber(number) : formatNumber(number)}
+        {showFullNumber ? formatFullNumber(number) : formatNumber(number)} {spanContent || ''}
       </span>
     </div>
   );
@@ -65,6 +65,7 @@ DynamicNumberDisplay.propTypes = {
   imgSrc: PropTypes.string,
   imgClassName: PropTypes.string,
   spanClassName: PropTypes.string,
+  spanContent: PropTypes.any
 };
 
 export default DynamicNumberDisplay;
