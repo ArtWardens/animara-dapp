@@ -97,7 +97,7 @@ function Header() {
   }, [currentUser]);
 
   return (
-    <div className="w-full container pb-52">
+    <div className="w-full container pb-40 lg:pb-52">
       {/* User Card */}
       <div
         className={`flex flex-row absolute md:min-w-[300px] lg:min-w-[300px] max-w-[70dvw] top-[1.5rem] lg:top-[4rem] z-10 lg:ml-14 p-1 pr-2 gap-2 scale-[80%] lg:scale-[120%]
