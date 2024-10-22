@@ -99,7 +99,7 @@ const TaskList = ({ setIsOneTimeTaskOpen }) => {
               <div className="flex items-center ">
                 <div className="flex items-center">
                   <div className="min-w-[215px] text-[1rem] md:text-lg text-[#C5C5C5] font-outfit">
-                    <span className="relative top-1 inline-flex items-center">
+                    <span className="relative inline-flex items-center top-1">
                       <DynamicNumberDisplay 
                         number={task.coins} 
                         spanClassName={"text-[#FFC85A] text-[1rem] md:text-lg font-LuckiestGuy pr-3"}
@@ -162,16 +162,16 @@ const TaskList = ({ setIsOneTimeTaskOpen }) => {
             onClick={(e) => e.stopPropagation()}
           >
             
-          <div className="absolute flex w-full justify-between -top-9">
+          <div className="absolute flex justify-between w-full -top-9">
             <img
               src={"/assets/images/clicker-character/ring01.webp"}
               alt="ring"
-              className="object-cover w-12 absolute left-2"
+              className="absolute object-cover w-12 left-2"
             />
             <img
               src={"/assets/images/clicker-character/ring02.webp"}
               alt="ring"
-              className="object-cover w-12 absolute right-8"
+              className="absolute object-cover w-12 right-8"
             />
           </div>
 
@@ -195,15 +195,16 @@ const TaskList = ({ setIsOneTimeTaskOpen }) => {
                 />
             </div>
 
-            <div className="w-full flex items-start justify-center">
+            <div className="flex items-start justify-center w-full">
               <div className="w-full lg:max-w-[70dvw] flex flex-col ">
-                <div className="mt-[4rem] lg:mt-[6rem]">
+                <div className="mt-[2rem] lg:mt-[6rem]">
                   <h3 className="text-[1.5rem] lg:text-[2rem] pl-4 text-[#FFAA00]">Complete missions to earn free coins</h3>
                 </div>
 
-                <div className="w-full h-full max-h-[50dvh] flex flex-col justify-start gap-3 mt-[2rem] px-4 overflow-x-hidden overflow-y-auto custom-scrollbar z-100">
+                <div className="w-full h-full max-h-[65dvh] sm:max-h-[50dvh] lg:max-h-[50dvh] flex flex-col justify-start gap-3 mt-[2rem] px-4 overflow-x-hidden overflow-y-auto custom-scrollbar z-100">
                   {renderOneTimeTaskList}
                 </div>
+
               </div>
             </div>
           </div>
