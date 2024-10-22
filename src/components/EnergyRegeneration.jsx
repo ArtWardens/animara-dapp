@@ -23,20 +23,20 @@ function EnergyRegeneration({ isOneTimeTaskOpen, setIsOneTimeTaskOpen }) {
 
   // Toggle leaderboard component
   const handleLeaderBoardClick = () => {
-    setIsLeaderBoardOpen(true); 
+    setIsLeaderBoardOpen(true);
   };
 
   const closeLeaderBoard = () => {
-    setIsLeaderBoardOpen(false); 
+    setIsLeaderBoardOpen(false);
   };
 
   // Toggle notice component
   const handleInfoClick = () => {
-    setIsNoticeOpen(true); 
+    setIsNoticeOpen(true);
   };
 
   const closeNotice = () => {
-    setIsNoticeOpen(false); 
+    setIsNoticeOpen(false);
   };
 
   // intro anim
@@ -75,73 +75,92 @@ function EnergyRegeneration({ isOneTimeTaskOpen, setIsOneTimeTaskOpen }) {
 
   return (
     <>
-      <div className="flex flex-col lg:grid grid-cols-3 gap-3 justify-center items-center w-full mt-[-3rem] lg:mt-[4rem] z-[50]">
+      <div className="flex flex-col lg:grid grid-cols-3 justify-center items-center w-full mt-[-2.5rem] lg:mt-[3rem] z-[50]">
         {/* explora point display */}
         <div
-          className={`flex items-center justify-center transition-opacity duration-700 ${
-            showFirstDiv ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0'
-          }`}
+          className={`flex items-center justify-center transition-opacity duration-700 mx-20 ${showFirstDiv ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0'
+            }`}
           style={{
             display: 'inline-flex',
             alignItems: 'center',
           }}
         >
           <div
-            className="flex flex-row gap-1 py-3 lg:py-5 px-4 lg:px-6 rounded-full lg:rounded-3xl"
+            className="flex flex-row gap-1 py-2 lg:py-5 px-4 lg:px-6 rounded-full lg:rounded-3xl items-center w-[46vh] lg:w-auto"
             style={{
               background: '#002b4c',
               backgroundBlendMode: 'multiply',
               boxShadow: '3px 2px 0px 0px #60ACFF inset',
             }}
           >
-            <img src="/assets/icons/explora-point.webp" alt="profit icon" className="w-8 lg:w-16 h-8 lg:h-16 my-auto mr-2" />
+            <img
+              src="/assets/icons/explora-point.webp"
+              alt="profit icon"
+              className="w-8 lg:w-16 h-8 lg:h-16 mr-2"
+            />
             {userDetailsLoading ? (
-              <div className="h-16 w-16 lg:h-18 lg:w-16 flex justify-center items-center">
-                <MoonLoader size={25} color={'#80E8FF'} />
+              <div className="h-16 w-16 lg:h-18 lg:w-16 flex items-center">
+                <MoonLoader size={24} color={'#80E8FF'} />
               </div>
             ) : (
-              <div className="flex flex-row lg:flex-col mr-[1rem] my-auto">
-                <div className="text-[#00E0FF] text-xl lg:text-2xl font-LuckiestGuy font-normal tracking-wider">
+              <div className="flex flex-row lg:flex-col w-full lg:w-none items-center lg:items-start mr-[1rem] gap-8 lg:gap-0 p-0 m-0 justify-between">
+                <div className="text-[#00E0FF] text-xl lg:text-2xl font-LuckiestGuy font-normal tracking-wider lg:mr-0 pt-1 lg:pt-0">
                   {profitPerHour}
                 </div>
-                <div className="text-white text-sm font-outfit">Explora Points</div>
+                <div className="text-white text-xs lg:text-sm font-outfit">
+                  Explora Points
+                </div>
               </div>
             )}
-            <img src="/assets/icons/info-blue.webp" alt="info icon" className="w-4 h-4 lg:w-8 lg:h-8 my-auto mr-2 hover:scale-105" onClick={handleInfoClick}/>
+            <img
+              src="/assets/icons/info-blue.webp"
+              alt="info icon"
+              className="w-5 h-5 lg:w-8 lg:h-8 lg:mr-2 hover:scale-105"
+              onClick={handleInfoClick}
+            />
           </div>
+
+
         </div>
 
         {/* Stamina bar */}
         <div
-          className={`w-full px-6 transition-opacity duration-700 ${
-            showProgressBar ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0'
-          }`}
+          className={`w-full scale-[65%] lg:scale-100 px-0 transition-opacity duration-700 ${showProgressBar ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0'
+            }`}
         >
           {rechargingStamina || userDetailsLoading ? (
             <div className="h-18 flex justify-center items-center">
               <MoonLoader size={25} color={'#80E8FF'} />
             </div>
           ) : (
-            <ProgressBar
-              score={progressBarWidth}
-              label={'Stamina'}
-              progressColor="#80E8FF"
-              primaryColor="#49DEFF"
-              secondaryColor="#FAFF00"
-              darkTheme
-              className="text-center border-2 border-white border-solid rounded-tl-3xl rounded-tr-md rounded-br-3xl rounded-bl-md pt-1 pb-2"
-            />
+            <>
+              <ProgressBar
+                score={progressBarWidth}
+                label={'Stamina'}
+                progressColor="#80E8FF"
+                primaryColor="#49DEFF"
+                secondaryColor="#FAFF00"
+                darkTheme
+                className="text-center text-lg border-2 border-white border-solid rounded-tl-3xl backdrop-blur-md bg-white/20 rounded-tr-md rounded-br-3xl rounded-bl-md pt-1 pb-3"
+                style={{ textShadow: '3px 3px 6px rgba(0, 0, 0, 0.25)' }}
+              />
+              <div
+                className="text-white text-xl font-outfit font-based mt-2 tracking-wide"
+                style={{ textShadow: '3px 3px 6px rgba(0, 0, 0, 0.25)' }}
+              >
+                <span className='text-amber-500 font-extrabold'>12 Hour </span> Energy cooldown
+              </div>
+            </>
           )}
         </div>
 
         {/* Leaderboard button */}
-        <div className={`hidden lg:flex items-center justify-center ${
-            showLeaderBoardOption ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0'
+        <div className={`hidden lg:flex items-center justify-center ${showLeaderBoardOption ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0'
           }`}>
-          <img 
-            src="/assets/icons/leaderboard.webp" 
-            alt="leaderboard icon" 
-            className="w-[15rem] lg:w-[25rem] h-auto transition-all duration-300 hover:scale-110 " 
+          <img
+            src="/assets/icons/leaderboard.webp"
+            alt="leaderboard icon"
+            className="w-[15rem] lg:w-[25rem] h-auto transition-all duration-300 hover:scale-110 "
             onClick={handleLeaderBoardClick}
           />
         </div>

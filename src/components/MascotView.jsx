@@ -79,7 +79,7 @@ const MascotView = ({ setOpenModal }) => {
         (currentUser.coins !== localCoins || currentUser.stamina !== localStamina)
       ) {
         // console.log("mouse leave dispatch");
-        dispatch(settleTapSession({ newCointAmt: localCoins, newStamina: localStamina }));
+        dispatch(settleTapSession({ newCointAmt: localCoins, newStamina: localStamina, from: "mouseleave" }));
       }
     };
 
@@ -89,7 +89,7 @@ const MascotView = ({ setOpenModal }) => {
         (currentUser.coins !== localCoins || currentUser.stamina !== localStamina)
       ) {
         // console.log("handleVisibilityChange dispatch");
-        dispatch(settleTapSession({ newCointAmt: localCoins, newStamina: localStamina }));
+        dispatch(settleTapSession({ newCointAmt: localCoins, newStamina: localStamina, from: "handleVisibilityChange" }));
       }
     };
 
@@ -108,10 +108,14 @@ const MascotView = ({ setOpenModal }) => {
     if (periodicSettlerTimerRef.current) return;
 
     if (!settlingTapSession && (currentUser?.coins !== localCoins || currentUser?.stamina !== localStamina)) {
+      // console.log("setupSettler dispatch");
+      // console.log("stamina: ", currentUser?.stamina);
+      // console.log("localStamina stamina: ", localStamina);
       dispatch(
         settleTapSession({
           newCointAmt: localCoins,
           newStamina: localStamina,
+          from: "setupSettler",
         }),
       );
     }
@@ -136,6 +140,7 @@ const MascotView = ({ setOpenModal }) => {
           settleTapSession({
             newCointAmt: localCoins,
             newStamina: localStamina,
+            from: "restart",
           }),
         );
       }
@@ -146,6 +151,7 @@ const MascotView = ({ setOpenModal }) => {
     if (!isInteractive) return;
     if (localStamina <= 0 && currentUser.stamina === 0 && !currentUser.canGetDepletionReward) {
       setOpenModal('boosts');
+      console.log('open boost');
       return;
     }
 
