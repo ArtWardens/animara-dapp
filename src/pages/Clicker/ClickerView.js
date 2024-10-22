@@ -28,8 +28,9 @@ const ClickerView = () => {
   const [showCongratulations, setShowCongratulations] = useState(false); // Manage "Congratulations" visibility
   const settlingTapSession = useSettleTapSessionLoading();
   const settlingTapSessionLoaded = useSettleTapSessionLoadSuccess();
+  const effectiveLevel = (currentUser?.level - 1) % 20 + 1;
   const audioRef = useRef(null);
-  const audioSource = `https://storage.animara.world/${currentUser?.level || 1}-successHits.mp3`;
+  const audioSource = `https://storage.animara.world/${effectiveLevel || 1}-successHits.mp3`;
   
   // grant depletion rewards when local stamina is fully consumed
   useEffect(() => {
