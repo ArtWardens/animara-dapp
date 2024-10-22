@@ -8,17 +8,37 @@ export const AudioProvider = ({ children }) => {
   const location = useLocation(); // Get current route
   const [currentTrack, setCurrentTrack] = useState(null);  // Track currently playing
   const [isUserInteracted, setIsUserInteracted] = useState(false);  // Detect user interaction
-  const [volume, setVolume] = useState(0.5);  // Default volume to 25%
+  const [volume, setVolume] = useState(0.5);  // Default volume to 50%
+  const [isMuted, setIsMuted] = useState(() => {
+    // Load the initial mute state from localStorage (defaults to false)
+    return localStorage.getItem('isMuted') === 'true';
+  });
 
   // Function to start the audio once the user interacts with the document
   const handleUserInteraction = () => {
     if (!isUserInteracted) {
       setIsUserInteracted(true);
       if (audioRef.current) {
-        audioRef.current.volume = volume;  // Set initial volume
+        audioRef.current.volume = isMuted ? 0 : volume;  // Set volume or mute
         audioRef.current.play().catch(error => {
           console.log("Autoplay prevented: ", error);
         });
+      }
+    }
+  };
+
+  // Function to toggle mute/unmute
+  const toggleMute = () => {
+    const newMutedState = !isMuted;
+    setIsMuted(newMutedState);
+    localStorage.setItem('isMuted', newMutedState);  // Persist mute state in localStorage
+
+    if (audioRef.current) {
+      if (newMutedState) {
+        audioRef.current.pause();  // Pause the audio when muted
+      } else {
+        audioRef.current.volume = volume;  // Restore volume
+        audioRef.current.play();  // Resume playback
       }
     }
   };
@@ -39,9 +59,18 @@ export const AudioProvider = ({ children }) => {
       }
     }
 
-    // Set volume whenever it changes
-    audioRef.current.volume = volume;
-  }, [location, currentTrack, volume]);
+    // Apply the mute state whenever the route or state changes
+    audioRef.current.volume = isMuted ? 0 : volume;
+
+    // Ensure audio is paused if muted
+    if (isMuted) {
+      audioRef.current.pause();
+    } else {
+      audioRef.current.play().catch(error => {
+        console.log("Error playing audio:", error);
+      });
+    }
+  }, [location, currentTrack, volume, isMuted]);
 
   useEffect(() => {
     // Add event listeners for user interaction
@@ -56,7 +85,7 @@ export const AudioProvider = ({ children }) => {
   }, [isUserInteracted]);
 
   return (
-    <AudioContext.Provider value={{ audioRef, volume, setVolume }}> {/* Provide volume control */}
+    <AudioContext.Provider value={{ audioRef, volume, setVolume, isMuted, toggleMute }}>
       {children}
       <audio ref={audioRef} autoPlay loop />  {/* Autoplay and looping enabled */}
     </AudioContext.Provider>
