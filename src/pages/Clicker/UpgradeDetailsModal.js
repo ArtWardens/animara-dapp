@@ -191,7 +191,7 @@ const UpgradeDetailsModal = ({ upgrade, isMaxLevel, onClose }) => {
 
           {/* Mobile upgrade message panel view */}      
           <div
-            className={`flex xl:hidden flex-col items-center justify-center px-[4rem] py-[6rem] rounded-xl transition-all duration-300 ${showModal ? `opacity-100 scale-100` : `opacity-0 scale-0`}`}
+            className={`min-h-[450px] flex xl:hidden flex-col items-center justify-center px-[4rem] py-[6rem] rounded-xl transition-all duration-300 ${showModal ? `opacity-100 scale-100` : `opacity-0 scale-0`}`}
             style={{
               backgroundImage: `url("/assets/images/clicker-character/successfull-mobile-bg.png")`,
               backgroundSize: "contain",
