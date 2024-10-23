@@ -157,7 +157,7 @@ const ClickerUpgrades = ({ onClose }) => {
                   <PropagateLoader color={"#FFB23F"} />
                 </div>
               ) : (
-                <div className="w-full max-h-[100vh] lg:max-w-[87dvw] h-full max-h-[70dvh]   flex flex-col lg:flex-row justify-start mt-[2rem] lg:mt-[4rem] lg:gap-[1rem] overflow-y-auto custom-scrollbar xs:overflow-x-hidden">
+                <div className="w-full max-h-[100vh] lg:max-w-[87dvw] h-full flex flex-col lg:flex-row justify-start mt-[2rem] lg:mt-[4rem] lg:gap-[1rem] overflow-y-auto custom-scrollbar xs:overflow-x-hidden">
                   {/* Menu bar */}
                   <div className="w-full lg:w-[16dvw] h-full flex flex-col">
                     <div className="h-full lg:min-h-[800px] flex flex-row lg:flex-col lg:mt-[2.5rem] p-[2rem] lg:p-2 overflow-y-auto custom-scrollbar mb-[1rem] lg:mb-0 ">
