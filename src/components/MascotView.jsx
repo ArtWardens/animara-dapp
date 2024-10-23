@@ -79,7 +79,7 @@ const MascotView = ({ setOpenModal }) => {
         (currentUser.coins !== localCoins || currentUser.stamina !== localStamina)
       ) {
         // console.log("mouse leave dispatch");
-        dispatch(settleTapSession({ newCointAmt: localCoins, newStamina: localStamina }));
+        dispatch(settleTapSession({ newCointAmt: localCoins, newStamina: localStamina, from: "mouseleave" }));
       }
     };
 
@@ -89,7 +89,7 @@ const MascotView = ({ setOpenModal }) => {
         (currentUser.coins !== localCoins || currentUser.stamina !== localStamina)
       ) {
         // console.log("handleVisibilityChange dispatch");
-        dispatch(settleTapSession({ newCointAmt: localCoins, newStamina: localStamina }));
+        dispatch(settleTapSession({ newCointAmt: localCoins, newStamina: localStamina, from: "handleVisibilityChange" }));
       }
     };
 
@@ -108,10 +108,14 @@ const MascotView = ({ setOpenModal }) => {
     if (periodicSettlerTimerRef.current) return;
 
     if (!settlingTapSession && (currentUser?.coins !== localCoins || currentUser?.stamina !== localStamina)) {
+      // console.log("setupSettler dispatch");
+      // console.log("stamina: ", currentUser?.stamina);
+      // console.log("localStamina stamina: ", localStamina);
       dispatch(
         settleTapSession({
           newCointAmt: localCoins,
           newStamina: localStamina,
+          from: "setupSettler",
         }),
       );
     }
@@ -136,6 +140,7 @@ const MascotView = ({ setOpenModal }) => {
           settleTapSession({
             newCointAmt: localCoins,
             newStamina: localStamina,
+            from: "restart",
           }),
         );
       }
@@ -146,6 +151,7 @@ const MascotView = ({ setOpenModal }) => {
     if (!isInteractive) return;
     if (localStamina <= 0 && currentUser.stamina === 0 && !currentUser.canGetDepletionReward) {
       setOpenModal('boosts');
+      console.log('open boost');
       return;
     }
 
@@ -203,11 +209,11 @@ const MascotView = ({ setOpenModal }) => {
         onClick={handleTap}
       >
         {userDetailsLoading || dailyLoginLoading ? (
-          <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center z-50">
+          <div className="fixed top-0 left-0 z-50 flex items-center justify-center w-full h-full">
             <PropagateLoader color={'#FFB23F'} />
           </div>
         ) : (
-          <div className="flex justify-center items-center place-content-center h-full w-full">
+          <div className="flex items-center justify-center w-full h-full place-content-center">
             {/* Plus One Effect */}
             {plusOneEffects.map((effect) => (
               <img
@@ -215,7 +221,7 @@ const MascotView = ({ setOpenModal }) => {
                 src={'/assets/images/clicker-character/plusOne.webp'}
                 alt="+1"
                 draggable="false"
-                className="absolute w-28 h-28 lg:w-40 lg:h-40 z-10"
+                className="absolute z-10 w-28 h-28 lg:w-40 lg:h-40"
                 style={{
                   left: `${effect.left}px`,
                   top: `${effect.top}px`,

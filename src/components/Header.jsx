@@ -1,9 +1,10 @@
-import React, { useEffect, useState, useRef, useCallback } from 'react';
+import React, { useEffect, useState, useRef, useCallback, useContext } from 'react';
 import { useDispatch } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom/dist';
 import { MoonLoader } from 'react-spinners';
 import { logOut, useUserDetails, useLocalCoins, setMobileMenuOpen, useMobileMenuOpen } from '../sagaStore/slices';
 import DynamicNumberDisplay from './DynamicNumberDisplay';
+import { AudioContext } from '../context/AudioContext';  // Importing the Audio Context
 
 function Header() {
   const mobileMenuOpen = useMobileMenuOpen();
@@ -16,17 +17,12 @@ function Header() {
   const trigger = useRef(null);
   const coinsDisplayRef = useRef(null);
 
-  // State for mute/unmute functionality
-  const [isMuted, setIsMuted] = useState(false);
+  // Importing mute/unmute logic from AudioContext
+  const { isMuted, toggleMute } = useContext(AudioContext);
 
   // Image sources for mute/unmute
   const imageSrcUnmute = '/assets/icons/unmute-audio.webp';
   const imageSrcMute = '/assets/icons/mute-audio.webp';
-
-  const handleMuteToggle = () => {
-    setIsMuted(!isMuted);
-    // Add logic to mute/unmute audio if needed
-  };
 
   // Navigation setup
   const navDestinations = [
@@ -97,7 +93,7 @@ function Header() {
   }, [currentUser]);
 
   return (
-    <div className="w-full container pb-52">
+    <div className="w-full container pb-36 lg:pb-52">
       {/* User Card */}
       <div
         className={`flex flex-row absolute md:min-w-[300px] lg:min-w-[300px] max-w-[70dvw] top-[1.5rem] lg:top-[4rem] z-10 lg:ml-14 p-1 pr-2 gap-2 scale-[80%] lg:scale-[120%]
@@ -200,12 +196,12 @@ function Header() {
         {/* Mute button */}
         <button
           className="transition ease-in-out p-2 ml-4 hover:scale-110 hover:opacity-80"
-          onClick={handleMuteToggle}
+          onClick={toggleMute}
           ref={trigger}
         >
           <img
             src={isMuted ? imageSrcMute : imageSrcUnmute}
-            className="h-12 w-12"
+            className={`h-12 w-12 ${isMuted ? 'opacity-50' : ''}`}
             alt="mute"
           />
         </button>
@@ -267,6 +263,7 @@ function Header() {
               </button>
             </div>
 
+            {/* Profile and coins in mobile menu */}
             <div
               className={`w-full h-full text-center -z-50 py-[3rem] px-[1rem] scale-110
                 bg-cover bg-no-repeat 
@@ -342,15 +339,15 @@ function Header() {
               ))}
             </div>
 
-            {/* Logout button */}
+            {/* Logout and mute buttons */}
             <div className="pt-5">
               <button
                 className="transition ease-in-out hover:scale-110 hover:opacity-80 pr-4"
-                onClick={handleMuteToggle}
+                onClick={toggleMute}
               >
                 <img
                   src={isMuted ? imageSrcMute : imageSrcUnmute}
-                  className="h-12 w-12"
+                  className={`h-12 w-12 ${isMuted ? 'opacity-50' : ''}`}
                   alt="mute"
                 />
               </button>

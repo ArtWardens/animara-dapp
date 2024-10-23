@@ -15,6 +15,8 @@ import Header from "../../components/Header.jsx";
 import WalletBindingPanel from "../../components/SolanaWallet/WalletBindingPanel.jsx";
 import "./EditProfile.css";
 import { MoonLoader } from "react-spinners";
+import AvatarSelectionModal from '../../components/AvatarSelectionModal.jsx'; 
+
 
 const EditProfilePage = () => {
   const dispatch = useAppDispatch();
@@ -30,6 +32,7 @@ const EditProfilePage = () => {
   const [imageData, setImageData] = useState(null);
   const [hasChanges, setHasChanges] = useState(false);
   const inputFile = useRef(null);
+  const [isAvatarModalOpen, setIsAvatarModalOpen] = useState(false); 
 
   const handleBackClick = () => {
     navigate(-1);
@@ -121,6 +124,12 @@ const EditProfilePage = () => {
     return photoUrl;
   }, [user]);
 
+  const handleAvatarSave = (avatar) => {
+    setImageData(avatar);
+    setHasChanges(true);
+  };
+
+  
   return (
     // background
     <div className="min-h-screen flex flex-col z-[-20]">
@@ -146,10 +155,10 @@ const EditProfilePage = () => {
             {/* details panel */}
             <div className="w-full px-[2rem]">
               {/* Back button */}
-              <div className="w-full flex items-start justify-start mb-2">
+              <div className="flex items-start justify-start w-full mb-2">
                 <button
                   onClick={handleBackClick}
-                  className="text-white text-sm font-outfit tracking-wide hover:text-amber-500 transition-colors "
+                  className="text-sm tracking-wide text-white transition-colors font-outfit hover:text-amber-500 "
                 >
                   &lt;&nbsp;Back
                 </button>
@@ -169,7 +178,7 @@ const EditProfilePage = () => {
                   {user?.isKOL && (
                     <div className="my-[1rem]">
                         <span className="bg-sky-700 rounded-lg items-center xl:ml-[1rem] p-2">
-                          <span className="text-white text-xs tracking-wider font-outfit whitespace-nowrap">
+                          <span className="text-xs tracking-wider text-white font-outfit whitespace-nowrap">
                             Certified KOL
                           </span>
                         </span>
@@ -178,9 +187,10 @@ const EditProfilePage = () => {
                 </div>
                 {/* Profile picture */}
                 <div
-                  className="flex w-24 h-24 items-center justify-center rounded-full border group relative"
+                  className="relative flex items-center justify-center w-24 h-24 border rounded-full group"
                   onClick={() => {
-                    inputFile.current?.click();
+                    // inputFile.current?.click();
+                    setIsAvatarModalOpen(true);
                   }}
                 >
                   <div
@@ -202,15 +212,19 @@ const EditProfilePage = () => {
                       />
                     ) : (
                       <img
-                        src="/assets/images/activeDog.webp"
-                        alt="pfp"
+                        src={imageData || getProfilePic()}  
+                        alt="profile pic"
                         className="justify-self-center rounded-full w-12 xs:w-24 lg:w-24 group-hover:brightness-[0.55] transition-all duration-300"
+                        onError={(e) => {
+                          e.target.onerror = null;
+                          e.target.src = "/assets/images/activeDog.webp"; // Fallback image
+                        }}
                       />
                     )}
                     <img
                       src="/assets/icons/edit.webp"
                       alt="edit"
-                      className="invisible group-hover:visible absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 text-white fill-white"
+                      className="absolute z-10 invisible text-white -translate-x-1/2 -translate-y-1/2 group-hover:visible top-1/2 left-1/2 fill-white"
                     />
                   </div>
                 </div>
@@ -227,15 +241,15 @@ const EditProfilePage = () => {
 
               {/* user details */}
               <form
-                className="flex flex-col form font-degular mt-5"
+                className="flex flex-col mt-5 form font-degular"
                 onSubmit={handleUpdateProfile}
               >
                 {/* username */}
-                <div className="flex flex-col md:flex-row gap-5 md:gap-10 mt-3 w-full">
+                <div className="flex flex-col w-full gap-5 mt-3 md:flex-row md:gap-10">
                   <div className="flex flex-col gap-2 w-full xl:w-[100%] pb-4">
                     <label
                       htmlFor="firstname"
-                      className="text-sm font-outfit tracking-wide"
+                      className="text-sm tracking-wide font-outfit"
                     >
                       Username
                     </label>
@@ -250,11 +264,11 @@ const EditProfilePage = () => {
                   </div>
                 </div>
                 {/* email */}
-                <div className="flex gap-10 mt-3 w-full">
+                <div className="flex w-full gap-10 mt-3">
                   <div className="flex flex-col gap-2 w-full xl:w-[100%] pb-4">
                     <label
                       htmlFor="email"
-                      className="text-sm font-outfit tracking-wide"
+                      className="text-sm tracking-wide font-outfit"
                     >
                       Email Address
                     </label>
@@ -272,7 +286,7 @@ const EditProfilePage = () => {
                 <div className="flex flex-col gap-2 w-full xl:w-[100%] pb-4">
                   <label
                     htmlFor="phone"
-                    className="text-sm font-outfit tracking-wide"
+                    className="text-sm tracking-wide font-outfit"
                   >
                     Phone
                   </label>
@@ -288,11 +302,11 @@ const EditProfilePage = () => {
                 <div className="flex flex-col gap-2 w-full xl:w-[100%] pb-4 relative">
                   <label
                     htmlFor="inviteCode"
-                    className="text-sm font-outfit tracking-wide"
+                    className="text-sm tracking-wide font-outfit"
                   >
                     Invite Code
                   </label>
-                  <div className="flex items-center w-full relative">
+                  <div className="relative flex items-center w-full">
                     <input
                       type="text"
                       id="inviteCode"
@@ -304,8 +318,8 @@ const EditProfilePage = () => {
                   </div>
                 </div>
                 {/* actions */}
-                <div className="flex gap-10 mt-10 w-full">
-                  <div className="flex flex-col md:flex-row justify-start gap-5 w-full">
+                <div className="flex w-full gap-10 mt-10">
+                  <div className="flex flex-col justify-start w-full gap-5 md:flex-row">
                     {user?.canResetPassword === true && (
                       <button
                         className="w-[200px] h-[60px] justify-start items-center gap-[46px] inline-flex"
@@ -314,7 +328,7 @@ const EditProfilePage = () => {
                         onClick={handleResetPassword}
                       >
                         <div className="w-[200px] h-[60px] px-[30px] py-5 bg-sky-700 rounded-[26px] border border-blue-300 justify-between items-center flex hover:bg-sky-500 hover:border-sky-500 hover:pt-[18px] hover:pb-5">
-                          <div className="text-center text-white text-xl font-normal capitalize leading-tight hover:font-bold">
+                          <div className="text-xl font-normal leading-tight text-center text-white capitalize hover:font-bold">
                             Reset Password
                           </div>
                         </div>
@@ -326,7 +340,7 @@ const EditProfilePage = () => {
                       type="submit"
                     >
                       <div className={`w-[200px] h-[60px] px-[30px] py-5 rounded-[26px] border justify-center items-center flex ${hasChanges ? "border-orange-300 hover:bg-amber-300" : "border-white bg-slate-400"}`}>
-                        <div className="text-center text-white text-xl font-bold capitalize leading-tight">
+                        <div className="text-xl font-bold leading-tight text-center text-white capitalize">
                           {updateProfileLoading
                             ? <div className="flex items-center justify-center">
                               <MoonLoader size={40} color={'#FFB23F'}/>
@@ -341,7 +355,13 @@ const EditProfilePage = () => {
             </div>
 
             {/* wallet panel */}
-            <WalletBindingPanel className="w-full lx:w-1/2 my-auto p-12" />
+            <WalletBindingPanel className="w-full p-12 my-auto lx:w-1/2" />
+
+            <AvatarSelectionModal 
+              isOpen={isAvatarModalOpen} 
+              onClose={() => setIsAvatarModalOpen(false)} 
+              onAvatarSave={handleAvatarSave} 
+            />
           </div>
         </div>
       </div>

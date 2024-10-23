@@ -22,6 +22,7 @@ const LoginPage = () => {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [hasInput, setHasInput] = useState(false);
+  const [rememberMe, setRememberMe] = useState(false);
 
   // autofill email if there is any registration email
   useEffect(() => {
@@ -55,15 +56,32 @@ const LoginPage = () => {
       navigate("/anitap");
     }
   }, [navigate, isAuthenticated]);
-
+  
   const togglePasswordVisiblity = () => {
     setShowPassword(!showPassword);
   };
 
   const handleLoginWithEmail = async () => {
     dispatch(loginWithEmail({ email, password }));
+    
+    if (rememberMe) {
+      localStorage.setItem('email', email);
+      localStorage.setItem('password', password);
+    } 
+
   };
 
+  useEffect(() => {
+    const savedEmail = localStorage.getItem('email') || sessionStorage.getItem('email');
+    const savedPassword = localStorage.getItem('password') || sessionStorage.getItem('password');
+
+    if (savedEmail && savedPassword) {
+      setEmail(savedEmail);
+      setPassword(savedPassword);
+      setRememberMe(localStorage.getItem('email') !== null);
+    }
+  }, []);
+  
   // const handleLoginWithGoogle = async () => {
   //   dispatch(loginWithGoogle());
   // };
@@ -121,11 +139,11 @@ const LoginPage = () => {
       unmountOnExit
     >
       <div className="h-[100dvh] relative flex overflow-hidden">
-        <div ref={nodeRef} className="fade-mask-layer -translate-x-full"></div>
+        <div ref={nodeRef} className="-translate-x-full fade-mask-layer"></div>
         {/* Background Image */}
         <img 
           src="/backgrounds/BG_login.webp" alt="background"
-          className="w-full h-full absolute top-0 -z-40 object-cover"
+          className="absolute top-0 object-cover w-full h-full -z-40"
         />
 
         {/* Header */}
@@ -142,7 +160,7 @@ const LoginPage = () => {
         <div className="relative left-[50%] -translate-x-1/2 lg:left-[75%] self-center sm:max-h-[50.5rem] max-w-[25rem] sm:max-w-[27.5rem] rounded-[2.5rem] p-[1.5rem] lg:p-[2.5rem] gap-[1.25rem] bg-[#003459] shadow-[0.5rem_0.375rem_0.625rem_0_rgba(0,0,0,0.2)] font-bignoodle">
           {/* Upper Section */}
           <div className="flex flex-col relative self-center space-y-[2rem]">
-            <div className="flex justify-center items-center">
+            <div className="flex items-center justify-center">
               {isIOS?
                 <img 
                   src="/assets/icons/AnimaraLogo.webp" alt="logo"
@@ -185,35 +203,47 @@ const LoginPage = () => {
                   required
                 />
                 {/* show password button */}
-                <div className="col-start-1 row-start-1 flex mr-4 ml-auto my-auto">
+                <div className="flex col-start-1 row-start-1 my-auto ml-auto mr-4">
                   {showPassword?
                     <img
                       onClick={togglePasswordVisiblity}
                       src="/assets/icons/eye-open.svg"
                       alt="show password"
-                      className="h-4 w-4"
+                      className="w-4 h-4"
                     />
                   :
                     <img
                       onClick={togglePasswordVisiblity}
                       src="/assets/icons/eye-close.svg"
                       alt="show password"
-                      className="h-4 w-4"
+                      className="w-4 h-4"
                     />}
                 </div>
               </div>
 
-              {/* forgot password */}
-              <div className="flex h-auto mt-2 align-items-end">
-                <Link
-                  to="/forgot-password"
-                  className="ml-auto hover:brightness-75"
-                >
-                  <p className="text-amber-400 font-outfit text-[0.875rem] leading-[1rem] text-center">
+              <div className="flex items-center justify-between mt-4">
+                <label className="flex items-center cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={rememberMe}
+                    onChange={(e) => {
+                      const isChecked = e.target.checked;
+                      setRememberMe(isChecked);
+                      isChecked ? localStorage.setItem('email', email) : localStorage.removeItem('email');
+                      isChecked ? localStorage.setItem('password', password) : localStorage.removeItem('password');
+                    }}
+                    className="mr-2" // Add some margin to separate the checkbox and the text
+                  />
+                  <span className="text-[#C5C5C5]">Remember Me</span>
+                </label>
+
+                <Link to="/forgot-password" className="hover:brightness-75">
+                  <p className="text-amber-400 font-outfit text-[0.875rem] leading-[1rem]">
                     Forgot Password?
                   </p>
                 </Link>
               </div>
+
             </div>
 
             {/* Login Button */}
