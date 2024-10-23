@@ -291,7 +291,7 @@ function Header() {
 
             {/* Profile and coins in mobile menu */}
             <div
-              className={`bg-cover lg:bg-contain bg-no-repeat w-full h-full flex flex-col items-center justify-center text-center z-50 py-[1rem] px-[1rem] md:px-[3.5rem]`}
+              className={`bg-[length:100%_100%] md:bg-cover lg:bg-contain bg-no-repeat w-full h-full flex flex-col items-center justify-center text-center z-50 py-[1rem] px-[1rem] md:px-[3.5rem]`}
               style={{
                 backgroundImage: 'url("/assets/images/clicker-character/header-mobile.png")',
                 backgroundPosition: 'center',
@@ -337,7 +337,7 @@ function Header() {
               </div>
 
               <div className='flex flex-row w-full'>
-                <div className="w-full pl-4 md:pl-0 -mt-4 basis-1 md:basis-1/3">
+                <div className="w-full pl-4 pb-2 md:pl-0 -mt-4 basis-1 md:basis-1/3">
                   {currentUser?.isKOL && (
                     <div className="bg-sky-700 rounded-lg p-1 mr-auto md:mx-auto mb-1 w-fit">
                       <span className="text-white text-xs tracking-wider font-outfit whitespace-nowrap">Certified KOL</span>
