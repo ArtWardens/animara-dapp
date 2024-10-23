@@ -25,6 +25,12 @@ function Header() {
   const imageSrcMute = '/assets/icons/mute-audio.webp';
 
   // Navigation setup
+  // navigate to tutorial page
+  const handleTutorial = () => {
+    navigate('/tutorial');
+  };
+
+  // navigation bar setup
   const navDestinations = [
     { name: 'ANITAP', link: '/anitap' },
     { name: 'MINT', link: '/mint' },
@@ -93,87 +99,107 @@ function Header() {
   }, [currentUser]);
 
   return (
-    <div className="w-full container pb-36 lg:pb-52">
-      {/* User Card */}
-      <div
-        className={`flex flex-row absolute md:min-w-[300px] lg:min-w-[300px] max-w-[70dvw] top-[1.5rem] lg:top-[4rem] z-10 lg:ml-14 p-1 pr-2 gap-2 scale-[80%] lg:scale-[120%]
-          ${currentUser?.ownsNFT && currentUser?.walletAddr !== '' ? 'glowing-border left-[0.5rem] lg:left-[6rem]' : 'default-border left-[1rem] xl:left-[5rem]'} 
-          ${mobileMenuOpen ? 'hidden' : ''}`}
-      >
-        {/* Profile picture */}
-        <div className={`w-28 h-28 absolute -top-[18px] -left-4 flex justify-center items-center
-          ${currentUser?.ownsNFT && currentUser?.walletAddr !== '' ? 'nft-profile-border' : 'profile-border'}
-        `}>
-          <button onClick={handleEditProfile} className="group relative ">
-            {loadingImage && (
-              <div className="h-18 flex justify-center items-center bg-[#003459] rounded-full">
-                <MoonLoader color={'#FFFFFF'} />
-              </div>
-            )}
-            <img
-              src={getProfilePic()}
-              alt="profile"
-              className="justify-self-center rounded-full w-16 group-hover:brightness-[0.55] transition-all duration-300"
-              style={{
-                background: '#111928 50%',
-                backgroundSize: 'cover',
-                backgroundRepeat: 'no-repeat',
-                display: loadingImage ? 'none' : 'block',
-              }}
-              onLoad={() => setLoadingImage(false)}
-              onError={(e) => {
-                e.target.onerror = null;
-                e.target.src = '/assets/images/activeDog.webp';
-                setLoadingImage(false);
-              }}
-            />
-            <img
-              src="/assets/icons/edit.webp"
-              alt="edit"
-              className="invisible group-hover:visible absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 text-white fill-white"
-            />
-          </button>
-        </div>
-
-        <div className="flex-none w-12"></div>
-
-        {/* User details */}
-        <div className="flex flex-col place-content-center flex-grow">
-          <div className={`pt-1 pl-10 font-LuckiestGuy text-[15px] xs:text-[18px] md:text-md lg:text-md flex user-detail-1
-            ${currentUser?.ownsNFT && currentUser?.walletAddr !== '' ? 'bg-[#573A00]' : 'bg-[#003459]'}
+    <div className="w-full flex flex-row justify-between mb-[3rem] px-2 lg:px-[4rem] py-6 lg:py-[4rem]">
+      <div className='flex flex-row justify-center'>
+        {/* User Card */}
+        <div
+          className={`flex flex-row md:min-w-[300px] lg:min-w-[300px] max-w-[70dvw] z-10 lg:ml-14 p-1 pr-2 gap-2 scale-[90%] lg:scale-[120%]
+            ${currentUser?.ownsNFT && currentUser?.walletAddr !== '' ? 'glowing-border left-[0.5rem] lg:left-[6rem]' : 'default-border left-[1rem] xl:left-[5rem]'} 
+            ${mobileMenuOpen ? 'hidden' : ''}`}
+        >
+          {/* Profile picture */}
+          <div className={`w-28 h-28 absolute -top-[18px] -left-4 flex justify-center items-center
+            ${currentUser?.ownsNFT && currentUser?.walletAddr !== '' ? 'nft-profile-border' : 'profile-border'}
           `}>
-            <p className="flex-1">{currentUser?.name || 'Animara User'}</p>
-            <p className={`flex-1 ml-2 xs:ml-4 font-LuckiestGuy text-md text-right
-              ${currentUser?.ownsNFT && currentUser?.walletAddr !== '' ? 'text-[#FFB23F]' : 'text-[#80E8FF]'}
-            `}>LV.{currentUser?.level}</p>
+            <button onClick={handleEditProfile} className="group relative ">
+              {loadingImage && (
+                <div className="h-18 flex justify-center items-center bg-[#003459] rounded-full">
+                  <MoonLoader color={'#FFFFFF'} />
+                </div>
+              )}
+              <img
+                src={getProfilePic()}
+                alt="profile"
+                className="justify-self-center rounded-full w-16 group-hover:brightness-[0.55] transition-all duration-300"
+                style={{
+                  background: '#111928 50%',
+                  backgroundSize: 'cover',
+                  backgroundRepeat: 'no-repeat',
+                  display: loadingImage ? 'none' : 'block',
+                }}
+                onLoad={() => setLoadingImage(false)}
+                onError={(e) => {
+                  e.target.onerror = null;
+                  e.target.src = '/assets/images/activeDog.webp';
+                  setLoadingImage(false);
+                }}
+              />
+              <img
+                src="/assets/icons/edit.webp"
+                alt="edit"
+                className="invisible group-hover:visible absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 text-white fill-white"
+              />
+            </button>
           </div>
 
-          <div className={`pb-1 pl-10 gap-1 xs:gap-2 flex user-detail-2
-            ${currentUser?.ownsNFT && currentUser?.walletAddr !== ''
-              ? 'bg-gradient-to-l from-[#573A00] from-5% via-[#FFB800] via-90% to-[#FFFFFF]'
-              : 'bg-gradient-to-l from-[#003459] from-20% via-[#0032A1] via-40% to-[#2D72FF]'}
-          `}>
-            <img className="w-6 xs:w-8 object-contain" src={'/assets/images/clicker-character/gem.webp'} alt="gem" />
-            <div className="relative flex items-center justify-center max-w-44">
-              <span
-                ref={coinsDisplayRef}
-                id="header-coins"
-                className="relative text-[18px] xs:text-[3xl] lg:text-[3xl] text-[#FFC85A] font-LuckiestGuy tracking-normal w-full overflow-hidden text-left drop-shadow-md"
-              >
-                {formatNumberWithCommas(localCoins)}
-              </span>
+          <div className="flex-none w-12"></div>
+
+          {/* User details */}
+          <div className="flex flex-col place-content-center flex-grow">
+            <div className={`pt-1 pl-10 font-LuckiestGuy text-[15px] xs:text-[18px] md:text-md lg:text-md flex user-detail-1
+              ${currentUser?.ownsNFT && currentUser?.walletAddr !== '' ? 'bg-[#573A00]' : 'bg-[#003459]'}
+            `}>
+              <p className="max-w-[100px] flex-1 overflow-hidden text-ellipsis">{currentUser?.name || 'Animara User'}</p>
+              <p className={`flex-1 ml-2 xs:ml-4 font-LuckiestGuy text-md text-right
+                ${currentUser?.ownsNFT && currentUser?.walletAddr !== '' ? 'text-[#FFB23F]' : 'text-[#80E8FF]'}
+              `}>LV.{currentUser?.level}</p>
+            </div>
+
+            <div className={`pb-1 pl-10 gap-1 xs:gap-2 flex user-detail-2
+              ${currentUser?.ownsNFT && currentUser?.walletAddr !== ''
+                ? 'bg-gradient-to-l from-[#573A00] from-5% via-[#FFB800] via-90% to-[#FFFFFF]'
+                : 'bg-gradient-to-l from-[#003459] from-20% via-[#0032A1] via-40% to-[#2D72FF]'}
+            `}>
+              <img className="w-6 xs:w-8 object-contain" src={'/assets/images/clicker-character/gem.webp'} alt="gem" />
+              <div className="relative flex items-center justify-center max-w-44">
+                <span
+                  ref={coinsDisplayRef}
+                  id="header-coins"
+                  className="max-w-[110px] relative text-[18px] xs:text-[3xl] lg:text-[3xl] text-[#FFC85A] text-ellipsis font-LuckiestGuy tracking-normal w-full overflow-hidden text-left drop-shadow-md"
+                >
+                  {formatNumberWithCommas(localCoins)}
+                </span>
+              </div>
             </div>
           </div>
         </div>
+
+        {/* Mobile Tutorial button */}
+        <button
+          className="transition-all duration-300 ease-in-out hover:scale-110 "
+          onClick={handleTutorial}
+          ref={trigger}
+        >
+          <img src="/assets/icons/tutorial-button.png" className="flex lg:hidden h-6 w-6" alt="tutorial" />
+        </button>
       </div>
 
       {/* Desktop Navigation Bar */}
       <div
-        className="hidden lg:flex absolute top-16 gap-2 right-[4rem] z-96 items-center"
+        className="hidden lg:flex gap-2 right-[4rem] z-96 items-center"
         style={{
           zIndex: 91,
         }}
       >
+        {/* Tutorial button */}
+        <button
+          className="transition-all duration-300 ease-in-out p-2 hover:scale-110 pr-4"
+          onClick={handleTutorial}
+          ref={trigger}
+        >
+          <img src="/assets/icons/tutorial-button.png" className="h-full w-full scale-[150%]" alt="tutorial" />
+        </button>
+        
         {navDestinations.map(({ name, link }) => (
           <button
             key={name}
@@ -210,7 +236,7 @@ function Header() {
 
       {/* Mobile Hamburger Menu Button */}
       <button
-        className="transition ease-in-out hover:scale-105 lg:hidden absolute top-[2.5rem] right-[1.5rem] xl:right-[4rem] z-50"
+        className="transition ease-in-out hover:scale-105 lg:hidden top-[2.5rem] right-[1.5rem] xl:right-[4rem] z-50"
         onClick={() => dispatch(setMobileMenuOpen(!mobileMenuOpen))}
       >
         <svg
@@ -227,7 +253,7 @@ function Header() {
       {/* Mobile Menu */}
       {mobileMenuOpen && (
         <div
-          className="h-full absolute inset-0 z-40 flex flex-col items-center justify-start py-[2rem] px-[3rem] overflow-hidden"
+          className="h-full absolute inset-0 z-40 flex flex-col items-center justify-start p-[2rem] overflow-hidden"
           style={{
             backgroundImage: 'url("/assets/images/clicker-character/clickerWall.webp")',
             backgroundSize: 'cover',
@@ -265,13 +291,9 @@ function Header() {
 
             {/* Profile and coins in mobile menu */}
             <div
-              className={`w-full h-full text-center -z-50 py-[3rem] px-[1rem] scale-110
-                bg-cover bg-no-repeat 
-                md:bg-contain md:px-[3.5rem]
-                lg:bg-contain
-              `}
+              className={`bg-contain md:bg-contain lg:bg-contain bg-no-repeat w-full h-full flex flex-row items-center justify-center text-center z-50 py-[3rem] px-[1rem] md:px-[3.5rem] scale-110`}
               style={{
-                backgroundImage: 'url("/assets/images/clicker-character/sticky-Note.webp")',
+                backgroundImage: 'url("/assets/images/clicker-character/header-mobile1.png")',
                 backgroundPosition: 'center',
               }}
             >
@@ -281,39 +303,44 @@ function Header() {
                 </div>
               )}
 
-              <div className={`w-32 h-32 flex m-auto
-                ${currentUser?.ownsNFT && currentUser?.walletAddr !== '' ? 'nft-profile-border' : 'profile-border'}
-              `}>
-                <img
-                  src={getProfilePic()}
-                  alt="profile"
-                  className={`rounded-full m-auto w-20`}
-                  style={{
-                    background: '#111928 50%',
-                  }}
-                  onClick={handleEditProfile}
+              <div className='flex flex-col '>
+                <div className={`w-28 h-28 flex mb-2
+                  ${currentUser?.ownsNFT && currentUser?.walletAddr !== '' ? 'nft-profile-border' : 'profile-border'}
+                `}>
+                  <img
+                    src={getProfilePic()}
+                    alt="profile"
+                    className={`rounded-full m-auto w-16`}
+                    style={{
+                      background: '#111928 50%',
+                    }}
+                    onClick={handleEditProfile}
+                  />
+                </div>
+                {currentUser?.isKOL && (
+                  <div className="bg-sky-700 rounded-lg items-center p-1 m-auto mb-4 w-fit">
+                    <span className="text-white text-xs tracking-wider font-outfit whitespace-nowrap">Certified KOL</span>
+                  </div>
+                )}
+                <p className={`max-w-[100px] text-md text-white text-ellipsis font-medium font-outfit overflow-hidden ${currentUser?.isKOL ? 'mt-[0.5rem' : '-mt-2'}`}> {currentUser?.name}</p>
+              </div>
+
+              <div className='flex flex-col items-start pl-4'>
+                <DynamicNumberDisplay
+                  number={currentUser?.coins}
+                  divClassName={"gap-[0.5rem] flex place-content-center"}
+                  imgSrc={"/assets/images/clicker-character/gem.webp"}
+                  imgClassName={"w-6 xs:w-8 object-contain"}
+                  spanClassName={"max-w-[70px] overflow-hidden text-ellipsis text-lg xs:text-xl xl:text-4xl text-[#FFAA00] tracking-normal font-LuckiestGuy pr-2"}
+                />
+                <DynamicNumberDisplay
+                  number={currentUser?.profitPerHour}
+                  divClassName={"gap-[0.5rem] flex place-content-center"}
+                  imgSrc={"/assets/icons/explora-point.webp"}
+                  imgClassName={"w-6 xs:w-8 object-contain"}
+                  spanClassName={"max-w-[70px] overflow-hidden text-ellipsis text-lg xs:text-xl xl:text-4xl text-[#00B9E1] tracking-normal font-LuckiestGuy pr-2"}
                 />
               </div>
-              {currentUser?.isKOL && (
-                <div className="bg-sky-700 rounded-lg items-center p-2 m-auto w-fit">
-                  <span className="text-white text-xs tracking-wider font-outfit whitespace-nowrap">Certified KOL</span>
-                </div>
-              )}
-              <p className={`text-md text-[#003459] font-medium font-outfit ${currentUser?.isKOL ? 'mt-[0.5rem' : '-mt-2'}`}> {currentUser?.name}</p>
-              <DynamicNumberDisplay
-                number={currentUser?.coins}
-                divClassName={"gap-[0.5rem] flex place-content-center"}
-                imgSrc={"/assets/images/clicker-character/gem.webp"}
-                imgClassName={"w-10 object-contain"}
-                spanClassName={"text-[32px] xl:text-4xl text-[#FFAA00] tracking-normal font-LuckiestGuy pr-2"}
-              />
-              <DynamicNumberDisplay
-                number={currentUser?.profitPerHour}
-                divClassName={"gap-[0.5rem] flex place-content-center"}
-                imgSrc={"/assets/icons/explora-point.webp"}
-                imgClassName={"w-10 object-contain"}
-                spanClassName={"text-[32px] xl:text-4xl text-[#00B9E1] tracking-normal font-LuckiestGuy pr-2"}
-              />
             </div>
 
             <div
