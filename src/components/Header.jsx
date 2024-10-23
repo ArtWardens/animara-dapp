@@ -293,7 +293,7 @@ function Header() {
             <div
               className={`bg-contain md:bg-contain lg:bg-contain bg-no-repeat w-full h-full flex flex-row items-center justify-center text-center z-50 py-[3rem] px-[1rem] md:px-[3.5rem] scale-110`}
               style={{
-                backgroundImage: 'url("/assets/images/clicker-character/header-mobile1.png")',
+                backgroundImage: 'url("/assets/images/clicker-character/header-mobile.png")',
                 backgroundPosition: 'center',
               }}
             >
