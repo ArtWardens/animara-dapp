@@ -736,7 +736,7 @@ function MintPage() {
                                 <MoonLoader color={"#E59E69"} size={40} />
                                 :
                                 <div
-                                  className="text-2xl font-normal text-center text-white"
+                                  className="text-lg font-normal text-center text-white"
                                   style={{
                                     textShadow: "0px 2px 0.6px rgba(240, 139, 0, 0.66)",
                                   }}
@@ -962,7 +962,7 @@ function MintPage() {
                           <button
                             className="h-[80px] w-[250px] m-auto"
                             onClick={openPhantom}>
-                            <span className='text-xl text-center text-red-300 lg:text-3xl'>
+                            <span className='font-normal text-center text-white text-l alg:text-3xl'>
                               {`Open Phantom Wallet`}    
                             </span>
                           </button>
@@ -984,7 +984,7 @@ function MintPage() {
                                 <MoonLoader color={"#E59E69"} size={40} />
                                 :
                                 <div
-                                  className="text-2xl font-normal text-center text-white"
+                                  className="text-lg font-normal text-center text-white"
                                   style={{
                                     textShadow: "0px 2px 0.6px rgba(240, 139, 0, 0.66)",
                                   }}
