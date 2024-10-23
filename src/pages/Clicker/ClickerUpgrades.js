@@ -338,7 +338,7 @@ const ClickerUpgrades = ({ onClose }) => {
                       userLocations.filter(
                         (location) => location.region === selectedOption
                       ).length > 0 ? (
-                        <div className="h-full w-full max-w-[1480px] flex flex-col lg:flex-row flex-wrap items-center justify-start gap-4 amt-4 p-4 overflow-y-auto overflow-x-hidden custom-scrollbar">
+                        <div className="h-full w-full max-w-[1480px] flex flex-col lg:flex-row flex-wrap items-center justify-start gap-4 amt-4 p-4">
                           {userLocations
                             .filter(
                               (location) => location.region === selectedOption
