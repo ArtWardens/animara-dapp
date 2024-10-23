@@ -15,7 +15,7 @@ import Header from "../../components/Header.jsx";
 import WalletBindingPanel from "../../components/SolanaWallet/WalletBindingPanel.jsx";
 import "./EditProfile.css";
 import { MoonLoader } from "react-spinners";
-import AvatarSelectionModal from '../../components/AvatarModal.jsx'; 
+import AvatarSelectionModal from '../../components/AvatarSelectionModal.jsx'; 
 
 
 const EditProfilePage = () => {

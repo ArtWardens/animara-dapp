@@ -59,20 +59,21 @@ const AvatarSelectionModal = ({ isOpen, onClose, onAvatarSave }) => {
 
   return (
     <div 
-      className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-[1000]" 
+      className="fixed inset-0 flex items-center justify-center backdrop-blur-sm z-[1000]" 
       onClick={handleClose} 
     >
       <div 
         className="relative w-full max-w-[95vw] p-6 rounded-lg shadow-lg sm:max-w-[80vw] md:max-w-[600px] lg:max-w-[800px] xl:max-w-[900px]"
         style={{
           backgroundImage: 'url("/assets/images/avatarBg.webp")',
+          backgroundPosition: "center",
           backgroundRepeat: 'no-repeat', 
         }}
         onClick={(e) => e.stopPropagation()} 
       >
         {/* Close Button */}
         <button
-          className="absolute w-8 h-8 text-2xl text-white top-3 right-3"
+          className="absolute w-8 h-8 text-2xl text-white top-3 right-3 hover:brightness-75"
           onClick={handleClose} 
         >
           &times;
