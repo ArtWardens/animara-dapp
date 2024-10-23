@@ -657,7 +657,7 @@ const ClickerUpgrades = ({ onClose }) => {
               {/* Display Upgrades */}
               {userLocations && userLocations.length > 0 ? (
                 userLocations.filter((location) => location.region === selectedOption).length > 0 ? (
-                  <div className="flex flex-col items-center justify-start w-full p-2 overflow-x-hidden overflow-y-auto custom-scrollbar">
+                  <div className="flex flex-col items-center justify-start w-full mt-2 p-2 overflow-x-hidden overflow-y-auto custom-scrollbar">
                     {userLocations
                       .filter((location) => location.region === selectedOption)
                       .sort((a, b) => (a.level >= 0 && b.level === -1 ? -1 : 1))
