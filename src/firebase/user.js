@@ -1,6 +1,7 @@
-import { auth, db, storage, updateUserLastLogin, dailyLogin, getReferralStats, firstLoginLinkReferral, registerNFT, updateUserStatus } from "../firebase/firebaseConfig";
+// import { auth, db, storage, updateUserLastLogin, dailyLogin, getReferralStats, firstLoginLinkReferral, registerNFT, updateUserStatus } from "../firebase/firebaseConfig";
+import { auth, db, updateUserLastLogin, dailyLogin, getReferralStats, firstLoginLinkReferral, registerNFT, updateUserStatus } from "../firebase/firebaseConfig";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
-import { getDownloadURL, ref, uploadString } from "firebase/storage";
+// import { getDownloadURL, ref, uploadString } from "firebase/storage";
 import { getIdTokenResult, updateProfile } from "firebase/auth";
 
 // functions that we export for saga
@@ -59,12 +60,12 @@ const updateUserProfileImpl = async (
 
     const uid = user.uid;
 
-    let photoURL;
-    if (photoString) {
-      const pfpRef = ref(storage, `profile-images/${user?.uid}`);
-      await uploadString(pfpRef, photoString, "data_url");
-      photoURL = await getDownloadURL(pfpRef);
-    }
+    // let photoURL;
+    // if (photoString) {
+    //   const pfpRef = ref(storage, `profile-images/${user?.uid}`);
+    //   await uploadString(pfpRef, photoString, "data_url");
+    //   photoURL = await getDownloadURL(pfpRef);
+    // }
 
     const userRef = doc(db, "users", uid);
     const userDoc = await getDoc(userRef);
@@ -78,8 +79,11 @@ const updateUserProfileImpl = async (
       updateData.name = name;
     }
 
-    if (photoURL) {
-      updateData.photoUrl = photoURL;
+    // if (photoURL) {
+    //   updateData.photoUrl = photoURL;
+    // }
+    if (photoString) {
+      updateData.photoUrl = photoString;
     }
 
     if (phoneNumber) {
@@ -95,8 +99,11 @@ const updateUserProfileImpl = async (
     const firestoreUpdate = updateDoc(userRef, updateData);
 
     const authUpdateData = { displayName: name };
-    if (photoURL) {
-      authUpdateData.photoURL = photoURL;
+    // if (photoURL) {
+    //   authUpdateData.photoURL = photoURL;
+    // }
+    if (photoString) {
+      authUpdateData.photoURL = photoString;
     }
     const authUpdate = updateProfile(user, authUpdateData);
 
