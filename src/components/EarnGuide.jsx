@@ -98,26 +98,26 @@ function EarnGuide({ openModal, setOpenModal, setIsOneTimeTaskOpen }) {
                 <img 
                   src="/assets/icons/leaderboard-mobile.webp" 
                   alt="leaderboard icon" 
-                  className="w-[15rem] lg:w-[25rem] h-auto transition-all duration-300 hover:scale-110 " 
+                  className="w-[20rem] lg:w-[25rem] h-auto transition-all duration-300 hover:scale-110 " 
                   onClick={handleLeaderBoardClick}
                 />
               </div>
             </div>
 
             {/* Bottom Panel buttons */}
-            <div className="w-full flex flex-row items-center justify-center space-x-[0.5rem] lg:space-x-[2rem] lg:mt-[2rem]">
+            <div className="w-full flex flex-row items-center justify-center space-x-[0.05rem] lg:space-x-[2rem] lg:mt-[4rem]">
               <div
-                className={`w-full relative rounded-3xl lg:rounded-2xl lg:w-auto flex justify-center items-center lg:items-end transition-transform duration-500 ease-in-out ${
+                className={`w-full relative rounded-3xl lg:rounded-2xl lg:w-auto flex justify-center items-center transition-transform duration-500 ease-in-out ${
                   showBoosts ? 'translate-y-0 opacity-100' : 'translate-y-full opacity-0'
                 }`}
               >
                 <button
                   onClick={handleUserRecharge}
-                  className="min-w-[100px] flex flex-col lg:flex-row px-[1rem] lg:px-[2.5rem] py-[1rem] lg:py-[1rem] mb-5 tracking-wider bg-[#49DEFF] shadow-[0px_4px_4px_0px_rgba(255,210,143,0.61)_inset] rounded-2xl lg:rounded-full border-orange-300 justify-center items-center gap-2 hover:bg-[#80E8FF] hover:shadow-[0px_1px_2px_0px_rgba(198,115,1,0.66)] hover:border-[#FFC85A]  hover:scale-105 transition-transform duration-200 text-sm lg:text-xl font-bold font-outfit lg:whitespace-nowrap"
+                  className="min-w-[100px] flex flex-col lg:flex-row px-[0.5rem] lg:px-[2.5rem] py-[1rem] mb-5 tracking-wider bg-[#49DEFF] shadow-[0px_4px_4px_0px_rgba(255,210,143,0.61)_inset] rounded-2xl lg:rounded-full border-orange-300 justify-center items-center lg:gap-2 hover:bg-[#80E8FF] hover:shadow-[0px_1px_2px_0px_rgba(198,115,1,0.66)] hover:border-[#FFC85A]  hover:scale-105 transition-transform duration-200 text-sm lg:text-xl font-bold font-outfit lg:whitespace-nowrap"
                 >
                   <img
                     src="/assets/images/clicker-character/boosts-icon.png"
-                    className="h-auto w-12 lg:w-[40%] "
+                    className="h-auto w-12"
                     alt="boosts-icon"
                   />
                   Boosts
@@ -125,34 +125,34 @@ function EarnGuide({ openModal, setOpenModal, setIsOneTimeTaskOpen }) {
               </div>
 
               <div
-                className={`w-full relative rounded-3xl lg:rounded-2xl lg:w-auto flex justify-center items-center lg:items-end transition-transform duration-500 ease-in-out ${
+                className={`w-full relative rounded-3xl lg:rounded-2xl lg:w-auto flex justify-center items-center transition-transform duration-500 ease-in-out ${
                   showUpgrades ? 'translate-y-0 opacity-100' : 'translate-y-full opacity-0'
                 }`}
               >
                 <button
-                  className="amax-h-[150px] flex flex-col lg:flex-row px-[1.5rem] lg:px-[2.5rem] py-[1rem] lg:py-[1rem] mb-5 tracking-wider bg-[#FFB23F] shadow-[0px_4px_4px_0px_rgba(255,210,143,0.61)_inset] rounded-2xl lg:rounded-full border-orange-300 justify-center items-center lg:gap-2 hover:bg-[#FFDC62] hover:shadow-[0px_1px_2px_0px_rgba(198,115,1,0.66)] hover:border-[#FFC85A]  hover:scale-105 transition-transform duration-200 text-sm lg:text-xl font-bold font-outfit lg:whitespace-nowrap"
+                  className="amax-h-[100px] flex flex-col lg:flex-row lg:pr-[3.5rem] px-[0.5rem] lg:px-[2.5rem] py-[1rem] mb-5 bg-[#FFB23F] tracking-wide shadow-[0px_4px_4px_0px_rgba(255,210,143,0.61)_inset] rounded-2xl lg:rounded-full border-orange-300 justify-center items-center lg:gap-2 hover:bg-[#FFDC62] hover:shadow-[0px_1px_2px_0px_rgba(198,115,1,0.66)] hover:border-[#FFC85A] hover:scale-105 transition-transform duration-200 text-xs lg:text-xl font-bold font-outfit lg:whitespace-nowrap"
                   onClick={handleUserUpgrades}
                 >
                   <img 
                     src="/assets/images/clicker-character/star-icon.png" 
-                    className="h-auto w-22 lg:w-[20%]" alt="star-icon" 
+                    className="h-auto w-20 lg:w-24 mb-[-0.5rem] mt-[-0.5rem] lg:mt-0" alt="star-icon" 
                   />
                   Upgrades & Explore Animara
                 </button>
               </div>
 
               <div
-                className={`w-full relative rounded-3xl lg:rounded-2xl lg:w-auto flex justify-center items-center lg:items-end transition-transform duration-500 ease-in-out ${
+                className={`w-full relative rounded-3xl lg:rounded-2xl lg:w-auto flex justify-center items-center transition-transform duration-500 ease-in-out ${
                   showTasks ? 'translate-y-0 opacity-100' : 'translate-y-full opacity-0'
                 }`}
               >
                 <button
-                  className="min-w-[100px] flex flex-col lg:flex-row px-[1rem] lg:px-[2.5rem] py-[1rem] lg:py-[1rem] mb-5 tracking-wider bg-[#49DEFF] shadow-[0px_4px_4px_0px_rgba(255,210,143,0.61)_inset] rounded-2xl lg:rounded-full border-orange-300 justify-center items-center gap-2 hover:bg-[#80E8FF] hover:shadow-[0px_1px_2px_0px_rgba(198,115,1,0.66)] hover:border-[#FFC85A]  hover:scale-105 transition-transform duration-200 text-sm lg:text-xl font-bold font-outfit lg:whitespace-nowrap"
+                  className="min-w-[100px] flex flex-col lg:flex-row px-[1rem] lg:px-[2.5rem] py-[1rem] mb-5 tracking-wider bg-[#49DEFF] shadow-[0px_4px_4px_0px_rgba(255,210,143,0.61)_inset] rounded-2xl lg:rounded-full border-orange-300 justify-center items-center lg:gap-2 hover:bg-[#80E8FF] hover:shadow-[0px_1px_2px_0px_rgba(198,115,1,0.66)] hover:border-[#FFC85A]  hover:scale-105 transition-transform duration-200 text-sm lg:text-xl font-bold font-outfit lg:whitespace-nowrap"
                   onClick={() => setIsOneTimeTaskOpen(true)}
                 >
                   <img
                     src="/assets/images/clicker-character/tasks-icon.png"
-                    className="h-auto w-12 lg:w-[40%]"
+                    className="h-auto w-12"
                     alt="tasks-icon"
                   />
                   Tasks

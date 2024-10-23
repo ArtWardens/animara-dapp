@@ -75,7 +75,7 @@ function EnergyRegeneration({ isOneTimeTaskOpen, setIsOneTimeTaskOpen }) {
 
   return (
     <>
-      <div className="flex flex-col lg:grid grid-cols-3 justify-center items-center w-full mt-[-1.5rem] lg:mt-[3rem] z-[50]">
+      <div className="flex flex-col lg:grid grid-cols-3 justify-center items-center w-full mt-[-1.25rem] lg:mt-[3rem] z-[50]">
         {/* explora point display */}
         <div
           className={`flex items-center justify-center transition-opacity duration-700 mx-20 ${showFirstDiv ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0'
@@ -141,11 +141,11 @@ function EnergyRegeneration({ isOneTimeTaskOpen, setIsOneTimeTaskOpen }) {
                 primaryColor="#49DEFF"
                 secondaryColor="#FAFF00"
                 darkTheme
-                className="text-center text-lg border-2 border-white border-solid rounded-tl-3xl backdrop-blur-md bg-white/20 rounded-tr-md rounded-br-3xl rounded-bl-md pt-1 pb-3"
+                className="text-center text-md lg:text-lg border-2 border-white border-solid rounded-tl-3xl backdrop-blur-md bg-white/20 rounded-tr-md rounded-br-3xl rounded-bl-md pt-1 pb-3"
                 style={{ textShadow: '3px 3px 6px rgba(0, 0, 0, 0.25)' }}
               />
               <div
-                className="text-white text-xl font-outfit font-based mt-2 tracking-wide"
+                className="text-white text-lg lg:text-xl font-outfit font-based mt-2 tracking-wide"
                 style={{ textShadow: '3px 3px 6px rgba(0, 0, 0, 0.35)' }}
               >
                 <span className='text-amber-500 font-extrabold'>12 Hour </span> Energy cooldown

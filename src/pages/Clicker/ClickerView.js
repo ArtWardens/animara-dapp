@@ -135,7 +135,7 @@ const ClickerView = () => {
   return (
     <div className="w-full min-w-[450px] max-w-[90dvw] xs:min-h-[800px] flex justify-center mt-[-1rem] lg:mt-0">
       <div 
-        className="relative w-full min-h-[800px] max-h-[90dvh] h-auto rounded-3xl p-3 transition-all duration-300"
+        className="relative w-full min-h-[800px] max-h-[90dvh] h-auto rounded-[2.5rem] lg:rounded-3xl p-3 transition-all duration-300"
         style={{
           border: '2px solid var(--Color, #F4FBFF)',
           background: 'rgba(155, 231, 255, 0.58)',
@@ -143,16 +143,16 @@ const ClickerView = () => {
           backdropFilter: 'blur(15px)',
         }}
       >
-        <div className="absolute flex w-full justify-between -top-9 z-[50]">
+        <div className="absolute flex w-full justify-between -top-5 lg:-top-8 z-[50]">
           <img
             src={"/assets/images/clicker-character/ring01.webp"}
             alt="ring"
-            className="object-cover w-12 absolute left-2"
+            className="object-cover w-8 lg:w-12 absolute left-3 lg:left-2"
           />
           <img
             src={"/assets/images/clicker-character/ring02.webp"}
             alt="ring"
-            className="object-cover w-12 absolute right-8"
+            className="object-cover w-8 lg:w-12 absolute right-9 lg:right-8"
           />
         </div>
 
