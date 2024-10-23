@@ -318,17 +318,17 @@ const EditProfilePage = () => {
                   </div>
                 </div>
                 {/* actions */}
-                <div className="flex w-full gap-10 mt-10">
-                  <div className="flex flex-col justify-start w-full gap-5 md:flex-row">
+                <div className="flex w-full gap-8 mt-8">
+                  <div className="flex flex-row justify-center lg:justify-start w-full gap-4 scale-90 lg:scale-100">
                     {user?.canResetPassword === true && (
                       <button
-                        className="w-[200px] h-[60px] justify-start items-center gap-[46px] inline-flex"
+                        className="w-[200px] h-[60px] justify-center items-center inline-flex"
                         disabled={resetPasswordLoading}
                         type="button"
                         onClick={handleResetPassword}
                       >
-                        <div className="w-[200px] h-[60px] px-[30px] py-5 bg-sky-700 rounded-[26px] border border-blue-300 justify-between items-center flex hover:bg-sky-500 hover:border-sky-500 hover:pt-[18px] hover:pb-5">
-                          <div className="text-xl font-normal leading-tight text-center text-white capitalize hover:font-bold">
+                        <div className="w-[200px] h-[60px] px-[30px] py-5 bg-sky-700 rounded-[26px] border border-blue-300 justify-between items-center flex hover:bg-sky-600 hover:border-sky-500 hover:pt-[18px] hover:pb-5 hover:scale-105 transition-all duration-300">
+                          <div className="text-lg lg:text-xl font-normal leading-tight text-center text-white capitalize">
                             Reset Password
                           </div>
                         </div>
@@ -339,8 +339,8 @@ const EditProfilePage = () => {
                       disabled={updateProfileLoading || !hasChanges}
                       type="submit"
                     >
-                      <div className={`w-[200px] h-[60px] px-[30px] py-5 rounded-[26px] border justify-center items-center flex ${hasChanges ? "border-orange-300 hover:bg-amber-300" : "border-white bg-slate-400"}`}>
-                        <div className="text-xl font-bold leading-tight text-center text-white capitalize">
+                      <div className={`w-[200px] h-[60px] px-[30px] py-5 rounded-[26px] border justify-center items-center flex ${hasChanges ? "border-orange-300 hover:bg-amber-300 hover:scale-105 transition-all duration-300" : "bg-slate-400 opacity-60"}`}>
+                        <div className="text-lg lg:text-xl font-normal leading-tight text-center text-white capitalize">
                           {updateProfileLoading
                             ? <div className="flex items-center justify-center">
                               <MoonLoader size={40} color={'#FFB23F'}/>
