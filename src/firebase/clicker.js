@@ -1,11 +1,12 @@
 import { auth, getUserLocations, exploreLocation, settleTapSession, rechargeEnergyByInvite, rechargeEnergy, bindWallet, unbindWallet } from "./firebaseConfig";
 
-const settleTapSessionImpl = async ({ newCointAmt, newStamina }) => {
+const settleTapSessionImpl = async ({ newCointAmt, newStamina, from }) => {
     const idToken = await auth.currentUser.getIdToken(/* forceRefresh */ false);
     const result = await settleTapSession({
         idToken: idToken,
         newCoinAmt: newCointAmt,
-        newStamina: newStamina
+        newStamina: newStamina,
+        from: from,
     });
     if (result.data.error){
         if (result.data.error === "too-fast"){

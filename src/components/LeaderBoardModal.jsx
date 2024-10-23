@@ -62,16 +62,16 @@ const LeaderBoardModal = ({ onClose }) => {
           }}
             onClick={(e) => e.stopPropagation()}
           >
-          <div className="absolute flex w-full justify-between -top-9">
+          <div className="absolute flex justify-between w-full -top-9">
             <img
               src={"/assets/images/clicker-character/ring01.webp"}
               alt="ring"
-              className="object-cover w-12 absolute left-2"
+              className="absolute object-cover w-12 left-2"
             />
             <img
               src={"/assets/images/clicker-character/ring02.webp"}
               alt="ring"
-              className="object-cover w-12 absolute right-8"
+              className="absolute object-cover w-12 right-8"
             />
           </div>
           <div className="w-full h-full flex flex-col items-center gap-1 pb-[2rem] pt-[3rem] md:pt-[8rem] lg:pt-[4rem] lg:px-[4rem] rounded-3xl"
@@ -96,7 +96,7 @@ const LeaderBoardModal = ({ onClose }) => {
 
             {leaderboardLoading || !leaderBoardLoaded ? (
             // loader
-            <div className="w-full pt-4 flex align-middle justify-center">
+            <div className="flex justify-center w-full pt-4 align-middle">
               <svg
                 aria-hidden="true"
                 className="w-8 h-8 text-Fuchsia-200 animate-spin dark:text-Fuchsia-200 fill-yellow-600"
@@ -116,7 +116,7 @@ const LeaderBoardModal = ({ onClose }) => {
             </div>
             ) : (
               <div 
-                className="w-full h-auto max-h-[90%] grid grid-cols-1 gap-1 lg:pr-4 overflow-x-hidden overflow-y-auto custom-scrollbar">
+                className="grid w-full h-auto grid-cols-1 gap-1 overflow-x-hidden overflow-y-auto max-h lg:pr-4 custom-scrollbar">
                 {leaderboard && leaderboard.length > 0 ? (
                   leaderboard.map((item, index) => {
                     let backgroundImage;
