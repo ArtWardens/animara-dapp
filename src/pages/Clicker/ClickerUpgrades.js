@@ -6,6 +6,8 @@ import { useUserLocation, useUserLocationLoading, getUserLocations, useDailyComb
 import UpgradeDetailsModal from "./UpgradeDetailsModal";
 import { PropagateLoader } from "react-spinners";
 import DynamicNumberDisplay from "../../components/DynamicNumberDisplay";
+import { Modal } from "@mui/material";
+import MintingWarningNotice from "../../components/MintingWarningNotice.jsx";
 
 const ClickerUpgrades = ({ onClose }) => {
   const dispatch = useAppDispatch();
@@ -56,6 +58,8 @@ const ClickerUpgrades = ({ onClose }) => {
   const currentUser = useUserDetails();
   const dailyComboMatched = useDailyComboMatched();
   const optionRefs = useRef([]);
+  
+  const [isNoticeOpen, setIsNoticeOpen] = useState(false);
 
   useEffect(() => {
     if (!userLocations && !userLocationLoading) {
@@ -83,6 +87,15 @@ const ClickerUpgrades = ({ onClose }) => {
       window.removeEventListener("resize", handleResize);
     };
   }, []);
+
+  // Toggle notice component
+  const handleInfoClick = () => {
+    setIsNoticeOpen(true);
+  };
+
+  const closeNotice = () => {
+    setIsNoticeOpen(false);
+  };
 
   const handleBack = () => {
     if (closeAnimTimer.current) return;
@@ -168,7 +181,7 @@ const ClickerUpgrades = ({ onClose }) => {
                   <PropagateLoader color={"#FFB23F"} />
                 </div>
               ) : (
-                <div className="w-full max-h-[100vh] lg:max-w-[87dvw] h-full max-h-[70dvh]   flex flex-col lg:flex-row justify-start mt-[2rem] lg:mt-[4rem] lg:gap-[1rem] overflow-y-auto custom-scrollbar xs:overflow-x-hidden">
+                <div className="w-full max-h-[100vh] lg:max-w-[87dvw] h-full flex flex-col lg:flex-row justify-start mt-[2rem] lg:mt-[4rem] lg:gap-[1rem] overflow-y-auto custom-scrollbar xs:overflow-x-hidden">
                   {/* Menu bar */}
                   <div className="w-full lg:w-[16dvw] h-full flex flex-col">
                     <div className="h-full lg:min-h-[800px] flex flex-row lg:flex-col lg:mt-[2.5rem] p-[2rem] lg:p-2 overflow-y-auto custom-scrollbar mb-[1rem] lg:mb-0 ">
@@ -302,12 +315,18 @@ const ClickerUpgrades = ({ onClose }) => {
                             alt="profit icon"
                             className="w-10 h-10 mr-2"
                           />
-                          <div className="flex flex-col mr-[1rem]">
+                          <div className="flex flex-col">
                             <div className="text-[#00E0FF] text-2xl font-LuckiestGuy font-normal tracking-wider">
                               {currentUser?.profitPerHour || 0}
                             </div>
-                            <div className="text-sm text-white font-outfit">
+                            <div className="flex items-center text-sm text-white font-outfit">
                               Explora Points
+                              <img
+                                src="/assets/icons/info-blue.webp"
+                                alt="explore info"
+                                className="w-4 h-4 ml-2"
+                                onClick={handleInfoClick}
+                              />
                             </div>
                           </div>
                         </div>
@@ -468,7 +487,6 @@ const ClickerUpgrades = ({ onClose }) => {
     </div>
   );
 
-
   const renderMobileView = () => (
     <div className="w-full max-w-[90vw]">
       {/* Close indicator outside the modal */}
@@ -553,6 +571,7 @@ const ClickerUpgrades = ({ onClose }) => {
                     src="/assets/icons/info-blue.webp"
                     alt="explore info"
                     className="w-4 h-4"
+                    onClick={handleInfoClick}
                   />
                 </div>
               </div>
@@ -744,7 +763,19 @@ const ClickerUpgrades = ({ onClose }) => {
     </div>
   );
   
-  return isMobile ? renderMobileView() : renderWebView();
+  return (
+    <>
+      {isMobile ? renderMobileView() : renderWebView()}
+      <Modal
+        open={isNoticeOpen}
+        className="h-screen w-screen flex flex-1 overflow-x-hidden overflow-y-auto"
+        >
+        <div>
+          <MintingWarningNotice onClose={closeNotice} />
+        </div>
+      </Modal>
+    </>
+  )
 };
 
 ClickerUpgrades.propTypes = {
