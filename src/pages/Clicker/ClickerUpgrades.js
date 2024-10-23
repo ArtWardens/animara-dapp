@@ -168,7 +168,7 @@ const ClickerUpgrades = ({ onClose }) => {
               />
             </div>
 
-            <div className="h-full flex flex-col justify-start overflow-y-auto mt-[1rem] sm:mt-[6rem] lg:mt-[6rem]">
+            <div className="h-full flex flex-col justify-start overflow-y-auto mt-[1rem] sm:mt-[6rem] lg:mt-[4rem]">
               <div className="justify-center hidden w-full lg:flex">
                 <p className="text-[#FFC85A] text-xl text-center font-normal uppercase">
                   upgrade & earn as you explore!
@@ -181,7 +181,7 @@ const ClickerUpgrades = ({ onClose }) => {
                   <PropagateLoader color={"#FFB23F"} />
                 </div>
               ) : (
-                <div className="w-full max-h-[100vh] lg:max-w-[87dvw] h-full flex flex-col lg:flex-row justify-start mt-[2rem] lg:mt-[4rem] lg:gap-[1rem] overflow-y-auto custom-scrollbar xs:overflow-x-hidden">
+                <div className="w-full max-h-[100vh] lg:max-w-[87dvw] h-full flex flex-col lg:flex-row justify-start mt-[2rem] lg:gap-[1rem] overflow-y-auto custom-scrollbar xs:overflow-x-hidden">
                   {/* Menu bar */}
                   <div className="w-full lg:w-[16dvw] h-full flex flex-col">
                     <div className="h-full lg:min-h-[800px] flex flex-row lg:flex-col lg:mt-[2.5rem] p-[2rem] lg:p-2 overflow-y-auto custom-scrollbar mb-[1rem] lg:mb-0 ">
@@ -338,7 +338,7 @@ const ClickerUpgrades = ({ onClose }) => {
                       userLocations.filter(
                         (location) => location.region === selectedOption
                       ).length > 0 ? (
-                        <div className="h-full w-full max-w-[1480px] flex flex-col lg:flex-row flex-wrap items-center justify-start gap-4 amt-4 p-4">
+                        <div className="h-auto w-full max-w-[1480px] flex flex-col lg:flex-row flex-wrap items-center justify-start gap-4 amt-4 p-4">
                           {userLocations
                             .filter(
                               (location) => location.region === selectedOption
@@ -657,7 +657,7 @@ const ClickerUpgrades = ({ onClose }) => {
               {/* Display Upgrades */}
               {userLocations && userLocations.length > 0 ? (
                 userLocations.filter((location) => location.region === selectedOption).length > 0 ? (
-                  <div className="flex flex-col items-center justify-start w-full p-2 overflow-x-hidden overflow-y-auto">
+                  <div className="flex flex-col items-center justify-start w-full p-2 overflow-x-hidden overflow-y-auto custom-scrollbar">
                     {userLocations
                       .filter((location) => location.region === selectedOption)
                       .sort((a, b) => (a.level >= 0 && b.level === -1 ? -1 : 1))
