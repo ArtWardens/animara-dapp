@@ -560,13 +560,35 @@ const ClickerUpgrades = ({ onClose }) => {
               {/* Daily Combo Section */}
               <div className="flex items-center justify-center">
                 <div
-                  className="flex flex-row items-center justify-between bg-[#FFB23F] rounded-3xl p-4 shadow-[0px_4px_4px_rgba(0,0,0,0.25)] w-[90%] h-[150px]"
+                  className={`rounded-3xl p-4 shadow-[0px_4px_4px_rgba(0,0,0,0.25)] w-[90%]
+                    ${
+                      dailyComboMatched.every((item) => item !== "")
+                        ? "bg-[#ffa900]"
+                        : "bg-[#684500]"
+                    }`}
                 >
-                  <div>
-                    <div className="mb-2 text-3xl text-white font-LuckiestGuy">
+                  <div className="flex flex-row items-center justify-between">
+                    <div className="basis-1/3 mb-2 text-2xl xs:text-3xl text-white font-LuckiestGuy">
                       DAILY COMBO
                     </div>
-                    <div className="flex items-center space-x-2">
+                    <div className="basis-2/3 flex justify-end w-full space-x-2 overflow-hidden">
+                      {dailyComboMatched.map((item, index) => (
+                        <img
+                          key={index}
+                          src={`/assets/images/clicker-character/treasure-${
+                            item !== "" ? "unlocked" : "locked"
+                          }.webp`}
+                          alt={`reward ${index + 1}`}
+                          className="object-contain w-10 h-10 xs:w-14 xs:h-14"
+                          style={{ maxWidth: "100%", maxHeight: "100%" }} 
+                        />
+                      ))}
+                    </div>
+                  </div>
+  
+                  {/* Treasure boxes and checkbox */}
+                  <div className="flex flex-row items-center w-full">
+                    <div className="flex basis-2/3 items-center space-x-2">
                       <img
                         src="/assets/images/clicker-character/gem.webp"
                         alt="currency icon"
@@ -576,45 +598,30 @@ const ClickerUpgrades = ({ onClose }) => {
                         90,000,000
                       </span>
                     </div>
-                  </div>
-  
-                  {/* Treasure boxes and checkbox */}
-                  <div className="flex flex-col items-center w-full">
-                    <div className="flex justify-center w-full space-x-2 overflow-hidden">
-                      {dailyComboMatched.map((item, index) => (
-                        <img
-                          key={index}
-                          src={`/assets/images/clicker-character/treasure-${
-                            item !== "" ? "unlocked" : "locked"
-                          }.webp`}
-                          alt={`reward ${index + 1}`}
-                          className="object-contain w-12 h-12 xs:w-14 xs:h-14"
-                          style={{ maxWidth: "100%", maxHeight: "100%" }} 
-                        />
-                      ))}
+                    <div className="basis-1/3">
+                      <img
+                        src={`/assets/images/clicker-character/${
+                          dailyComboMatched.every((item) => item !== "") ? "checked" : "unchecked"
+                        }.webp`}
+                        alt="checkbox"
+                        className="w-6 h-6 mt-1 ml-auto"
+                        style={{ alignSelf: "flex-end" }}
+                      />
                     </div>
-                    <img
-                      src={`/assets/images/clicker-character/${
-                        dailyComboMatched.every((item) => item !== "") ? "checked" : "unchecked"
-                      }.webp`}
-                      alt="checkbox"
-                      className="w-6 h-6 mt-1"
-                      style={{ alignSelf: "flex-end" }}
-                    />
                   </div>
 
                 </div>
               </div>
   
               {/* Menu Bar */}
-              <div className="flex justify-center w-full mt-6">
+              <div className="flex justify-center w-full mt-4">
                 <div className="flex flex-row gap-2 overflow-x-auto overflow-y-hidden no-scrollbar">
                   {menuOptions.map((option, index) => (
                     <div
                       key={index}
                       ref={(el) => (optionRefs.current[index] = el)}
                       onClick={() => handleOptionClick(option, index)}
-                      className={`min-w-[100px] max-w-[150px] w-auto flex justify-center items-center gap-1.5 p-4 mt-2 rounded-[10px] border-4 border-white ${
+                      className={`min-w-[100px] max-w-[150px] w-auto flex justify-center items-center gap-1.5 py-2 px-4 mt-2 rounded-[10px] border-4 border-white ${
                         selectedOption === option.name
                           ? "bg-[#FFB100] transform rotate-6"
                           : "bg-[#146CFC]"
