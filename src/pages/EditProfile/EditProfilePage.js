@@ -125,8 +125,8 @@ const EditProfilePage = () => {
   }, [user]);
 
   const handleAvatarSave = (avatar) => {
-    setImageData(avatar);  
-    setHasChanges(true);  
+    setImageData(avatar);
+    setHasChanges(true);
   };
 
   

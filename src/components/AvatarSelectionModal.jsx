@@ -1,33 +1,13 @@
 import React, { useState } from 'react';
 
-// const selectAvatarApi = async (avatarUrl) => {
-//   try {
-//     const response = await fetch('/api/select-avatar', {
-//       method: 'POST',
-//       headers: {
-//         'Content-Type': 'application/json',
-//       },
-//       body: JSON.stringify({ avatarUrl }), 
-//     });
-
-//     if (!response.ok) {
-//       throw new Error('Failed to select avatar');
-//     }
-
-//     const result = await response.json();
-//     return result;
-//   } catch (error) {
-//     console.error('Error selecting avatar:', error);
-//   }
-// };
-
 const AvatarSelectionModal = ({ isOpen, onClose, onAvatarSave }) => {
   const [selectedAvatarIndex, setSelectedAvatarIndex] = useState(null); 
 
+  // TODO: update image
   const avatars = [
-    '/assets/images/avatarBg.webp', 
+    '/assets/images/coin-3.webp', 
     '/assets/images/activeDog.webp', 
-    '/assets/images/activeDog.webp', 
+    '/assets/images/coin-4.webp', 
     '/assets/images/activeDog.webp', 
     '/assets/images/activeDog.webp', 
     '/assets/images/activeDog.webp', 
@@ -91,7 +71,7 @@ const AvatarSelectionModal = ({ isOpen, onClose, onAvatarSave }) => {
               key={index}
               src={avatar}
               alt={`Avatar ${index + 1}`}
-              className={`w-20 h-20 md:w-24 md:h-24 lg:w-28 lg:h-28 rounded-full cursor-pointer border-2 ${
+              className={`w-16 h-16 xs:w-20 xs:h-20 md:w-24 md:h-24 lg:w-28 lg:h-28 mx-auto rounded-full border-2 transition-all duration-150 hover:scale-105 ${
                 selectedAvatarIndex === index ? 'border-yellow-500' : 'border-transparent' 
               }`}
               onClick={() => handleAvatarClick(index)} 
