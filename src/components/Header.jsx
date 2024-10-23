@@ -291,55 +291,60 @@ function Header() {
 
             {/* Profile and coins in mobile menu */}
             <div
-              className={`bg-contain md:bg-contain lg:bg-contain bg-no-repeat w-full h-full flex flex-row items-center justify-center text-center z-50 py-[3rem] px-[1rem] md:px-[3.5rem] scale-110`}
+              className={`bg-cover lg:bg-contain bg-no-repeat w-full h-full flex flex-col items-center justify-center text-center z-50 py-[1rem] px-[1rem] md:px-[3.5rem]`}
               style={{
                 backgroundImage: 'url("/assets/images/clicker-character/header-mobile.png")',
                 backgroundPosition: 'center',
               }}
             >
-              {loadingImage && (
-                <div className="flex justify-center items-center">
-                  <MoonLoader color={'#FFB23F'} />
-                </div>
-              )}
+              <div className='flex flex-row w-full'>
+                {loadingImage && (
+                  <div className="flex justify-center items-center">
+                    <MoonLoader color={'#FFB23F'} />
+                  </div>
+                )}
 
-              <div className='flex flex-col '>
-                <div className={`w-28 h-28 flex mb-2
+                <div className={`w-20 h-20 xs:w-28 xs:h-28 flex mb-2 basis-1/3 scale-75
                   ${currentUser?.ownsNFT && currentUser?.walletAddr !== '' ? 'nft-profile-border' : 'profile-border'}
                 `}>
                   <img
                     src={getProfilePic()}
                     alt="profile"
-                    className={`rounded-full m-auto w-16`}
+                    className={`rounded-full m-auto w-12 xs:w-16`}
                     style={{
                       background: '#111928 50%',
                     }}
                     onClick={handleEditProfile}
                   />
                 </div>
-                {currentUser?.isKOL && (
-                  <div className="bg-sky-700 rounded-lg items-center p-1 m-auto mb-4 w-fit">
-                    <span className="text-white text-xs tracking-wider font-outfit whitespace-nowrap">Certified KOL</span>
-                  </div>
-                )}
-                <p className={`max-w-[100px] text-md text-white text-ellipsis font-medium font-outfit overflow-hidden ${currentUser?.isKOL ? 'mt-[0.5rem' : '-mt-2'}`}> {currentUser?.name}</p>
+
+                <div className='basis-2/3 flex flex-col items-start justify-center pl-4'>
+                  <DynamicNumberDisplay
+                    number={currentUser?.coins}
+                    divClassName={"gap-[0.5rem] flex place-content-center"}
+                    imgSrc={"/assets/images/clicker-character/gem.webp"}
+                    imgClassName={"w-6 xs:w-8 object-contain"}
+                    spanClassName={"max-w-[95%] overflow-hidden text-ellipsis text-lg xs:text-xl xl:text-4xl text-[#FFAA00] tracking-normal font-LuckiestGuy pr-2"}
+                  />
+                  <DynamicNumberDisplay
+                    number={currentUser?.profitPerHour}
+                    divClassName={"gap-[0.5rem] flex place-content-center"}
+                    imgSrc={"/assets/icons/explora-point.webp"}
+                    imgClassName={"w-6 xs:w-8 object-contain"}
+                    spanClassName={"max-w-[95%] overflow-hidden text-ellipsis text-lg xs:text-xl xl:text-4xl text-[#00B9E1] tracking-normal font-LuckiestGuy pr-2"}
+                  />
+                </div>
               </div>
 
-              <div className='flex flex-col items-start pl-4'>
-                <DynamicNumberDisplay
-                  number={currentUser?.coins}
-                  divClassName={"gap-[0.5rem] flex place-content-center"}
-                  imgSrc={"/assets/images/clicker-character/gem.webp"}
-                  imgClassName={"w-6 xs:w-8 object-contain"}
-                  spanClassName={"max-w-[70px] overflow-hidden text-ellipsis text-lg xs:text-xl xl:text-4xl text-[#FFAA00] tracking-normal font-LuckiestGuy pr-2"}
-                />
-                <DynamicNumberDisplay
-                  number={currentUser?.profitPerHour}
-                  divClassName={"gap-[0.5rem] flex place-content-center"}
-                  imgSrc={"/assets/icons/explora-point.webp"}
-                  imgClassName={"w-6 xs:w-8 object-contain"}
-                  spanClassName={"max-w-[70px] overflow-hidden text-ellipsis text-lg xs:text-xl xl:text-4xl text-[#00B9E1] tracking-normal font-LuckiestGuy pr-2"}
-                />
+              <div className='flex flex-row w-full'>
+                <div className="w-full pl-4 md:pl-0 -mt-4 basis-1 md:basis-1/3">
+                  {currentUser?.isKOL && (
+                    <div className="bg-sky-700 rounded-lg p-1 mr-auto md:mx-auto mb-1 w-fit">
+                      <span className="text-white text-xs tracking-wider font-outfit whitespace-nowrap">Certified KOL</span>
+                    </div>
+                  )}
+                  <p className={`max-w-[95%] text-md text-white text-left md:text-center text-ellipsis font-medium font-outfit overflow-hidden ${currentUser?.isKOL ? 'mt-[0.5rem' : '-mt-2'}`}> {currentUser?.name}</p>
+                </div>
               </div>
             </div>
 
