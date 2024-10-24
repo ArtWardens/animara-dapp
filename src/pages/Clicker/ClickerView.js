@@ -370,7 +370,7 @@ const ClickerView = () => {
                 </video>
 
                 <div
-                  className={`absolute text-[12vh] lg:text-[18vh] font-bold justify-center transition-all duration-1000 transform text-amber-500 tracking-normal
+                  className={`absolute text-[6vh] md:text-[12vh] lg:text-[18vh] font-bold justify-center transition-all duration-1000 transform text-amber-500 tracking-normal
                   ${showWord ? 'opacity-100 scale-150 pb-8 lg:pb-20 translate-x-0' : 'opacity-0 scale-0 pb-0 translate-x-6'}`}
                   style={{
                     WebkitTextStrokeWidth: '0.45vh',
@@ -384,7 +384,7 @@ const ClickerView = () => {
                 </div>
 
                 <div
-                  className={`absolute text-[12vh] lg:text-[18vh] font-bold justify-center transition-all duration-1000 transform text-amber-500 tracking-normal
+                  className={`absolute text-[6vh] md:text-[12vh] lg:text-[18vh] font-bold justify-center transition-all duration-1000 transform text-amber-500 tracking-normal
                   ${showCongratulations ? 'opacity-100 scale-150 pb-8 lg:pb-20 translate-x-0' : 'opacity-0 scale-0 pb-0 translate-x-6'}`}
                   style={{
                     WebkitTextStrokeWidth: '0.45vh',
