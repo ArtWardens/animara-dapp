@@ -149,7 +149,7 @@ function Header() {
             <div className={`pt-1 pl-10 font-LuckiestGuy text-[15px] xs:text-[18px] md:text-md lg:text-md flex user-detail-1
               ${currentUser?.ownsNFT && currentUser?.walletAddr !== '' ? 'bg-[#573A00]' : 'bg-[#003459]'}
             `}>
-              <p className="max-w-[100px] flex-1 overflow-hidden text-ellipsis">{currentUser?.name || 'Animara User'}</p>
+              <p className="max-w-[70px] xs:max-w-[100px] flex-1 overflow-hidden text-ellipsis">{currentUser?.name || 'Animara User'}</p>
               <p className={`flex-1 ml-2 xs:ml-4 font-LuckiestGuy text-md text-right
                 ${currentUser?.ownsNFT && currentUser?.walletAddr !== '' ? 'text-[#FFB23F]' : 'text-[#80E8FF]'}
               `}>LV.{currentUser?.level}</p>
@@ -165,7 +165,7 @@ function Header() {
                 <span
                   ref={coinsDisplayRef}
                   id="header-coins"
-                  className="max-w-[110px] relative text-[18px] xs:text-[3xl] lg:text-[3xl] text-[#FFC85A] text-ellipsis font-LuckiestGuy tracking-normal w-full overflow-hidden text-left drop-shadow-md"
+                  className="max-w-[80px] xs:max-w-[110px] text-[18px] xs:text-[3xl] lg:text-[3xl] text-[#FFC85A] text-ellipsis font-LuckiestGuy tracking-normal w-full overflow-hidden text-left drop-shadow-md"
                 >
                   {formatNumberWithCommas(localCoins)}
                 </span>
@@ -221,7 +221,7 @@ function Header() {
 
         {/* Mute button */}
         <button
-          className="transition ease-in-out p-2 ml-4 hover:scale-110 hover:opacity-80"
+          className="transition ease-in-out p-2 aml-4 hover:scale-110 hover:opacity-80"
           onClick={toggleMute}
           ref={trigger}
         >
