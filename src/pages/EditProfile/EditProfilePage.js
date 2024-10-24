@@ -167,7 +167,7 @@ const EditProfilePage = () => {
               <div className="w-full xl:w-[100%] header flex justify-between items-center space-x-[2rem] lg:space-x-[8rem]">
                 <div className="flex flex-col xl:flex-row">
                   <div
-                    className="w-full text-left text-amber-500 text-5xl font-normal font-['Luckiest Guy'] uppercase leading-[54px]"
+                    className="w-full text-left text-amber-500 text-3xl lg:text-5xl font-normal font-['Luckiest Guy'] uppercase leading-[54px]"
                     style={{
                       WebkitTextStrokeWidth: "2px",
                       WebkitTextStrokeColor: "var(--Color-11, #FFF)",
