@@ -33,6 +33,7 @@ const ClickerView = () => {
   const audioSource = `https://storage.animara.world/${effectiveLevel || 1}-successHits.mp3`;
   const [animateDailyReward, setAnimateDailyReward] = useState(false);
   const currentDayRef = useRef(null);
+  const [animatingDailyPopup, setAnimatingDailyPopup] = useState(false);
   
   // grant depletion rewards when local stamina is fully consumed
   useEffect(() => {
@@ -64,6 +65,7 @@ const ClickerView = () => {
   // intro anim
   useEffect(() => {
     if (isOpenDailyPopup) {
+      setAnimatingDailyPopup(true);
       const timerPanel = setTimeout(() => {
         setShowPanel(true);
         setTimeout(() => {
@@ -76,6 +78,9 @@ const ClickerView = () => {
             setAnimateDailyReward(true);
           }
         }, 100);
+        setTimeout(() => {
+          setAnimatingDailyPopup(false);
+        }, 5000);
       }, 500);
 
       const animateDailyReward = setTimeout(() => {
@@ -122,6 +127,7 @@ const ClickerView = () => {
   const videoSource = currentUser?.ownsNFT ? 'https://storage.animara.world/boxCoin_full.webm' : 'https://storage.animara.world/boxCoin_normal.webm';
 
   const handleClose = () => {
+    if(animatingDailyPopup) return;
     setShowPanel(false);
     const timerPanel = setTimeout(() => {
       dispatch(closeDailyPopup());
