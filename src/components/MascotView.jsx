@@ -78,7 +78,6 @@ const MascotView = ({ setOpenModal }) => {
         !settlingTapSession &&
         (currentUser.coins !== localCoins || currentUser.stamina !== localStamina)
       ) {
-        // console.log("mouse leave dispatch");
         dispatch(settleTapSession({ newCointAmt: localCoins, newStamina: localStamina, from: "mouseleave" }));
       }
     };
@@ -88,7 +87,6 @@ const MascotView = ({ setOpenModal }) => {
         document.visibilityState === 'hidden' &&
         (currentUser.coins !== localCoins || currentUser.stamina !== localStamina)
       ) {
-        // console.log("handleVisibilityChange dispatch");
         dispatch(settleTapSession({ newCointAmt: localCoins, newStamina: localStamina, from: "handleVisibilityChange" }));
       }
     };
@@ -108,9 +106,6 @@ const MascotView = ({ setOpenModal }) => {
     if (periodicSettlerTimerRef.current) return;
 
     if (!settlingTapSession && (currentUser?.coins !== localCoins || currentUser?.stamina !== localStamina)) {
-      // console.log("setupSettler dispatch");
-      // console.log("stamina: ", currentUser?.stamina);
-      // console.log("localStamina stamina: ", localStamina);
       dispatch(
         settleTapSession({
           newCointAmt: localCoins,
@@ -135,7 +130,6 @@ const MascotView = ({ setOpenModal }) => {
       clearInterval(periodicSettlerTimerRef.current);
       periodicSettlerTimerRef.current = null;
       if (!settlingTapSession && (currentUser?.coins !== localCoins || currentUser?.stamina !== localStamina)) {
-        // console.log("restartIdleTimer dispatch");
         dispatch(
           settleTapSession({
             newCointAmt: localCoins,
@@ -151,7 +145,6 @@ const MascotView = ({ setOpenModal }) => {
     if (!isInteractive) return;
     if (localStamina <= 0 && currentUser.stamina === 0 && !currentUser.canGetDepletionReward) {
       setOpenModal('boosts');
-      console.log('open boost');
       return;
     }
 
@@ -200,10 +193,18 @@ const MascotView = ({ setOpenModal }) => {
   }, [rechargingStamina]);
 
   return (
-    <div
-      className={`flex justify-center items-start h-full w-screen transition-all duration-700 lg:mt-[-12rem]
-      ${startSlide ? 'translate-y-0' : 'translate-y-full'}`}
-    >
+      <div
+        className={`flex justify-center items-start h-[45vh] xs:h-[85vh] sm:h-[85vh] md:h-[55vh] lg:h-[85vh] w-full transition-all duration-700 lg:mt-[-8rem] 
+          ${startSlide ? 'translate-y-0' : 'translate-y-full'} custom-height`}
+      >
+      <style jsx>{`
+        @media (max-height: 668px) {
+          .custom-height {
+            height: 25vh;
+          }
+        }
+      `}</style>
+  
       <div
         className="flex w-full h-full rounded-2xl z-100"
         onClick={handleTap}
@@ -243,7 +244,7 @@ const MascotView = ({ setOpenModal }) => {
                   src={src}
                   draggable="false"
                   alt={`Game mascot ${index}`}
-                  className={`transition-opacity lg:max-h-[60dvh] h-full w-full scale-[150%] md:scale-[100%] lg:scale-[125%] mt-[-1rem] xs:mt-[-5rem] lg:mt-[-8rem]
+                  className={`transition-opacity  lg:max-h-[60dvh] h-full w-full scale-[130%]  sm:scale-[150%]  md:scale-[100%] lg:scale-[120%] 
                     ${imgIndex === index ? 'block' : 'hidden'}`}
                 />
               </div>

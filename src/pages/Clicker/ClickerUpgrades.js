@@ -587,10 +587,10 @@ const ClickerUpgrades = ({ onClose }) => {
                     }`}
                 >
                   <div className="flex flex-row items-center justify-between">
-                    <div className="basis-1/3 mb-2 text-2xl xs:text-3xl text-white font-LuckiestGuy">
+                    <div className="mb-2 text-2xl text-white basis-1/3 xs:text-3xl font-LuckiestGuy">
                       DAILY COMBO
                     </div>
-                    <div className="basis-2/3 flex justify-end w-full space-x-2 overflow-hidden">
+                    <div className="flex justify-end w-full space-x-2 overflow-hidden basis-2/3">
                       {dailyComboMatched.map((item, index) => (
                         <img
                           key={index}
@@ -607,7 +607,7 @@ const ClickerUpgrades = ({ onClose }) => {
   
                   {/* Treasure boxes and checkbox */}
                   <div className="flex flex-row items-center w-full">
-                    <div className="flex basis-2/3 items-center space-x-2">
+                    <div className="flex items-center space-x-2 basis-2/3">
                       <img
                         src="/assets/images/clicker-character/gem.webp"
                         alt="currency icon"
@@ -657,7 +657,7 @@ const ClickerUpgrades = ({ onClose }) => {
               {/* Display Upgrades */}
               {userLocations && userLocations.length > 0 ? (
                 userLocations.filter((location) => location.region === selectedOption).length > 0 ? (
-                  <div className="flex flex-col items-center justify-start w-full mt-2 p-2 overflow-x-hidden overflow-y-auto custom-scrollbar">
+                  <div className="flex flex-col items-center justify-start w-full p-2 mt-2 overflow-x-hidden overflow-y-auto custom-scrollbar">
                     {userLocations
                       .filter((location) => location.region === selectedOption)
                       .sort((a, b) => (a.level >= 0 && b.level === -1 ? -1 : 1))
@@ -758,9 +758,20 @@ const ClickerUpgrades = ({ onClose }) => {
               )}
             </div>
           </div>
+        
+            {/* Render UpgradeDetailsModal if an upgrade is selected */}
+            {selectedUpgrade && (
+              <UpgradeDetailsModal
+                upgrade={selectedUpgrade}
+                isMaxLevel={selectedUpgrade.level === selectedUpgrade.maxLevel}
+                onClose={() => setSelectedUpgrade(null)}
+              />
+            )}
         </div>
       </div>
     </div>
+
+
   );
   
   return (
@@ -768,7 +779,7 @@ const ClickerUpgrades = ({ onClose }) => {
       {isMobile ? renderMobileView() : renderWebView()}
       <Modal
         open={isNoticeOpen}
-        className="h-screen w-screen flex flex-1 overflow-x-hidden overflow-y-auto"
+        className="flex flex-1 w-screen h-screen overflow-x-hidden overflow-y-auto"
         >
         <div>
           <MintingWarningNotice onClose={closeNotice} />

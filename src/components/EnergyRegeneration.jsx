@@ -75,7 +75,7 @@ function EnergyRegeneration({ isOneTimeTaskOpen, setIsOneTimeTaskOpen }) {
 
   return (
     <>
-      <div className="flex flex-col lg:grid grid-cols-3 justify-center items-center w-full mt-[-1.5rem] lg:mt-[3rem] z-[50]">
+      <div className="flex flex-col lg:grid grid-cols-3 justify-center items-center w-full mt-[-1.5rem] lg:mt-[1rem] z-[50]">
         {/* explora point display */}
         <div
           className={`flex items-center justify-center transition-opacity duration-700 mx-20 ${showFirstDiv ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0'
@@ -96,10 +96,10 @@ function EnergyRegeneration({ isOneTimeTaskOpen, setIsOneTimeTaskOpen }) {
             <img
               src="/assets/icons/explora-point.webp"
               alt="profit icon"
-              className="w-8 lg:w-16 h-8 lg:h-16 mr-2"
+              className="w-8 h-8 mr-2 lg:w-16 lg:h-16"
             />
             {userDetailsLoading ? (
-              <div className="h-16 w-16 lg:h-18 lg:w-16 flex items-center">
+              <div className="flex items-center w-16 h-16 lg:h-18 lg:w-16">
                 <MoonLoader size={24} color={'#80E8FF'} />
               </div>
             ) : (
@@ -107,7 +107,7 @@ function EnergyRegeneration({ isOneTimeTaskOpen, setIsOneTimeTaskOpen }) {
                 <div className="text-[#00E0FF] text-xl lg:text-2xl font-LuckiestGuy font-normal tracking-wider lg:mr-0 pt-1 lg:pt-0">
                   {profitPerHour}
                 </div>
-                <div className="text-white text-xs lg:text-sm font-outfit">
+                <div className="text-xs text-white lg:text-sm font-outfit">
                   Explora Points
                 </div>
               </div>
@@ -129,7 +129,7 @@ function EnergyRegeneration({ isOneTimeTaskOpen, setIsOneTimeTaskOpen }) {
             }`}
         >
           {rechargingStamina || userDetailsLoading ? (
-            <div className="h-18 flex justify-center items-center">
+            <div className="flex items-center justify-center h-18">
               <MoonLoader size={25} color={'#80E8FF'} />
             </div>
           ) : (
@@ -141,14 +141,14 @@ function EnergyRegeneration({ isOneTimeTaskOpen, setIsOneTimeTaskOpen }) {
                 primaryColor="#49DEFF"
                 secondaryColor="#FAFF00"
                 darkTheme
-                className="text-center text-lg border-2 border-white border-solid rounded-tl-3xl backdrop-blur-md bg-white/20 rounded-tr-md rounded-br-3xl rounded-bl-md pt-1 pb-3"
+                className="pt-1 pb-3 text-lg text-center border-2 border-white border-solid rounded-tl-3xl backdrop-blur-md bg-white/20 rounded-tr-md rounded-br-3xl rounded-bl-md"
                 style={{ textShadow: '3px 3px 6px rgba(0, 0, 0, 0.25)' }}
               />
               <div
-                className="text-white text-xl font-outfit font-based mt-2 tracking-wide"
+                className="mt-2 text-xl tracking-wide text-white font-outfit font-based"
                 style={{ textShadow: '3px 3px 6px rgba(0, 0, 0, 0.35)' }}
               >
-                <span className='text-amber-500 font-extrabold'>12 Hour </span> Energy cooldown
+                <span className='font-extrabold text-amber-500'>12 Hour </span> Energy cooldown
               </div>
             </>
           )}
@@ -160,7 +160,7 @@ function EnergyRegeneration({ isOneTimeTaskOpen, setIsOneTimeTaskOpen }) {
           <img
             src="/assets/icons/leaderboard.webp"
             alt="leaderboard icon"
-            className="w-[15rem] lg:w-[25rem] h-auto transition-all duration-300 hover:scale-110 "
+            className="w-[15rem] lg:w-[20rem] h-auto transition-all duration-300 hover:scale-110 "
             onClick={handleLeaderBoardClick}
           />
         </div>
@@ -169,7 +169,7 @@ function EnergyRegeneration({ isOneTimeTaskOpen, setIsOneTimeTaskOpen }) {
       {/* Conditionally render the TaskList component */}
       <Modal
         open={isOneTimeTaskOpen}
-        className="h-screen w-screen flex flex-1 overflow-x-hidden overflow-y-auto"
+        className="flex flex-1 w-screen h-screen overflow-x-hidden overflow-y-auto"
       >
         <div>
           <TaskList setIsOneTimeTaskOpen={setIsOneTimeTaskOpen} />
@@ -179,7 +179,7 @@ function EnergyRegeneration({ isOneTimeTaskOpen, setIsOneTimeTaskOpen }) {
       {/* Conditionally render the LeaderBoard component */}
       <Modal
         open={isLeaderBoardOpen}
-        className="h-screen w-screen flex flex-1 overflow-x-hidden overflow-y-auto"
+        className="flex flex-1 w-screen h-screen overflow-x-hidden overflow-y-auto"
       >
         <div>
           <LeaderBoardModal onClose={closeLeaderBoard} />
@@ -189,7 +189,7 @@ function EnergyRegeneration({ isOneTimeTaskOpen, setIsOneTimeTaskOpen }) {
       {/* Conditionally render the MintingVipPass component */}
       <Modal
         open={isNoticeOpen}
-        className="h-screen w-screen flex flex-1 overflow-x-hidden overflow-y-auto"
+        className="flex flex-1 w-screen h-screen overflow-x-hidden overflow-y-auto"
       >
         <div>
           <MintingWarningNotice onClose={closeNotice} />

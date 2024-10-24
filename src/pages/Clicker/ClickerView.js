@@ -24,8 +24,8 @@ const ClickerView = () => {
   const [showPanel, setShowPanel] = useState(false);
   const [isOpenRewardModal, setIsOpenRewardModal] = useState(false);
   const [rewardModalFading, setRewardModalFading] = useState(false);
-  const [showWord, setShowWord] = useState(false); // State to manage word display after 2.5 seconds
-  const [showCongratulations, setShowCongratulations] = useState(false); // Manage "Congratulations" visibility
+  const [showWord, setShowWord] = useState(false);
+  const [showCongratulations, setShowCongratulations] = useState(false);
   const settlingTapSession = useSettleTapSessionLoading();
   const settlingTapSessionLoaded = useSettleTapSessionLoadSuccess();
   const effectiveLevel = (currentUser?.level - 1) % 20 + 1;
@@ -33,15 +33,11 @@ const ClickerView = () => {
   const audioSource = `https://storage.animara.world/${effectiveLevel || 1}-successHits.mp3`;
   const [animateDailyReward, setAnimateDailyReward] = useState(false);
   const currentDayRef = useRef(null);
-  
-  // grant depletion rewards when local stamina is fully consumed
+
+  // Handle depletion rewards
   useEffect(() => {
     if (!currentUser || localStamina !== 0 || isOpenRewardModal || !currentUser.canGetDepletionReward) return;
     dispatch(settleTapSession({ newCointAmt: localCoins, newStamina: localStamina, from: 'clickerview' }));
-    // console.log("clicker view dispatching");
-    // console.log(currentUser?.coins, " vs", localCoins);
-    // console.log(currentUser?.stamina, " vs", localStamina);
-    // Dispatch might be slow due to internet speed or cpu slow
     if (audioRef.current) {
       audioRef.current.play();
     }
@@ -52,27 +48,22 @@ const ClickerView = () => {
     setIsOpenRewardModal(true);
   };
 
-  // Initialize
+  // Initialize daily login
   useEffect(() => {
     if (!currentUser) return;
-    // check and popup daily login
     if (!currentUser?.loggedInToday) {
       dispatch(updateDailyLogin());
     }
   }, [currentUser, dispatch]);
 
-  // intro anim
+  // Intro animations
   useEffect(() => {
     if (isOpenDailyPopup) {
       const timerPanel = setTimeout(() => {
         setShowPanel(true);
         setTimeout(() => {
           if (currentDayRef.current) {
-            currentDayRef.current.scrollIntoView({
-              behavior: 'smooth',
-              block: 'center',
-              inline: 'center'
-            });
+            currentDayRef.current.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
             setAnimateDailyReward(true);
           }
         }, 100);
@@ -133,30 +124,29 @@ const ClickerView = () => {
   };
 
   return (
-    <div className="w-full min-w-[450px] max-w-[90dvw] xs:min-h-[800px] flex justify-center mt-[-1rem] lg:mt-0">
-      <div 
-        className="relative w-full min-h-[800px] max-h-[90dvh] h-auto rounded-3xl p-3 transition-all duration-300"
-        style={{
-          border: '2px solid var(--Color, #F4FBFF)',
-          background: 'rgba(155, 231, 255, 0.58)',
-          boxShadow: '0px 8px 30px 0px rgba(4, 161, 183, 0.40) inset, 0px 8px 30px 0px rgba(32, 0, 99, 0.40)',
-          backdropFilter: 'blur(15px)',
-        }}
-      >
-        <div className="absolute flex w-full justify-between -top-9 z-[50]">
+    <div className="relative flex flex-col justify-center w-full min-h-[80vh] md:min-h-[85vh] ">
+      <div className="relative flex flex-col items-center justify-start w-full h-full p-3" style={{
+        border: '2px solid #F4FBFF',
+        background: 'rgba(155, 231, 255, 0.58)',
+        boxShadow: '0px 8px 30px 0px rgba(4, 161, 183, 0.40) inset, 0px 8px 30px 0px rgba(32, 0, 99, 0.40)',
+        backdropFilter: 'blur(15px)',
+        position: 'absolute', 
+        bottom: 0,     
+      }}>
+         <div className="absolute flex w-full justify-between -top-9 z-[50]">
           <img
             src={"/assets/images/clicker-character/ring01.webp"}
             alt="ring"
-            className="object-cover w-12 absolute left-2"
+            className="absolute object-cover w-12 left-2"
           />
           <img
             src={"/assets/images/clicker-character/ring02.webp"}
             alt="ring"
-            className="object-cover w-12 absolute right-8"
+            className="absolute object-cover w-12 right-8"
           />
         </div>
 
-        <div className="w-full min-h-[800px] xl:min-h-[80dvh] h-full flex flex-col justify-start items-center rounded-3xl"
+        <div className="w-full  xl:min-h-[80dvh] h-full flex flex-col justify-start items-center rounded-3xl"
           style={{
             backgroundImage: 'url("/assets/images/clicker-character/mascotBg.webp")',
             backgroundSize: 'cover',
@@ -186,7 +176,7 @@ const ClickerView = () => {
           {/* Login Reward Panel */}
           <Modal
             open={isOpenDailyPopup}
-            className="h-screen w-screen flex flex-1 overflow-x-hidden overflow-y-auto"
+            className="flex flex-1 w-screen h-screen overflow-x-hidden overflow-y-auto"
           >
             <div className="fixed inset-0 backdrop-blur-xl rounded-xl flex justify-center items-center z-[200] overflow-hidden"
               onClick={handleClose}
@@ -205,11 +195,7 @@ const ClickerView = () => {
               >
                 {/* Close Button */}
                 <button
-                  className="absolute top-[6rem] right-[2.5rem] text-white text-4xl hover:brightness-75
-                  xs:top-[6rem]
-                  md:top-[12rem] md:right-[4rem]
-                  lg:top-[10rem] lg:right-[5rem] 
-                  xl:top-[8rem]"
+                  className="absolute top-[6rem] right-[2.5rem] text-white text-4xl hover:brightness-75"
                   onClick={handleClose}
                 >
                   &times;
@@ -220,7 +206,8 @@ const ClickerView = () => {
                   px-[2rem] pt-[8rem] pb-[4rem] 
                   xs:pt-[4rem] xs:pb-[6rem] 
                   md:px-[3rem] md:pt-[14rem] md:pb-[15rem] 
-                  lg:px-[4rem] lg:pt-[8rem] lg:pb-[10rem]">
+                  lg:px-[4rem] lg:pt-[8rem] lg:pb-[10rem]"
+                >
                   <Box>
                     <video
                       src="https://storage.animara.world/daily-login-reward.webm"
@@ -230,9 +217,9 @@ const ClickerView = () => {
                       className="max-w-[8rem] lg:max-w-[9rem] pt-1"
                     />
                   </Box>
-                  <div className="space-y-1 flex flex-col items-center py-3">
+                  <div className="flex flex-col items-center py-3 space-y-1">
                     <p className="text-[#FFAA00] text-[1.5rem] xs:text-[3rem] lg:text-[3.75rem] font-base text-center pb-3">Daily reward</p>
-                    <span className="text-white text-sm xs:text-base font-outfit text-center font-normal">
+                    <span className="text-sm font-normal text-center text-white xs:text-base font-outfit">
                       Accure Coins For Loggin Into The Game Daily Without Skipping
                     </span>
                   </div>
@@ -241,39 +228,39 @@ const ClickerView = () => {
                     sm:max-h-[400px] sm:grid-cols-3 
                     md:max-h-[350px] md:grid-cols-5
                     lg:max-h-[300px] lg:grid-cols-7
-                    xl:max-h-[250px]
-                  ">
+                    xl:max-h-[250px]"
+                  >
                     {dailyLoginRewards
-                    .slice(0, currentUser?.ownsNFT ? 28 : 14)
-                    .map((dayReward, index) => {
-                      const isSelected = index < currentUser?.loginDays;
-                      const isCurrentDay = (index + 1) === currentUser?.loginDays;
-                      return (
-                        <Box
-                          className={`${isSelected ? 'bg-[#FFAA00]' : 'bg-[#3C3C3C]'} rounded-md py-1.5 flex transition-all duration-300 hover:scale-105 will-change-transform backface-hidden ${(isCurrentDay && animateDailyReward) ? "scale-110 z-20" : "scale-100"}`}
-                          key={index}
-                          ref={isCurrentDay ? currentDayRef : null}
-                        >
-                          <div className={`flex flex-1 flex-col h-20 lg:h-24 items-center justify-center text-sm space-y-1 gap-1 ${isSelected ? 'text-white' : 'text-[#C5C5C5]'}`}>
-                            <span className='font-outfit font-based'>Day {index + 1}</span>
-                            <DynamicNumberDisplay
-                              number={dayReward}
-                              divClassName={"block"}
-                              imgClassName={"w-8 h-8 m-auto"}
-                              imgSrc={isSelected ? 'assets/images/coin.webp' : 'assets/images/coin-disable.webp'}
-                              spanClassName={`${isSelected ? 'text-white' : 'text-[#C5C5C5]'} flex items-center justify-center`}
-                              spanContent={isSelected ? (
-                                <img 
-                                  src="/assets/images/daily_rewards_tick.webp" 
-                                  alt="coin" 
-                                  className={`ml-2 transition-all duration-500 ${isCurrentDay ? (animateDailyReward ? "w-10 h-8 animate-[spin_1s_ease-in-out]" : "w-5 h-4") : "w-5 h-4"}`} 
-                                />
-                              ) : ''}
-                            />
-                          </div>
-                        </Box>
-                      );
-                    })}
+                      ?.slice(0, currentUser?.ownsNFT ? 28 : 14)
+                      ?.map((dayReward, index) => {
+                        const isSelected = index < currentUser?.loginDays;
+                        const isCurrentDay = (index + 1) === currentUser?.loginDays;
+                        return (
+                          <Box
+                            className={`${isSelected ? 'bg-[#FFAA00]' : 'bg-[#3C3C3C]'} rounded-md py-1.5 flex transition-all duration-300 hover:scale-105 ${(isCurrentDay && animateDailyReward) ? "scale-110 z-20" : "scale-100"}`}
+                            key={index}
+                            ref={isCurrentDay ? currentDayRef : null}
+                          >
+                            <div className={`flex flex-1 flex-col h-20 lg:h-24 items-center justify-center text-sm space-y-1 gap-1 ${isSelected ? 'text-white' : 'text-[#C5C5C5]'}`}>
+                              <span className='font-outfit font-based'>Day {index + 1}</span>
+                              <DynamicNumberDisplay
+                                number={dayReward}
+                                divClassName={"block"}
+                                imgClassName={"w-8 h-8 m-auto"}
+                                imgSrc={isSelected ? 'assets/images/coin.webp' : 'assets/images/coin-disable.webp'}
+                                spanClassName={`${isSelected ? 'text-white' : 'text-[#C5C5C5]'} flex items-center justify-center`}
+                                spanContent={isSelected ? (
+                                  <img 
+                                    src="/assets/images/daily_rewards_tick.webp" 
+                                    alt="coin" 
+                                    className={`ml-2 transition-all duration-500 ${isCurrentDay ? (animateDailyReward ? "w-10 h-8 animate-[spin_1s_ease-in-out]" : "w-5 h-4") : "w-5 h-4"}`} 
+                                  />
+                                ) : ''}
+                              />
+                            </div>
+                          </Box>
+                        );
+                      })}
                   </Box>
                 </div>
               </div>
@@ -283,7 +270,7 @@ const ClickerView = () => {
           {/* Boosts panel */}
           <Modal
             open={openModal === 'boosts'}
-            className="h-screen w-screen flex flex-1 overflow-x-hidden overflow-y-auto"
+            className="flex flex-1 w-screen h-screen overflow-x-hidden overflow-y-auto"
           >
             <div>
               <RechargeModal onClose={() => setOpenModal('')} />  
@@ -293,7 +280,7 @@ const ClickerView = () => {
           {/* Upgrade panel */}
           <Modal
             open={openModal === 'upgrades'}
-            className="h-screen w-screen flex flex-1 overflow-x-hidden overflow-y-auto"
+            className="flex flex-1 w-screen h-screen overflow-x-hidden overflow-y-auto"
           >
             <div>
               <ClickerUpgrades onClose={() => setOpenModal('')} />
@@ -302,7 +289,7 @@ const ClickerView = () => {
 
           <Modal
             open={openModal === 'leaderboard'}
-            className="h-screen w-screen flex flex-1 overflow-x-hidden overflow-y-auto"
+            className="flex flex-1 w-screen h-screen overflow-x-hidden overflow-y-auto"
           >
             <div>
               <LeaderBoardModal onClose={() => setOpenModal('')} />
@@ -311,26 +298,21 @@ const ClickerView = () => {
 
           <audio 
             ref={audioRef} 
-            src={audioSource}  // Dynamic audio source based on user's level
-            onEnded={handleAudioEnded}  // When the audio finishes playing, open the modal
-            style={{ display: 'none' }}  // Hide the audio player element
+            src={audioSource}  
+            onEnded={handleAudioEnded}  
+            style={{ display: 'none' }}  
           />
 
+          {/* Reward modal */}
           <Modal
             open={isOpenRewardModal}
-            className="h-screen w-screen flex flex-1 overflow-x-hidden overflow-y-auto"
+            className="flex flex-1 w-screen h-screen overflow-x-hidden overflow-y-auto"
           > 
           {settlingTapSession && !settlingTapSessionLoaded ? (
-            // loader
-            <div
-                className={`fixed top-0 flex flex-col h-full w-full items-center justify-center bg-dark/90 transition-opacity duration-500 scale-150 lg:scale-100
-                  ${rewardModalFading ? 'opacity-0' : 'opacity-100'}
-                `}
-                style={{
-                  zIndex: 100,
-                }}
-              >
-                <div className="w-full pt-4 flex align-middle justify-center">
+              <div className={`fixed top-0 flex flex-col h-full w-full items-center justify-center bg-dark/90 transition-opacity duration-500 scale-150 lg:scale-100 ${
+                rewardModalFading ? 'opacity-0' : 'opacity-100'
+                }`}>
+                <div className="flex justify-center w-full pt-4 align-middle">
                   <svg
                     aria-hidden="true"
                     className="w-8 h-8 text-Fuchsia-200 animate-spin dark:text-Fuchsia-200 fill-yellow-600"
@@ -349,52 +331,43 @@ const ClickerView = () => {
                   </svg>
                 </div>
               </div>
-              ) : (
-              <div
-                className={`fixed top-0 flex flex-col h-full w-full items-center justify-center bg-dark/90 transition-opacity duration-500 scale-150 lg:scale-100
-                  ${rewardModalFading ? 'opacity-0' : 'opacity-100'}
-                `}
+            ) : (
+            <div className="fixed top-0 flex flex-col h-full w-full items-center justify-center bg-dark/90 transition-opacity duration-500 scale-150 lg:scale-100
+              ${rewardModalFading ? 'opacity-0' : 'opacity-100'}">
+              <video
+                autoPlay
+                loop={false}
+                playsInline
+                onEnded={closeRewardModal}
+                onPlay={handleVideoPlay}
+                className="absolute object-cover object-center w-full h-auto lg:w-auto lg:h-full"
+              >
+                <source src={videoSource} type="video/webm" />
+              </video>
+
+              <div className={`absolute text-[12vh] lg:text-[18vh] font-bold justify-center transition-all duration-1000 transform text-amber-500 tracking-normal
+                ${showWord ? 'opacity-100 scale-150 pb-8 lg:pb-20 translate-x-0' : 'opacity-0 scale-0 pb-0 translate-x-6'}`}
                 style={{
-                  zIndex: 100,
+                  WebkitTextStrokeWidth: '0.45vh',
+                  WebkitTextStrokeColor: 'var(--Color-11, #FFF)',
                 }}
               >
-                <video
-                  autoPlay
-                  loop={false}
-                  playsInline
-                  onEnded={closeRewardModal}
-                  onPlay={handleVideoPlay}
-                  className="absolute object-cover object-center w-full lg:w-auto h-auto lg:h-full"
-                >
-                  <source src={videoSource} type="video/webm" />
-                </video>
-
-                <div
-                  className={`absolute text-[12vh] lg:text-[18vh] font-bold justify-center transition-all duration-1000 transform text-amber-500 tracking-normal
-                  ${showWord ? 'opacity-100 scale-150 pb-8 lg:pb-20 translate-x-0' : 'opacity-0 scale-0 pb-0 translate-x-6'}`}
-                  style={{
-                    WebkitTextStrokeWidth: '0.45vh',
-                    WebkitTextStrokeColor: 'var(--Color-11, #FFF)',
-                  }}
-                >
-                  {currentUser?.ownsNFT 
-                      ? `${currentUser?.randomMultiplier ?? 1.1}x`
-                      : `+${currentUser?.depletionReward ?? 0}`
-                  }
-                </div>
-
-                <div
-                  className={`absolute text-[12vh] lg:text-[18vh] font-bold justify-center transition-all duration-1000 transform text-amber-500 tracking-normal
-                  ${showCongratulations ? 'opacity-100 scale-150 pb-8 lg:pb-20 translate-x-0' : 'opacity-0 scale-0 pb-0 translate-x-6'}`}
-                  style={{
-                    WebkitTextStrokeWidth: '0.45vh',
-                    WebkitTextStrokeColor: 'var(--Color-11, #FFF)',
-                  }}
-                >
-                    +{currentUser?.randomMultiplier * currentUser?.depletionReward}
-                </div>
+                {currentUser?.ownsNFT 
+                    ? `${currentUser?.randomMultiplier ?? 1.1}x`
+                    : `+${currentUser?.depletionReward ?? 0}`}
               </div>
-              )}
+
+              <div className={`absolute text-[12vh] lg:text-[18vh] font-bold justify-center transition-all duration-1000 transform text-amber-500 tracking-normal
+                ${showCongratulations ? 'opacity-100 scale-150 pb-8 lg:pb-20 translate-x-0' : 'opacity-0 scale-0 pb-0 translate-x-6'}`}
+                style={{
+                  WebkitTextStrokeWidth: '0.45vh',
+                  WebkitTextStrokeColor: 'var(--Color-11, #FFF)',
+                }}
+              >
+                  +{currentUser?.randomMultiplier * currentUser?.depletionReward}
+              </div>
+            </div>
+            )}
           </Modal>
         </div>
       </div>

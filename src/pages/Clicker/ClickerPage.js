@@ -15,15 +15,16 @@ function ClickerPage() {
 
   return (
     <div
-      className="w-full mx-auto bg-clicker-game bg-no-repeat bg-cover min-h-screen relative -z-99"
+      className="relative flex flex-col items-center justify-between w-full h-full bg-no-repeat bg-cover bg-clicker-game"
       style={{
         backgroundImage: `url(/assets/images/clicker-character/clickerBg.webp)`,
         backgroundSize: 'cover',
         backgroundRepeat: 'no-repeat',
         backgroundPosition: 'center',
+        height: '100vh',  
+        overflow: 'hidden', 
       }}
     >
-          
       <Header />
 
       {/* Audio component with volume set via ref */}
@@ -33,12 +34,15 @@ function ClickerPage() {
         autoPlay 
         loop 
       /> */}
-
-      <div className={`flex items-start justify-center h-full gap-4 xl:mt-[-2rem] ${mobileMenuOpen ? `hidden` : ``}`}>
+      
+      {/* Main content area */}
+      <div className={`absolute -bottom-0 flex flex-col items-center justify-end  w-full h-full ${mobileMenuOpen ? `hidden` : ``}`}>
         <ClickerView />
       </div>
     </div>
   );
 }
+
+
 
 export default ClickerPage;
